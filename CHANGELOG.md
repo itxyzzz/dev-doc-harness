@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-25-root-todo: collect future harness work
+
+### Added
+
+- Added `TODO.md` with remaining future work from the original handoff and follow-up design discussion.
+- Grouped future work from near-term validation through riskier adapter, governance, and process-maturity additions.
+
 ## 2026-05-25-durable-planning-quality: strengthen planning and model policy
 
 ### Added
