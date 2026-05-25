@@ -18,6 +18,7 @@ Very small mechanical edits may skip this harness when the operator has not requ
 Before creating or reviewing artifacts, read:
 
 - `references/artifact-contract.md` for feature folders, required files, immutable snapshots, living deltas, documentation matrices, and variance handling.
+- `references/planning-freeze-gates.md` for commit-and-pause gates before implementation or later planning continues.
 - `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
 
 ## Workflow
@@ -36,19 +37,7 @@ Before creating or reviewing artifacts, read:
 
 ## Planning Artifact Freeze Gate
 
-The freeze gate is mandatory when durable planning artifacts are finalized. It applies to `spec.md`, `plan.md`, `plan-phase-*.md`, and `plan-amendment-*.md`.
-
-At each gate:
-
-1. Update `CHANGELOG.md`.
-2. Verify the finalized planning artifacts and changelog.
-3. Commit the finalized planning artifacts and changelog together.
-4. Stop before implementation.
-5. Report the commit hash and artifact paths.
-6. Remind the operator that this is the right point to push and create a draft plan-only PR when desired.
-7. Ask the operator to confirm any model, reasoning-effort, or sub-agent policy changes before implementation or the next planning stage.
-
-Proceed to implementation only after a fresh explicit operator instruction after the freeze gate. For very large features, run multiple freeze gates: after the anchor spec, after each finalized phase-plan batch, and after each approved high-impact amendment.
+When durable planning artifacts are finalized, follow `references/planning-freeze-gates.md`. Treat that reference as the only source for freeze-gate procedure and continuation rules.
 
 ## Superpowers compatibility
 

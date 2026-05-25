@@ -104,32 +104,7 @@ Phase plans must derive from `spec.md`. If a phase planner discovers missing or 
 
 ## Planning Artifact Freeze Gate
 
-Run a Planning Artifact Freeze Gate whenever a durable planning artifact is finalized:
-
-- `spec.md`
-- `plan.md`
-- `plan-phase-*.md`
-- `plan-amendment-*.md`
-
-At each freeze gate:
-
-1. Update `CHANGELOG.md` with a newest-first entry for the finalized artifact set.
-2. Verify that finalized artifacts contain no placeholders, unresolved decisions, or missing required sections.
-3. Commit the finalized planning artifacts and changelog together.
-4. Stop before implementation, task execution, or the next planning stage.
-5. Report the commit hash and finalized artifact paths.
-6. Remind the operator that they may push and create a draft plan-only PR at this point.
-7. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices before proceeding.
-
-Implementation must not begin from a finalized durable plan in the same turn unless the operator gives a fresh explicit instruction after this gate.
-
-Very large features may have multiple freeze gates:
-
-- Anchor spec freeze: after `spec.md` is finalized for handoff to phase planning.
-- Phase-plan freeze: after one or more `plan-phase-*.md` files are finalized.
-- Amendment freeze: after any high-impact `plan-amendment-*.md` is approved.
-
-This gate layers on top of Codex plan mode, Superpowers, and spec-kit. Those tools may produce or refine the artifacts, but the harness owns the commit-and-pause transition before implementation.
+Run the gate defined in `planning-freeze-gates.md` whenever durable planning artifacts are finalized. That reference is the canonical source for triggers, required actions, operator reminders, continuation rules, and multi-gate flow for very large features.
 
 ## Immutable snapshots
 

@@ -42,4 +42,4 @@ Explain why the implementation cannot proceed under the approved plan.
 
 ## Planning artifact freeze gate
 
-When this amendment is approved, update `CHANGELOG.md`, commit the amendment and changelog together, then stop before continuing implementation. Report the commit hash and remind the operator that they may push and create a draft plan-only PR or update an existing planning PR. Continuing requires a fresh explicit instruction after model, reasoning-effort, and sub-agent policy choices have been confirmed.
+When this amendment is approved, follow `references/planning-freeze-gates.md` before implementation continues.

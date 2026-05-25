@@ -27,7 +27,7 @@ Approved plans are immutable snapshots. Record nontrivial implementation varianc
 
 ## Planning artifact freeze gate
 
-When this plan is finalized, update `CHANGELOG.md`, commit `spec.md`, `plan.md`, required documentation artifacts, variance log, and changelog together, then stop before implementation. Report the commit hash and remind the operator that they may push and create a draft plan-only PR. Implementation requires a fresh explicit instruction after the operator has had a chance to change model, reasoning-effort, or sub-agent policy.
+When this plan is finalized, follow `references/planning-freeze-gates.md` before implementation.
 
 ## Completion criteria
 

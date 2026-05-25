@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-25-freeze-gate-reference: consolidate freeze-gate rules
+
+### Added
+
+- Added `planning-freeze-gates.md` as the canonical reference for commit-and-pause gates.
+
+### Changed
+
+- Replaced repeated freeze-gate explanations in the skill, artifact contract, and templates with short references to the canonical freeze-gate document.
+
 ## 2026-05-25-planning-freeze-gates: commit-and-pause planning workflow
 
 ### Added

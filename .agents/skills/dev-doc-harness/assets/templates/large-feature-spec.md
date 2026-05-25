@@ -45,9 +45,7 @@ Replace these example rows with the actual phases for this feature.
 
 ## Planning artifact freeze gates
 
-Run an anchor spec freeze when this `spec.md` is finalized: update `CHANGELOG.md`, commit the finalized spec and changelog together, stop, report the commit hash, and remind the operator that they may push and create a draft spec-only or plan-only PR before phase planning continues.
-
-Run later freeze gates after finalized phase-plan batches and approved high-impact amendments. Each gate must give the operator a chance to change model, reasoning-effort, or sub-agent policy before implementation or the next planning stage.
+When this spec, later phase-plan batches, or high-impact amendments are finalized, follow `references/planning-freeze-gates.md` before later planning or implementation continues.
 
 ## Sub-agent orchestration
 
