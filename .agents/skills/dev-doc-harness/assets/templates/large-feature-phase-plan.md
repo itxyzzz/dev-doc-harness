@@ -1,6 +1,6 @@
-# Phase NN: <Phase Name>
+# Large Feature Phase NN: <Phase Name>
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>`
+Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Objective
@@ -9,7 +9,7 @@ Describe the phase outcome.
 
 ## Input context
 
-List approved specs, prior phase outputs, decisions, and repository areas the implementing agent must read.
+List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large-feature spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
 ## Likely files and areas
 
@@ -42,4 +42,5 @@ Describe what the implementing agent must report at phase completion.
 - Phase objective is met.
 - Validation commands have been run and recorded.
 - Documentation tasks are complete or explicitly deferred with reason.
+- `CHANGELOG.md` has a newest-first entry for the phase before each commit.
 - Variance log is present and current.

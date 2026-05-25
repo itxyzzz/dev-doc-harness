@@ -1,6 +1,6 @@
 # <Feature Name> Spec
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>`
+Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Goal
@@ -39,6 +39,7 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
+| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
 | Test cases | Snapshot | Yes/No | Before implementation | docs/snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | docs/living/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | docs/living/operator-manual.delta.md | Update if runtime or operator behavior changes |
@@ -49,5 +50,4 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 ## Approval
 
 - Status: Draft / Approved / Superseded
-- Approved by: blank until approved
-- Approval date: blank until approved
+- Superseded by: blank unless superseded

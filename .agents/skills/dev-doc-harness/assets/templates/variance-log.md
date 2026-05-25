@@ -1,6 +1,6 @@
 # Variance Log
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>`
+Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 
 ## Entries
 

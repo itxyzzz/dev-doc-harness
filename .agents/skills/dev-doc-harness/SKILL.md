@@ -1,24 +1,17 @@
 ---
 name: dev-doc-harness
-description: Use for substantial repository development work that needs durable specs, plans, phase plans, variance handling, or documentation artifact tracking.
+description: Use for repository development work except very small mechanical edits.
 ---
 
 # Dev Doc Harness
 
-This skill defines the repository-local documentation and artifact contract for substantial development work. It is deliberately small: it does not replace Codex plan mode, Superpowers, spec-kit, testing discipline, or project architecture decisions.
+This skill defines the repository-local documentation and artifact contract for development work. It is deliberately small: it does not replace Codex plan mode, Superpowers, spec-kit, testing discipline, or project architecture decisions.
 
 ## When to invoke
 
-Use this skill for:
+Use this skill for all repository development work except very small mechanical edits. The detailed sizing rules live in `references/artifact-contract.md`.
 
-- New features.
-- Medium or large refactors.
-- API, interface, schema, persistence, migration, security, privacy, or compliance-sensitive changes.
-- Multi-step implementation.
-- Bug fixes that need nontrivial investigation or durable handoff.
-- Work that may require tests, operator notes, API docs, architecture notes, or living documentation deltas.
-
-Small mechanical edits may skip this harness when the operator has not requested durable planning.
+Very small mechanical edits may skip this harness when the operator has not requested durable planning.
 
 ## Core references
 
@@ -30,13 +23,15 @@ Before creating or reviewing artifacts, read:
 ## Workflow
 
 1. Classify the work as small/mechanical, small/medium feature, or large feature.
-2. Choose a feature ID using `YYYY-MM-DD-short-kebab-title`.
+2. Choose a feature ID using `YYYY-MM-DD-short-kebab-title`, or `YYYY-MM-DD-ISSUE-short-kebab-title` when a JIRA key or other issue-tracker ID is available.
 3. Create or update the feature folder under `specs/<feature-id>/`.
 4. Draft the required spec, plan, phase plans, documentation matrix, and variance log using the templates in `assets/templates/`.
-5. Treat drafts as editable until operator approval or explicit handoff.
-6. After approval, treat approved specs, plans, phase plans, snapshots, and amendments as immutable snapshots.
-7. During implementation, record justified plan variance in `implementation-notes/variance-log.md`.
-8. For high-impact variance, create a plan amendment and get operator approval before proceeding.
+5. For large features, make `spec.md` the central planning anchor and handoff from the initial planning session to later phase-planning sessions. Preserve all decisions, constraints, risks, assumptions, acceptance criteria, and important rejected alternatives there before writing phase plans.
+6. Treat drafts as editable until operator approval or explicit handoff.
+7. After approval, treat approved specs, plans, phase plans, snapshots, and amendments as immutable snapshots.
+8. During implementation, record justified plan variance in `implementation-notes/variance-log.md`.
+9. Update `CHANGELOG.md` before each commit with concise entries tied to the current feature ID, phase, task, or spec/plan decision.
+10. For high-impact variance, create a plan amendment and get operator approval before proceeding.
 
 ## Superpowers compatibility
 
@@ -52,7 +47,9 @@ If spec-kit is installed and active, prefer a project-local adapter that points 
 
 - The feature folder follows `specs/<feature-id>/`.
 - Required small/medium or large-feature artifacts exist.
+- Large-feature `spec.md` is detailed enough to hand off all important planning decisions to later phase-plan authors.
 - The documentation artifact matrix marks each artifact as required, not applicable, or deferred with a reason.
+- `CHANGELOG.md` has a newest-first entry for the work before each commit.
 - Approved snapshots are not silently rewritten.
 - Nontrivial variance is recorded.
 - High-impact variance has an amendment and operator approval.

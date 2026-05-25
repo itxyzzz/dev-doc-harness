@@ -2,13 +2,11 @@
 
 ## Documentation harness
 
-For substantial development work, use the repository documentation harness:
+For all development work except very small mechanical edits, use the repository documentation harness:
 
 `.agents/skills/dev-doc-harness/SKILL.md`
 
-Substantial work includes new features, medium or large refactors, API or interface changes, persistence or schema changes, security-sensitive work, multi-step implementation, and work where tests, operator notes, API docs, or architecture notes may need to be created or updated.
-
-Small mechanical edits may proceed without invoking the harness, but must still preserve existing behavior and tests.
+Very small mechanical edits may proceed without invoking the harness, but must still preserve existing behavior and tests.
 
 ## Active sub-agent model policy
 

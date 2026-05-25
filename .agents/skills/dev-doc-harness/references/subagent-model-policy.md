@@ -66,6 +66,8 @@ Large-feature specs or phase plans using sub-agents must include:
 | 04 | Final implementation review | economy-default | latest strongest | high | Subtle integration risk | Review findings |
 ```
 
+The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the feature. Omit the table when no sub-agents are proposed.
+
 Prefer policy-relative model classes over hardcoded model names unless the environment requires concrete names.
 
 ## Escalation rules

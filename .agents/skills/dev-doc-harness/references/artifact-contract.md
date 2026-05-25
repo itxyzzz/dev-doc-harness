@@ -16,10 +16,17 @@ Use this feature ID format:
 YYYY-MM-DD-short-kebab-title
 ```
 
+When a JIRA key or another issue-tracker ID is available, include it after the date:
+
+```text
+YYYY-MM-DD-ISSUE-short-kebab-title
+```
+
 Example:
 
 ```text
 specs/2026-05-25-user-profile-import/
+specs/2026-05-25-PROJ-123-user-profile-import/
 ```
 
 ## Work sizes
@@ -60,14 +67,10 @@ Create only the supplemental snapshot and living-delta files that are required f
 ```text
 specs/<feature-id>/
   spec.md
-
-  phases/
-    01-discovery-plan.md
-    02-core-implementation-plan.md
-    03-hardening-plan.md
-
-  plan-amendments/
-    001-short-title.md
+  plan-phase-01-discovery.md
+  plan-phase-02-core-implementation.md
+  plan-phase-03-hardening.md
+  plan-amendment-001-short-title.md
 
   docs/
     snapshots/
@@ -91,6 +94,14 @@ specs/<feature-id>/
 
 Phase plan names should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
 
+## Large-feature spec as handoff anchor
+
+For large features, `spec.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec.md` before later sessions produce phase plans.
+
+`spec.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-*.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+
+Phase plans must derive from `spec.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval, or create a plan amendment after approval. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large-feature spec.
+
 ## Immutable snapshots
 
 Draft artifacts may be edited until operator approval or explicit handoff. After approval, these artifacts are immutable snapshots:
@@ -98,9 +109,9 @@ Draft artifacts may be edited until operator approval or explicit handoff. After
 ```text
 spec.md
 plan.md
-phases/*.md
+plan-phase-*.md
 docs/snapshots/*.md
-plan-amendments/*.md
+plan-amendment-*.md
 ```
 
 Allowed post-approval changes are:
@@ -131,6 +142,7 @@ Every substantial spec or plan must include a compact matrix:
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
+| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
 | Test cases | Snapshot | Yes/No | Before implementation | docs/snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | docs/living/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | docs/living/operator-manual.delta.md | Update if runtime or operator behavior changes |
@@ -140,6 +152,8 @@ Every substantial spec or plan must include a compact matrix:
 ```
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
+
+`CHANGELOG.md` is always required before commits.
 
 ## Variance policy
 
@@ -154,7 +168,7 @@ implementation-notes/variance-log.md
 Create an immutable amendment in:
 
 ```text
-plan-amendments/NNN-short-title.md
+plan-amendment-NNN-short-title.md
 ```
 
 and request operator approval before proceeding when variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
@@ -168,3 +182,28 @@ and request operator approval before proceeding when variance affects architectu
 | Architectural/API/data/security | Endpoint change, schema change, auth impact, persistence change | No | Create amendment and request approval |
 | Scope change | New behavior, removed requirement, changed acceptance criteria | No | Create amendment and request approval |
 | Plan invalidation | Task no longer feasible as planned | No | Stop and produce replanning note or amendment |
+
+## Changelog
+
+Maintain a living `CHANGELOG.md` at the repository root. Update it before every commit.
+
+Use a Keep a Changelog style:
+
+- Newest entries first.
+- Each entry heading is the feature ID plus a short descriptive snippet.
+- Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
+- Keep descriptions concise and tied to specific phases, tasks, specs, or plan decisions.
+
+Example:
+
+```md
+## 2026-05-25-PROJ-123-user-profile-import: Phase 02 import validation
+
+### Added
+
+- Added validation tasks for duplicate profile identifiers in `plan-phase-02-core-implementation.md`.
+
+### Changed
+
+- Clarified API acceptance criteria in `spec.md`.
+```

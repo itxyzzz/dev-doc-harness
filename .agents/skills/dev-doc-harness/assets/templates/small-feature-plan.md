@@ -1,6 +1,6 @@
 # <Feature Name> Plan
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>`
+Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Implementation summary
@@ -30,10 +30,10 @@ Approved plans are immutable snapshots. Record nontrivial implementation varianc
 - Acceptance criteria in `spec.md` are met.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
+- `CHANGELOG.md` has a newest-first entry for the work before each commit.
 - Variance log is present and current.
 
 ## Approval
 
 - Status: Draft / Approved / Superseded
-- Approved by: blank until approved
-- Approval date: blank until approved
+- Superseded by: blank unless superseded

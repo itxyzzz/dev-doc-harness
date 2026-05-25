@@ -1,6 +1,6 @@
 # Plan Amendment NNN: <Short Title>
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>`
+Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Proposed
 
 ## Original plan reference
@@ -38,5 +38,4 @@ Explain why the implementation cannot proceed under the approved plan.
 
 - Required: Yes
 - Status: Proposed / Approved / Rejected / Superseded
-- Approved by: blank until approved
-- Date: blank until approved
+- Superseded by: blank unless superseded
