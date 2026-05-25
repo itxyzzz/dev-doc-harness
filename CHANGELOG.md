@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-26-agentic-instruction-research: track cross-repo review
+
+### Added
+
+- Added a TODO item to review other local repositories, including `itxyzzz/gen-ai-se-hw`, for reusable agentic instruction patterns.
+
 ## 2026-05-25-root-todo: collect future harness work
 
 ### Added

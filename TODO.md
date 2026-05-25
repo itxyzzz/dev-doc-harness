@@ -16,6 +16,9 @@ Future work collected from the original handoff and follow-up design discussion.
   - Keep policy language model-class based unless concrete names are required by the environment.
 - [ ] Add a short planning-only PR note or checklist.
   - Document how to use the freeze gate as the point to push a draft plan-only PR before implementation.
+- [ ] Review agentic instructions from other local repositories for useful ideas to extract.
+  - Include `itxyzzz/gen-ai-se-hw` and any other local repos with `AGENTS.md`, repo-local skills, prompts, or planning docs.
+  - Borrow only patterns that improve this harness without duplicating project-specific workflow or Superpowers methodology.
 
 ## Mechanical Validation
 
