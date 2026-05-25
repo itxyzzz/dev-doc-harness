@@ -43,6 +43,12 @@ Replace these example rows with the actual phases for this feature.
 | 02 | Core implementation | `plan-phase-02-core-implementation.md` |
 | 03 | Hardening and review | `plan-phase-03-hardening.md` |
 
+## Planning artifact freeze gates
+
+Run an anchor spec freeze when this `spec.md` is finalized: update `CHANGELOG.md`, commit the finalized spec and changelog together, stop, report the commit hash, and remind the operator that they may push and create a draft spec-only or plan-only PR before phase planning continues.
+
+Run later freeze gates after finalized phase-plan batches and approved high-impact amendments. Each gate must give the operator a chance to change model, reasoning-effort, or sub-agent policy before implementation or the next planning stage.
+
 ## Sub-agent orchestration
 
 Replace these example rows with the actual sub-agent choices for this feature. Omit this table when no sub-agents are proposed.

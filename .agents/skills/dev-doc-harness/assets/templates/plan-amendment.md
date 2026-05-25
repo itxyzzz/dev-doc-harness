@@ -39,3 +39,7 @@ Explain why the implementation cannot proceed under the approved plan.
 - Required: Yes
 - Status: Proposed / Approved / Rejected / Superseded
 - Superseded by: blank unless superseded
+
+## Planning artifact freeze gate
+
+When this amendment is approved, update `CHANGELOG.md`, commit the amendment and changelog together, then stop before continuing implementation. Report the commit hash and remind the operator that they may push and create a draft plan-only PR or update an existing planning PR. Continuing requires a fresh explicit instruction after model, reasoning-effort, and sub-agent policy choices have been confirmed.

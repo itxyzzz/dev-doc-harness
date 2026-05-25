@@ -4,6 +4,14 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-25-planning-freeze-gates: commit-and-pause planning workflow
+
+### Added
+
+- Added mandatory Planning Artifact Freeze Gates for finalized specs, plans, phase plans, and plan amendments.
+- Added draft plan-only PR reminders and model or reasoning confirmation requirements at each freeze gate.
+- Added support for multiple freeze gates across anchor specs, phase-plan batches, and high-impact amendments for very large features.
+
 ## 2026-05-25-harness-review-updates: tighten artifact workflow
 
 ### Added

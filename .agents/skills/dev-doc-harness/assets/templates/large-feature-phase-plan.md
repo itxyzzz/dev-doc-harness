@@ -33,6 +33,10 @@ List snapshot or living-delta artifacts this phase must create, update, or mark 
 
 Approved phase plans are immutable snapshots. Record nontrivial variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
+## Planning artifact freeze gate
+
+When this phase plan or phase-plan batch is finalized, update `CHANGELOG.md`, commit the finalized phase plans and changelog together, then stop before implementation. Report the commit hash and remind the operator that they may push and create a draft plan-only PR. Implementation requires a fresh explicit instruction after the operator has had a chance to change model, reasoning-effort, or sub-agent policy.
+
 ## Handoff output
 
 Describe what the implementing agent must report at phase completion.
