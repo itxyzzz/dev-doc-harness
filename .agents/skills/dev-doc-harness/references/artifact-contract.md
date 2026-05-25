@@ -102,6 +102,8 @@ For large features, `spec.md` is the central anchor between planning sessions. T
 
 Phase plans must derive from `spec.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval, or create a plan amendment after approval. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large-feature spec.
 
+Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
+
 ## Planning Artifact Freeze Gate
 
 Run the gate defined in `planning-freeze-gates.md` whenever durable planning artifacts are finalized. That reference is the canonical source for triggers, required actions, operator reminders, continuation rules, and multi-gate flow for very large features.

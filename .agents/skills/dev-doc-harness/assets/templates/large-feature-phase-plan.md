@@ -11,9 +11,18 @@ Describe the phase outcome.
 
 List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large-feature spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
+Follow `references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
+
 ## Likely files and areas
 
 List files, directories, APIs, schemas, docs, or workflows expected to change.
+
+## Model and Sub-agent Strategy
+
+Current orchestration: record the model/profile and reasoning effort if known.
+Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
+Recommended change: record `None` or a concrete model/reasoning change with reason.
+Sub-agents: record `None` or the bounded explorer/reviewer/worker roles proposed for this phase.
 
 ## Tasks
 
@@ -40,6 +49,8 @@ When this phase plan or phase-plan batch is finalized, follow `references/planni
 ## Handoff output
 
 Describe what the implementing agent must report at phase completion.
+
+Include assigned scope, files inspected or changed, commands and tests run, assumptions, uncertainty or residual risk, and recommended next step.
 
 ## Completion criteria
 

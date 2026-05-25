@@ -16,9 +16,26 @@ Sub-agent model and reasoning-effort selection must be deliberate for substantia
 - Whether the task can run in parallel.
 - Blast radius if the task is wrong.
 
+When known, account for the current orchestration model and reasoning effort. Judge fit against complexity, risk, ambiguity, blast radius, budget, and latency. Recommend changing orchestration model or reasoning effort when the current operator is clearly mismatched to the work.
+
 Prefer stronger reasoning for planning, architecture, integration design, unclear debugging, security, privacy, compliance, migrations, irreversible changes, high-blast-radius changes, and final review.
 
 Prefer lower or medium reasoning for bounded exploration, mechanical edits, local refactors, test enumeration from clear requirements, documentation cleanup, and summarization.
+
+If a plan proposes sub-agents or nondefault model/reasoning settings, record the rationale and ask for explicit operator confirmation before applying those choices.
+
+If platform or runtime policy restricts sub-agent spawning or model/reasoning overrides, still document the intended strategy and ask for explicit operator confirmation before applying any restricted action.
+
+Use sub-agents for isolation, review quality, or parallelism: independent investigation, read-heavy exploration, test-risk review, spec review, code-quality review, or bounded implementation with disjoint file ownership. Avoid sub-agents for small tasks, tightly coupled work, same-file edits by multiple agents, immediate main-thread blockers, or cases where coordination overhead exceeds the value.
+
+Sub-agents are not a default cost-saving mechanism. Prefer read-only explorer or reviewer agents before write-capable workers.
+
+Default fan-out:
+
+- Small task: 0 sub-agents.
+- Moderate uncertainty: 1 read-only explorer or reviewer.
+- Clearly independent substantial work: 2-3 sub-agents.
+- More than 3: requires explicit justification.
 
 ## Policy: enterprise-default
 
@@ -53,10 +70,14 @@ A cheaper sub-agent must not be the final authority for high-blast-radius decisi
 
 ## Required notation
 
-Large-feature specs or phase plans using sub-agents must include:
+Large-feature specs or phase plans using sub-agents must include a compact Model and Sub-agent Strategy:
 
 ```md
-## Sub-agent orchestration
+## Model and Sub-agent Strategy
+
+Current orchestration: `<model/profile if known>`, `<reasoning effort if known>`
+Fit assessment: `<complexity/risk/ambiguity/blast-radius/budget/latency judgment>`
+Recommended change: `<none or concrete model/reasoning change with reason>`
 
 | Phase | Sub-agent task | Model policy | Model class | Effort | Reason | Output |
 |---|---|---|---|---|---|---|
@@ -70,6 +91,17 @@ The rows above are examples, not required phase names or required sub-agent choi
 
 Prefer policy-relative model classes over hardcoded model names unless the environment requires concrete names.
 
+## Sub-agent report requirements
+
+Every sub-agent report must include:
+
+- Assigned scope.
+- Files inspected or changed.
+- Commands and tests run.
+- Assumptions.
+- Uncertainty or residual risk.
+- Recommended next step.
+
 ## Escalation rules
 
 Escalate model strength or reasoning effort when:
@@ -82,6 +114,12 @@ Escalate model strength or reasoning effort when:
 
 Record escalation rationale in the spec, phase plan, or review notes.
 
+Using the latest strongest model class for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason. Escalate after failure or uncertainty with that reason recorded.
+
 ## Final review
 
 Final review of high-blast-radius work must be done by the orchestration thread or a latest strongest model class with high reasoning. Bounded low-risk work may use the orchestration thread without sub-agents.
+
+## Final integration ownership
+
+The orchestration thread owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.

@@ -11,6 +11,13 @@ Describe the implementation approach in a few paragraphs.
 
 List files expected to change and interfaces expected to remain stable or change.
 
+## Model and Sub-agent Strategy
+
+Current orchestration: record the model/profile and reasoning effort if known.
+Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
+Recommended change: record `None` or a concrete model/reasoning change with reason.
+Sub-agents: record `None` or the bounded explorer/reviewer/worker roles proposed for this plan.
+
 ## Tasks
 
 Write one checkbox per implementation, test, validation, or documentation step. Each step should be specific enough for a fresh agent to execute without choosing an approach.

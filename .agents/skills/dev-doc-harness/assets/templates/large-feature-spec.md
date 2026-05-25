@@ -13,6 +13,8 @@ This spec is the central handoff from the initial large-scale planning session t
 
 Phase plans must derive from this spec. If later planning discovers missing context, update the draft spec before approval or create an amendment after approval.
 
+Follow `references/durable-planning-quality.md` before freezing this spec.
+
 ## Scope
 
 List included systems, modules, workflows, APIs, data, and documentation.
@@ -47,7 +49,11 @@ Replace these example rows with the actual phases for this feature.
 
 When this spec, later phase-plan batches, or high-impact amendments are finalized, follow `references/planning-freeze-gates.md` before later planning or implementation continues.
 
-## Sub-agent orchestration
+## Model and Sub-agent Strategy
+
+Current orchestration: record the model/profile and reasoning effort if known.
+Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
+Recommended change: record `None` or a concrete model/reasoning change with reason.
 
 Replace these example rows with the actual sub-agent choices for this feature. Omit this table when no sub-agents are proposed.
 

@@ -18,6 +18,7 @@ Very small mechanical edits may skip this harness when the operator has not requ
 Before creating or reviewing artifacts, read:
 
 - `references/artifact-contract.md` for feature folders, required files, immutable snapshots, living deltas, documentation matrices, and variance handling.
+- `references/durable-planning-quality.md` for spec and phase-plan quality bars, handoff preservation, and fresh-thread executability.
 - `references/planning-freeze-gates.md` for commit-and-pause gates before implementation or later planning continues.
 - `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
 
