@@ -22,6 +22,12 @@ Before creating or reviewing artifacts, read:
 - `references/planning-freeze-gates.md` for commit-and-pause gates before implementation or later planning continues.
 - `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
 
+Use these supplemental references when relevant:
+
+- `references/context-and-quality-gates.md` for context load order, environment compensation, and increment quality gates.
+- `references/subagent-role-examples.md` for compact policy-relative sub-agent role patterns.
+- `references/evidence-and-report-artifacts.md` for spikes, investigations, agent reports, or review evidence; skip for routine changes covered by normal validation and changelog notes.
+
 ## Workflow
 
 1. Classify the work as small/mechanical, small/medium feature, or large feature.

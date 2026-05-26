@@ -4,11 +4,23 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-26-agentic-instruction-extraction: add reusable references
+
+### Added
+
+- Added concise references for context loading, quality gates, sub-agent role examples, and evidence/report artifacts.
+- Added TODO follow-ups using only public repository references for extracted instruction patterns.
+
+### Changed
+
+- Clarified when to skip loading supplemental evidence/report artifact guidance.
+- Removed completed TODO items for the fake small-feature harness test and common sub-agent role examples.
+
 ## 2026-05-26-agentic-instruction-research: track cross-repo review
 
 ### Added
 
-- Added a TODO item to review other local repositories, including `itxyzzz/gen-ai-se-hw`, for reusable agentic instruction patterns.
+- Added a TODO item to review public repositories, including `https://github.com/itxyzzz/gen-ai-se-hw`, for reusable agentic instruction patterns.
 
 ## 2026-05-25-root-todo: collect future harness work
 

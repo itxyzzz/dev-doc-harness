@@ -4,21 +4,18 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Near-Term Validation And Polish
 
-- [ ] Test the harness on one fake small feature.
-  - Exercise `spec.md`, `plan.md`, documentation matrix choices, `variance-log.md`, `CHANGELOG.md`, and the planning freeze gate.
 - [ ] Test the harness on one fake large feature.
   - Exercise `spec.md` as the anchor handoff, `plan-phase-NN-*.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
 - [ ] Test a Superpowers-generated spec or plan converted into `specs/<feature-id>/`.
   - Confirm the harness layers cleanly over Superpowers without duplicating its methodology.
-- [ ] Add a few examples for common sub-agent roles.
-  - Keep examples policy-relative and short: explorer, reviewer, test-risk reviewer, bounded implementer, final review.
 - [ ] Confirm current model classes available in the operator environment.
   - Keep policy language model-class based unless concrete names are required by the environment.
 - [ ] Add a short planning-only PR note or checklist.
   - Document how to use the freeze gate as the point to push a draft plan-only PR before implementation.
-- [ ] Review agentic instructions from other local repositories for useful ideas to extract.
-  - Include `itxyzzz/gen-ai-se-hw` and any other local repos with `AGENTS.md`, repo-local skills, prompts, or planning docs.
+- [ ] Review agentic instructions from other public repositories for useful ideas to extract.
+  - Include public references such as `https://github.com/itxyzzz/gen-ai-se-hw` and any other public repos with `AGENTS.md`, repo-local skills, prompts, or planning docs.
   - Borrow only patterns that improve this harness without duplicating project-specific workflow or Superpowers methodology.
+  - Extract concise patterns: context load order, environment-compensation gates, portable policy-relative agent roles, immutable source evidence with derived review artifacts, sparse report sections, and explicit stop conditions.
 
 ## Mechanical Validation
 
@@ -61,6 +58,9 @@ Future work collected from the original handoff and follow-up design discussion.
   - `docs/living/operator-manual.delta.md`
   - `docs/living/api-reference.delta.md`
   - `docs/living/architecture-summary.delta.md`
+- [ ] Define sparse templates for evidence-heavy report artifacts.
+  - Keep sections short: verification summary, checked claims, discrepancies, commands run, results, remaining gaps, unresolved risks, and references.
+  - Borrow the report-section pattern from public artifacts in `https://github.com/itxyzzz/gen-ai-se-hw` without importing homework-specific pipeline structure.
 - [ ] Consider future templates for migration notes, rollout notes, runbooks, and troubleshooting guides.
 - [ ] Decide whether living deltas are automatically merged into long-lived docs or only proposed for review.
 - [ ] Define ownership and approval rules for living docs.
@@ -70,6 +70,8 @@ Future work collected from the original handoff and follow-up design discussion.
 - [ ] Define whether every feature folder must be linked from PR descriptions.
 - [ ] Define whether every PR must include artifact validation output.
 - [ ] Define how approved amendments should appear in GitHub, Bitbucket, or Stash PRs.
+- [ ] Define how PRs should present preserved source evidence versus derived review artifacts.
+  - Keep source evidence immutable after review use; place repaired or normalized summaries in a separate derived-artifact location.
 - [ ] Add a planning-only PR checklist for finalized specs/plans.
 - [ ] Add an implementation PR checklist that references freeze-gate commits and variance logs.
 
