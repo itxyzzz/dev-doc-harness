@@ -11,6 +11,10 @@ Entries are newest-first and grouped by change type.
 - Added `README.md` with an operator-focused overview of how the harness changes development process, pause points, handoffs, variance handling, and outcomes.
 - Added a compact styled Mermaid flow diagram to show the operator-facing harness loop.
 
+### Changed
+
+- Clarified the README diagram with separate small, small/medium, and large/phased paths plus an explicit normal implementation flow.
+
 ## 2026-05-26-agentic-instruction-extraction: add reusable references
 
 ### Added

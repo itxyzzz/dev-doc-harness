@@ -12,16 +12,20 @@ be preserved for future agents or future threads.
 ```mermaid
 flowchart TD
     A["Operator asks for work"]:::house --> B{"Task size?"}:::house
-    B -->|Very small| C["Direct edit and checks"]:::house
-    B -->|Substantial| D["Create specs/<feature-id>/"]:::house
-    D --> E["Draft spec and plan"]:::house
-    E --> F["Freeze gate: changelog, commit, pause"]:::house
-    F --> G["Operator reviews or opens plan-only PR"]:::house
-    G --> H["Implementation resumes by explicit instruction"]:::house
-    H --> I{"Meaningful variance?"}:::house
-    I -->|No| J["Validate, update changelog, commit"]:::house
-    I -->|High impact| K["Plan amendment and approval"]:::house
-    K --> H
+    B -->|Very small| C["Direct edit, check, commit"]:::house
+    B -->|Substantial| D["Create feature folder"]:::house
+    D --> E{"Planning shape?"}:::house
+    E -->|Small or medium| F["Draft spec and plan"]:::house
+    E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
+    F --> H["Freeze gate: changelog, commit, pause"]:::house
+    G --> H
+    H --> I["Operator reviews or opens plan-only PR"]:::house
+    I --> J["Implement approved plan"]:::house
+    J --> K{"High-impact variance?"}:::house
+    K -->|No| L["Validate, update docs and changelog"]:::house
+    L --> M["Commit implementation"]:::house
+    K -->|Yes| N["Plan amendment and approval"]:::house
+    N --> H
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
