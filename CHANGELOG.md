@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-26-root-readme: explain operator process impact
+
+### Added
+
+- Added `README.md` with an operator-focused overview of how the harness changes development process, pause points, handoffs, variance handling, and outcomes.
+- Added a compact styled Mermaid flow diagram to show the operator-facing harness loop.
+
 ## 2026-05-26-agentic-instruction-extraction: add reusable references
 
 ### Added
