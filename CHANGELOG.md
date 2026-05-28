@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-28-template-durable-spec-hardening: complete TODO items
+
+### Changed
+
+- Expanded plan and large-feature spec template sub-agent strategy prompts with the required policy fields for safe delegation and operator confirmation.
+- Aligned the canonical sub-agent policy notation example with the required field list.
+- Clarified model-policy wording so the human operator is not described as mismatched to the work.
+- Expanded the large-feature spec template with explicit durable-spec sections for behavior, interfaces, state flow, safety, validation, operations, unknowns, and rejected alternatives.
+- Removed the completed template-hardening follow-ups from `TODO.md`.
+
 ## 2026-05-28-review-hardening: address review feedback
 
 ### Added

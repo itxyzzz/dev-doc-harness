@@ -4,10 +4,6 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Near-Term Validation And Polish
 
-- [ ] Expand the sub-agent strategy prompts in plan templates.
-  - Make `small-feature-plan.md` and `large-feature-phase-plan.md` request every field required by `subagent-model-policy.md`: purpose, input context, output artifact, model policy, model class, reasoning effort, selection reason, parallelism, and blast radius.
-- [ ] Expand the large-feature spec template with explicit durable-spec sections.
-  - Add sections for current state, proposed behavior, interfaces and data, control or state flow, safety/privacy/compliance, validation strategy, and triage or operational notes so large specs cannot appear complete while missing the durable-planning quality bar.
 - [ ] Test the harness on one fake large feature.
   - Exercise `spec.md` as the anchor handoff, `plan-phase-NN-*.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
 - [ ] Test a Superpowers-generated spec or plan converted into `specs/<feature-id>/`.
@@ -81,6 +77,13 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Governance And Process Maturity
 
+- [ ] Add an in-team distribution mechanism across repositories.
+  - Design how harness updates, policy changes, templates, and skills should be published, versioned, adopted, audited, and rolled back across multiple team repositories.
+  - Treat this as major, important, and complicated; avoid a quick copy-paste rollout until ownership, compatibility, migration, and update cadence are defined.
+- [ ] Harden testing-related documentation artifact rules and coverage guidance.
+  - Define when test-case snapshots, testing-guide deltas, validation evidence, and coverage expectations are required versus optional.
+  - Add general testing coverage rules for feature plans, bug fixes, risky refactors, documentation-only changes, and cases where automated tests are not feasible.
+  - Treat this as major, important, and complicated because it affects acceptance criteria, review quality, and future agent claims about correctness.
 - [ ] Define plan-amendment approval markers.
 - [ ] Define who may approve controlled variances.
 - [ ] Define documentation debt tracking.

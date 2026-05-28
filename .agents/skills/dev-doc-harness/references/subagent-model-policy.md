@@ -16,7 +16,7 @@ Sub-agent model and reasoning-effort selection must be deliberate for substantia
 - Whether the task can run in parallel.
 - Blast radius if the task is wrong.
 
-When known, account for the current orchestration model and reasoning effort. Judge fit against complexity, risk, ambiguity, blast radius, budget, and latency. Recommend changing orchestration model or reasoning effort when the current operator is clearly mismatched to the work.
+When known, account for the current orchestration model and reasoning effort. Judge fit against complexity, risk, ambiguity, blast radius, budget, and latency. Recommend changing the orchestration model/profile or reasoning effort when the current setup is clearly mismatched to the work.
 
 Prefer stronger reasoning for planning, architecture, integration design, unclear debugging, security, privacy, compliance, migrations, irreversible changes, high-blast-radius changes, and final review.
 
@@ -79,12 +79,12 @@ Current orchestration: `<model/profile if known>`, `<reasoning effort if known>`
 Fit assessment: `<complexity/risk/ambiguity/blast-radius/budget/latency judgment>`
 Recommended change: `<none or concrete model/reasoning change with reason>`
 
-| Phase | Sub-agent task | Model policy | Model class | Effort | Reason | Output |
-|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | economy-default | smaller/faster | medium | Bounded exploration | Discovery notes |
-| 02 | Data model design review | economy-default | latest strongest | high | High blast radius | Review memo |
-| 03 | Test plan generation | economy-default | standard | medium | Clear inputs | Test cases |
-| 04 | Final implementation review | economy-default | latest strongest | high | Subtle integration risk | Review findings |
+| Phase | Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
+|---|---|---|---|---|---|---|---|---|---|
+| 01 | Repository or API discovery | Relevant files, docs, specs, and decisions | Discovery notes | economy-default | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
+| 02 | Data model design review | Spec decisions, schemas, migrations, and API contracts | Review memo | economy-default | latest strongest | high | High blast radius | Yes/No | High plus consequence |
+| 03 | Test plan generation | Requirements, acceptance criteria, and known risks | Test cases | economy-default | standard | medium | Clear inputs | Yes | Medium plus consequence |
+| 04 | Final implementation review | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
 ```
 
 The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the feature. Omit the table when no sub-agents are proposed.

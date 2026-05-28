@@ -9,7 +9,7 @@ Describe the outcome and why this work needs phase planning.
 
 ## Planning handoff quality bar
 
-This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve all important decisions, constraints, assumptions, risks, data/interface choices, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
+This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve feature-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
 
 Phase plans must derive from this spec. If later planning discovers missing context, update the draft spec before approval or create an amendment after approval.
 
@@ -23,6 +23,34 @@ List included systems, modules, workflows, APIs, data, and documentation.
 
 List deferred or intentionally excluded work.
 
+## Current state
+
+Summarize the relevant baseline before implementation.
+
+## Proposed behavior
+
+Describe the intended post-implementation behavior and operator-visible outcomes.
+
+## Interfaces and data
+
+Record affected APIs, internal interfaces, config, schemas, persistence, files, CLI flags, services, or data contracts. State `None` when not applicable.
+
+## State flow and control flow
+
+Describe affected lifecycle, state transitions, orchestration, request flow, jobs, concurrency, retries, or other control flow. State `None` when not applicable.
+
+## Safety, security, privacy, compliance, migration, and rollback
+
+Record auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations. State `None identified` only after checking the relevant code and docs.
+
+## Validation strategy
+
+Describe tests, manual checks, review gates, fixtures, environment assumptions, and expected validation signals.
+
+## Triage, debugging, and operations
+
+Record logs, metrics, diagnostics, runbooks, failure modes, recovery steps, or support workflows. State `None` when not applicable.
+
 ## Assumptions
 
 Write one bullet per assumption that affects scope, sequencing, interfaces, data, risk, or validation.
@@ -30,6 +58,14 @@ Write one bullet per assumption that affects scope, sequencing, interfaces, data
 ## Risks
 
 Record integration, migration, compatibility, security, privacy, compliance, rollout, and operational risks.
+
+## Known unknowns
+
+List unresolved facts or decisions that affect planning, implementation, validation, rollout, or risk. State `None` only when the spec has no known unknowns.
+
+## Rejected alternatives
+
+List important alternatives considered and why they are not part of this plan. State `None` when no meaningful alternatives were rejected.
 
 ## Acceptance criteria
 
@@ -55,13 +91,11 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Replace these example rows with the actual sub-agent choices for this feature. Omit this table when no sub-agents are proposed.
+Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`, capture only task-specific choices below, and get explicit operator confirmation before applying those choices.
 
-| Phase | Sub-agent task | Model policy | Model class | Effort | Reason | Output |
-|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | economy-default | smaller/faster | medium | Bounded exploration | Discovery notes |
-| 02 | Architecture or integration review | economy-default | latest strongest | high | High blast radius | Review memo |
-| 03 | Final implementation review | economy-default | latest strongest | high | Subtle integration risk | Review findings |
+| Phase | Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
+|---|---|---|---|---|---|---|---|---|---|
+| Replace with phase number or omit this table when sub-agents are `None` | Bounded explorer/reviewer/worker task | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
 
 ## Documentation artifact matrix
 

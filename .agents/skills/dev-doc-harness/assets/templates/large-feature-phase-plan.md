@@ -22,7 +22,12 @@ List files, directories, APIs, schemas, docs, or workflows expected to change.
 Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
-Sub-agents: record `None` or the bounded explorer/reviewer/worker roles proposed for this phase.
+
+Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`, capture only task-specific choices below, and get explicit operator confirmation before applying those choices.
+
+| Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
+|---|---|---|---|---|---|---|---|---|
+| Replace with a bounded explorer/reviewer/worker task, or omit this table when sub-agents are `None` | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
 
 ## Tasks
 
