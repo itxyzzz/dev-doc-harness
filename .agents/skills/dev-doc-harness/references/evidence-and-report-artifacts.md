@@ -1,6 +1,6 @@
 # Evidence And Report Artifacts
 
-Use this reference when a feature needs durable evidence, derived review
+Use this reference when a work item needs durable evidence, derived review
 artifacts, or report templates.
 
 ## Evidence policy
@@ -10,9 +10,9 @@ artifacts, or report templates.
 - Link derived artifacts back to their source evidence.
 - Do not rewrite original evidence to hide drift, failed checks, or manual repair.
 
-For harness-managed work, source evidence usually belongs under the feature
+For harness-managed work, source evidence usually belongs under the work item
 folder. Derived summaries may live under `handoff/`, `docs/living/`, or another
-feature-local review folder named in the plan.
+work-item-local review folder named in the plan.
 
 ## Artifact index
 
@@ -21,7 +21,7 @@ For evidence-heavy work, create a short index:
 ```md
 # Artifact Index
 
-- Feature ID: `<feature-id>`
+- Work ID: `<work-id>`
 - Source evidence: `<path>`
 - Derived artifacts: `<path>`
 - Snapshot policy: source evidence is preserved; derived artifacts are review-owned.
@@ -50,7 +50,7 @@ Stop and record the blocker when:
 
 - A required input artifact is missing.
 - A required report cannot be produced.
-- A write would escape the approved workspace or feature scope.
+- A write would escape the approved workspace or work item scope.
 - Verification fails after the planned repair attempts.
 - Unresolved high-impact security, data, API, or scope risk appears.
 

@@ -27,9 +27,9 @@ At each freeze gate:
 
 Implementation must not begin from a finalized durable plan in the same turn unless the operator gives a fresh explicit instruction after this gate.
 
-## Multiple gates for very large features
+## Multiple gates for very large or phased work items
 
-Very large features may have multiple freeze gates:
+Very large or phased work items may have multiple freeze gates:
 
 - Anchor spec freeze: after `spec.md` is finalized for handoff to phase planning.
 - Phase-plan freeze: after one or more `plan-phase-*.md` files are finalized.

@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-28-work-item-scope: broaden harness beyond features
+
+### Changed
+
+- Reframed the harness artifact contract around substantial work items, including features, bug fixes, prior issue investigations, refactors, migrations, and documentation/process changes.
+- Updated the skill, README, templates, and references so substantial bug fixes and investigations use the same durable planning, documentation, variance, and freeze-gate quality bar as features.
+
 ## 2026-05-28-template-durable-spec-hardening: complete TODO items
 
 ### Changed

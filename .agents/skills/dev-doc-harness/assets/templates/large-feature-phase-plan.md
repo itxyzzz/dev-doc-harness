@@ -1,6 +1,6 @@
-# Large Feature Phase NN: <Phase Name>
+# Large or Phased Work Item Phase NN: <Phase Name>
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Objective
@@ -9,7 +9,7 @@ Describe the phase outcome.
 
 ## Input context
 
-List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large-feature spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
+List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
 Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
 

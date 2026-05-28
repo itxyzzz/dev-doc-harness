@@ -43,7 +43,7 @@ If a phase plan cannot be executed independently by a fresh thread, split or rew
 Before implementation begins, compare the finalized docs against the original handoff and planning discussion:
 
 - No placeholders or unresolved decisions.
-- No vague instructions such as "implement the feature" without concrete tasks.
+- No vague instructions such as "implement the work item" without concrete tasks.
 - No important detail lost between `spec.md` and phase plans.
 - Every major handoff detail is preserved, adapted, or explicitly deferred with a reason.
 

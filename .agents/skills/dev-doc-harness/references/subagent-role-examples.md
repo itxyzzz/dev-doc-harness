@@ -25,8 +25,8 @@ role: review
 model_policy: standard-review
 reasoning_effort: medium
 inputs:
-  - specs/<feature-id>/spec.md
-  - specs/<feature-id>/plan.md
+  - specs/<work-id>/spec.md
+  - specs/<work-id>/plan.md
 outputs:
   - review/test-risk-notes.md
 allowed_actions:

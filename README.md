@@ -13,7 +13,7 @@ be preserved for future agents or future threads.
 flowchart TD
     A["Operator asks for work"]:::house --> B{"Task size?"}:::house
     B -->|Very small| C["Direct edit, check, commit"]:::house
-    B -->|Substantial| D["Create feature folder"]:::house
+    B -->|Substantial| D["Create work item folder"]:::house
     D --> E{"Planning shape?"}:::house
     E -->|Small or medium| F["Draft spec and plan"]:::house
     E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
@@ -39,11 +39,13 @@ before code changes begin.
 For very small mechanical edits, little changes. The agent can usually make the
 edit directly, preserve behavior, and run the relevant checks.
 
-For small or medium feature work, expect the agent to create a feature folder
-under `specs/<feature-id>/`. That folder captures the spec, plan, required
-documentation updates, and any implementation variance. The operator gets a
-stable place to review what is about to happen before the agent starts changing
-the product.
+For small or medium substantial work, expect the agent to create a work item
+folder under `specs/<work-id>/`. This applies to features, bug fixes with
+nontrivial investigation, prior issue investigations that turn into changes,
+refactors, migrations, and documentation/process changes. That folder captures
+the spec, plan, required documentation updates, and any implementation variance.
+The operator gets a stable place to review what is about to happen before the
+agent starts changing the product.
 
 For large work, expect a more deliberate handoff. The agent first writes an
 anchor `spec.md` that preserves goals, boundaries, decisions, risks, tests, and
@@ -63,7 +65,7 @@ acceptance criteria, or feasibility, the agent must stop for an amendment and
 operator approval.
 
 Before commits, the agent updates `CHANGELOG.md` with newest-first entries tied
-to the current feature, phase, task, or planning decision.
+to the current work item, phase, task, or planning decision.
 
 ## Operator outcomes
 
@@ -96,7 +98,7 @@ harness when it is needed.
 Useful operator prompts include:
 
 ```text
-Plan this as a large feature and stop after the freeze gate.
+Plan this as a large bug fix and stop after the freeze gate.
 ```
 
 ```text
@@ -117,7 +119,7 @@ The internal machinery is intentionally small:
 
 - `AGENTS.md` tells agents when to use the harness.
 - `.agents/skills/dev-doc-harness/SKILL.md` is the entry point.
-- `references/artifact-contract.md` defines feature folders, snapshots, living
+- `references/artifact-contract.md` defines work item folders, snapshots, living
   deltas, changelog rules, and variance handling.
 - `references/planning-freeze-gates.md` defines the commit-and-pause workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable

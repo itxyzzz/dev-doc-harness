@@ -1,6 +1,6 @@
-# <Feature Name> Large Feature Spec
+# <Work Item Name> Large or Phased Work Spec
 
-Feature ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Goal
@@ -9,7 +9,7 @@ Describe the outcome and why this work needs phase planning.
 
 ## Planning handoff quality bar
 
-This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve feature-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
+This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve work-item-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
 
 Phase plans must derive from this spec. If later planning discovers missing context, update the draft spec before approval or create an amendment after approval.
 
@@ -73,7 +73,7 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 
 ## Phase decomposition
 
-Replace these example rows with the actual phases for this feature.
+Replace these example rows with the actual phases for this work item.
 
 | Phase | Objective | Output |
 |---|---|---|
@@ -106,7 +106,7 @@ Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-ag
 | Testing guide delta | Living delta | Yes/No | During or after implementation | docs/living/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | docs/living/operator-manual.delta.md | Update if runtime or operator behavior changes |
 | API reference delta | Living delta | Yes/No | During or after API work | docs/living/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | docs/snapshots/architecture.snapshot.md | Feature-bound decision snapshot |
+| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | docs/snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
 | Architecture summary delta | Living delta | Yes/No | After review | docs/living/architecture-summary.delta.md | Update if long-lived architecture docs change |
 
 ## Approval

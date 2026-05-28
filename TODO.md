@@ -4,9 +4,9 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Near-Term Validation And Polish
 
-- [ ] Test the harness on one fake large feature.
+- [ ] Test the harness on one fake large work item.
   - Exercise `spec.md` as the anchor handoff, `plan-phase-NN-*.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
-- [ ] Test a Superpowers-generated spec or plan converted into `specs/<feature-id>/`.
+- [ ] Test a Superpowers-generated spec or plan converted into `specs/<work-id>/`.
   - Confirm the harness layers cleanly over Superpowers without duplicating its methodology.
 - [ ] Confirm current model classes available in the operator environment.
   - Keep policy language model-class based unless concrete names are required by the environment.
@@ -21,8 +21,8 @@ Future work collected from the original handoff and follow-up design discussion.
 
 - [ ] Create optional `scripts/check-agent-artifacts.py`.
   - Use only the Python standard library.
-  - Support `python scripts/check-agent-artifacts.py specs/<feature-id>`.
-  - Validate feature folder presence, `spec.md`, `plan.md` or `plan-phase-*.md`, `implementation-notes/variance-log.md`, expected docs folders, and `CHANGELOG.md`.
+  - Support `python scripts/check-agent-artifacts.py specs/<work-id>`.
+  - Validate work item folder presence, `spec.md`, `plan.md` or `plan-phase-*.md`, `implementation-notes/variance-log.md`, expected docs folders, and `CHANGELOG.md`.
   - Avoid semantic review of plan quality.
 - [ ] Add validator usage notes to the harness.
   - Reference the script from the skill or a short operator note without making it mandatory.
@@ -33,7 +33,7 @@ Future work collected from the original handoff and follow-up design discussion.
 
 - [ ] Verify how Superpowers is installed and invoked in target environments.
 - [ ] Confirm whether Superpowers writes specs or plans to fixed default locations.
-- [ ] Document the exact copy/convert flow from Superpowers artifacts into `specs/<feature-id>/`.
+- [ ] Document the exact copy/convert flow from Superpowers artifacts into `specs/<work-id>/`.
 - [ ] Confirm freeze gates interrupt the normal "implement this plan" transition cleanly.
 - [ ] Add a separate `references/superpowers-compatibility.md` only if the compatibility section grows too large.
 
@@ -67,7 +67,7 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## PR And Review Workflow
 
-- [ ] Define whether every feature folder must be linked from PR descriptions.
+- [ ] Define whether every work item folder must be linked from PR descriptions.
 - [ ] Define whether every PR must include artifact validation output.
 - [ ] Define how approved amendments should appear in GitHub, Bitbucket, or Stash PRs.
 - [ ] Define how PRs should present preserved source evidence versus derived review artifacts.
@@ -82,7 +82,7 @@ Future work collected from the original handoff and follow-up design discussion.
   - Treat this as major, important, and complicated; avoid a quick copy-paste rollout until ownership, compatibility, migration, and update cadence are defined.
 - [ ] Harden testing-related documentation artifact rules and coverage guidance.
   - Define when test-case snapshots, testing-guide deltas, validation evidence, and coverage expectations are required versus optional.
-  - Add general testing coverage rules for feature plans, bug fixes, risky refactors, documentation-only changes, and cases where automated tests are not feasible.
+  - Add general testing coverage rules for feature plans, bug-fix plans, prior issue investigations, risky refactors, documentation-only changes, and cases where automated tests are not feasible.
   - Treat this as major, important, and complicated because it affects acceptance criteria, review quality, and future agent claims about correctness.
 - [ ] Define plan-amendment approval markers.
 - [ ] Define who may approve controlled variances.
@@ -90,7 +90,7 @@ Future work collected from the original handoff and follow-up design discussion.
 - [ ] Define retention and archive policy for old `specs/` folders.
 - [ ] Define migration path for existing specs and plans in older repositories.
 - [ ] Define harness versioning and update policy across repositories.
-- [ ] Add an examples library only after the core contract has been tested on fake and real features.
+- [ ] Add an examples library only after the core contract has been tested on fake and real work items, including features, bug fixes, and investigations.
 - [ ] Add a bootstrapping script only if repeated manual setup becomes painful.
 
 ## Deferred Or Riskier Ideas

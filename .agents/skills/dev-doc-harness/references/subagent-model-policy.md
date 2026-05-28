@@ -70,7 +70,7 @@ A cheaper sub-agent must not be the final authority for high-blast-radius decisi
 
 ## Required notation
 
-Large-feature specs or phase plans using sub-agents must include a compact Model and Sub-agent Strategy:
+Large or phased work item specs or phase plans using sub-agents must include a compact Model and Sub-agent Strategy:
 
 ```md
 ## Model and Sub-agent Strategy
@@ -87,7 +87,7 @@ Recommended change: `<none or concrete model/reasoning change with reason>`
 | 04 | Final implementation review | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
 ```
 
-The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the feature. Omit the table when no sub-agents are proposed.
+The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.
 
 Prefer policy-relative model classes over hardcoded model names unless the environment requires concrete names.
 
