@@ -4,6 +4,10 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Near-Term Validation And Polish
 
+- [ ] Expand the sub-agent strategy prompts in plan templates.
+  - Make `small-feature-plan.md` and `large-feature-phase-plan.md` request every field required by `subagent-model-policy.md`: purpose, input context, output artifact, model policy, model class, reasoning effort, selection reason, parallelism, and blast radius.
+- [ ] Expand the large-feature spec template with explicit durable-spec sections.
+  - Add sections for current state, proposed behavior, interfaces and data, control or state flow, safety/privacy/compliance, validation strategy, and triage or operational notes so large specs cannot appear complete while missing the durable-planning quality bar.
 - [ ] Test the harness on one fake large feature.
   - Exercise `spec.md` as the anchor handoff, `plan-phase-NN-*.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
 - [ ] Test a Superpowers-generated spec or plan converted into `specs/<feature-id>/`.

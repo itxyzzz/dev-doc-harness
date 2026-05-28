@@ -34,7 +34,7 @@ Approved plans are immutable snapshots. Record nontrivial implementation varianc
 
 ## Planning artifact freeze gate
 
-When this plan is finalized, follow `references/planning-freeze-gates.md` before implementation.
+When this plan is finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before implementation.
 
 ## Completion criteria
 

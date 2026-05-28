@@ -11,7 +11,7 @@ Describe the phase outcome.
 
 List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large-feature spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
-Follow `references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
+Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
 
 ## Likely files and areas
 
@@ -44,7 +44,7 @@ Approved phase plans are immutable snapshots. Record nontrivial variance in `imp
 
 ## Planning artifact freeze gate
 
-When this phase plan or phase-plan batch is finalized, follow `references/planning-freeze-gates.md` before implementation.
+When this phase plan or phase-plan batch is finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before implementation.
 
 ## Handoff output
 

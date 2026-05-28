@@ -13,7 +13,7 @@ This spec is the central handoff from the initial large-scale planning session t
 
 Phase plans must derive from this spec. If later planning discovers missing context, update the draft spec before approval or create an amendment after approval.
 
-Follow `references/durable-planning-quality.md` before freezing this spec.
+Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` before freezing this spec.
 
 ## Scope
 
@@ -47,7 +47,7 @@ Replace these example rows with the actual phases for this feature.
 
 ## Planning artifact freeze gates
 
-When this spec, later phase-plan batches, or high-impact amendments are finalized, follow `references/planning-freeze-gates.md` before later planning or implementation continues.
+When this spec, later phase-plan batches, or high-impact amendments are finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before later planning or implementation continues.
 
 ## Model and Sub-agent Strategy
 

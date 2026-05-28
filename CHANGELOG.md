@@ -4,6 +4,17 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-28-review-hardening: address review feedback
+
+### Added
+
+- Added TODO follow-ups for full sub-agent strategy fields in plan templates and explicit durable-spec sections in the large-feature spec template.
+
+### Changed
+
+- Changed copied template references to point to repository-root harness reference paths.
+- Clarified freeze-gate commits must stage only finalized planning artifacts and `CHANGELOG.md`, excluding unrelated worktree changes.
+
 ## 2026-05-26-root-readme: explain operator process impact
 
 ### Added

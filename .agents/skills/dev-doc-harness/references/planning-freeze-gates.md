@@ -19,7 +19,7 @@ At each freeze gate:
 
 1. Update `CHANGELOG.md` with a newest-first entry for the finalized artifact set.
 2. Verify that finalized artifacts contain no placeholders, unresolved decisions, or missing required sections.
-3. Commit the finalized planning artifacts and changelog together.
+3. Verify the worktree status, stage only the finalized planning artifacts and `CHANGELOG.md`, and commit only those staged paths together. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
 4. Stop before implementation, task execution, or the next planning stage.
 5. Report the commit hash and finalized artifact paths.
 6. Remind the operator that they may push and create a draft plan-only PR at this point.

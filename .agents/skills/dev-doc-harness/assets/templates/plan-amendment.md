@@ -42,4 +42,4 @@ Explain why the implementation cannot proceed under the approved plan.
 
 ## Planning artifact freeze gate
 
-When this amendment is approved, follow `references/planning-freeze-gates.md` before implementation continues.
+When this amendment is approved, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before implementation continues.
