@@ -12,7 +12,7 @@ be preserved for future agents or future threads.
 ```mermaid
 %%{init: {
   "flowchart": {
-    "curve": "stepBefore",
+    "curve": "basis",
     "nodeSpacing": 50,
     "rankSpacing": 70
   }
