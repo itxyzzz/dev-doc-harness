@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-31-planning-approval-freeze-flow: approve planning package
+
+### Added
+
+- Added the approved spec and plan for changing the harness planning lifecycle so draft review stages artifacts without committing, feedback edits drafts directly, and the freeze happens only after explicit approval and commit.
+
 ## 2026-05-28-work-item-scope: broaden harness beyond features
 
 ### Changed
