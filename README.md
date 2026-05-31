@@ -10,33 +10,44 @@ contract for where planning artifacts live, when planning freezes, and what must
 be preserved for future agents or future threads.
 
 ```mermaid
+%%{init: {
+  "flowchart": {
+    "curve": "stepBefore",
+    "nodeSpacing": 50,
+    "rankSpacing": 70
+  }
+}}%%
+
 flowchart TD
     A["Operator asks for work"]:::house --> B{"Task size?"}:::house
     B -->|Very small| C["Direct edit, check, commit"]:::house
     B -->|Substantial| D["Create work item folder"]:::house
+
     D --> E{"Planning shape?"}:::house
     E -->|Small or medium| F["Draft spec and plan"]:::house
     E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
+
     F --> H["Stage draft planning package"]:::house
     G --> H
-    subgraph ReviewLoop[" "]
-        direction LR
-        I{"Operator approves?"}:::house -->|Feedback| R["Revise draft planning package"]:::house
-    end
-    H --> I
-    R --> H
+
+    H --> I{"Operator approves?"}:::house
     I -->|Yes| J["Freeze gate: changelog, commit, pause"]:::house
+
+    I -.->|Feedback| R["Revise draft planning package"]:::house
+    R -.->|Resubmit| H
+
     J --> O["Optional plan-only PR"]:::house
     O --> P["Fresh instruction"]:::house
     P --> Q["Implement approved plan"]:::house
     Q --> K{"High-impact variance?"}:::house
+
     K -->|No| L["Validate, update docs and changelog"]:::house
     L --> M["Commit implementation"]:::house
+
     K -->|Yes| N["Plan amendment and approval"]:::house
-    N --> H
+    N -.-> H
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
-    style ReviewLoop fill:transparent,stroke:transparent,color:transparent
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
