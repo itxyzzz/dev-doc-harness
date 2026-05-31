@@ -19,8 +19,11 @@ flowchart TD
     E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
     F --> H["Stage draft planning package"]:::house
     G --> H
-    H --> I{"Operator approves?"}:::house
-    I -->|Feedback| R["Revise draft planning package"]:::house
+    subgraph ReviewLoop[" "]
+        direction LR
+        I{"Operator approves?"}:::house -->|Feedback| R["Revise draft planning package"]:::house
+    end
+    H --> I
     R --> H
     I -->|Yes| J["Freeze gate: changelog, commit, pause"]:::house
     J --> O["Optional plan-only PR"]:::house
@@ -33,6 +36,7 @@ flowchart TD
     N --> H
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
+    style ReviewLoop fill:transparent,stroke:transparent,color:transparent
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
