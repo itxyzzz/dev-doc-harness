@@ -19,7 +19,7 @@ Before creating or reviewing artifacts, read:
 
 - `references/artifact-contract.md` for work item folders, required files, immutable snapshots, living deltas, documentation matrices, and variance handling.
 - `references/durable-planning-quality.md` for spec and phase-plan quality bars, handoff preservation, and fresh-thread executability.
-- `references/planning-freeze-gates.md` for commit-and-pause gates before implementation or later planning continues.
+- `references/planning-freeze-gates.md` for approval-first planning gates before implementation or later planning continues.
 - `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
 
 Use these supplemental references when relevant:
@@ -35,16 +35,18 @@ Use these supplemental references when relevant:
 3. Create or update the work item folder under `specs/<work-id>/`.
 4. Draft the required spec, plan, phase plans, documentation matrix, and variance log using the templates in `assets/templates/`.
 5. For large or phased work items, make `spec.md` the central planning anchor and handoff from the initial planning session to later phase-planning sessions. Preserve all decisions, constraints, risks, assumptions, acceptance criteria, and important rejected alternatives there before writing phase plans.
-6. Treat drafts as editable until operator approval or explicit handoff.
-7. When a durable spec, plan, phase plan, or plan amendment is finalized, run the Planning Artifact Freeze Gate before implementation or later planning continues.
-8. After approval, treat approved specs, plans, phase plans, snapshots, and amendments as immutable snapshots.
-9. During implementation, record justified plan variance in `implementation-notes/variance-log.md`.
-10. Update `CHANGELOG.md` before each commit with concise entries tied to the current work ID, phase, task, or spec/plan decision.
-11. For high-impact variance, create a plan amendment and get operator approval before proceeding.
+6. Treat drafts as editable until explicit operator approval and the approval commit, or until explicit handoff.
+7. Before approval, stage draft planning artifacts without committing and ask the operator for approval or feedback.
+8. If the operator gives feedback before approval, edit the drafts directly, refresh staging, and ask for approval again.
+9. After explicit approval or explicit handoff, run the Planning Artifact Freeze Gate before implementation or later planning continues.
+10. After the approval commit or explicit handoff snapshot, treat approved specs, plans, phase plans, snapshots, and amendments as immutable snapshots.
+11. During implementation, record justified plan variance in `implementation-notes/variance-log.md`.
+12. Update `CHANGELOG.md` before each commit with concise entries tied to the current work ID, phase, task, or spec/plan decision.
+13. For post-freeze high-impact variance, create a plan amendment and get operator approval before proceeding.
 
 ## Planning Artifact Freeze Gate
 
-When durable planning artifacts are finalized, follow `references/planning-freeze-gates.md`. Treat that reference as the only source for freeze-gate procedure and continuation rules.
+When durable planning artifacts are ready for operator review, approval, handoff, or freeze, follow `references/planning-freeze-gates.md`. Treat that reference as the only source for review, freeze-gate procedure, and continuation rules.
 
 ## Superpowers compatibility
 
@@ -61,10 +63,10 @@ If spec-kit is installed and active, prefer a project-local adapter that points 
 - The work item folder follows `specs/<work-id>/`.
 - Required small/medium or large/phased work item artifacts exist.
 - Large or phased work item `spec.md` is detailed enough to hand off all important planning decisions to later phase-plan authors.
-- Each finalized spec, plan, phase plan, or amendment has passed the Planning Artifact Freeze Gate.
+- Each approved or handed-off spec, plan, phase plan, or amendment has passed the Planning Artifact Freeze Gate.
 - The documentation artifact matrix marks each artifact as required, not applicable, or deferred with a reason.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.
-- Approved snapshots are not silently rewritten.
+- Frozen snapshots are not silently rewritten.
 - Nontrivial variance is recorded.
 - High-impact variance has an amendment and operator approval.
 - Plans include validation commands and expected outputs.

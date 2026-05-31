@@ -35,11 +35,11 @@ Write one checkbox per implementation, test, validation, or documentation step. 
 
 ## Plan variance handling
 
-Approved plans are immutable snapshots. Record nontrivial implementation variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved plans are immutable snapshots. Record nontrivial implementation variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Planning artifact freeze gate
 
-When this plan is finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before implementation.
+When this plan is ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval.
 
 ## Completion criteria
 

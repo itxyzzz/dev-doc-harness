@@ -40,11 +40,11 @@ If a phase plan cannot be executed independently by a fresh thread, split or rew
 
 ## Handoff preservation check
 
-Before implementation begins, compare the finalized docs against the original handoff and planning discussion:
+Before implementation begins, compare the frozen docs against the original handoff and planning discussion:
 
 - No placeholders or unresolved decisions.
 - No vague instructions such as "implement the work item" without concrete tasks.
 - No important detail lost between `spec.md` and phase plans.
 - Every major handoff detail is preserved, adapted, or explicitly deferred with a reason.
 
-If important context is missing before approval, update the draft. If it is discovered after approval, use the variance and amendment process from `artifact-contract.md`.
+If important context is missing before approval and freeze, update the draft. If it is discovered after freeze, use the variance and amendment process from `artifact-contract.md`.

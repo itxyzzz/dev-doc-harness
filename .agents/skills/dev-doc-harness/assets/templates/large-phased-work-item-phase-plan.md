@@ -45,11 +45,11 @@ List snapshot or living-delta artifacts this phase must create, update, or mark 
 
 ## Variance reminder
 
-Approved phase plans are immutable snapshots. Record nontrivial variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved phase plans are immutable snapshots. Record nontrivial variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Planning artifact freeze gate
 
-When this phase plan or phase-plan batch is finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before implementation.
+When this phase plan or phase-plan batch is ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval.
 
 ## Handoff output
 

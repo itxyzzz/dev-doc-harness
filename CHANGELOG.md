@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-31-planning-approval-freeze-flow: implement approval-first freeze flow
+
+### Changed
+
+- Updated the canonical freeze-gate workflow so agents stage draft planning artifacts for approval without committing, revise drafts directly on feedback, and freeze planning packages only after explicit approval and commit.
+- Aligned the skill entry point, artifact lifecycle reference, durable planning quality reference, templates, and README with the approval-first planning review loop.
+
 ## 2026-05-31-planning-approval-freeze-flow: approve planning package
 
 ### Added

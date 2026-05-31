@@ -101,17 +101,17 @@ For large or phased work items, `spec.md` is the central anchor between planning
 
 `spec.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-*.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
-Phase plans must derive from `spec.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval, or create a plan amendment after approval. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
+Phase plans must derive from `spec.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
 Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
 
 ## Planning Artifact Freeze Gate
 
-Run the gate defined in `planning-freeze-gates.md` whenever durable planning artifacts are finalized. That reference is the canonical source for triggers, required actions, operator reminders, continuation rules, and multi-gate flow for very large or phased work items.
+Run the workflow defined in `planning-freeze-gates.md` whenever durable planning artifacts are ready for operator review, approval, handoff, or freeze. That reference is the canonical source for triggers, required actions, operator reminders, continuation rules, and multi-gate flow for very large or phased work items.
 
 ## Immutable snapshots
 
-Draft artifacts may be edited until operator approval or explicit handoff. After approval, these artifacts are immutable snapshots:
+Draft artifacts may be edited until explicit operator approval and the approval commit, or until explicit handoff. After the approval commit or explicit handoff snapshot, these artifacts are immutable snapshots:
 
 ```text
 spec.md
@@ -121,14 +121,14 @@ docs/snapshots/*.md
 plan-amendment-*.md
 ```
 
-Allowed post-approval changes are:
+Allowed post-freeze changes are:
 
 - Append-only errata sections.
 - A superseded-by link.
 - A new versioned snapshot.
 - A new plan amendment.
 
-Do not silently rewrite approved specs, plans, phase plans, snapshots, or amendments to hide implementation drift.
+Do not silently rewrite frozen specs, plans, phase plans, snapshots, or amendments to hide implementation drift.
 
 ## Living documentation deltas
 
@@ -164,7 +164,7 @@ Use `No` only when the artifact is not applicable. Use `Deferred` only with a re
 
 ## Variance policy
 
-Approved specs and plans are immutable snapshots. Implementation agents must not rewrite approved artifacts to conceal deviation.
+Frozen specs and plans are immutable snapshots. Implementation agents must not rewrite frozen artifacts to conceal deviation.
 
 Record nontrivial variance in:
 
@@ -178,7 +178,7 @@ Create an immutable amendment in:
 plan-amendment-NNN-short-title.md
 ```
 
-and request operator approval before proceeding when variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Variance classes
 

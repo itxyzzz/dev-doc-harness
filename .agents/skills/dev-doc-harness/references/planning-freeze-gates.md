@@ -1,44 +1,58 @@
 # Planning Freeze Gates
 
-This document is the canonical source for commit-and-pause gates between durable planning and implementation.
+This document is the canonical source for approval-first planning gates between durable planning and implementation.
 
-## When to run a gate
+## When to use this workflow
 
-Run a Planning Artifact Freeze Gate whenever one of these durable planning artifacts is finalized:
+Use this workflow whenever one of these durable planning artifacts is ready for operator review or approval:
 
 - `spec.md`
 - `plan.md`
 - `plan-phase-*.md`
 - `plan-amendment-*.md`
 
-Draft artifacts may be edited before the gate. After the gate, approved artifacts follow the immutable snapshot rules in `artifact-contract.md`.
+Draft artifacts may be edited until the operator explicitly approves them and the approval commit is created, or until the operator explicitly asks for a handoff snapshot. After that approval commit or explicit handoff snapshot, the artifacts are frozen and follow the immutable snapshot rules in `artifact-contract.md`.
 
-## Required gate actions
+## Draft review checkpoint
 
-At each freeze gate:
+Before committing any planning artifacts for approval:
 
-1. Update `CHANGELOG.md` with a newest-first entry for the finalized artifact set.
-2. Verify that finalized artifacts contain no placeholders, unresolved decisions, or missing required sections.
-3. Verify the worktree status, stage only the finalized planning artifacts and `CHANGELOG.md`, and commit only those staged paths together. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
+1. Draft or update the required planning artifacts.
+2. Verify that the drafts contain no placeholders, unresolved decisions, or missing required sections unless the unresolved item is explicitly marked as deferred with a reason and owner.
+3. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
+4. Ask the operator to approve the staged planning package or provide feedback.
+5. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
+
+Do not create a plan amendment for feedback received before the planning package is frozen.
+
+## Approval freeze checkpoint
+
+After the operator explicitly approves the staged planning package, or explicitly asks for a handoff snapshot:
+
+1. Update `CHANGELOG.md` with a newest-first entry for the approved artifact set.
+2. Verify again that the approved artifacts contain no placeholders, unresolved decisions, or missing required sections unless the unresolved item is explicitly marked as deferred with a reason and owner.
+3. Verify the worktree status, stage only the approved planning artifacts and `CHANGELOG.md`, and commit only those staged paths together. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
 4. Stop before implementation, task execution, or the next planning stage.
-5. Report the commit hash and finalized artifact paths.
+5. Report the commit hash and approved artifact paths.
 6. Remind the operator that they may push and create a draft plan-only PR at this point.
 7. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices before proceeding.
 
-Implementation must not begin from a finalized durable plan in the same turn unless the operator gives a fresh explicit instruction after this gate.
+The planning package is frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
+
+Implementation must not begin from a frozen durable plan in the same turn unless the operator gives a fresh explicit instruction after this gate.
 
 ## Multiple gates for very large or phased work items
 
 Very large or phased work items may have multiple freeze gates:
 
-- Anchor spec freeze: after `spec.md` is finalized for handoff to phase planning.
-- Phase-plan freeze: after one or more `plan-phase-*.md` files are finalized.
+- Anchor spec freeze: after `spec.md` is approved or explicitly handed off for phase planning.
+- Phase-plan freeze: after one or more `plan-phase-*.md` files are approved.
 - Amendment freeze: after any high-impact `plan-amendment-*.md` is approved.
 
-Use the same required gate actions each time.
+Use the same draft review and approval freeze checkpoints each time.
 
 ## Compatibility
 
-This gate layers on top of Codex plan mode, Superpowers, and spec-kit. Those tools may produce or refine the artifacts, but the harness owns the commit-and-pause transition before implementation.
+This gate layers on top of Codex plan mode, Superpowers, and spec-kit. Those tools may produce or refine the artifacts, but the harness owns the approval, commit, and pause transition before implementation.
 
 If another workflow would normally ask to implement immediately after planning, pause instead and run this gate.

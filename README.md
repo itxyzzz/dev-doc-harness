@@ -17,11 +17,16 @@ flowchart TD
     D --> E{"Planning shape?"}:::house
     E -->|Small or medium| F["Draft spec and plan"]:::house
     E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
-    F --> H["Freeze gate: changelog, commit, pause"]:::house
+    F --> H["Stage draft planning package"]:::house
     G --> H
-    H --> I["Operator reviews or opens plan-only PR"]:::house
-    I --> J["Implement approved plan"]:::house
-    J --> K{"High-impact variance?"}:::house
+    H --> I{"Operator approves?"}:::house
+    I -->|Feedback| R["Revise draft planning package"]:::house
+    R --> H
+    I -->|Yes| J["Freeze gate: changelog, commit, pause"]:::house
+    J --> O["Optional plan-only PR"]:::house
+    O --> P["Fresh instruction"]:::house
+    P --> Q["Implement approved plan"]:::house
+    Q --> K{"High-impact variance?"}:::house
     K -->|No| L["Validate, update docs and changelog"]:::house
     L --> M["Commit implementation"]:::house
     K -->|Yes| N["Plan amendment and approval"]:::house
@@ -52,17 +57,21 @@ anchor `spec.md` that preserves goals, boundaries, decisions, risks, tests, and
 acceptance criteria. Then it writes phase plans that a fresh agent or future
 thread can execute without relying on hidden chat history.
 
-When durable planning artifacts are finalized, the harness requires a freeze
-gate. At that point the agent updates the changelog, commits the finalized
-planning artifacts, reports the commit hash and artifact paths, and stops before
-implementation. This gives the operator a clean review point, including the
-option to push a planning-only draft PR before any product code changes.
+When durable planning artifacts are ready for review, the agent stages the draft
+planning package without committing it and asks the operator for approval or
+feedback. Feedback before approval edits the draft artifacts directly; it does
+not require an amendment. When the operator explicitly approves, the harness
+runs the freeze gate: the agent updates the changelog, commits only the approved
+planning artifacts and changelog, reports the commit hash and artifact paths,
+and stops before implementation. This gives the operator a clean review point,
+including the option to push a planning-only draft PR before any product code
+changes.
 
-During implementation, the agent should not quietly rewrite approved plans to
-make reality look tidier. If the work deviates in a meaningful way, the variance
-is recorded. If the deviation affects architecture, APIs, data, security, scope,
-acceptance criteria, or feasibility, the agent must stop for an amendment and
-operator approval.
+During implementation, the agent should not quietly rewrite frozen plans to make
+reality look tidier. If the work deviates in a meaningful way, the variance is
+recorded. If the post-freeze deviation affects architecture, APIs, data,
+security, scope, acceptance criteria, or feasibility, the agent must stop for an
+amendment and operator approval.
 
 Before commits, the agent updates `CHANGELOG.md` with newest-first entries tied
 to the current work item, phase, task, or planning decision.
@@ -102,6 +111,10 @@ Plan this as a large bug fix and stop after the freeze gate.
 ```
 
 ```text
+Stage the planning package for approval before committing it.
+```
+
+```text
 Use the harness, but treat this as a small mechanical edit if it qualifies.
 ```
 
@@ -121,7 +134,8 @@ The internal machinery is intentionally small:
 - `.agents/skills/dev-doc-harness/SKILL.md` is the entry point.
 - `references/artifact-contract.md` defines work item folders, snapshots, living
   deltas, changelog rules, and variance handling.
-- `references/planning-freeze-gates.md` defines the commit-and-pause workflow.
+- `references/planning-freeze-gates.md` defines the approval-first planning
+  workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
   specs and phase plans.
 - `references/subagent-model-policy.md` defines the active sub-agent and model

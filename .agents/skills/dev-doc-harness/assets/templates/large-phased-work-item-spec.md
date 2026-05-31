@@ -11,9 +11,9 @@ Describe the outcome and why this work needs phase planning.
 
 This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve work-item-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
 
-Phase plans must derive from this spec. If later planning discovers missing context, update the draft spec before approval or create an amendment after approval.
+Phase plans must derive from this spec. If later planning discovers missing context before this spec is frozen, update the draft spec directly. If missing context is discovered after freeze, create an amendment.
 
-Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` before freezing this spec.
+Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` before asking for approval to freeze this spec.
 
 ## Scope
 
@@ -83,7 +83,7 @@ Replace these example rows with the actual phases for this work item.
 
 ## Planning artifact freeze gates
 
-When this spec, later phase-plan batches, or high-impact amendments are finalized, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md` before later planning or implementation continues.
+When this spec, later phase-plan batches, or high-impact amendments are ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval or explicit handoff.
 
 ## Model and Sub-agent Strategy
 
