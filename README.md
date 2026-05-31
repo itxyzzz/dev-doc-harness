@@ -167,3 +167,13 @@ drift matters.
 Its best use is to make agentic development feel less like a disappearing chat
 transcript and more like a controlled engineering workflow with clear checkpoints
 and reusable artifacts.
+
+## Contributing
+
+Planning artifacts for this harness repository's own development are local
+working notes, not distributable project content. Keep them under
+`docs/work-items/`, which is ignored by git in this repository.
+
+Contributions should commit the harness changes themselves, any user-facing
+documentation updates, and the relevant `CHANGELOG.md` entry, but not local
+planning packages for this repo's development.

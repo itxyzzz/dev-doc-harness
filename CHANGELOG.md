@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-31-local-planning-docs-distribution: keep repo planning docs local
+
+### Changed
+
+- Ignored this repository's local `docs/work-items/` planning packages so they are not treated as distributable project content.
+- Documented the contribution convention that harness changes, user-facing documentation, and changelog entries are tracked, while this repo's own planning packages remain local.
+
 ## 2026-05-31-work-items-artifact-root: implement work item package layout
 
 ### Changed
