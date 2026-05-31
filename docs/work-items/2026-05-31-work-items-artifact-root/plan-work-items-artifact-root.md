@@ -1,7 +1,7 @@
 # Work Items Artifact Root Plan
 
 Work ID: `2026-05-31-work-items-artifact-root`
-Status: Draft
+Status: Approved
 
 ## Implementation summary
 
@@ -29,7 +29,6 @@ Expected files or directories to change:
 - `README.md`
 - `TODO.md`
 - `CHANGELOG.md`
-- `specs/2026-05-31-planning-approval-freeze-flow/`
 - `docs/work-items/2026-05-31-planning-approval-freeze-flow/`
 
 Interfaces expected to remain stable:
@@ -71,10 +70,10 @@ terms.
   filenames.
 - [ ] Update `TODO.md` follow-ups so validation and Superpowers compatibility
   tasks refer to the new layout.
-- [ ] Migrate the existing approved local planning package from
-  `specs/2026-05-31-planning-approval-freeze-flow/` to
+- [ ] Migrate the existing approved local planning package from the legacy
+  `specs/2026-05-31-planning-approval-freeze-flow/` location to
   `docs/work-items/2026-05-31-planning-approval-freeze-flow/`, renaming
-  `spec.md` to `spec-planning-approval-freeze-flow.md` and `plan.md` to
+  legacy `spec.md` to `spec-planning-approval-freeze-flow.md` and `plan.md` to
   `plan-planning-approval-freeze-flow.md`.
 - [ ] Update moved package content only where needed to keep path, filename, and
   documentation-matrix references consistent with the new contract.
@@ -87,8 +86,8 @@ terms.
 
 | Command | Expected result |
 |---|---|
-| `rg -n "specs/<work-id>|specs/|docs/snapshots|docs/living|docs/superpowers|spec\\.md|plan\\.md|plan-phase-|plan-amendment-" .agents README.md TODO.md CHANGELOG.md docs specs` | Matches are either updated examples, migrated historical references, filename patterns with short IDs, or explicit legacy-migration notes |
-| `rg -n "docs/work-items/<work-id>|spec-<short-id>\\.md|plan-<short-id>\\.md|snapshots/|deltas/" .agents README.md TODO.md specs` | Confirms the new layout and naming patterns are represented in canonical docs and templates |
+| `rg -n "specs/<work-id>|specs/|docs/snapshots|docs/living|docs/superpowers|spec\\.md|plan\\.md|plan-phase-|plan-amendment-" .agents README.md TODO.md CHANGELOG.md docs` | Matches are either updated examples, migrated historical references, filename patterns with short IDs, or explicit legacy-migration notes |
+| `rg -n "docs/work-items/<work-id>|spec-<short-id>\\.md|plan-<short-id>\\.md|snapshots/|deltas/" .agents README.md TODO.md docs` | Confirms the new layout and naming patterns are represented in canonical docs and templates |
 | `git diff --check` | No whitespace errors |
 | `git status --short` | Only intended harness documentation, template, changelog, and planning package migration files are modified, added, deleted, or staged |
 
@@ -111,7 +110,7 @@ directly on feedback, and commit only after explicit approval.
 
 ## Completion criteria
 
-- Acceptance criteria in `spec.md` are met.
+- Acceptance criteria in `spec-work-items-artifact-root.md` are met.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.
@@ -119,5 +118,5 @@ directly on feedback, and commit only after explicit approval.
 
 ## Approval
 
-- Status: Draft
+- Status: Approved
 - Superseded by: None

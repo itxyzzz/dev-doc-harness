@@ -1,7 +1,7 @@
 # Work Items Artifact Root Spec
 
 Work ID: `2026-05-31-work-items-artifact-root`
-Status: Draft
+Status: Approved
 
 ## Goal
 
@@ -226,5 +226,5 @@ surface, or persistence interface is affected.
 
 ## Approval
 
-- Status: Draft
+- Status: Approved
 - Superseded by: None

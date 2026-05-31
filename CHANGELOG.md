@@ -4,6 +4,14 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-31-work-items-artifact-root: implement work item package layout
+
+### Changed
+
+- Moved the canonical harness package root to `docs/work-items/<work-id>/`, added short-ID durable artifact filenames, and flattened package documentation into `snapshots/` and `deltas/`.
+- Clarified Superpowers compatibility so `docs/superpowers` files may only be minimal pointer stubs to canonical `docs/work-items/<work-id>/` packages.
+- Migrated existing local planning packages into the new `docs/work-items/` layout.
+
 ## 2026-05-31-work-items-artifact-root: approve planning package
 
 ### Added

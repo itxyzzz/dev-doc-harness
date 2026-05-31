@@ -53,13 +53,13 @@ Sub-agents: None. The task is a cohesive documentation/process edit across relat
 
 | Command | Expected result |
 |---|---|
-| `rg -n "commit-and-pause|frozen|freeze|approval|approve|stage|commit|amendment|amend" .agents README.md CHANGELOG.md specs/2026-05-31-planning-approval-freeze-flow` | Remaining matches are consistent with the approval-first lifecycle |
+| `rg -n "commit-and-pause|frozen|freeze|approval|approve|stage|commit|amendment|amend" .agents README.md CHANGELOG.md docs/work-items/2026-05-31-planning-approval-freeze-flow` | Remaining matches are consistent with the approval-first lifecycle |
 | `git diff --check` | No whitespace errors |
 | `git status --short` | Only intended planning, harness documentation, README, and changelog files are modified or staged |
 
 ## Plan variance handling
 
-Before approval, feedback on these draft planning artifacts should be incorporated directly into `spec.md` and `plan.md`, followed by refreshed staging and another approval request. After the approval commit freezes this planning package, record nontrivial implementation variance in `implementation-notes/variance-log.md` if such a log becomes necessary. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+Before approval, feedback on these draft planning artifacts should be incorporated directly into `spec-planning-approval-freeze-flow.md` and `plan-planning-approval-freeze-flow.md`, followed by refreshed staging and another approval request. After the approval commit freezes this planning package, record nontrivial implementation variance in `implementation-notes/variance-log.md` if such a log becomes necessary. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Planning artifact freeze gate
 
@@ -67,7 +67,7 @@ When this plan is approved, follow the repository-root reference `.agents/skills
 
 ## Completion criteria
 
-- Acceptance criteria in `spec.md` are met.
+- Acceptance criteria in `spec-planning-approval-freeze-flow.md` are met.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.

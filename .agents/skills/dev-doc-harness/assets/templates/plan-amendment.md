@@ -1,6 +1,7 @@
 # Plan Amendment NNN: <Short Title>
 
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Proposed
 
 ## Original plan reference

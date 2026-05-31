@@ -11,7 +11,7 @@ artifacts, or report templates.
 - Do not rewrite original evidence to hide drift, failed checks, or manual repair.
 
 For harness-managed work, source evidence usually belongs under the work item
-folder. Derived summaries may live under `handoff/`, `docs/living/`, or another
+folder. Derived summaries may live under `handoff/`, `deltas/`, or another
 work-item-local review folder named in the plan.
 
 ## Artifact index

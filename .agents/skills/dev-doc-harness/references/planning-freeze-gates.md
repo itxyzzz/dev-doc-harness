@@ -6,10 +6,10 @@ This document is the canonical source for approval-first planning gates between 
 
 Use this workflow whenever one of these durable planning artifacts is ready for operator review or approval:
 
-- `spec.md`
-- `plan.md`
-- `plan-phase-*.md`
-- `plan-amendment-*.md`
+- `spec-<short-id>.md`
+- `plan-<short-id>.md`
+- `plan-phase-*-<short-id>.md`
+- `plan-amendment-*-<short-id>.md`
 
 Draft artifacts may be edited until the operator explicitly approves them and the approval commit is created, or until the operator explicitly asks for a handoff snapshot. After that approval commit or explicit handoff snapshot, the artifacts are frozen and follow the immutable snapshot rules in `artifact-contract.md`.
 
@@ -45,9 +45,9 @@ Implementation must not begin from a frozen durable plan in the same turn unless
 
 Very large or phased work items may have multiple freeze gates:
 
-- Anchor spec freeze: after `spec.md` is approved or explicitly handed off for phase planning.
-- Phase-plan freeze: after one or more `plan-phase-*.md` files are approved.
-- Amendment freeze: after any high-impact `plan-amendment-*.md` is approved.
+- Anchor spec freeze: after `spec-<short-id>.md` is approved or explicitly handed off for phase planning.
+- Phase-plan freeze: after one or more `plan-phase-*-<short-id>.md` files are approved.
+- Amendment freeze: after any high-impact `plan-amendment-*-<short-id>.md` is approved.
 
 Use the same draft review and approval freeze checkpoints each time.
 

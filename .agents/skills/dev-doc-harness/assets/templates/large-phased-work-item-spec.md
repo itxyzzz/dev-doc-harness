@@ -1,6 +1,7 @@
 # <Work Item Name> Large or Phased Work Spec
 
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Goal
@@ -77,9 +78,9 @@ Replace these example rows with the actual phases for this work item.
 
 | Phase | Objective | Output |
 |---|---|---|
-| 01 | Discovery or preparation | `plan-phase-01-discovery.md` |
-| 02 | Core implementation | `plan-phase-02-core-implementation.md` |
-| 03 | Hardening and review | `plan-phase-03-hardening.md` |
+| 01 | Discovery or preparation | `plan-phase-01-discovery-<short-id>.md` |
+| 02 | Core implementation | `plan-phase-02-core-implementation-<short-id>.md` |
+| 03 | Hardening and review | `plan-phase-03-hardening-<short-id>.md` |
 
 ## Planning artifact freeze gates
 
@@ -102,12 +103,12 @@ Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-ag
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
 | Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
-| Test cases | Snapshot | Yes/No | Before implementation | docs/snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | docs/living/testing-guide.delta.md | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | docs/living/operator-manual.delta.md | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | docs/living/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | docs/snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
-| Architecture summary delta | Living delta | Yes/No | After review | docs/living/architecture-summary.delta.md | Update if long-lived architecture docs change |
+| Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
+| Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
+| Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
+| API reference delta | Living delta | Yes/No | During or after API work | deltas/api-reference.delta.md | Required for public API changes |
+| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
+| Architecture summary delta | Living delta | Yes/No | After review | deltas/architecture-summary.delta.md | Update if long-lived architecture docs change |
 
 ## Approval
 

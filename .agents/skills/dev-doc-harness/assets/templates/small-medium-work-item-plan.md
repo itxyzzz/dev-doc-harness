@@ -1,6 +1,7 @@
 # <Work Item Name> Plan
 
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Implementation summary
@@ -35,7 +36,7 @@ Write one checkbox per implementation, test, validation, or documentation step. 
 
 ## Plan variance handling
 
-Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved plans are immutable snapshots. Record nontrivial implementation variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved plans are immutable snapshots. Record nontrivial implementation variance in `implementation-notes/variance-log.md`. Create a plan amendment named `plan-amendment-NNN-short-title-<short-id>.md` and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Planning artifact freeze gate
 
@@ -43,7 +44,7 @@ When this plan is ready for operator review, follow the repository-root referenc
 
 ## Completion criteria
 
-- Acceptance criteria in `spec.md` are met.
+- Acceptance criteria in `spec-<short-id>.md` are met.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.

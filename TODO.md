@@ -5,8 +5,8 @@ Future work collected from the original handoff and follow-up design discussion.
 ## Near-Term Validation And Polish
 
 - [ ] Test the harness on one fake large work item.
-  - Exercise `spec.md` as the anchor handoff, `plan-phase-NN-*.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
-- [ ] Test a Superpowers-generated spec or plan converted into `specs/<work-id>/`.
+  - Exercise `spec-<short-id>.md` as the anchor handoff, `plan-phase-NN-title-<short-id>.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
+- [ ] Test a Superpowers-generated spec or plan converted into `docs/work-items/<work-id>/`.
   - Confirm the harness layers cleanly over Superpowers without duplicating its methodology.
 - [ ] Confirm current model classes available in the operator environment.
   - Keep policy language model-class based unless concrete names are required by the environment.
@@ -21,8 +21,8 @@ Future work collected from the original handoff and follow-up design discussion.
 
 - [ ] Create optional `scripts/check-agent-artifacts.py`.
   - Use only the Python standard library.
-  - Support `python scripts/check-agent-artifacts.py specs/<work-id>`.
-  - Validate work item folder presence, `spec.md`, `plan.md` or `plan-phase-*.md`, `implementation-notes/variance-log.md`, expected docs folders, and `CHANGELOG.md`.
+  - Support `python scripts/check-agent-artifacts.py docs/work-items/<work-id>`.
+  - Validate work item folder presence, `spec-<short-id>.md`, `plan-<short-id>.md` or `plan-phase-*-<short-id>.md`, `implementation-notes/variance-log.md`, expected snapshot and delta folders, and `CHANGELOG.md`.
   - Avoid semantic review of plan quality.
 - [ ] Add validator usage notes to the harness.
   - Reference the script from the skill or a short operator note without making it mandatory.
@@ -33,7 +33,8 @@ Future work collected from the original handoff and follow-up design discussion.
 
 - [ ] Verify how Superpowers is installed and invoked in target environments.
 - [ ] Confirm whether Superpowers writes specs or plans to fixed default locations.
-- [ ] Document the exact copy/convert flow from Superpowers artifacts into `specs/<work-id>/`.
+- [ ] Document the exact copy/convert flow from Superpowers artifacts into `docs/work-items/<work-id>/`.
+- [ ] Test minimal `docs/superpowers` pointer stubs that link to canonical `docs/work-items/<work-id>/` packages.
 - [ ] Confirm freeze gates interrupt the normal "implement this plan" transition cleanly.
 - [ ] Add a separate `references/superpowers-compatibility.md` only if the compatibility section grows too large.
 
@@ -50,14 +51,14 @@ Future work collected from the original handoff and follow-up design discussion.
 
 ## Documentation Artifact Schemas
 
-- [ ] Define a sparse template for `docs/snapshots/test-cases.snapshot.md`.
-- [ ] Define a sparse template for `docs/snapshots/architecture.snapshot.md`.
-- [ ] Define a sparse template for `docs/snapshots/api-contract.snapshot.md`.
+- [ ] Define a sparse template for `snapshots/test-cases.snapshot.md`.
+- [ ] Define a sparse template for `snapshots/architecture.snapshot.md`.
+- [ ] Define a sparse template for `snapshots/api-contract.snapshot.md`.
 - [ ] Define sparse templates for living deltas:
-  - `docs/living/testing-guide.delta.md`
-  - `docs/living/operator-manual.delta.md`
-  - `docs/living/api-reference.delta.md`
-  - `docs/living/architecture-summary.delta.md`
+  - `deltas/testing-guide.delta.md`
+  - `deltas/operator-manual.delta.md`
+  - `deltas/api-reference.delta.md`
+  - `deltas/architecture-summary.delta.md`
 - [ ] Define sparse templates for evidence-heavy report artifacts.
   - Keep sections short: verification summary, checked claims, discrepancies, commands run, results, remaining gaps, unresolved risks, and references.
   - Borrow the report-section pattern from public artifacts in `https://github.com/itxyzzz/gen-ai-se-hw` without importing homework-specific pipeline structure.
@@ -87,7 +88,7 @@ Future work collected from the original handoff and follow-up design discussion.
 - [ ] Define plan-amendment approval markers.
 - [ ] Define who may approve controlled variances.
 - [ ] Define documentation debt tracking.
-- [ ] Define retention and archive policy for old `specs/` folders.
+- [ ] Define retention and archive policy for old `docs/work-items/` folders.
 - [ ] Define migration path for existing specs and plans in older repositories.
 - [ ] Define harness versioning and update policy across repositories.
 - [ ] Add an examples library only after the core contract has been tested on fake and real work items, including features, bug fixes, and investigations.

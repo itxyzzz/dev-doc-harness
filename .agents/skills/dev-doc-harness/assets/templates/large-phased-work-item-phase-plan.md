@@ -1,6 +1,7 @@
 # Large or Phased Work Item Phase NN: <Phase Name>
 
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 
 ## Objective
@@ -9,7 +10,7 @@ Describe the phase outcome.
 
 ## Input context
 
-List the approved `spec.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
+List the approved `spec-<short-id>.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
 Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
 
@@ -41,11 +42,11 @@ Write one checkbox per phase step. Include implementation, test, validation, doc
 
 ## Documentation tasks
 
-List snapshot or living-delta artifacts this phase must create, update, or mark not applicable.
+List snapshot or delta artifacts this phase must create, update, or mark not applicable.
 
 ## Variance reminder
 
-Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved phase plans are immutable snapshots. Record nontrivial variance in `implementation-notes/variance-log.md`. Create a plan amendment and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+Before approval, operator feedback edits this draft directly and does not require an amendment. After the approval commit or explicit handoff snapshot, approved phase plans are immutable snapshots. Record nontrivial variance in `implementation-notes/variance-log.md`. Create a plan amendment named `plan-amendment-NNN-short-title-<short-id>.md` and request operator approval before proceeding when post-freeze variance affects architecture, APIs, data, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
 
 ## Planning artifact freeze gate
 

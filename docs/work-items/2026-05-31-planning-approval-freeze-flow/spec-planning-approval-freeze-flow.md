@@ -82,12 +82,12 @@ No public API, runtime config, schemas, persistence, CLI flags, or generated dat
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
 | Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Required for the approval planning commit and final implementation commit |
-| Test cases | Snapshot | No | Not applicable | docs/snapshots/test-cases.snapshot.md | Documentation/process wording change only |
-| Testing guide delta | Living delta | No | Not applicable | docs/living/testing-guide.delta.md | No test workflow change |
-| Operator manual delta | Living delta | No | Not applicable | docs/living/operator-manual.delta.md | README and harness references are the operator-facing docs for this repo |
-| API reference delta | Living delta | No | Not applicable | docs/living/api-reference.delta.md | No API change |
-| Architecture snapshot | Snapshot | No | Not applicable | docs/snapshots/architecture.snapshot.md | No architecture change |
-| Architecture summary delta | Living delta | No | Not applicable | docs/living/architecture-summary.delta.md | No long-lived architecture summary change |
+| Test cases | Snapshot | No | Not applicable | snapshots/test-cases.snapshot.md | Documentation/process wording change only |
+| Testing guide delta | Living delta | No | Not applicable | deltas/testing-guide.delta.md | No test workflow change |
+| Operator manual delta | Living delta | No | Not applicable | deltas/operator-manual.delta.md | README and harness references are the operator-facing docs for this repo |
+| API reference delta | Living delta | No | Not applicable | deltas/api-reference.delta.md | No API change |
+| Architecture snapshot | Snapshot | No | Not applicable | snapshots/architecture.snapshot.md | No architecture change |
+| Architecture summary delta | Living delta | No | Not applicable | deltas/architecture-summary.delta.md | No long-lived architecture summary change |
 
 ## Approval
 

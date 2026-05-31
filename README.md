@@ -49,17 +49,23 @@ For very small mechanical edits, little changes. The agent can usually make the
 edit directly, preserve behavior, and run the relevant checks.
 
 For small or medium substantial work, expect the agent to create a work item
-folder under `specs/<work-id>/`. This applies to features, bug fixes with
+package under `docs/work-items/<work-id>/`. This applies to features, bug fixes with
 nontrivial investigation, prior issue investigations that turn into changes,
 refactors, migrations, and documentation/process changes. That folder captures
 the spec, plan, required documentation updates, and any implementation variance.
 The operator gets a stable place to review what is about to happen before the
 agent starts changing the product.
 
+The work item folder keeps the full dated ID for sorting and uniqueness, while
+the durable artifact filenames include a shorter suffix for easier chat
+references. For example, `2026-05-31-artifact-root` uses
+`spec-artifact-root.md` and `plan-artifact-root.md`.
+
 For large work, expect a more deliberate handoff. The agent first writes an
-anchor `spec.md` that preserves goals, boundaries, decisions, risks, tests, and
-acceptance criteria. Then it writes phase plans that a fresh agent or future
-thread can execute without relying on hidden chat history.
+anchor `spec-<short-id>.md` that preserves goals, boundaries, decisions, risks,
+tests, and acceptance criteria. Then it writes phase plans such as
+`plan-phase-01-discovery-<short-id>.md` that a fresh agent or future thread can
+execute without relying on hidden chat history.
 
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
@@ -136,8 +142,9 @@ The internal machinery is intentionally small:
 
 - `AGENTS.md` tells agents when to use the harness.
 - `.agents/skills/dev-doc-harness/SKILL.md` is the entry point.
-- `references/artifact-contract.md` defines work item folders, snapshots, living
-  deltas, changelog rules, and variance handling.
+- `references/artifact-contract.md` defines work item folders, short-ID
+  artifact filenames, snapshots, deltas, changelog rules, and variance
+  handling.
 - `references/planning-freeze-gates.md` defines the approval-first planning
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable

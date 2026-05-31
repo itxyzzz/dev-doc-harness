@@ -17,7 +17,7 @@ Very small mechanical edits may skip this harness when the operator has not requ
 
 Before creating or reviewing artifacts, read:
 
-- `references/artifact-contract.md` for work item folders, required files, immutable snapshots, living deltas, documentation matrices, and variance handling.
+- `references/artifact-contract.md` for work item folders, short-ID artifact filenames, required files, immutable snapshots, deltas, documentation matrices, and variance handling.
 - `references/durable-planning-quality.md` for spec and phase-plan quality bars, handoff preservation, and fresh-thread executability.
 - `references/planning-freeze-gates.md` for approval-first planning gates before implementation or later planning continues.
 - `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
@@ -32,9 +32,9 @@ Use these supplemental references when relevant:
 
 1. Classify the work as small/mechanical, small/medium work item, or large/phased work item. Features, bug fixes, prior issue investigations, refactors, migrations, and documentation/process changes all use this sizing model when substantial.
 2. Choose a work ID using `YYYY-MM-DD-short-kebab-title`, or `YYYY-MM-DD-ISSUE-short-kebab-title` when a JIRA key or other issue-tracker ID is available.
-3. Create or update the work item folder under `specs/<work-id>/`.
+3. Create or update the work item folder under `docs/work-items/<work-id>/`.
 4. Draft the required spec, plan, phase plans, documentation matrix, and variance log using the templates in `assets/templates/`.
-5. For large or phased work items, make `spec.md` the central planning anchor and handoff from the initial planning session to later phase-planning sessions. Preserve all decisions, constraints, risks, assumptions, acceptance criteria, and important rejected alternatives there before writing phase plans.
+5. For large or phased work items, make `spec-<short-id>.md` the central planning anchor and handoff from the initial planning session to later phase-planning sessions. Preserve all decisions, constraints, risks, assumptions, acceptance criteria, and important rejected alternatives there before writing phase plans.
 6. Treat drafts as editable until explicit operator approval and the approval commit, or until explicit handoff.
 7. Before approval, stage draft planning artifacts without committing and ask the operator for approval or feedback.
 8. If the operator gives feedback before approval, edit the drafts directly, refresh staging, and ask for approval again.
@@ -52,7 +52,9 @@ When durable planning artifacts are ready for operator review, approval, handoff
 
 When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
 
-If Superpowers produces specs or plans outside `specs/<work-id>/`, copy or convert the approved content into the harness work item folder before implementation begins. Do not duplicate Superpowers methodology in this harness.
+If Superpowers produces specs or plans outside `docs/work-items/<work-id>/`, copy or convert the approved content into the harness work item folder before implementation begins. Do not duplicate Superpowers methodology in this harness.
+
+If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs with a title, status, and link to the canonical package or artifact under `docs/work-items/<work-id>/`. Do not keep duplicate full specs or plans under `docs/superpowers`.
 
 ## spec-kit compatibility
 
@@ -60,9 +62,10 @@ If spec-kit is installed and active, prefer a project-local adapter that points 
 
 ## Completion checklist
 
-- The work item folder follows `specs/<work-id>/`.
+- The work item folder follows `docs/work-items/<work-id>/`.
+- Top-level durable artifact filenames include the short ID suffix, such as `spec-<short-id>.md` and `plan-<short-id>.md`.
 - Required small/medium or large/phased work item artifacts exist.
-- Large or phased work item `spec.md` is detailed enough to hand off all important planning decisions to later phase-plan authors.
+- Large or phased work item `spec-<short-id>.md` is detailed enough to hand off all important planning decisions to later phase-plan authors.
 - Each approved or handed-off spec, plan, phase plan, or amendment has passed the Planning Artifact Freeze Gate.
 - The documentation artifact matrix marks each artifact as required, not applicable, or deferred with a reason.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.

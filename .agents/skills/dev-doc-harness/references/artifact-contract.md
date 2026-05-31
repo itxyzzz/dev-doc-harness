@@ -7,7 +7,7 @@ This document is the canonical source for repository work item artifact layout, 
 Each substantial work item uses one folder:
 
 ```text
-specs/<work-id>/
+docs/work-items/<work-id>/
 ```
 
 Use this work ID format:
@@ -22,12 +22,25 @@ When a JIRA key or another issue-tracker ID is available, include it after the d
 YYYY-MM-DD-ISSUE-short-kebab-title
 ```
 
-Example:
+Examples:
 
 ```text
-specs/2026-05-25-user-profile-import/
-specs/2026-05-25-fix-profile-import-timeout/
-specs/2026-05-25-PROJ-123-user-profile-import/
+docs/work-items/2026-05-25-user-profile-import/
+docs/work-items/2026-05-25-fix-profile-import-timeout/
+docs/work-items/2026-05-25-PROJ-123-user-profile-import/
+```
+
+## Short artifact ID
+
+Durable planning artifact filenames include a short ID suffix so operators can distinguish files in chat `@` references when a repository contains many work item packages.
+
+Derive `<short-id>` by removing only the leading `YYYY-MM-DD-` from `<work-id>`. Preserve issue keys.
+
+Examples:
+
+```text
+2026-05-25-user-profile-import -> user-profile-import
+2026-05-25-PROJ-123-user-profile-import -> PROJ-123-user-profile-import
 ```
 
 ## Work sizes
@@ -41,49 +54,47 @@ Large or phased work includes broad multi-step features, complex bug fixes, prio
 ## Small/medium layout
 
 ```text
-specs/<work-id>/
-  spec.md
-  plan.md
+docs/work-items/<work-id>/
+  spec-<short-id>.md
+  plan-<short-id>.md
 
-  docs/
-    snapshots/
-      test-cases.snapshot.md
-      architecture.snapshot.md
-      api-contract.snapshot.md
+  snapshots/
+    test-cases.snapshot.md
+    architecture.snapshot.md
+    api-contract.snapshot.md
 
-    living/
-      testing-guide.delta.md
-      operator-manual.delta.md
-      api-reference.delta.md
-      architecture-summary.delta.md
+  deltas/
+    testing-guide.delta.md
+    operator-manual.delta.md
+    api-reference.delta.md
+    architecture-summary.delta.md
 
   implementation-notes/
     variance-log.md
 ```
 
-Create only the supplemental snapshot and living-delta files that are required for the work. The documentation artifact matrix in the spec or plan must mark every listed artifact as required, not applicable, or deferred with a reason.
+Create only the supplemental snapshot and delta files that are required for the work. The documentation artifact matrix in the spec or plan must mark every listed artifact as required, not applicable, or deferred with a reason.
 
 ## Large or phased work item layout
 
 ```text
-specs/<work-id>/
-  spec.md
-  plan-phase-01-discovery.md
-  plan-phase-02-core-implementation.md
-  plan-phase-03-hardening.md
-  plan-amendment-001-short-title.md
+docs/work-items/<work-id>/
+  spec-<short-id>.md
+  plan-phase-01-discovery-<short-id>.md
+  plan-phase-02-core-implementation-<short-id>.md
+  plan-phase-03-hardening-<short-id>.md
+  plan-amendment-001-short-title-<short-id>.md
 
-  docs/
-    snapshots/
-      test-cases.snapshot.md
-      architecture.snapshot.md
-      api-contract.snapshot.md
+  snapshots/
+    test-cases.snapshot.md
+    architecture.snapshot.md
+    api-contract.snapshot.md
 
-    living/
-      testing-guide.delta.md
-      operator-manual.delta.md
-      api-reference.delta.md
-      architecture-summary.delta.md
+  deltas/
+    testing-guide.delta.md
+    operator-manual.delta.md
+    api-reference.delta.md
+    architecture-summary.delta.md
 
   handoff/
     implementation-handoff.md
@@ -97,13 +108,27 @@ Phase plan names should be numbered in execution order and each phase must be im
 
 ## Large or phased work item spec as handoff anchor
 
-For large or phased work items, `spec.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec.md` before later sessions produce phase plans.
+For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans.
 
-`spec.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-*.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+`spec-<short-id>.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-title-<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
-Phase plans must derive from `spec.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
+Phase plans must derive from `spec-<short-id>.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
 Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
+
+## Superpowers compatibility
+
+When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
+
+The full durable package must live under `docs/work-items/<work-id>/` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
+
+If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs. A valid stub contains:
+
+- A title.
+- A status.
+- A link to the canonical package or artifact under `docs/work-items/<work-id>/`.
+
+Do not duplicate full specs or plans under `docs/superpowers`, and do not maintain a second source of truth for harness-managed artifacts.
 
 ## Planning Artifact Freeze Gate
 
@@ -114,11 +139,11 @@ Run the workflow defined in `planning-freeze-gates.md` whenever durable planning
 Draft artifacts may be edited until explicit operator approval and the approval commit, or until explicit handoff. After the approval commit or explicit handoff snapshot, these artifacts are immutable snapshots:
 
 ```text
-spec.md
-plan.md
-plan-phase-*.md
-docs/snapshots/*.md
-plan-amendment-*.md
+spec-<short-id>.md
+plan-<short-id>.md
+plan-phase-*-<short-id>.md
+snapshots/*.md
+plan-amendment-*-<short-id>.md
 ```
 
 Allowed post-freeze changes are:
@@ -135,7 +160,7 @@ Do not silently rewrite frozen specs, plans, phase plans, snapshots, or amendmen
 Living deltas are proposed updates to long-lived project documentation:
 
 ```text
-docs/living/*.delta.md
+deltas/*.delta.md
 ```
 
 Use deltas to describe changes that should later be merged into project-level documentation such as testing guides, operator manuals, API references, or architecture summaries. This harness defines where deltas live and when they are required; it does not define detailed schemas for those long-lived documents.
@@ -150,12 +175,12 @@ Every substantial spec or plan must include a compact matrix:
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
 | Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
-| Test cases | Snapshot | Yes/No | Before implementation | docs/snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | docs/living/testing-guide.delta.md | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | docs/living/operator-manual.delta.md | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | docs/living/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | docs/snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
-| Architecture summary delta | Living delta | Yes/No | After review | docs/living/architecture-summary.delta.md | Update if long-lived architecture docs change |
+| Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
+| Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
+| Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
+| API reference delta | Living delta | Yes/No | During or after API work | deltas/api-reference.delta.md | Required for public API changes |
+| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
+| Architecture summary delta | Living delta | Yes/No | After review | deltas/architecture-summary.delta.md | Update if long-lived architecture docs change |
 ```
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
@@ -175,7 +200,7 @@ implementation-notes/variance-log.md
 Create an immutable amendment in:
 
 ```text
-plan-amendment-NNN-short-title.md
+plan-amendment-NNN-short-title-<short-id>.md
 ```
 
 and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
@@ -208,9 +233,9 @@ Example:
 
 ### Added
 
-- Added validation tasks for duplicate profile identifiers in `plan-phase-02-core-implementation.md`.
+- Added validation tasks for duplicate profile identifiers in `plan-phase-02-core-implementation-PROJ-123-user-profile-import.md`.
 
 ### Changed
 
-- Clarified API acceptance criteria in `spec.md`.
+- Clarified API acceptance criteria in `spec-PROJ-123-user-profile-import.md`.
 ```
