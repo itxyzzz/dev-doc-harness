@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-05-31-work-items-artifact-root: approve planning package
+
+### Added
+
+- Added the approved spec and plan for moving durable harness planning packages to `docs/work-items/<work-id>/`, adding short-ID artifact filenames, flattening snapshots and deltas, and clarifying Superpowers pointer-stub compatibility.
+
 ## 2026-05-31-planning-approval-freeze-flow: implement approval-first freeze flow
 
 ### Changed
