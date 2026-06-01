@@ -35,11 +35,13 @@ After the operator explicitly approves the staged planning package, or explicitl
 4. Stop before implementation, task execution, or the next planning stage.
 5. Report the commit hash and approved artifact paths.
 6. Remind the operator that they may push and create a draft plan-only PR at this point.
-7. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices before proceeding.
+7. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and to say whether implementation should begin now.
 
 The planning package is frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
 
-Implementation must not begin from a frozen durable plan in the same turn unless the operator gives a fresh explicit instruction after this gate.
+Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may both confirm execution settings and authorize implementation when the response clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording.
+
+If the operator only confirms execution settings without clear start authorization, continue waiting for an explicit implementation instruction. A bare `Confirm` may authorize implementation only when the agent's combined post-freeze prompt explicitly states that confirming also means beginning implementation now; otherwise treat it as settings-only confirmation.
 
 ## Multiple gates for very large or phased work items
 

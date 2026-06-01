@@ -37,7 +37,7 @@ flowchart TD
     R -.->|Resubmit| H
 
     J --> O["Optional plan-only PR"]:::house
-    O --> P["Fresh instruction"]:::house
+    O --> P["Confirm settings and start"]:::house
     P --> Q["Implement approved plan"]:::house
     Q --> K{"High-impact variance?"}:::house
 
@@ -84,9 +84,11 @@ feedback. Feedback before approval edits the draft artifacts directly; it does
 not require an amendment. When the operator explicitly approves, the harness
 runs the freeze gate: the agent updates the changelog, commits only the approved
 planning artifacts and changelog, reports the commit hash and artifact paths,
-and stops before implementation. This gives the operator a clean review point,
-including the option to push a planning-only draft PR before any product code
-changes.
+and stops before implementation. The next operator response can confirm the
+model, reasoning-effort, and sub-agent choices and authorize implementation in
+one step, such as `Confirm, proceed`, when the agent's post-freeze prompt asks
+for both. This gives the operator a clean review point, including the option to
+push a planning-only draft PR before any product code changes.
 
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is

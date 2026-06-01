@@ -42,6 +42,8 @@ Before approval, operator feedback edits this draft directly and does not requir
 
 When this plan is ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval.
 
+After the approval commit, use the canonical post-freeze prompt to confirm model, reasoning-effort, and sub-agent policy choices and ask whether implementation should begin now.
+
 ## Completion criteria
 
 - Acceptance criteria in `spec-<short-id>.md` are met.

@@ -4,6 +4,14 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-01-collapse-execution-approval: implement combined start confirmation
+
+### Changed
+
+- Updated the planning freeze gate so the post-freeze prompt combines execution-setting confirmation with whether implementation should begin now.
+- Clarified that clear post-gate start responses can satisfy both confirmation and implementation authorization while ambiguous settings-only confirmations remain insufficient.
+- Aligned plan templates and the README operator flow with the combined post-freeze confirmation behavior.
+
 ## 2026-06-01-collapse-execution-approval: approve planning package
 
 ### Added
