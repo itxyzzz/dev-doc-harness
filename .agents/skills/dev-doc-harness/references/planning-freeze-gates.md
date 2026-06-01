@@ -41,7 +41,7 @@ The planning package is frozen only after the approval commit or explicit handof
 
 Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may both confirm execution settings and authorize implementation when the response clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording.
 
-If the operator only confirms execution settings without clear start authorization, continue waiting for an explicit implementation instruction. A bare `Confirm` may authorize implementation only when the agent's combined post-freeze prompt explicitly states that confirming also means beginning implementation now; otherwise treat it as settings-only confirmation.
+If the operator only confirms execution settings without clear start authorization, ask a concise follow-up question about whether implementation should begin now. A bare `Confirm` may authorize implementation only when the agent's combined post-freeze prompt explicitly states that confirming also means beginning implementation now; otherwise treat it as settings-only confirmation and ask whether to start.
 
 ## Multiple gates for very large or phased work items
 

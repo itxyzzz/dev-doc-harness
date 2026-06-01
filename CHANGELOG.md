@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-01-collapse-execution-approval: clarify ambiguous confirmation follow-up
+
+### Changed
+
+- Clarified that agents should ask a concise follow-up when execution settings are confirmed without clear start authorization, instead of passively waiting for another implementation instruction.
+
 ## 2026-06-01-collapse-execution-approval: implement combined start confirmation
 
 ### Changed
