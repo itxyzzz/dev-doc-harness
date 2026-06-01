@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-01-collapse-execution-approval: approve planning package
+
+### Added
+
+- Added the approved spec and plan for combining post-freeze execution-setting confirmation with implementation authorization when the operator clearly says to begin.
+
 ## 2026-05-31-local-planning-docs-distribution: keep repo planning docs local
 
 ### Changed
