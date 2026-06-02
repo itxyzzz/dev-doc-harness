@@ -123,6 +123,60 @@ Agents discover this harness through `AGENTS.md`, then load:
 .agents/skills/dev-doc-harness/SKILL.md
 ```
 
+There is not an installation script yet. After checking out this repository, use
+the harness in either of these ways:
+
+- Copy `AGENTS.md` and the `.agents/` folder into the repository where you want
+  to use the harness. If the destination repository already has an `AGENTS.md`,
+  merge or append the harness instructions instead of replacing the file.
+- Install it globally. Codex can do this for you, or you can manually copy the
+  contents of `.agents/skills/dev-doc-harness/` into
+  `$HOME\.agents\skills\dev-doc-harness`.
+
+To make sure the skill is reliably discovered and followed, you can also append
+instructions like this to your global `AGENTS.md`:
+
+```md
+## Harness activation
+
+**For any repository development work, apply `dev-doc-harness` before implementation.** Use the harness selected by normal precedence: repository-local harness instructions when present, otherwise the installed global `dev-doc-harness`.
+
+Development work includes features, bug fixes, refactors, migrations, tests, documentation/process changes, investigations that may lead to repository changes, and review or handoff work.
+
+Only a **very small mechanical edit** may skip durable harness artifacts. Before editing, the agent must explicitly state that the work is a very small mechanical edit and why. If uncertain, default to using the harness.
+
+Before editing implementation-target files, complete the harness planning step. Implementation-target files include source code, tests, migrations, runtime configuration, project documentation, product documentation, scripts, and process docs. The only repository files that may be created or edited before the freeze gate are the required harness planning artifacts and the `CHANGELOG.md` entry required by the gate.
+
+Core flow:
+
+1. Size the work item using the harness sizing rules.
+2. For anything beyond a very small mechanical edit, create or update the durable planning artifacts required by the harness.
+3. Treat planning artifacts as drafts until operator approval or explicit handoff.
+4. When durable planning artifacts are finalized, run the Planning Artifact Freeze Gate.
+5. Stop after the freeze gate. Do not begin implementation, task execution, or the next planning stage.
+6. Begin implementation only after a fresh explicit operator instruction given after the freeze gate.
+
+The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, and sub-agent policy choices.
+
+Treat `dev-doc-harness` as the canonical source for repository documentation and artifact lifecycle: work sizing, spec and plan layout, durable handoff quality, planning freeze gates, documentation matrices, variance logs, plan amendments, changelog requirements, model and sub-agent policy, and final integration ownership.
+
+## Scope and precedence
+
+User instructions, repository-local `AGENTS.md` files, and project-specific harness adapters override this global override when they are stricter or more specific.
+
+If a repository provides its own `.agents/skills/dev-doc-harness/SKILL.md`, use that repo-local harness for that repository. Otherwise, use the installed global `dev-doc-harness` skill.
+
+If a repository has no harness-specific instructions, apply the installed skill as the default artifact and documentation contract for substantial development work.
+
+## Superpowers compatibility
+
+When Superpowers is installed and active, use Superpowers for its normal software-development methodology: brainstorming, planning, TDD, execution, review, and finishing.
+
+Use `dev-doc-harness` alongside Superpowers only for the repository artifact contract: where durable planning artifacts live, when planning freezes, how variance is recorded, and which model or sub-agent policy applies.
+
+Do not duplicate Superpowers process rules in this file, and do not duplicate harness process rules in Superpowers artifacts. If Superpowers produces specs or plans outside the harness location, convert or copy the approved content into the harness work item folder before implementation, following the skill.
+```
+
 Operators usually do not need to invoke the internals by hand. Ask for the work
 you want, and the agent should classify the size of the task and apply the
 harness when it is needed.
