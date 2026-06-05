@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve Phase 02 canonical modules plan
+
+### Added
+
+- Added the approved Phase 02 plan for creating a canonical policy architecture reference, declaring module and rule IDs in current canonical references, preserving detailed rule ownership, and deferring template, README, root instruction, and entrypoint updates to later phases.
+
 ## 2026-06-05-refactor-as-code: complete Phase 01 policy architecture
 
 ### Added
