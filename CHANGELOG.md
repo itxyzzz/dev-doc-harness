@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve anchor spec
+
+### Added
+
+- Added the approved large/phased anchor spec for refactoring harness instructions as maintainable policy modules with stable rule interfaces, slimmer templates, retrieval routing, and validation hardening.
+
 ## 2026-06-05-subagent-context-strategy: implement context strategy field
 
 ### Changed
