@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve Phase 01 policy architecture plan
+
+### Added
+
+- Added the approved Phase 01 plan for producing a policy architecture snapshot, variance log, rule-interface conventions, operation router taxonomy, validation budgets, golden scenario tests, and work-item artifact locality guidance using the selected `enterprise-default` policy.
+
 ## 2026-06-05-refactor-as-code: approve architecture guardrails amendment
 
 ### Added
