@@ -4,6 +4,17 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: complete Phase 01 policy architecture
+
+### Added
+
+- Added the Phase 01 architecture snapshot defining precedence, dependency direction, content taxonomy, operation routing, rule-interface conventions, validation budgets, golden scenario tests, work-item artifact locality, Phase 02 inputs, and open risks.
+- Added the Phase 01 variance log with no variance recorded.
+
+### Changed
+
+- Recorded the explicit rule-versioning deferral so later phases use stable rule IDs without introducing a full versioning system in Phase 01.
+
 ## 2026-06-05-refactor-as-code: approve Phase 01 policy architecture plan
 
 ### Added
