@@ -4,7 +4,9 @@ This document is the canonical source for sub-agent model-selection policy in th
 
 ## Common rules
 
-Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Plans that propose sub-agents must specify:
+Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Do not treat lack of operator mention as a prohibition on sub-agent use. For substantial work, assess whether sub-agents are justified by isolation, review quality, parallel throughput, or risk reduction. Record either a bounded sub-agent strategy or `Sub-agents: None` with a brief fit reason.
+
+Plans that propose sub-agents must specify:
 
 - Purpose.
 - Input context.
@@ -22,7 +24,9 @@ Prefer stronger reasoning for planning, architecture, integration design, unclea
 
 Prefer lower or medium reasoning for bounded exploration, mechanical edits, local refactors, test enumeration from clear requirements, documentation cleanup, and summarization.
 
-If a plan proposes sub-agents or nondefault model/reasoning settings, record the rationale and ask for explicit operator confirmation before applying those choices.
+If an approved frozen spec, plan, phase plan, or amendment includes a sub-agent strategy, that strategy is authorized after the normal post-freeze operator authorization to begin implementation. Do not ask for another sub-agent-specific confirmation solely because the start instruction does not repeat the word `sub-agent`.
+
+Fresh confirmation is required before applying choices not covered by the approved strategy, including unplanned sub-agents, more concurrent sub-agents than approved, a stronger model class or reasoning effort that was not recorded, write-capable work where only read-only work was approved, or more than 3 concurrent sub-agents.
 
 If platform or runtime policy restricts sub-agent spawning or model/reasoning overrides, still document the intended strategy and ask for explicit operator confirmation before applying any restricted action.
 
@@ -30,12 +34,14 @@ Use sub-agents for isolation, review quality, or parallelism: independent invest
 
 Sub-agents are not a default cost-saving mechanism. Prefer read-only explorer or reviewer agents before write-capable workers.
 
-Default fan-out:
+Default concurrent fan-out:
 
 - Small task: 0 sub-agents.
 - Moderate uncertainty: 1 read-only explorer or reviewer.
-- Clearly independent substantial work: 2-3 sub-agents.
-- More than 3: requires explicit justification.
+- Clearly independent substantial work: 2-3 concurrent sub-agents.
+- More than 3 concurrent sub-agents: requires explicit extraordinary justification and operator approval.
+
+The normal cap is 3 concurrent sub-agents. This is a concurrency guardrail, not a total-lifetime cap. Long-running orchestrations may use more than 3 total sub-agents in separate waves when the approved plan supports those waves and no more than 3 sub-agents are active at once.
 
 ## Policy: enterprise-default
 
@@ -101,6 +107,14 @@ Every sub-agent report must include:
 - Assumptions.
 - Uncertainty or residual risk.
 - Recommended next step.
+
+The orchestration thread's implementation completion report must also include de-facto sub-agent use when sub-agents were authorized or used:
+
+- Total sub-agents used.
+- Roles or scopes handled.
+- Whether they ran concurrently or in waves.
+- The de-facto model, model class, or profile used for each sub-agent when the platform exposes it.
+- An explicit note when exact model details are unavailable, with the planned policy-relative class or observed profile information instead.
 
 ## Escalation rules
 

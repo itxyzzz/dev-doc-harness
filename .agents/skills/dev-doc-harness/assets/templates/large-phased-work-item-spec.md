@@ -92,7 +92,9 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`, capture only task-specific choices below, and get explicit operator confirmation before applying those choices.
+Sub-agents: assess whether sub-agents are justified for substantial work even when the operator did not explicitly request them. Record `None` with a brief fit reason when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md` and capture only task-specific choices below.
+
+After this spec or its derived phase plans are approved, frozen, and followed by the normal post-freeze operator authorization to begin the relevant work, the listed sub-agent strategy is authorized without a separate sub-agent-specific confirmation. Fresh confirmation is still required for unplanned sub-agents, stronger unrecorded model/reasoning choices, write-scope escalation, platform-restricted actions, or more than 3 concurrent sub-agents. Long-running work may use more than 3 total sub-agents in separate waves when the approved plan supports those waves and no more than 3 run concurrently.
 
 | Phase | Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|

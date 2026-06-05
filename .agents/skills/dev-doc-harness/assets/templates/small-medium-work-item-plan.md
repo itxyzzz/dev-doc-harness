@@ -18,7 +18,9 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Sub-agents: record `None` when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`, capture only task-specific choices below, and get explicit operator confirmation before applying those choices.
+Sub-agents: assess whether sub-agents are justified for substantial work even when the operator did not explicitly request them. Record `None` with a brief fit reason when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md` and capture only task-specific choices below.
+
+After this plan is approved, frozen, and followed by the normal post-freeze operator authorization to begin implementation, the listed sub-agent strategy is authorized without a separate sub-agent-specific confirmation. Fresh confirmation is still required for unplanned sub-agents, stronger unrecorded model/reasoning choices, write-scope escalation, platform-restricted actions, or more than 3 concurrent sub-agents. Long-running work may use more than 3 total sub-agents in separate waves when this plan supports those waves and no more than 3 run concurrently.
 
 | Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|
@@ -51,6 +53,7 @@ After the approval commit, use the canonical post-freeze prompt to confirm model
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.
 - Variance log is present and current.
+- De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, and de-facto model/model class/profile when known.
 
 ## Approval
 

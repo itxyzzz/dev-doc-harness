@@ -90,6 +90,17 @@ one step, such as `Confirm, proceed`, when the agent's post-freeze prompt asks
 for both. This gives the operator a clean review point, including the option to
 push a planning-only draft PR before any product code changes.
 
+Sub-agent use is a planning judgment, not a keyword the operator must repeat on
+every request. For substantial work, the agent should decide whether sub-agents
+are justified and record either a bounded strategy or a brief reason for using
+none. Once the plan is approved and implementation is authorized after the
+freeze gate, the approved sub-agent strategy can be used without another
+sub-agent-specific confirmation. The normal guardrail is no more than three
+concurrent sub-agents; long-running work can still use more than three total
+sub-agents in separate waves when the approved plan supports that shape. At the
+end, the agent reports the de-facto sub-agent use and the model, model class, or
+profile actually used when that information is available.
+
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is
 recorded. If the post-freeze deviation affects architecture, APIs, data,
@@ -110,7 +121,8 @@ The harness is designed to produce these outcomes:
 - Fewer surprise implementation turns after a planning discussion.
 - Cleaner handoffs to fresh agents, reviewers, or future maintainers.
 - More useful PRs, including plan-only PRs before expensive implementation.
-- Explicit model, reasoning-effort, and sub-agent choices for substantial work.
+- Explicit model, reasoning-effort, and justified sub-agent choices for substantial work.
+- De-facto reporting of sub-agent count, roles, concurrency or waves, and observed model details when available.
 - A visible record of plan variance instead of silent drift.
 - Documentation updates that are tied to the work instead of remembered later.
 - A compact audit trail for decisions, tests, acceptance criteria, and risks.
@@ -156,7 +168,7 @@ Core flow:
 5. Stop after the freeze gate. Do not begin implementation, task execution, or the next planning stage.
 6. Begin implementation only after a fresh explicit operator instruction given after the freeze gate.
 
-The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, and sub-agent policy choices.
+The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and whether implementation should begin now. After the operator authorizes implementation, the approved sub-agent strategy may be used without a separate sub-agent-specific confirmation. More than three concurrent sub-agents, unplanned sub-agents, unrecorded model or reasoning escalation, write-scope escalation, and platform-restricted actions still require fresh confirmation.
 
 Treat `dev-doc-harness` as the canonical source for repository documentation and artifact lifecycle: work sizing, spec and plan layout, durable handoff quality, planning freeze gates, documentation matrices, variance logs, plan amendments, changelog requirements, model and sub-agent policy, and final integration ownership.
 

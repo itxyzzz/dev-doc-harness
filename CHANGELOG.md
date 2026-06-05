@@ -4,6 +4,15 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-subagent-autonomy-policy: implement approved sub-agent autonomy behavior
+
+### Changed
+
+- Updated the canonical sub-agent policy so substantial plans proactively assess justified sub-agent use instead of treating missing operator mention as a prohibition.
+- Clarified that approved frozen plans authorize their listed sub-agent strategy after normal post-freeze implementation authorization, while preserving fresh confirmation for unplanned or escalated delegation.
+- Reframed the normal sub-agent cap as three concurrent sub-agents, with wave-based long-running use allowed when approved.
+- Added de-facto sub-agent and model/model-class reporting expectations to policy, templates, and operator-facing documentation.
+
 ## 2026-06-05-subagent-autonomy-policy: approve planning package
 
 ### Added
