@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve architecture guardrails amendment
+
+### Added
+
+- Added the approved amendment requiring Phase 01 to define precedence, dependency direction, content types, operation routing, measurable architecture checks, golden scenario tests, and work-item artifact locality while deferring full rule versioning.
+
 ## 2026-06-05-refactor-as-code: approve anchor spec
 
 ### Added
