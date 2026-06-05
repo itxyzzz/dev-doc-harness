@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-subagent-context-strategy: approve planning package
+
+### Added
+
+- Added the approved spec and plan for making sub-agent context strategy a first-class planning field, including curated context options, full-history fork guidance, and de-facto context reporting.
+
 ## 2026-06-05-subagent-autonomy-policy: implement approved sub-agent autonomy behavior
 
 ### Changed
