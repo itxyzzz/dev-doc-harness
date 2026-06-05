@@ -24,6 +24,7 @@ id: test-risk-reviewer
 role: review
 model_policy: standard-review
 reasoning_effort: medium
+context_strategy: curated artifacts
 inputs:
   - docs/work-items/<work-id>/spec-<short-id>.md
   - docs/work-items/<work-id>/plan-<short-id>.md
@@ -44,6 +45,7 @@ Each sub-agent report must include:
 - Assumptions.
 - Uncertainty or residual risk.
 - Recommended next step.
+- Context strategy actually used and observed context/model inheritance behavior, if any.
 
 The orchestration thread owns decomposition, integration, conflict resolution,
 final validation, and the user-facing summary.

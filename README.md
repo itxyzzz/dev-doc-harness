@@ -101,6 +101,13 @@ sub-agents in separate waves when the approved plan supports that shape. At the
 end, the agent reports the de-facto sub-agent use and the model, model class, or
 profile actually used when that information is available.
 
+Sub-agent planning also includes context strategy: how each sub-agent receives
+the information it needs. A plan can use curated prompts, curated artifacts,
+full-history forks, or no repo context, depending on the task. Full-history
+forks are powerful and should be deliberate because they can include stale
+conversation context, increase token load, and on some platforms inherit or
+constrain model, reasoning, or agent-type settings.
+
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is
 recorded. If the post-freeze deviation affects architecture, APIs, data,
@@ -121,8 +128,8 @@ The harness is designed to produce these outcomes:
 - Fewer surprise implementation turns after a planning discussion.
 - Cleaner handoffs to fresh agents, reviewers, or future maintainers.
 - More useful PRs, including plan-only PRs before expensive implementation.
-- Explicit model, reasoning-effort, and justified sub-agent choices for substantial work.
-- De-facto reporting of sub-agent count, roles, concurrency or waves, and observed model details when available.
+- Explicit model, reasoning-effort, context strategy, and justified sub-agent choices for substantial work.
+- De-facto reporting of sub-agent count, roles, concurrency or waves, context strategy, inheritance behavior, and observed model details when available.
 - A visible record of plan variance instead of silent drift.
 - Documentation updates that are tied to the work instead of remembered later.
 - A compact audit trail for decisions, tests, acceptance criteria, and risks.
@@ -168,7 +175,7 @@ Core flow:
 5. Stop after the freeze gate. Do not begin implementation, task execution, or the next planning stage.
 6. Begin implementation only after a fresh explicit operator instruction given after the freeze gate.
 
-The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and whether implementation should begin now. After the operator authorizes implementation, the approved sub-agent strategy may be used without a separate sub-agent-specific confirmation. More than three concurrent sub-agents, unplanned sub-agents, unrecorded model or reasoning escalation, write-scope escalation, and platform-restricted actions still require fresh confirmation.
+The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, context strategy, and sub-agent policy choices and whether implementation should begin now. After the operator authorizes implementation, the approved sub-agent strategy may be used without a separate sub-agent-specific confirmation. More than three concurrent sub-agents, unplanned sub-agents, unrecorded model or reasoning escalation, write-scope escalation, and platform-restricted actions still require fresh confirmation.
 
 Treat `dev-doc-harness` as the canonical source for repository documentation and artifact lifecycle: work sizing, spec and plan layout, durable handoff quality, planning freeze gates, documentation matrices, variance logs, plan amendments, changelog requirements, model and sub-agent policy, and final integration ownership.
 

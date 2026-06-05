@@ -9,6 +9,7 @@ Sub-agent model and reasoning-effort selection must be deliberate for substantia
 Plans that propose sub-agents must specify:
 
 - Purpose.
+- Context strategy.
 - Input context.
 - Output artifact.
 - Model policy.
@@ -17,6 +18,15 @@ Plans that propose sub-agents must specify:
 - Reason for selection.
 - Whether the task can run in parallel.
 - Blast radius if the task is wrong.
+
+Context strategy describes how the sub-agent receives context, not just which files or artifacts it should inspect. Use deliberate, compact labels:
+
+- `curated prompt`: a narrow task prompt with selected file paths, facts, or constraints. Prefer this for bounded explorers, reviewers, and workers when the orchestration thread can summarize the relevant context.
+- `curated artifacts`: specific specs, plans, snapshots, reports, diffs, or other durable files. Prefer this when work should be grounded in approved artifacts rather than chat history.
+- `full-history fork`: the conversation history is forked because prior discussion nuance is essential and hard to reconstruct. Use deliberately because it can carry stale context, increase token load, and, depending on platform behavior, force inheritance of model, reasoning, or agent type.
+- `no repo context`: the sub-agent only needs supplied text or a narrow external artifact and should not inspect repository context.
+
+Prefer curated context for bounded sub-agent work. Do not use full-history forks as a convenience default. If a task appears to need both full conversational context and a different model or reasoning profile, choose the trade-off explicitly in the plan and record why.
 
 When known, account for the current orchestration model and reasoning effort. Judge fit against complexity, risk, ambiguity, blast radius, budget, and latency. Recommend changing the orchestration model/profile or reasoning effort when the current setup is clearly mismatched to the work.
 
@@ -85,12 +95,12 @@ Current orchestration: `<model/profile if known>`, `<reasoning effort if known>`
 Fit assessment: `<complexity/risk/ambiguity/blast-radius/budget/latency judgment>`
 Recommended change: `<none or concrete model/reasoning change with reason>`
 
-| Phase | Purpose | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
-|---|---|---|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | Relevant files, docs, specs, and decisions | Discovery notes | economy-default | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
-| 02 | Data model design review | Spec decisions, schemas, migrations, and API contracts | Review memo | economy-default | latest strongest | high | High blast radius | Yes/No | High plus consequence |
-| 03 | Test plan generation | Requirements, acceptance criteria, and known risks | Test cases | economy-default | standard | medium | Clear inputs | Yes | Medium plus consequence |
-| 04 | Final implementation review | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
+| Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | economy-default | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
+| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | economy-default | latest strongest | high | High blast radius | Yes/No | High plus consequence |
+| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | economy-default | standard | medium | Clear inputs | Yes | Medium plus consequence |
+| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
 ```
 
 The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.
@@ -113,7 +123,9 @@ The orchestration thread's implementation completion report must also include de
 - Total sub-agents used.
 - Roles or scopes handled.
 - Whether they ran concurrently or in waves.
+- Context strategy actually used for each sub-agent, including whether full-history fork was used.
 - The de-facto model, model class, or profile used for each sub-agent when the platform exposes it.
+- Observed context/model inheritance behavior when known, such as full-history fork forcing inherited model, reasoning, or agent type.
 - An explicit note when exact model details are unavailable, with the planned policy-relative class or observed profile information instead.
 
 ## Escalation rules

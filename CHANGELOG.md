@@ -4,6 +4,15 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-subagent-context-strategy: implement context strategy field
+
+### Changed
+
+- Added `Context strategy` to the canonical sub-agent strategy notation, templates, and role examples.
+- Documented curated prompt, curated artifacts, full-history fork, and no repo context strategies, including full-history fork inheritance trade-offs.
+- Extended de-facto sub-agent reporting to include actual context strategy and observed context/model inheritance behavior.
+- Updated the README operator flow to treat context strategy as part of model, reasoning-effort, and sub-agent planning.
+
 ## 2026-06-05-subagent-context-strategy: approve planning package
 
 ### Added
