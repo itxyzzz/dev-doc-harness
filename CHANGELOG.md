@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-subagent-autonomy-policy: approve planning package
+
+### Added
+
+- Added the approved spec and plan for proactive sub-agent strategy planning, approved-strategy authorization, 3-concurrent-sub-agent limits, wave-based long-running use, and de-facto sub-agent/model reporting.
+
 ## 2026-06-01-collapse-execution-approval: clarify ambiguous confirmation follow-up
 
 ### Changed
