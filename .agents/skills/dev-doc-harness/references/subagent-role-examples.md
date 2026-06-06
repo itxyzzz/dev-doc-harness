@@ -3,6 +3,11 @@
 These examples are optional patterns for specs and plans. Keep roles bounded,
 policy-relative, and easy for a fresh agent to execute.
 
+Module: `module:role-examples`
+
+This is advisory example content. It offers optional role patterns and report
+shape examples, but it does not make any sub-agent role mandatory policy.
+
 ## Common roles
 
 | Role | Use when | Model class | Effort | Output |

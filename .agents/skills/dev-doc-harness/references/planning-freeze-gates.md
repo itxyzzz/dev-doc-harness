@@ -2,6 +2,18 @@
 
 This document is the canonical source for approval-first planning gates between durable planning and implementation.
 
+Module: `module:freeze-gate`
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:freeze.draft-review` | `## Draft review checkpoint` |
+| `rule:freeze.approval-freeze` | `## Approval freeze checkpoint` |
+| `rule:freeze.stop-before-implementation` | `## Approval freeze checkpoint` |
+| `rule:freeze.multi-gate-flow` | `## Multiple gates for very large or phased work items` |
+| `rule:freeze.compatibility` | `## Compatibility` |
+
 ## When to use this workflow
 
 Use this workflow whenever one of these durable planning artifacts is ready for operator review or approval:
@@ -18,7 +30,7 @@ Draft artifacts may be edited until the operator explicitly approves them and th
 Before committing any planning artifacts for approval:
 
 1. Draft or update the required planning artifacts.
-2. Verify that the drafts contain no placeholders, unresolved decisions, or missing required sections unless the unresolved item is explicitly marked as deferred with a reason and owner.
+2. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 3. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
 4. Ask the operator to approve the staged planning package or provide feedback.
 5. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
@@ -30,7 +42,7 @@ Do not create a plan amendment for feedback received before the planning package
 After the operator explicitly approves the staged planning package, or explicitly asks for a handoff snapshot:
 
 1. Update `CHANGELOG.md` with a newest-first entry for the approved artifact set.
-2. Verify again that the approved artifacts contain no placeholders, unresolved decisions, or missing required sections unless the unresolved item is explicitly marked as deferred with a reason and owner.
+2. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 3. Verify the worktree status, stage only the approved planning artifacts and `CHANGELOG.md`, and commit only those staged paths together. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
 4. Stop before implementation, task execution, or the next planning stage.
 5. Report the commit hash and approved artifact paths.

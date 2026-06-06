@@ -4,6 +4,18 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: complete Phase 02 canonical modules
+
+### Added
+
+- Added `policy-architecture.md` as the compact canonical module catalog and rule-interface reference for the harness.
+- Added stable module and rule IDs to current canonical references, including lifecycle, freeze-gate, model/sub-agent, quality, execution-quality, evidence, and role-example ownership.
+
+### Changed
+
+- Labeled evidence and role-example references as supplemental or advisory so examples do not become competing policy.
+- Kept `artifact-contract.md` intact for Phase 02, using an ownership block instead of splitting the lifecycle reference.
+
 ## 2026-06-05-refactor-as-code: approve Phase 02 canonical modules plan
 
 ### Added

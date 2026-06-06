@@ -2,6 +2,16 @@
 
 This document is the canonical quality bar for durable specs and phase plans.
 
+Module: `module:quality`
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:quality.spec-handoff` | `## Spec quality bar` |
+| `rule:quality.phase-plan-fresh-thread` | `## Phase plan quality bar` |
+| `rule:quality.handoff-preservation` | `## Handoff preservation check` |
+
 ## When it applies
 
 Apply this quality bar to all harness-managed specs and plans except very small mechanical edits that do not invoke the harness.
@@ -42,7 +52,7 @@ If a phase plan cannot be executed independently by a fresh thread, split or rew
 
 Before implementation begins, compare the frozen docs against the original handoff and planning discussion:
 
-- No placeholders or unresolved decisions.
+- No placeholders or undecided required items.
 - No vague instructions such as "implement the work item" without concrete tasks.
 - No important detail lost between `spec-<short-id>.md` and phase plans.
 - Every major handoff detail is preserved, adapted, or explicitly deferred with a reason.
