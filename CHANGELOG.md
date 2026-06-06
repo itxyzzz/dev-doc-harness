@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve Phase 03 template slimming plan
+
+### Added
+
+- Added the approved Phase 03 plan for slimming harness templates with schema IDs, canonical policy citations, reduced reusable policy prose, preserved fresh-thread usability, and an operator-selected `enterprise-default` policy for Phase 03.
+
 ## 2026-06-05-refactor-as-code: complete Phase 02 canonical modules
 
 ### Added
