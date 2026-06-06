@@ -4,6 +4,18 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: complete Phase 05 validation hardening
+
+### Added
+
+- Added a lightweight harness validation script for current harness files, module and rule IDs, template schema anchors, router routes, safety discoverability, duplicate policy phrases, placeholder checks, and golden traversal scenarios.
+- Added a Phase 05 golden scenario snapshot plus testing, operator-manual, and architecture-summary deltas for the validation command and expected review behavior.
+
+### Changed
+
+- Documented the validation command in README and routed current-surface validation through `SKILL.md`.
+- Preserved frozen historical artifacts, the active model-policy selector in `AGENTS.md`, and the rule-versioning deferral while completing Phase 05.
+
 ## 2026-06-05-refactor-as-code: approve Phase 05 validation hardening plan
 
 ### Added

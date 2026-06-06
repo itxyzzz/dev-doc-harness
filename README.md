@@ -144,6 +144,17 @@ The router sends each operation to the minimum useful owner modules:
 | Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
 | Execution-time quality checks | `module:execution-quality` in `references/context-and-quality-gates.md` |
 
+For harness maintenance, agents can run this lightweight local validation check
+before commits that change current harness entrypoints, canonical references,
+templates, README, or validation artifacts:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1
+```
+
+The command checks current harness surfaces and golden traversal evidence. The
+canonical policy owners remain the routed references, not this README.
+
 There is not an installation script yet. After checking out this repository, use
 the harness in either of these ways:
 
