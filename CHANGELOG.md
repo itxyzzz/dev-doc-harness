@@ -4,6 +4,17 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: complete Phase 03 template slimming
+
+### Added
+
+- Added compact schema IDs and canonical policy-reference anchors to the current harness templates.
+
+### Changed
+
+- Reduced reusable sub-agent authorization, variance handling, and freeze-gate procedure prose in templates while preserving artifact-shape prompts and fresh-thread usability.
+- Kept Phase 03 scoped to templates and `CHANGELOG.md`; `SKILL.md`, `README.md`, root `AGENTS.md`, canonical references, and historical work-item artifacts were not updated.
+
 ## 2026-06-05-refactor-as-code: approve Phase 03 template slimming plan
 
 ### Added

@@ -3,6 +3,8 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
+Schema: `schema:spec.large-phased`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 
 ## Goal
 
@@ -74,7 +76,7 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 
 ## Phase decomposition
 
-Replace these example rows with the actual phases for this work item.
+Use actual phases for this work item.
 
 | Phase | Objective | Output |
 |---|---|---|
@@ -84,7 +86,7 @@ Replace these example rows with the actual phases for this work item.
 
 ## Planning artifact freeze gates
 
-When this spec, later phase-plan batches, or high-impact amendments are ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval or explicit handoff.
+Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`. Record the draft review, approval commit or handoff snapshot, and pause before implementation or later phase execution.
 
 ## Model and Sub-agent Strategy
 
@@ -92,15 +94,11 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Sub-agents: assess whether sub-agents are justified for substantial work even when the operator did not explicitly request them. Record `None` with a brief fit reason when no sub-agents are proposed. When proposing sub-agents or nondefault model/reasoning settings, follow the repository-root reference `.agents/skills/dev-doc-harness/references/subagent-model-policy.md` and capture only task-specific choices below.
-
-Context strategy must say how each sub-agent receives context, such as `curated prompt`, `curated artifacts`, `full-history fork`, or `no repo context`. Use full-history forks deliberately because they may carry stale context, increase token load, and inherit or constrain model/reasoning settings on some platforms.
-
-After this spec or its derived phase plans are approved, frozen, and followed by the normal post-freeze operator authorization to begin the relevant work, the listed sub-agent strategy is authorized without a separate sub-agent-specific confirmation. Fresh confirmation is still required for unplanned sub-agents, stronger unrecorded model/reasoning choices, write-scope escalation, platform-restricted actions, or more than 3 concurrent sub-agents. Long-running work may use more than 3 total sub-agents in separate waves when the approved plan supports those waves and no more than 3 run concurrently.
+Sub-agents: record `None` with rationale, or list bounded phase-level roles in the table. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Replace with phase number or omit this table when sub-agents are `None` | Bounded explorer/reviewer/worker task | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
+| Example phase number; omit this table when sub-agents are `None` | Bounded explorer/reviewer/worker task | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
 
 ## Documentation artifact matrix
 
@@ -117,4 +115,4 @@ After this spec or its derived phase plans are approved, frozen, and followed by
 ## Approval
 
 - Status: Draft / Approved / Superseded
-- Superseded by: blank unless superseded
+- Superseded by: record only when this artifact is superseded

@@ -3,6 +3,8 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Proposed
+Schema: `schema:plan.amendment`
+Policy references: `module:lifecycle`, `module:freeze-gate`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Original plan reference
 
@@ -39,8 +41,8 @@ Explain why the implementation cannot proceed under the approved plan.
 
 - Required: Yes
 - Status: Proposed / Approved / Rejected / Superseded
-- Superseded by: blank unless superseded
+- Superseded by: record only when this artifact is superseded
 
 ## Planning artifact freeze gate
 
-When this amendment is ready for operator review, follow the repository-root reference `.agents/skills/dev-doc-harness/references/planning-freeze-gates.md`: stage the draft amendment without committing, request approval or feedback, revise directly on feedback, and commit only after explicit approval. Implementation remains paused until the approved amendment is frozen.
+Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.stop-before-implementation`. Implementation remains paused until the approved amendment is frozen.

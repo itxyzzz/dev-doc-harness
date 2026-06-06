@@ -1,6 +1,8 @@
 # Variance Log
 
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Schema: `schema:variance-log`
+Policy references: `module:lifecycle`, `rule:lifecycle.variance-policy`
 
 ## Entries
 
