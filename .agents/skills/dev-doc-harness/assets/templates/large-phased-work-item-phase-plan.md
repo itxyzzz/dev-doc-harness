@@ -30,7 +30,7 @@ Sub-agents: record `None` with rationale, or list bounded phase-specific roles i
 
 | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|
-| Example bounded explorer/reviewer/worker task; omit this table when sub-agents are `None` | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
+| Example bounded explorer/reviewer/worker task; omit this table when sub-agents are `None` | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | Active repository policy unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
 
 ## Tasks
 

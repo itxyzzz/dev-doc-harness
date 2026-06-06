@@ -10,6 +10,10 @@ Very small mechanical edits may proceed without invoking the harness, but must s
 
 ## Active sub-agent model policy
 
+This section is the single repository-local selection point for the active model policy.
+Other current harness docs and templates should refer to the active repository policy
+instead of hard-coding this selected policy as their own default.
+
 Use the `economy-default` policy from:
 
 `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`

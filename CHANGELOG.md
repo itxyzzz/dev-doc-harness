@@ -4,6 +4,13 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: centralize active model policy wording
+
+### Changed
+
+- Clarified that `AGENTS.md` is the single repository-local selection point for the active model policy.
+- Replaced repeated `economy-default` default wording in current README, template examples, and model-policy examples with active-policy wording.
+
 ## 2026-06-05-refactor-as-code: complete Phase 03 template slimming
 
 ### Added

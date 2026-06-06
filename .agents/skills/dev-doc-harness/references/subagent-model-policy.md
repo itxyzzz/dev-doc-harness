@@ -113,10 +113,10 @@ Recommended change: `<none or concrete model/reasoning change with reason>`
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | economy-default | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
-| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | economy-default | latest strongest | high | High blast radius | Yes/No | High plus consequence |
-| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | economy-default | standard | medium | Clear inputs | Yes | Medium plus consequence |
-| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
+| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | active repository policy | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
+| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | active repository policy | latest strongest | high | High blast radius | Yes/No | High plus consequence |
+| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | active repository policy | standard | medium | Clear inputs | Yes | Medium plus consequence |
+| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | active repository policy | latest strongest | high | Subtle integration risk | No | High plus consequence |
 ```
 
 The rows above are examples, not required phase names or required sub-agent choices. Use actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.

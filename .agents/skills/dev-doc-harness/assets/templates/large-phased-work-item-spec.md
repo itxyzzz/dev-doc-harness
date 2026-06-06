@@ -98,7 +98,7 @@ Sub-agents: record `None` with rationale, or list bounded phase-level roles in t
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Example phase number; omit this table when sub-agents are `None` | Bounded explorer/reviewer/worker task | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | `economy-default` unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
+| Example phase number; omit this table when sub-agents are `None` | Bounded explorer/reviewer/worker task | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | Active repository policy unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
 
 ## Documentation artifact matrix
 

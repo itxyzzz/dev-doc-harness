@@ -235,8 +235,8 @@ The internal machinery is intentionally small:
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
   specs and phase plans.
-- `references/subagent-model-policy.md` defines the active sub-agent and model
-  policy. This repository currently uses `economy-default`.
+- `references/subagent-model-policy.md` defines the available sub-agent and
+  model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
   templates.
 
