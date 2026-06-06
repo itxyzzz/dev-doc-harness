@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve Phase 05 validation hardening plan
+
+### Added
+
+- Added the approved Phase 05 plan for lightweight harness validation checks, golden traversal scenarios, validation documentation deltas, and README validation guidance.
+
+### Changed
+
+- Preserved frozen historical artifacts, the active model-policy selector in `AGENTS.md`, and the rule-versioning deferral for Phase 05.
+
 ## 2026-06-05-refactor-as-code: complete Phase 04 entrypoint docs
 
 ### Changed
