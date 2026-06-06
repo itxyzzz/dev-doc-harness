@@ -4,6 +4,15 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: complete Phase 04 entrypoint docs
+
+### Changed
+
+- Updated `SKILL.md` into an operation router that sends common harness work to canonical modules, supplemental references, templates, and current work-item artifacts.
+- Aligned root `AGENTS.md` as the repository bootstrap and active model-policy selector while keeping detailed lifecycle policy in routed canonical references.
+- Refreshed README operator guidance to explain the router, ownership map, canonical module references, and README's non-normative summary role.
+- Kept Phase 04 out of templates and frozen historical work-item artifacts, and preserved the `AGENTS.md` active model-policy selector.
+
 ## 2026-06-05-refactor-as-code: approve Phase 04 entrypoint docs plan
 
 ### Added

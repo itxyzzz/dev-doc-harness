@@ -9,6 +9,12 @@ normal engineering judgment. It gives those workflows a repository-local
 contract for where planning artifacts live, when planning freezes, and what must
 be preserved for future agents or future threads.
 
+The current harness is organized around a small ownership map. `AGENTS.md`
+bootstraps the harness and selects repository-specific defaults,
+`.agents/skills/dev-doc-harness/SKILL.md` routes common operations, canonical
+references own reusable policy, templates own artifact shape, and this README is
+only the operator-facing overview.
+
 ```mermaid
 %%{init: {
   "flowchart": {
@@ -80,33 +86,17 @@ execute without relying on hidden chat history.
 
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
-feedback. Feedback before approval edits the draft artifacts directly; it does
-not require an amendment. When the operator explicitly approves, the harness
-runs the freeze gate: the agent updates the changelog, commits only the approved
-planning artifacts and changelog, reports the commit hash and artifact paths,
-and stops before implementation. The next operator response can confirm the
-model, reasoning-effort, and sub-agent choices and authorize implementation in
-one step, such as `Confirm, proceed`, when the agent's post-freeze prompt asks
-for both. This gives the operator a clean review point, including the option to
-push a planning-only draft PR before any product code changes.
+feedback. Explicit approval runs the freeze gate: changelog, approval commit,
+reported artifact paths, and a pause before implementation. The next operator
+response can confirm execution settings and authorize implementation in one
+step, giving the operator a clean plan-only review point before product changes.
 
 Sub-agent use is a planning judgment, not a keyword the operator must repeat on
-every request. For substantial work, the agent should decide whether sub-agents
-are justified and record either a bounded strategy or a brief reason for using
-none. Once the plan is approved and implementation is authorized after the
-freeze gate, the approved sub-agent strategy can be used without another
-sub-agent-specific confirmation. The normal guardrail is no more than three
-concurrent sub-agents; long-running work can still use more than three total
-sub-agents in separate waves when the approved plan supports that shape. At the
-end, the agent reports the de-facto sub-agent use and the model, model class, or
-profile actually used when that information is available.
-
-Sub-agent planning also includes context strategy: how each sub-agent receives
-the information it needs. A plan can use curated prompts, curated artifacts,
-full-history forks, or no repo context, depending on the task. Full-history
-forks are powerful and should be deliberate because they can include stale
-conversation context, increase token load, and on some platforms inherit or
-constrain model, reasoning, or agent-type settings.
+every request. For substantial work, the agent records either a bounded strategy
+or a reason for using none, then reports de-facto use at completion when
+sub-agents were authorized or used. The active repository policy is selected in
+`AGENTS.md`; detailed model, reasoning, context-strategy, and authorization
+rules live in `references/subagent-model-policy.md`.
 
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is
@@ -136,11 +126,23 @@ The harness is designed to produce these outcomes:
 
 ## How to use it
 
-Agents discover this harness through `AGENTS.md`, then load:
+Agents discover this harness through `AGENTS.md`, then load the operation
+router:
 
 ```text
 .agents/skills/dev-doc-harness/SKILL.md
 ```
+
+The router sends each operation to the minimum useful owner modules:
+
+| Need | Route |
+|---|---|
+| Work sizing and artifact lifecycle | `module:lifecycle` in `references/artifact-contract.md` |
+| Planning review and freeze checkpoints | `module:freeze-gate` in `references/planning-freeze-gates.md` |
+| Durable spec and phase-plan quality | `module:quality` in `references/durable-planning-quality.md` |
+| Model and sub-agent strategy | `module:models` in `references/subagent-model-policy.md` |
+| Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
+| Execution-time quality checks | `module:execution-quality` in `references/context-and-quality-gates.md` |
 
 There is not an installation script yet. After checking out this repository, use
 the harness in either of these ways:
@@ -153,47 +155,22 @@ the harness in either of these ways:
   `$HOME\.agents\skills\dev-doc-harness`.
 
 To make sure the skill is reliably discovered and followed, you can also append
-instructions like this to your global `AGENTS.md`:
+compact bootstrap instructions like this to your global `AGENTS.md`:
 
 ```md
 ## Harness activation
 
 **For any repository development work, apply `dev-doc-harness` before implementation.** Use the harness selected by normal precedence: repository-local harness instructions when present, otherwise the installed global `dev-doc-harness`.
 
-Development work includes features, bug fixes, refactors, migrations, tests, documentation/process changes, investigations that may lead to repository changes, and review or handoff work.
+For substantial development work, use the selected harness entrypoint as the operation router. The router owns which canonical references, templates, and work-item artifacts to load for work sizing, planning, freeze gates, implementation, variance, changelog, compatibility, and model/sub-agent notation.
 
-Only a **very small mechanical edit** may skip durable harness artifacts. Before editing, the agent must explicitly state that the work is a very small mechanical edit and why. If uncertain, default to using the harness.
+Only a **very small mechanical edit** may skip durable harness artifacts when the routed lifecycle sizing rules allow it. If uncertain, default to using the harness.
 
-Before editing implementation-target files, complete the harness planning step. Implementation-target files include source code, tests, migrations, runtime configuration, project documentation, product documentation, scripts, and process docs. The only repository files that may be created or edited before the freeze gate are the required harness planning artifacts and the `CHANGELOG.md` entry required by the gate.
+Before editing implementation-target files for substantial work, complete the harness planning and freeze flow. After the freeze gate, begin implementation only after a fresh explicit operator instruction.
 
-Core flow:
+Treat `dev-doc-harness` as the canonical source for repository artifact location and lifecycle. README summaries and templates do not override canonical harness references.
 
-1. Size the work item using the harness sizing rules.
-2. For anything beyond a very small mechanical edit, create or update the durable planning artifacts required by the harness.
-3. Treat planning artifacts as drafts until operator approval or explicit handoff.
-4. When durable planning artifacts are finalized, run the Planning Artifact Freeze Gate.
-5. Stop after the freeze gate. Do not begin implementation, task execution, or the next planning stage.
-6. Begin implementation only after a fresh explicit operator instruction given after the freeze gate.
-
-The Planning Artifact Freeze Gate requires: update `CHANGELOG.md`; verify finalized artifacts have no placeholders, unresolved decisions, or missing required sections; stage and commit only the finalized planning artifacts and `CHANGELOG.md`; report the commit hash and finalized artifact paths; remind the operator they may push and create a draft plan-only PR; and ask the operator to confirm model, reasoning-effort, context strategy, and sub-agent policy choices and whether implementation should begin now. After the operator authorizes implementation, the approved sub-agent strategy may be used without a separate sub-agent-specific confirmation. More than three concurrent sub-agents, unplanned sub-agents, unrecorded model or reasoning escalation, write-scope escalation, and platform-restricted actions still require fresh confirmation.
-
-Treat `dev-doc-harness` as the canonical source for repository documentation and artifact lifecycle: work sizing, spec and plan layout, durable handoff quality, planning freeze gates, documentation matrices, variance logs, plan amendments, changelog requirements, model and sub-agent policy, and final integration ownership.
-
-## Scope and precedence
-
-User instructions, repository-local `AGENTS.md` files, and project-specific harness adapters override this global override when they are stricter or more specific.
-
-If a repository provides its own `.agents/skills/dev-doc-harness/SKILL.md`, use that repo-local harness for that repository. Otherwise, use the installed global `dev-doc-harness` skill.
-
-If a repository has no harness-specific instructions, apply the installed skill as the default artifact and documentation contract for substantial development work.
-
-## Superpowers compatibility
-
-When Superpowers is installed and active, use Superpowers for its normal software-development methodology: brainstorming, planning, TDD, execution, review, and finishing.
-
-Use `dev-doc-harness` alongside Superpowers only for the repository artifact contract: where durable planning artifacts live, when planning freezes, how variance is recorded, and which model or sub-agent policy applies.
-
-Do not duplicate Superpowers process rules in this file, and do not duplicate harness process rules in Superpowers artifacts. If Superpowers produces specs or plans outside the harness location, convert or copy the approved content into the harness work item folder before implementation, following the skill.
+When Superpowers or spec-kit is active, use those tools for their normal methodology, but keep the harness as the artifact-location and lifecycle contract.
 ```
 
 Operators usually do not need to invoke the internals by hand. Ask for the work
@@ -226,8 +203,11 @@ Create a plan-only PR checkpoint before code changes.
 
 The internal machinery is intentionally small:
 
-- `AGENTS.md` tells agents when to use the harness.
-- `.agents/skills/dev-doc-harness/SKILL.md` is the entry point.
+- `AGENTS.md` bootstraps the harness and selects repository-specific defaults.
+- `.agents/skills/dev-doc-harness/SKILL.md` is the operation router.
+- `references/policy-architecture.md` defines the module catalog, rule ID
+  conventions, content types, dependency direction, router inputs, and
+  rule-versioning status.
 - `references/artifact-contract.md` defines work item folders, short-ID
   artifact filenames, snapshots, deltas, changelog rules, and variance
   handling.
@@ -238,10 +218,10 @@ The internal machinery is intentionally small:
 - `references/subagent-model-policy.md` defines the available sub-agent and
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
-  templates.
+  templates. Templates own artifact shape and prompts, not reusable policy.
 
-Read those documents for the full contract. The README is only the operator
-overview.
+Read the routed owner documents for the full contract. The README is only the
+operator overview and does not override canonical references.
 
 ## What this is not
 
@@ -256,10 +236,11 @@ and reusable artifacts.
 
 ## Contributing
 
-Planning artifacts for this harness repository's own development are local
-working notes, not distributable project content. Keep them under
-`docs/work-items/`, which is ignored by git in this repository.
+Planning artifacts for this harness repository's own development are usually
+local working notes, not distributable project content. Keep them under
+`docs/work-items/`, which is ignored by git in this repository, unless an
+approved plan explicitly tracks a work-item package as a repository artifact.
 
 Contributions should commit the harness changes themselves, any user-facing
-documentation updates, and the relevant `CHANGELOG.md` entry, but not local
-planning packages for this repo's development.
+documentation updates, and the relevant `CHANGELOG.md` entry, but not ordinary
+local planning packages for this repo's development.
