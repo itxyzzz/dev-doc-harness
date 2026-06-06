@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-05-refactor-as-code: approve Phase 04 entrypoint docs plan
+
+### Added
+
+- Added the approved Phase 04 plan for updating `SKILL.md`, root instructions, README, and compact compatibility guidance to route through the canonical module and rule ownership map.
+
+### Changed
+
+- Preserved the active model-policy selector in `AGENTS.md`, the rule-versioning deferral, and the boundary that Phase 04 must not rewrite templates or frozen historical work-item artifacts.
+
 ## 2026-06-05-refactor-as-code: centralize active model policy wording
 
 ### Changed
