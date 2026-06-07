@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: approve anchor spec
+
+### Added
+
+- Added the approved large/phased anchor spec for Dev Doc Harness `0.3` release versioning, distributable package boundaries, package-local release notes, changelog-derived release notes, and minimal team adoption flow.
+
 ## 2026-06-07-followup-hardening: complete implementation
 
 ### Added
