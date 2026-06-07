@@ -7,7 +7,7 @@ description: Use for repository development work except very small mechanical ed
 
 This skill is the repository-local entrypoint and operation router for the documentation harness. It routes agents to canonical policy modules, templates, supplemental references, and current work-item artifacts without making every task load every reference.
 
-For the canonical module catalog, rule ID conventions, dependency direction, content types, and rule-versioning status, use `references/policy-architecture.md` (`module:architecture`).
+For the canonical module catalog, rule ID conventions, dependency direction, content types, and release compatibility routing, use `references/policy-architecture.md` (`module:architecture`). For release identity, package boundary, release notes, changelog source, compatibility, artifact release context, and team adoption, use `references/release-policy.md` (`module:release`).
 
 ## When to invoke
 
@@ -27,6 +27,7 @@ Load by operation. Include the current operator instruction, applicable `AGENTS.
 | Draft or review phase plans | Approved spec, amendments, prior phase outputs, `module:quality`, `module:lifecycle`, `module:models`, `assets/templates/large-phased-work-item-phase-plan.md` | `module:architecture` when phase scope changes router or ownership behavior | Phase plan is fresh-thread executable under `rule:quality.phase-plan-fresh-thread` and does not reinterpret frozen decisions. |
 | Freeze planning packages | `references/planning-freeze-gates.md` (`module:freeze-gate`), `module:lifecycle` | Current work-item artifacts | Use `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`, `rule:lifecycle.changelog-before-commit`, and `rule:lifecycle.immutable-snapshots`. |
 | Execute approved work and record variance | Approved artifacts, `module:lifecycle`, `module:execution-quality` | Phase validation commands and relevant project docs or tests | Stay in approved scope, update `CHANGELOG.md` before commits, and use `rule:lifecycle.variance-policy` for drift. |
+| Release, package, or team adoption work | `references/release-policy.md` (`module:release`) | `module:architecture` when module ownership changes; `module:lifecycle` when changelog or work-item artifacts change | Preserve the package boundary, release-note source contract, release compatibility model, artifact release context, and minimal adoption/rollback flow. |
 | Use or review sub-agent strategy | `references/subagent-model-policy.md` (`module:models`, `rule:models.strategy-required`) | `references/subagent-role-examples.md` (`module:role-examples`) when examples help | Record the active repository policy, context strategy, authorization boundary, and de-facto use when applicable. |
 | Evidence-heavy review or reports | `references/evidence-and-report-artifacts.md` (`module:evidence`) | Current plan or operator-specified evidence sources | Preserve evidence and stop when evidence rules require review before continuing. |
 | Validate current harness surfaces | `module:execution-quality`, `.agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1` | `module:architecture` when rule, route, or ownership drift is inspected | Run the lightweight validation command before commits that change current harness entrypoints, references, templates, README, or validation artifacts. |

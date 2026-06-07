@@ -4,6 +4,93 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: complete Phase 03 release hardening
+
+Release target: `0.3.0`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added release validation checks for package identity, release notes, current release-versioning changelog schema, package boundary, template release context, and release routing.
+- Added the Phase 03 testing-guide delta and final release validation scenarios for the `0.3.0` checkpoint.
+
+### Changed
+
+- Updated `0.3.0` release notes and repository validation guidance to include release package consistency checks without adding generated release-note machinery.
+
+## 2026-06-07-release-versioning: approve Phase 03 release hardening plan
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved Phase 03 plan and release-validation test-case snapshot for hardening `0.3.0` package identity, release notes, changelog schema, package boundary, template release context, release routing, and final release checkpoint documentation.
+
+## 2026-06-07-release-versioning: complete Phase 02 release package implementation
+
+Release target: `0.3.0`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added package-local release identity, release policy, and `0.3.0` release notes under `.agents/skills/dev-doc-harness/`.
+- Added `Harness release: <version or unknown>` to current work-item templates.
+- Added Phase 02 operator-manual and architecture-summary deltas for package adoption, rollback, and compatibility guidance.
+
+### Changed
+
+- Routed release/package/adoption work through `module:release` and replaced the broad rule-versioning deferral with the `0.3.0` release-level compatibility model.
+- Normalized current release-versioning changelog entries with release target, package impact, and release-note relevance.
+
+## 2026-06-07-release-versioning: approve Phase 02 release package plan
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved Phase 02 plan for implementing package-local release identity, `module:release`, `0.3.0` release notes, changelog schema normalization, template release stamping, README adoption guidance, and Phase 02 documentation deltas.
+
+## 2026-06-07-release-versioning: complete Phase 01 release policy architecture
+
+Release target: `0.3.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the Phase 01 architecture snapshot defining the `0.3.0` release identity model, distributable package boundary, changelog-to-release-notes contract, release-note shape, compatibility model, artifact release-context decision, team adoption flow, rollback flow, validation direction, and Phase 02 inputs.
+- Added the Phase 01 variance log with no variance recorded.
+
+### Changed
+
+- Established the go-forward changelog schema that records release target, package impact, and release-note relevance so release notes can be curated from changelog entries without turning spec, plan, and implementation entries for the same feature into separate release-note items.
+
+## 2026-06-07-release-versioning: approve Phase 01 release policy plan
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved Phase 01 plan for defining the Dev Doc Harness `0.3` release policy architecture, package boundary, changelog-to-release-notes contract, release-note aggregation behavior, and team adoption flow.
+
+## 2026-06-07-release-versioning: approve anchor spec
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved large/phased anchor spec for Dev Doc Harness `0.3` release versioning, distributable package boundaries, package-local release notes, changelog-derived release notes, and minimal team adoption flow.
+
 ## 2026-06-07-followup-hardening: complete implementation
 
 ### Added

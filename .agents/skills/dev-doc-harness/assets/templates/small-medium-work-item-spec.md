@@ -3,6 +3,7 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
+Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
 Policy references: `module:lifecycle`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:quality.spec-handoff`
 

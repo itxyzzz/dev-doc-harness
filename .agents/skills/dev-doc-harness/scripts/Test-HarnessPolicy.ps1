@@ -15,7 +15,13 @@ $Script:KnownPassMarkers = @(
   "PASS phrases.duplicate-blocks",
   "PASS placeholders.current-surfaces",
   "PASS tracking.work-items",
-  "PASS scenarios.golden-traversal"
+  "PASS scenarios.golden-traversal",
+  "PASS release.identity",
+  "PASS release.notes",
+  "PASS release.changelog-schema",
+  "PASS release.package-boundary",
+  "PASS release.template-context",
+  "PASS release.route"
 )
 
 $Script:CanonicalReferences = @(
@@ -24,6 +30,7 @@ $Script:CanonicalReferences = @(
   ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
   ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
   ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+  ".agents/skills/dev-doc-harness/references/release-policy.md",
   ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
   ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
   ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
@@ -213,7 +220,8 @@ function Get-OwnerGraph {
     "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md",
     "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
     "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
-    "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md"
+    "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md",
+    "docs/work-items/2026-06-07-release-versioning/snapshots/test-cases.snapshot.md"
   )
   foreach ($path in $scenarioMetricOwnerFiles) {
     $text = Read-RepoText $path
@@ -338,19 +346,19 @@ function Assert-TemplateRoutes {
 function Assert-RouteContains {
   param(
     [Parameter(Mandatory = $true)][string]$Operation,
-    [Parameter(Mandatory = $true)][string[]]$RequiredPatterns
+    [Parameter(Mandatory = $true)][string[]]$RequiredPatterns,
+    [string]$CheckId = "router.required-routes"
   )
-  $checkId = "router.required-routes"
   $path = ".agents/skills/dev-doc-harness/SKILL.md"
   $text = Read-RepoText $path
   $routeLine = ($text -split "`r?`n" | Where-Object { $_ -match [regex]::Escape($Operation) } | Select-Object -First 1)
   if (-not $routeLine) {
-    Add-Failure $checkId "Missing operation route: $Operation"
+    Add-Failure $CheckId "Missing operation route: $Operation"
     return
   }
   foreach ($pattern in $RequiredPatterns) {
     if ($routeLine -notmatch $pattern) {
-      Add-Failure $checkId "Route '$Operation' is missing target pattern: $pattern"
+      Add-Failure $CheckId "Route '$Operation' is missing target pattern: $pattern"
     }
   }
 }
@@ -367,6 +375,7 @@ function Assert-RouteBudgets {
     "Execute approved work and record variance" = 4
     "Use or review sub-agent strategy" = 2
     "Evidence-heavy review or reports" = 1
+    "Release, package, or team adoption work" = 1
     "Validate current harness surfaces" = 2
     "Update templates or router guidance" = 3
     "Superpowers or spec-kit compatibility" = 3
@@ -490,16 +499,163 @@ function Assert-WorkItemTracking {
   }
 }
 
+function Assert-ReleaseIdentity {
+  $checkId = "release.identity"
+  $versionPath = ".agents/skills/dev-doc-harness/VERSION"
+  $versionText = Read-RepoText $versionPath
+  if ($versionText -notmatch '\A0\.3\.0\r?\n?\z') {
+    Add-Failure $checkId "$versionPath must contain exactly 0.3.0 plus an optional trailing newline"
+    return
+  }
+
+  $version = $versionText.TrimEnd("`r", "`n")
+  Assert-PathExists $checkId ".agents/skills/dev-doc-harness/docs/releases/$version.md"
+}
+
+function Assert-ReleaseNotes {
+  $checkId = "release.notes"
+  $releaseNotesPath = ".agents/skills/dev-doc-harness/docs/releases/0.3.0.md"
+  $releaseNotes = Read-RepoText $releaseNotesPath
+  $changelog = Read-RepoText "CHANGELOG.md"
+  $requiredHeadings = @(
+    "# Dev Doc Harness 0.3.0",
+    "## Release",
+    "## Package Contents",
+    "## Added",
+    "## Changed",
+    "## Compatibility",
+    "## Team Adoption",
+    "## Rollback",
+    "## Source Changelog Entries"
+  )
+
+  foreach ($heading in $requiredHeadings) {
+    if ($releaseNotes -notmatch "(?m)^$([regex]::Escape($heading))\s*$") {
+      Add-Failure $checkId "Missing release-note heading '$heading'"
+    }
+  }
+
+  $sourceMatch = [regex]::Match($releaseNotes, '(?ms)^## Source Changelog Entries\s*(?<body>.*?)(?=^##\s+|\z)')
+  if (-not $sourceMatch.Success) {
+    Add-Failure $checkId "Missing Source Changelog Entries section body"
+    return
+  }
+
+  $sourceEntries = @([regex]::Matches($sourceMatch.Groups["body"].Value, '`(2026-06-07-release-versioning: [^`]+)`') | ForEach-Object { $_.Groups[1].Value })
+  if ($sourceEntries.Count -eq 0) {
+    Add-Failure $checkId "No source changelog entries listed in release notes"
+  }
+
+  foreach ($entry in $sourceEntries) {
+    if ($changelog -notmatch "(?m)^##\s+$([regex]::Escape($entry))\s*$") {
+      Add-Failure $checkId "Release-note source entry is missing from CHANGELOG.md: $entry"
+    }
+  }
+}
+
+function Get-ChangelogSections {
+  $text = Read-RepoText "CHANGELOG.md"
+  $sections = @()
+  foreach ($match in [regex]::Matches($text, '(?ms)^##\s+(?<heading>2026-06-07-release-versioning:[^\r\n]+)\r?\n(?<body>.*?)(?=^##\s+|\z)')) {
+    $sections += [PSCustomObject]@{
+      Heading = $match.Groups["heading"].Value.Trim()
+      Body = $match.Groups["body"].Value
+    }
+  }
+  return $sections
+}
+
+function Assert-ReleaseChangelogSchema {
+  $checkId = "release.changelog-schema"
+  $sections = @(Get-ChangelogSections)
+  if ($sections.Count -eq 0) {
+    Add-Failure $checkId "No current release-versioning changelog entries found"
+    return
+  }
+
+  foreach ($section in $sections) {
+    $releaseTargetLines = @([regex]::Matches($section.Body, '(?m)^Release target:\s+`([^`]+)`\s*$'))
+    $packageImpactLines = @([regex]::Matches($section.Body, '(?m)^Package impact:\s+`([^`]+)`\s*$'))
+    $releaseNoteLines = @([regex]::Matches($section.Body, '(?m)^Release-note:\s+`([^`]+)`\s*$'))
+
+    if ($releaseTargetLines.Count -ne 1) {
+      Add-Failure $checkId "$($section.Heading) must contain exactly one Release target field"
+    } elseif ($releaseTargetLines[0].Groups[1].Value -ne "0.3.0") {
+      Add-Failure $checkId "$($section.Heading) has invalid Release target '$($releaseTargetLines[0].Groups[1].Value)'"
+    }
+
+    if ($packageImpactLines.Count -ne 1) {
+      Add-Failure $checkId "$($section.Heading) must contain exactly one Package impact field"
+    } elseif (@("distributable", "repository-only", "planning-only") -notcontains $packageImpactLines[0].Groups[1].Value) {
+      Add-Failure $checkId "$($section.Heading) has invalid Package impact '$($packageImpactLines[0].Groups[1].Value)'"
+    }
+
+    if ($releaseNoteLines.Count -ne 1) {
+      Add-Failure $checkId "$($section.Heading) must contain exactly one Release-note field"
+    } elseif (@("include", "source-only", "omit") -notcontains $releaseNoteLines[0].Groups[1].Value) {
+      Add-Failure $checkId "$($section.Heading) has invalid Release-note '$($releaseNoteLines[0].Groups[1].Value)'"
+    }
+  }
+}
+
+function Assert-ReleasePackageBoundary {
+  $checkId = "release.package-boundary"
+  $releasePolicy = ".agents/skills/dev-doc-harness/references/release-policy.md"
+  $releaseNotes = ".agents/skills/dev-doc-harness/docs/releases/0.3.0.md"
+
+  Assert-TextContains $checkId $releasePolicy 'distributable harness package is root `AGENTS\.md` plus `\.agents/`' "release policy package boundary"
+  Assert-TextContains $checkId $releaseNotes 'distributable package is root `AGENTS\.md` plus `\.agents/`' "release notes package boundary"
+  Assert-TextContains $checkId "README.md" 'copyable distributable package is\s+the root `AGENTS\.md` file plus the `\.agents/` folder' "README package boundary"
+  Assert-TextContains $checkId $releasePolicy 'Do not copy this repository''s `docs/work-items/`' "release policy work-item exclusion"
+  Assert-TextContains $checkId "README.md" 'Do not copy this repository''s `docs/work-items/` folder' "README work-item exclusion"
+  Assert-TextContains $checkId $releasePolicy '(?i)rollback.+revert' "release policy rollback"
+  Assert-TextContains $checkId $releaseNotes '(?i)revert.+dedicated harness update' "release notes rollback"
+  Assert-TextContains $checkId "README.md" '(?i)roll back by reverting' "README rollback"
+}
+
+function Assert-ReleaseTemplateContext {
+  $checkId = "release.template-context"
+  $fieldLiteral = [string]::Concat("Harness release: ", [char]96, "<version or unknown>", [char]96)
+  $fieldPattern = "(?m)^" + [regex]::Escape($fieldLiteral) + "\s*$"
+  foreach ($template in $Script:TemplateFiles) {
+    $text = Read-RepoText $template
+    $count = @([regex]::Matches($text, $fieldPattern)).Count
+    if ($count -ne 1) {
+      Add-Failure $checkId "$template must contain exactly one Harness release field; found $count"
+    }
+  }
+}
+
+function Assert-ReleaseScenarios {
+  $checkId = "release.notes"
+  $snapshotPath = "docs/work-items/2026-06-07-release-versioning/snapshots/test-cases.snapshot.md"
+  $scenarioIds = @(
+    "scenario:release.package-identity",
+    "scenario:release.release-notes-source",
+    "scenario:release.changelog-schema",
+    "scenario:release.package-boundary",
+    "scenario:release.template-context",
+    "scenario:release.team-adoption-rollback"
+  )
+
+  foreach ($scenarioId in $scenarioIds) {
+    Assert-TextContains $checkId $snapshotPath ([regex]::Escape($scenarioId)) "$scenarioId snapshot row"
+  }
+}
+
 $requiredFiles = @(
   "AGENTS.md",
   "README.md",
   "CHANGELOG.md",
   ".agents/skills/dev-doc-harness/SKILL.md",
+  ".agents/skills/dev-doc-harness/VERSION",
   ".agents/skills/dev-doc-harness/references/policy-architecture.md",
   ".agents/skills/dev-doc-harness/references/artifact-contract.md",
   ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
   ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
   ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+  ".agents/skills/dev-doc-harness/references/release-policy.md",
+  ".agents/skills/dev-doc-harness/docs/releases/0.3.0.md",
   ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
   ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
   ".agents/skills/dev-doc-harness/references/subagent-role-examples.md",
@@ -517,7 +673,8 @@ $requiredFiles = @(
   "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
   "docs/work-items/2026-06-07-followup-hardening/deltas/testing-guide.delta.md",
   "docs/work-items/2026-06-07-followup-hardening/deltas/operator-manual.delta.md",
-  "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md"
+  "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md",
+  "docs/work-items/2026-06-07-release-versioning/snapshots/test-cases.snapshot.md"
 )
 
 foreach ($path in $requiredFiles) {
@@ -544,12 +701,16 @@ Assert-RouteContains "Freeze planning packages" @("module:freeze-gate", "module:
 Assert-RouteContains "Execute approved work and record variance" @("module:lifecycle", "module:execution-quality")
 Assert-RouteContains "Use or review sub-agent strategy" @("module:models", "rule:models.strategy-required")
 Assert-RouteContains "Evidence-heavy review or reports" @("module:evidence")
+Assert-RouteContains "Release, package, or team adoption work" @("module:release")
 Assert-RouteContains "Update templates or router guidance" @("module:architecture")
 Assert-RouteContains "Superpowers or spec-kit compatibility" @("module:lifecycle")
 Write-CheckResult "router.required-routes"
 
 Assert-RouteBudgets
 Write-CheckResult "router.route-budget"
+
+Assert-RouteContains "Release, package, or team adoption work" @("module:release") "release.route"
+Write-CheckResult "release.route"
 
 $discoverability = @(
   @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "Classify work size"; Label = "work sizing" },
@@ -698,6 +859,22 @@ Assert-ScenarioEvidence "scenario:history.historical-artifact-handling" @(
   @{ Path = "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md"; Pattern = "scenario:history.historical-artifact-handling"; Label = "source scenario" }
 )
 Write-CheckResult "scenarios.golden-traversal"
+
+Assert-ReleaseIdentity
+Write-CheckResult "release.identity"
+
+Assert-ReleaseNotes
+Assert-ReleaseScenarios
+Write-CheckResult "release.notes"
+
+Assert-ReleaseChangelogSchema
+Write-CheckResult "release.changelog-schema"
+
+Assert-ReleasePackageBoundary
+Write-CheckResult "release.package-boundary"
+
+Assert-ReleaseTemplateContext
+Write-CheckResult "release.template-context"
 
 if ($Script:Failures.Count -gt 0) {
   exit 1
