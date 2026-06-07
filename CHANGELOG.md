@@ -4,6 +4,21 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: complete Phase 01 release policy architecture
+
+Release target: `0.3.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the Phase 01 architecture snapshot defining the `0.3.0` release identity model, distributable package boundary, changelog-to-release-notes contract, release-note shape, compatibility model, artifact release-context decision, team adoption flow, rollback flow, validation direction, and Phase 02 inputs.
+- Added the Phase 01 variance log with no variance recorded.
+
+### Changed
+
+- Established the go-forward changelog schema that records release target, package impact, and release-note relevance so release notes can be curated from changelog entries without turning spec, plan, and implementation entries for the same feature into separate release-note items.
+
 ## 2026-06-07-release-versioning: approve Phase 01 release policy plan
 
 ### Added
