@@ -2,6 +2,22 @@
 
 This document is the canonical source for repository work item artifact layout, lifecycle rules, and variance handling. A work item can be a feature, bug fix, prior issue investigation, refactor, migration, documentation/process change, or other substantial body of work.
 
+Module: `module:lifecycle`
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:lifecycle.work-item-folders` | `## Work item folders` |
+| `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
+| `rule:lifecycle.work-sizing` | `## Work sizes` |
+| `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
+| `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
+| `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
+| `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
+| `rule:lifecycle.variance-policy` | `## Variance policy` and `## Variance classes` |
+| `rule:lifecycle.changelog-before-commit` | `## Changelog` |
+
 ## Work item folders
 
 Each substantial work item uses one folder:

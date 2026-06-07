@@ -3,6 +3,17 @@
 Use this reference to keep routine harness work consistent across local, web,
 and reduced-tool environments.
 
+Module: `module:execution-quality`
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:execution-quality.context-load-order` | `## Context load order` |
+| `rule:execution-quality.task-preflight` | `## Task preflight` |
+| `rule:execution-quality.environment-compensation` | `## Environment compensation` |
+| `rule:execution-quality.increment-quality-gate` | `## Increment quality gate` |
+
 ## Context load order
 
 Before planning or implementation, build context in this order:

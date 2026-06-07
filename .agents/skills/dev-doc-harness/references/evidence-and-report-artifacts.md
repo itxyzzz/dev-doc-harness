@@ -3,6 +3,20 @@
 Use this reference when a work item needs durable evidence, derived review
 artifacts, or report templates.
 
+Module: `module:evidence`
+
+This is a supplemental advisory reference. Use it when a router entry, spec,
+plan, phase plan, or operator instruction calls for evidence-heavy work,
+derived reports, or durable review artifacts.
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:evidence.preservation` | `## Evidence policy` |
+| `rule:evidence.report-sections` | `## Report sections` |
+| `rule:evidence.stop-conditions` | `## Stop conditions` |
+
 ## Evidence policy
 
 - Preserve source evidence once it is used for review, comparison, or handoff.

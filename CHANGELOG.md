@@ -4,6 +4,144 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-followup-hardening: complete implementation
+
+### Added
+
+- Added structural graph validation for current harness policy owners, references, route budgets, template route consistency, duplicate reusable policy blocks, and tracked work-item Markdown artifacts.
+- Added follow-up testing, operator-manual, and architecture-summary deltas for graph validation, tracked work-item history, required model-policy routing, and lifecycle decomposition guidance.
+- Added previously ignored historical work-item Markdown artifacts under `docs/work-items` to tracked repository history.
+
+### Changed
+
+- Removed the local-only `docs/work-items` ignore rule and documented work-item artifacts as repository development history.
+- Made `module:models` required for substantial small, medium, and large durable planning routes.
+- Documented the structural validation model, route and duplication budgets, and lifecycle decomposition direction in the policy architecture reference.
+
+## 2026-06-07-followup-hardening: approve implementation plan
+
+### Added
+
+- Added the approved plan, validation test snapshot, architecture snapshot, and variance log for follow-up hardening of tracked work-item docs, model-policy routing, graph validation, route/de-duplication checks, and lifecycle decomposition guidance.
+
+## 2026-06-07-followup-hardening: approve planning package
+
+### Added
+
+- Added the approved spec for tracking work-item docs, requiring model policy in substantial small/medium planning, structural policy graph validation, route and duplicate-policy checks, and lifecycle-module decomposition planning.
+
+## 2026-06-05-refactor-as-code: complete Phase 05 validation hardening
+
+### Added
+
+- Added a lightweight harness validation script for current harness files, module and rule IDs, template schema anchors, router routes, safety discoverability, duplicate policy phrases, placeholder checks, and golden traversal scenarios.
+- Added a Phase 05 golden scenario snapshot plus testing, operator-manual, and architecture-summary deltas for the validation command and expected review behavior.
+
+### Changed
+
+- Documented the validation command in README and routed current-surface validation through `SKILL.md`.
+- Preserved frozen historical artifacts, the active model-policy selector in `AGENTS.md`, and the rule-versioning deferral while completing Phase 05.
+
+## 2026-06-05-refactor-as-code: approve Phase 05 validation hardening plan
+
+### Added
+
+- Added the approved Phase 05 plan for lightweight harness validation checks, golden traversal scenarios, validation documentation deltas, and README validation guidance.
+
+### Changed
+
+- Preserved frozen historical artifacts, the active model-policy selector in `AGENTS.md`, and the rule-versioning deferral for Phase 05.
+
+## 2026-06-05-refactor-as-code: complete Phase 04 entrypoint docs
+
+### Changed
+
+- Updated `SKILL.md` into an operation router that sends common harness work to canonical modules, supplemental references, templates, and current work-item artifacts.
+- Aligned root `AGENTS.md` as the repository bootstrap and active model-policy selector while keeping detailed lifecycle policy in routed canonical references.
+- Refreshed README operator guidance to explain the router, ownership map, canonical module references, and README's non-normative summary role.
+- Kept Phase 04 out of templates and frozen historical work-item artifacts, and preserved the `AGENTS.md` active model-policy selector.
+
+## 2026-06-05-refactor-as-code: approve Phase 04 entrypoint docs plan
+
+### Added
+
+- Added the approved Phase 04 plan for updating `SKILL.md`, root instructions, README, and compact compatibility guidance to route through the canonical module and rule ownership map.
+
+### Changed
+
+- Preserved the active model-policy selector in `AGENTS.md`, the rule-versioning deferral, and the boundary that Phase 04 must not rewrite templates or frozen historical work-item artifacts.
+
+## 2026-06-05-refactor-as-code: centralize active model policy wording
+
+### Changed
+
+- Clarified that `AGENTS.md` is the single repository-local selection point for the active model policy.
+- Replaced repeated `economy-default` default wording in current README, template examples, and model-policy examples with active-policy wording.
+
+## 2026-06-05-refactor-as-code: complete Phase 03 template slimming
+
+### Added
+
+- Added compact schema IDs and canonical policy-reference anchors to the current harness templates.
+
+### Changed
+
+- Reduced reusable sub-agent authorization, variance handling, and freeze-gate procedure prose in templates while preserving artifact-shape prompts and fresh-thread usability.
+- Kept Phase 03 scoped to templates and `CHANGELOG.md`; `SKILL.md`, `README.md`, root `AGENTS.md`, canonical references, and historical work-item artifacts were not updated.
+
+## 2026-06-05-refactor-as-code: approve Phase 03 template slimming plan
+
+### Added
+
+- Added the approved Phase 03 plan for slimming harness templates with schema IDs, canonical policy citations, reduced reusable policy prose, preserved fresh-thread usability, and an operator-selected `enterprise-default` policy for Phase 03.
+
+## 2026-06-05-refactor-as-code: complete Phase 02 canonical modules
+
+### Added
+
+- Added `policy-architecture.md` as the compact canonical module catalog and rule-interface reference for the harness.
+- Added stable module and rule IDs to current canonical references, including lifecycle, freeze-gate, model/sub-agent, quality, execution-quality, evidence, and role-example ownership.
+
+### Changed
+
+- Labeled evidence and role-example references as supplemental or advisory so examples do not become competing policy.
+- Kept `artifact-contract.md` intact for Phase 02, using an ownership block instead of splitting the lifecycle reference.
+
+## 2026-06-05-refactor-as-code: approve Phase 02 canonical modules plan
+
+### Added
+
+- Added the approved Phase 02 plan for creating a canonical policy architecture reference, declaring module and rule IDs in current canonical references, preserving detailed rule ownership, and deferring template, README, root instruction, and entrypoint updates to later phases.
+
+## 2026-06-05-refactor-as-code: complete Phase 01 policy architecture
+
+### Added
+
+- Added the Phase 01 architecture snapshot defining precedence, dependency direction, content taxonomy, operation routing, rule-interface conventions, validation budgets, golden scenario tests, work-item artifact locality, Phase 02 inputs, and open risks.
+- Added the Phase 01 variance log with no variance recorded.
+
+### Changed
+
+- Recorded the explicit rule-versioning deferral so later phases use stable rule IDs without introducing a full versioning system in Phase 01.
+
+## 2026-06-05-refactor-as-code: approve Phase 01 policy architecture plan
+
+### Added
+
+- Added the approved Phase 01 plan for producing a policy architecture snapshot, variance log, rule-interface conventions, operation router taxonomy, validation budgets, golden scenario tests, and work-item artifact locality guidance using the selected `enterprise-default` policy.
+
+## 2026-06-05-refactor-as-code: approve architecture guardrails amendment
+
+### Added
+
+- Added the approved amendment requiring Phase 01 to define precedence, dependency direction, content types, operation routing, measurable architecture checks, golden scenario tests, and work-item artifact locality while deferring full rule versioning.
+
+## 2026-06-05-refactor-as-code: approve anchor spec
+
+### Added
+
+- Added the approved large/phased anchor spec for refactoring harness instructions as maintainable policy modules with stable rule interfaces, slimmer templates, retrieval routing, and validation hardening.
+
 ## 2026-06-05-subagent-context-strategy: implement context strategy field
 
 ### Changed

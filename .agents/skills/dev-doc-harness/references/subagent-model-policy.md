@@ -2,6 +2,22 @@
 
 This document is the canonical source for sub-agent model-selection policy in this repository.
 
+Module: `module:models`
+
+Owned rule IDs:
+
+| Rule ID | Local owner |
+|---|---|
+| `rule:models.strategy-required` | `## Common rules` and `## Required notation` |
+| `rule:models.context-strategy` | `## Common rules` |
+| `rule:models.approved-strategy-authorized` | `## Common rules` |
+| `rule:models.fresh-confirmation` | `## Common rules` |
+| `rule:models.concurrent-cap` | `## Common rules` |
+| `rule:models.enterprise-default` | `## Policy: enterprise-default` |
+| `rule:models.economy-default` | `## Policy: economy-default` |
+| `rule:models.final-review` | `## Final review` |
+| `rule:models.final-integration-ownership` | `## Final integration ownership` |
+
 ## Common rules
 
 Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Do not treat lack of operator mention as a prohibition on sub-agent use. For substantial work, assess whether sub-agents are justified by isolation, review quality, parallel throughput, or risk reduction. Record either a bounded sub-agent strategy or `Sub-agents: None` with a brief fit reason.
@@ -97,13 +113,13 @@ Recommended change: `<none or concrete model/reasoning change with reason>`
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | economy-default | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
-| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | economy-default | latest strongest | high | High blast radius | Yes/No | High plus consequence |
-| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | economy-default | standard | medium | Clear inputs | Yes | Medium plus consequence |
-| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | economy-default | latest strongest | high | Subtle integration risk | No | High plus consequence |
+| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | active repository policy | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
+| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | active repository policy | latest strongest | high | High blast radius | Yes/No | High plus consequence |
+| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | active repository policy | standard | medium | Clear inputs | Yes | Medium plus consequence |
+| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | active repository policy | latest strongest | high | Subtle integration risk | No | High plus consequence |
 ```
 
-The rows above are examples, not required phase names or required sub-agent choices. Replace them with the actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.
+The rows above are examples, not required phase names or required sub-agent choices. Use actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.
 
 Prefer policy-relative model classes over hardcoded model names unless the environment requires concrete names.
 

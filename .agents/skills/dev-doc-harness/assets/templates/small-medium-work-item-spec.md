@@ -3,6 +3,8 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
+Schema: `schema:spec.small-medium`
+Policy references: `module:lifecycle`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:quality.spec-handoff`
 
 ## Goal
 
@@ -51,4 +53,4 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 ## Approval
 
 - Status: Draft / Approved / Superseded
-- Superseded by: blank unless superseded
+- Superseded by: record only when this artifact is superseded

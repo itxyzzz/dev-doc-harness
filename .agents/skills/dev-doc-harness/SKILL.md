@@ -5,72 +5,71 @@ description: Use for repository development work except very small mechanical ed
 
 # Dev Doc Harness
 
-This skill defines the repository-local documentation and artifact contract for development work. It is deliberately small: it does not replace Codex plan mode, Superpowers, spec-kit, testing discipline, or project architecture decisions.
+This skill is the repository-local entrypoint and operation router for the documentation harness. It routes agents to canonical policy modules, templates, supplemental references, and current work-item artifacts without making every task load every reference.
+
+For the canonical module catalog, rule ID conventions, dependency direction, content types, and rule-versioning status, use `references/policy-architecture.md` (`module:architecture`).
 
 ## When to invoke
 
-Use this skill for all repository development work except very small mechanical edits. The detailed sizing rules live in `references/artifact-contract.md`.
+Use this skill for all repository development work except very small mechanical edits. Classify work size through `module:lifecycle` in `references/artifact-contract.md`, especially `rule:lifecycle.work-sizing`.
 
 Very small mechanical edits may skip this harness when the operator has not requested durable planning.
 
-## Core references
+## Operation router
 
-Before creating or reviewing artifacts, read:
+Load by operation. Include the current operator instruction, applicable `AGENTS.md` files, and active work-item artifacts before following a route.
 
-- `references/artifact-contract.md` for work item folders, short-ID artifact filenames, required files, immutable snapshots, deltas, documentation matrices, and variance handling.
-- `references/durable-planning-quality.md` for spec and phase-plan quality bars, handoff preservation, and fresh-thread executability.
-- `references/planning-freeze-gates.md` for approval-first planning gates before implementation or later planning continues.
-- `references/subagent-model-policy.md` for the active model policy, sub-agent notation, escalation rules, and final-review rules.
+| Operation family | Required route | Optional or conditional route | Required outcomes |
+|---|---|---|---|
+| Classify work size | `references/artifact-contract.md` (`module:lifecycle`, `rule:lifecycle.work-sizing`) | None | Very small mechanical skip stays explicit and narrow; substantial work uses harness artifacts. |
+| Draft or review small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`, small/medium templates in `assets/templates/` | None | Work item folder, short artifact ID, documentation matrix, validation commands, model/sub-agent strategy, and draft review state are recorded. |
+| Draft or review large anchor specs | `module:lifecycle`, `module:quality`, `module:models`, `assets/templates/large-phased-work-item-spec.md` | Prior approved amendments when present | Anchor spec preserves handoff decisions and phase decomposition under `rule:lifecycle.large-anchor-spec`. |
+| Draft or review phase plans | Approved spec, amendments, prior phase outputs, `module:quality`, `module:lifecycle`, `module:models`, `assets/templates/large-phased-work-item-phase-plan.md` | `module:architecture` when phase scope changes router or ownership behavior | Phase plan is fresh-thread executable under `rule:quality.phase-plan-fresh-thread` and does not reinterpret frozen decisions. |
+| Freeze planning packages | `references/planning-freeze-gates.md` (`module:freeze-gate`), `module:lifecycle` | Current work-item artifacts | Use `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`, `rule:lifecycle.changelog-before-commit`, and `rule:lifecycle.immutable-snapshots`. |
+| Execute approved work and record variance | Approved artifacts, `module:lifecycle`, `module:execution-quality` | Phase validation commands and relevant project docs or tests | Stay in approved scope, update `CHANGELOG.md` before commits, and use `rule:lifecycle.variance-policy` for drift. |
+| Use or review sub-agent strategy | `references/subagent-model-policy.md` (`module:models`, `rule:models.strategy-required`) | `references/subagent-role-examples.md` (`module:role-examples`) when examples help | Record the active repository policy, context strategy, authorization boundary, and de-facto use when applicable. |
+| Evidence-heavy review or reports | `references/evidence-and-report-artifacts.md` (`module:evidence`) | Current plan or operator-specified evidence sources | Preserve evidence and stop when evidence rules require review before continuing. |
+| Validate current harness surfaces | `module:execution-quality`, `.agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1` | `module:architecture` when rule, route, or ownership drift is inspected | Run the lightweight validation command before commits that change current harness entrypoints, references, templates, README, or validation artifacts. |
+| Update templates or router guidance | `module:architecture` plus the canonical owner for each referenced rule family | Affected templates | Templates own schema and prompts, not long reusable policy. |
+| Superpowers or spec-kit compatibility | Applicable `AGENTS.md`, `module:lifecycle`, this skill's compatibility notes, and relevant external workflow instructions | `module:execution-quality` when environment compensation matters | The harness owns artifact location, freeze gates, variance records, changelog discipline, and model/sub-agent notation. |
 
 Use these supplemental references when relevant:
 
-- `references/context-and-quality-gates.md` for context load order, environment compensation, and increment quality gates.
-- `references/subagent-role-examples.md` for compact policy-relative sub-agent role patterns.
-- `references/evidence-and-report-artifacts.md` for spikes, investigations, agent reports, or review evidence; skip for routine changes covered by normal validation and changelog notes.
+- `references/context-and-quality-gates.md` (`module:execution-quality`) for context load order, task preflight, environment compensation, and increment quality gates.
+- `references/subagent-role-examples.md` (`module:role-examples`) for compact policy-relative role examples.
+- `references/evidence-and-report-artifacts.md` (`module:evidence`) for spikes, investigations, agent reports, or review evidence.
 
 ## Workflow
 
-1. Classify the work as small/mechanical, small/medium work item, or large/phased work item. Features, bug fixes, prior issue investigations, refactors, migrations, and documentation/process changes all use this sizing model when substantial.
+1. Classify the work as small/mechanical, small/medium work item, or large/phased work item through the router.
 2. Choose a work ID using `YYYY-MM-DD-short-kebab-title`, or `YYYY-MM-DD-ISSUE-short-kebab-title` when a JIRA key or other issue-tracker ID is available.
 3. Create or update the work item folder under `docs/work-items/<work-id>/`.
-4. Draft the required spec, plan, phase plans, documentation matrix, and variance log using the templates in `assets/templates/`.
-5. For large or phased work items, make `spec-<short-id>.md` the central planning anchor and handoff from the initial planning session to later phase-planning sessions. Preserve all decisions, constraints, risks, assumptions, acceptance criteria, and important rejected alternatives there before writing phase plans.
-6. Treat drafts as editable until explicit operator approval and the approval commit, or until explicit handoff.
-7. Before approval, stage draft planning artifacts without committing and ask the operator for approval or feedback.
-8. If the operator gives feedback before approval, edit the drafts directly, refresh staging, and ask for approval again.
-9. After explicit approval or explicit handoff, run the Planning Artifact Freeze Gate before implementation or later planning continues.
-10. After the approval commit or explicit handoff snapshot, treat approved specs, plans, phase plans, snapshots, and amendments as immutable snapshots.
-11. During implementation, record justified plan variance in `implementation-notes/variance-log.md`.
-12. Update `CHANGELOG.md` before each commit with concise entries tied to the current work ID, phase, task, or spec/plan decision.
-13. For post-freeze high-impact variance, create a plan amendment and get operator approval before proceeding.
+4. Draft the required artifacts using `assets/templates/` and the routed canonical modules.
+5. Keep draft artifacts editable until explicit approval, approval commit, or explicit handoff.
+6. Run the Planning Artifact Freeze Gate before implementation or later planning continues.
+7. During implementation, use approved artifacts plus routed execution references, record justified variance, and update `CHANGELOG.md` before every commit.
 
 ## Planning Artifact Freeze Gate
 
-When durable planning artifacts are ready for operator review, approval, handoff, or freeze, follow `references/planning-freeze-gates.md`. Treat that reference as the only source for review, freeze-gate procedure, and continuation rules.
+When durable planning artifacts are ready for review, approval, handoff, or freeze, follow `module:freeze-gate` in `references/planning-freeze-gates.md`. It owns `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.stop-before-implementation`.
 
 ## Superpowers compatibility
 
-When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
-
-If Superpowers produces specs or plans outside `docs/work-items/<work-id>/`, copy or convert the approved content into the harness work item folder before implementation begins. Do not duplicate Superpowers methodology in this harness.
-
-If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs with a title, status, and link to the canonical package or artifact under `docs/work-items/<work-id>/`. Do not keep duplicate full specs or plans under `docs/superpowers`.
+When Superpowers is installed and active, use it for its normal development methodology. This harness still owns artifact location, planning freeze gates, variance records, changelog discipline, and model/sub-agent policy notation. The lifecycle owner is `module:lifecycle`, especially `rule:lifecycle.superpowers-compatibility`.
 
 ## spec-kit compatibility
 
-If spec-kit is installed and active, prefer a project-local adapter that points back to this skill and the artifact contract. Do not make spec-kit templates the canonical source of the harness rules.
+If spec-kit is installed and active, prefer a project-local adapter that points back to this skill and `module:lifecycle`. Do not make spec-kit templates the canonical source of harness rules.
 
 ## Completion checklist
 
 - The work item folder follows `docs/work-items/<work-id>/`.
 - Top-level durable artifact filenames include the short ID suffix, such as `spec-<short-id>.md` and `plan-<short-id>.md`.
-- Required small/medium or large/phased work item artifacts exist.
-- Large or phased work item `spec-<short-id>.md` is detailed enough to hand off all important planning decisions to later phase-plan authors.
-- Each approved or handed-off spec, plan, phase plan, or amendment has passed the Planning Artifact Freeze Gate.
-- The documentation artifact matrix marks each artifact as required, not applicable, or deferred with a reason.
-- `CHANGELOG.md` has a newest-first entry for the work before each commit.
-- Frozen snapshots are not silently rewritten.
-- Nontrivial variance is recorded.
-- High-impact variance has an amendment and operator approval.
+- Required small/medium or large/phased artifacts exist and meet `module:quality`.
+- Each approved or handed-off spec, plan, phase plan, or amendment has passed `module:freeze-gate`.
+- The documentation artifact matrix uses `rule:lifecycle.documentation-matrix`.
+- `CHANGELOG.md` is updated before commits under `rule:lifecycle.changelog-before-commit`.
+- Frozen snapshots follow `rule:lifecycle.immutable-snapshots`.
+- Variance follows `rule:lifecycle.variance-policy`.
 - Plans include validation commands and expected outputs.
-- Sub-agent use, if any, follows the active model policy notation.
+- Sub-agent use, if any, follows the active repository policy notation from `module:models`.
