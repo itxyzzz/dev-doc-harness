@@ -153,8 +153,9 @@ templates, README, or validation artifacts:
 powershell -NoProfile -ExecutionPolicy Bypass -File .agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1
 ```
 
-The command checks current harness surfaces and golden traversal evidence. The
-canonical policy owners remain the routed references, not this README.
+The command checks current harness surfaces, golden traversal evidence, and
+release package consistency. The canonical policy owners remain the routed
+references, not this README.
 
 There is not an installation script yet. The copyable distributable package is
 the root `AGENTS.md` file plus the `.agents/` folder. The package records its

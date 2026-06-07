@@ -4,6 +4,21 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: complete Phase 03 release hardening
+
+Release target: `0.3.0`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added release validation checks for package identity, release notes, current release-versioning changelog schema, package boundary, template release context, and release routing.
+- Added the Phase 03 testing-guide delta and final release validation scenarios for the `0.3.0` checkpoint.
+
+### Changed
+
+- Updated `0.3.0` release notes and repository validation guidance to include release package consistency checks without adding generated release-note machinery.
+
 ## 2026-06-07-release-versioning: approve Phase 03 release hardening plan
 
 Release target: `0.3.0`

@@ -1,7 +1,7 @@
 # Architecture Summary Delta
 
 Work ID: `2026-06-07-release-versioning`
-Phase: Phase 02 release package implementation
+Phase: Phase 03 release hardening
 
 ## Release Identity
 
@@ -19,6 +19,6 @@ Harness release versions carry compatibility meaning. Stable `module:*`, `rule:*
 
 Current work-item templates include `Harness release: <version or unknown>` so new artifacts can record which harness release produced or froze them. Historical artifacts without the field remain pre-stamp artifacts.
 
-## Phase 03 Follow-Up
+## Validation Hardening
 
-Phase 03 should add validation for the package-local `VERSION`, release notes, source changelog section, current release-versioning changelog schema, package-boundary guidance, and existing graph checks.
+Phase 03 adds validation for package-local release identity, release-note headings and source changelog traceability, current release-versioning changelog metadata, package-boundary guidance, template release context, release routing, and existing graph checks.
