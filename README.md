@@ -247,11 +247,11 @@ and reusable artifacts.
 
 ## Contributing
 
-Planning artifacts for this harness repository's own development are usually
-local working notes, not distributable project content. Keep them under
-`docs/work-items/`, which is ignored by git in this repository, unless an
-approved plan explicitly tracks a work-item package as a repository artifact.
+Planning artifacts for this harness repository's own development are tracked
+repository history. Keep them under `docs/work-items/` so future contributors can
+review the specs, plans, snapshots, deltas, and variance records that explain
+why the harness changed.
 
-Contributions should commit the harness changes themselves, any user-facing
-documentation updates, and the relevant `CHANGELOG.md` entry, but not ordinary
-local planning packages for this repo's development.
+Contributions should commit the harness changes themselves, relevant
+`docs/work-items/` artifacts, user-facing documentation updates, and the
+required `CHANGELOG.md` entry.

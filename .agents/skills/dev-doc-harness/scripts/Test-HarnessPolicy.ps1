@@ -5,15 +5,55 @@ $Script:Failures = @()
 
 $Script:KnownPassMarkers = @(
   "PASS paths.required-files",
-  "PASS ids.module-owners",
-  "PASS ids.safety-rules",
-  "PASS templates.schema-anchors",
+  "PASS graph.references",
+  "PASS graph.owner-headings",
+  "PASS graph.template-routes",
   "PASS router.required-routes",
+  "PASS router.route-budget",
   "PASS discoverability.safety",
   "PASS phrases.duplicated-policy",
+  "PASS phrases.duplicate-blocks",
   "PASS placeholders.current-surfaces",
+  "PASS tracking.work-items",
   "PASS scenarios.golden-traversal"
 )
+
+$Script:CanonicalReferences = @(
+  ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+  ".agents/skills/dev-doc-harness/references/artifact-contract.md",
+  ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
+  ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
+  ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+  ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
+  ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
+  ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
+)
+
+$Script:TemplateFiles = @(
+  ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+  ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+  ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+  ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+  ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
+  ".agents/skills/dev-doc-harness/assets/templates/variance-log.md"
+)
+
+$Script:CurrentSurfaceFiles = @(
+  "AGENTS.md",
+  "README.md",
+  ".agents/skills/dev-doc-harness/SKILL.md",
+  ".agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1",
+  "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md",
+  "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
+  "docs/work-items/2026-06-05-refactor-as-code/deltas/testing-guide.delta.md",
+  "docs/work-items/2026-06-05-refactor-as-code/deltas/operator-manual.delta.md",
+  "docs/work-items/2026-06-05-refactor-as-code/deltas/architecture-summary.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/testing-guide.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/operator-manual.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md"
+) + $Script:CanonicalReferences + $Script:TemplateFiles
 
 function Join-RepoPath {
   param([Parameter(Mandatory = $true)][string]$Path)
@@ -41,6 +81,18 @@ function Add-Failure {
   }
 }
 
+function Write-CheckResult {
+  param([Parameter(Mandatory = $true)][string]$CheckId)
+  $failed = @($Script:Failures | Where-Object { $_.CheckId -eq $CheckId })
+  if ($failed.Count -eq 0) {
+    Write-Output "PASS $CheckId"
+    return
+  }
+  foreach ($failure in $failed) {
+    Write-Output "FAIL $CheckId`: $($failure.Detail)"
+  }
+}
+
 function Assert-PathExists {
   param(
     [Parameter(Mandatory = $true)][string]$CheckId,
@@ -48,6 +100,16 @@ function Assert-PathExists {
   )
   if (-not (Test-Path -LiteralPath (Join-RepoPath $Path))) {
     Add-Failure $CheckId "Missing path: $Path"
+  }
+}
+
+function Assert-PathAbsent {
+  param(
+    [Parameter(Mandatory = $true)][string]$CheckId,
+    [Parameter(Mandatory = $true)][string]$Path
+  )
+  if (Test-Path -LiteralPath (Join-RepoPath $Path)) {
+    Add-Failure $CheckId "Unexpected path exists: $Path"
   }
 }
 
@@ -77,6 +139,202 @@ function Assert-TextNotContains {
   }
 }
 
+function Get-ConcreteIds {
+  param([Parameter(Mandatory = $true)][string]$Text)
+  $matches = [regex]::Matches($Text, '\b(?:module|rule|schema|scenario|metric):[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?')
+  return @($matches | ForEach-Object { $_.Value } | Sort-Object -Unique)
+}
+
+function Convert-ToRepoRelativePath {
+  param([Parameter(Mandatory = $true)][string]$FullPath)
+  $root = $Script:RepoRoot.Path.TrimEnd("\", "/")
+  $normalizedFullPath = $FullPath
+  if ($normalizedFullPath.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+    $normalizedFullPath = $normalizedFullPath.Substring($root.Length).TrimStart("\", "/")
+  }
+  return ($normalizedFullPath -replace '\\', '/')
+}
+
+function Add-Owner {
+  param(
+    [Parameter(Mandatory = $true)][hashtable]$Owners,
+    [Parameter(Mandatory = $true)][string]$Id,
+    [Parameter(Mandatory = $true)][string]$Path,
+    [string]$Heading = ""
+  )
+  if (-not $Owners.ContainsKey($Id)) {
+    $Owners[$Id] = @()
+  }
+  $Owners[$Id] += [PSCustomObject]@{
+    Path = $Path
+    Heading = $Heading
+  }
+}
+
+function Get-OwnerGraph {
+  $owners = @{
+    module = @{}
+    rule = @{}
+    schema = @{}
+    scenario = @{}
+    metric = @{}
+  }
+  $ownerRows = @()
+
+  foreach ($path in $Script:CanonicalReferences) {
+    $text = Read-RepoText $path
+    foreach ($match in [regex]::Matches($text, '(?:Module:|owns)\s+`(module:[a-z0-9][a-z0-9.-]*)`')) {
+      Add-Owner $owners.module $match.Groups[1].Value $path ""
+    }
+
+    foreach ($line in ($text -split "`r?`n")) {
+      $rowMatch = [regex]::Match($line, '^\|\s*`(rule:[a-z0-9][a-z0-9.-]*)`\s*\|\s*(.+?)\s*\|')
+      if ($rowMatch.Success) {
+        $ruleId = $rowMatch.Groups[1].Value
+        $ownerCell = $rowMatch.Groups[2].Value
+        Add-Owner $owners.rule $ruleId $path $ownerCell
+        $ownerRows += [PSCustomObject]@{
+          Path = $path
+          Id = $ruleId
+          OwnerCell = $ownerCell
+        }
+      }
+    }
+  }
+
+  foreach ($path in $Script:TemplateFiles) {
+    $text = Read-RepoText $path
+    foreach ($match in [regex]::Matches($text, 'Schema:\s+`(schema:[a-z0-9][a-z0-9.-]*)`')) {
+      Add-Owner $owners.schema $match.Groups[1].Value $path ""
+    }
+  }
+
+  $scenarioMetricOwnerFiles = @(
+    "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md",
+    "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
+    "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
+    "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md"
+  )
+  foreach ($path in $scenarioMetricOwnerFiles) {
+    $text = Read-RepoText $path
+    foreach ($id in (Get-ConcreteIds $text)) {
+      if ($id.StartsWith("scenario:")) {
+        Add-Owner $owners.scenario $id $path ""
+      } elseif ($id.StartsWith("metric:")) {
+        Add-Owner $owners.metric $id $path ""
+      }
+    }
+  }
+
+  return [PSCustomObject]@{
+    Owners = $owners
+    OwnerRows = $ownerRows
+  }
+}
+
+function Get-ReferenceRecords {
+  $records = @()
+  foreach ($path in $Script:CurrentSurfaceFiles) {
+    $text = Read-RepoText $path
+    foreach ($id in (Get-ConcreteIds $text)) {
+      $records += [PSCustomObject]@{
+        Path = $path
+        Id = $id
+      }
+    }
+  }
+  return $records
+}
+
+function Get-OwnerTableHeadingNames {
+  param([Parameter(Mandatory = $true)][string]$OwnerCell)
+  $names = @()
+  foreach ($match in [regex]::Matches($OwnerCell, '##\s*([^`|]+?)(?:\s+and\s+|$)')) {
+    $names += "## " + $match.Groups[1].Value.Trim()
+  }
+  return $names
+}
+
+function Assert-GraphReferences {
+  param(
+    [Parameter(Mandatory = $true)]$Graph,
+    [Parameter(Mandatory = $true)][object[]]$References
+  )
+  foreach ($record in $References) {
+    if ($record.Path -match '/snapshots/test-cases\.snapshot\.md$' -and $record.Id -match ('^rule' + ':test\.')) {
+      continue
+    }
+    $parts = $record.Id.Split(":", 2)
+    $kind = $parts[0]
+    if ($Graph.Owners.ContainsKey($kind) -and -not $Graph.Owners[$kind].ContainsKey($record.Id)) {
+      Add-Failure "graph.references" "Dangling $kind reference '$($record.Id)' in $($record.Path)"
+    }
+  }
+
+  foreach ($kind in @("module", "rule", "schema")) {
+    foreach ($id in $Graph.Owners[$kind].Keys) {
+      $paths = @($Graph.Owners[$kind][$id] | ForEach-Object { $_.Path } | Sort-Object -Unique)
+      if ($paths.Count -gt 1) {
+        Add-Failure "graph.references" "Duplicate $kind owner for '$id': $($paths -join ', ')"
+      }
+    }
+  }
+}
+
+function Assert-OwnerHeadings {
+  param([Parameter(Mandatory = $true)]$Graph)
+  foreach ($row in $Graph.OwnerRows) {
+    $text = Read-RepoText $row.Path
+    $headings = Get-OwnerTableHeadingNames $row.OwnerCell
+    foreach ($heading in $headings) {
+      if ($text -notmatch "(?m)^$([regex]::Escape($heading))\s*$") {
+        Add-Failure "graph.owner-headings" "Owner heading '$heading' for $($row.Id) is missing in $($row.Path)"
+      }
+    }
+  }
+}
+
+function Get-PolicyReferences {
+  param([Parameter(Mandatory = $true)][string]$Path)
+  $text = Read-RepoText $Path
+  $line = ($text -split "`r?`n" | Where-Object { $_ -match '^Policy references:' } | Select-Object -First 1)
+  if (-not $line) {
+    return @()
+  }
+  return @(Get-ConcreteIds $line)
+}
+
+function Assert-TemplateRoutes {
+  $operationRequirements = @{
+    "small-medium" = @("module:lifecycle", "module:quality", "module:models")
+    "large-anchor" = @("module:lifecycle", "module:quality", "module:models")
+    "phase-plan" = @("module:lifecycle", "module:quality", "module:models")
+    "amendment" = @("module:lifecycle", "module:freeze-gate")
+  }
+  $operationTemplates = @{
+    "small-medium" = @(
+      ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+      ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
+    )
+    "large-anchor" = @(".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md")
+    "phase-plan" = @(".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md")
+    "amendment" = @(".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md")
+  }
+
+  foreach ($operation in $operationRequirements.Keys) {
+    $combined = @()
+    foreach ($template in $operationTemplates[$operation]) {
+      $combined += Get-PolicyReferences $template
+    }
+    $combined = @($combined | Sort-Object -Unique)
+    foreach ($required in $operationRequirements[$operation]) {
+      if ($combined -notcontains $required) {
+        Add-Failure "graph.template-routes" "Template set for '$operation' is missing policy reference '$required'"
+      }
+    }
+  }
+}
+
 function Assert-RouteContains {
   param(
     [Parameter(Mandatory = $true)][string]$Operation,
@@ -97,6 +355,50 @@ function Assert-RouteContains {
   }
 }
 
+function Assert-RouteBudgets {
+  $path = ".agents/skills/dev-doc-harness/SKILL.md"
+  $text = Read-RepoText $path
+  $budgets = @{
+    "Classify work size" = 1
+    "Draft or review small/medium specs and plans" = 3
+    "Draft or review large anchor specs" = 3
+    "Draft or review phase plans" = 3
+    "Freeze planning packages" = 4
+    "Execute approved work and record variance" = 4
+    "Use or review sub-agent strategy" = 2
+    "Evidence-heavy review or reports" = 1
+    "Validate current harness surfaces" = 2
+    "Update templates or router guidance" = 3
+    "Superpowers or spec-kit compatibility" = 3
+  }
+
+  foreach ($operation in $budgets.Keys) {
+    $routeLine = ($text -split "`r?`n" | Where-Object { $_ -match "^\|\s*$([regex]::Escape($operation))\s*\|" } | Select-Object -First 1)
+    if (-not $routeLine) {
+      Add-Failure "router.route-budget" "Missing route for budget check: $operation"
+      continue
+    }
+    $rawCells = @($routeLine -split '\|')
+    if ($rawCells.Count -lt 5) {
+      Add-Failure "router.route-budget" "Malformed route row for budget check: $operation"
+      continue
+    }
+    $cells = @()
+    for ($i = 1; $i -lt ($rawCells.Count - 1); $i++) {
+      $cells += $rawCells[$i].Trim()
+    }
+    if ($cells.Count -lt 2) {
+      Add-Failure "router.route-budget" "Malformed route row for budget check: $operation"
+      continue
+    }
+    $requiredCell = $cells[1]
+    $moduleCount = @([regex]::Matches($requiredCell, 'module:[a-z0-9][a-z0-9.-]*') | ForEach-Object { $_.Value } | Sort-Object -Unique).Count
+    if ($moduleCount -gt $budgets[$operation]) {
+      Add-Failure "router.route-budget" "Route '$operation' requires $moduleCount modules, budget is $($budgets[$operation])"
+    }
+  }
+}
+
 function Assert-ScenarioEvidence {
   param(
     [Parameter(Mandatory = $true)][string]$ScenarioId,
@@ -108,15 +410,83 @@ function Assert-ScenarioEvidence {
   }
 }
 
-function Write-CheckResult {
-  param([Parameter(Mandatory = $true)][string]$CheckId)
-  $failed = @($Script:Failures | Where-Object { $_.CheckId -eq $CheckId })
-  if ($failed.Count -eq 0) {
-    Write-Output "PASS $CheckId"
-    return
+function Get-NormalizedParagraphs {
+  param([Parameter(Mandatory = $true)][string]$Path)
+  $text = Read-RepoText $Path
+  $paragraphs = @()
+  $current = @()
+  $inFence = $false
+  foreach ($line in ($text -split "`r?`n")) {
+    if ($line -match '^\s*```') {
+      $inFence = -not $inFence
+      continue
+    }
+    if ($inFence -or $line -match '^\s*\|' -or $line -match '^\s*#' -or $line -match '^\s*[-*]\s' -or $line -match '^\s*\d+\.') {
+      if ($current.Count -gt 0) {
+        $paragraphs += ($current -join " ")
+        $current = @()
+      }
+      continue
+    }
+    if ([string]::IsNullOrWhiteSpace($line)) {
+      if ($current.Count -gt 0) {
+        $paragraphs += ($current -join " ")
+        $current = @()
+      }
+      continue
+    }
+    $current += $line.Trim()
   }
-  foreach ($failure in $failed) {
-    Write-Output "FAIL $CheckId`: $($failure.Detail)"
+  if ($current.Count -gt 0) {
+    $paragraphs += ($current -join " ")
+  }
+
+  $normalized = @()
+  foreach ($paragraph in $paragraphs) {
+    $words = @([regex]::Matches($paragraph.ToLowerInvariant(), '[a-z0-9]+') | ForEach-Object { $_.Value })
+    if ($words.Count -ge 55) {
+      $normalized += [PSCustomObject]@{
+        Path = $Path
+        Text = ($words -join " ")
+      }
+    }
+  }
+  return $normalized
+}
+
+function Assert-DuplicateBlocks {
+  $targets = @(
+    "AGENTS.md",
+    "README.md",
+    ".agents/skills/dev-doc-harness/SKILL.md"
+  ) + $Script:CanonicalReferences + $Script:TemplateFiles
+
+  $seen = @{}
+  foreach ($target in $targets) {
+    foreach ($paragraph in (Get-NormalizedParagraphs $target)) {
+      if ($seen.ContainsKey($paragraph.Text) -and $seen[$paragraph.Text] -ne $target) {
+        Add-Failure "phrases.duplicate-blocks" "Duplicate broad policy block in $($seen[$paragraph.Text]) and $target"
+      } elseif (-not $seen.ContainsKey($paragraph.Text)) {
+        $seen[$paragraph.Text] = $target
+      }
+    }
+  }
+}
+
+function Assert-WorkItemTracking {
+  Assert-PathAbsent "tracking.work-items" "docs/work-items/AGENTS.md"
+  $ignore = & git -C $Script:RepoRoot check-ignore -v "docs/work-items/2026-06-07-followup-hardening/spec-followup-hardening.md" 2>$null
+  if ($LASTEXITCODE -eq 0 -and $ignore) {
+    Add-Failure "tracking.work-items" "Work-item docs are still ignored: $ignore"
+  }
+
+  $markdownFiles = Get-ChildItem -LiteralPath (Join-RepoPath "docs/work-items") -Recurse -File -Filter "*.md" |
+    ForEach-Object { Convert-ToRepoRelativePath $_.FullName }
+  $tracked = @(& git -C $Script:RepoRoot ls-files "docs/work-items")
+  foreach ($path in $markdownFiles) {
+    if ($tracked -notcontains $path) {
+      Add-Failure "tracking.work-items" "Untracked work-item Markdown artifact: $path"
+    }
   }
 }
 
@@ -132,6 +502,7 @@ $requiredFiles = @(
   ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
   ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
   ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
+  ".agents/skills/dev-doc-harness/references/subagent-role-examples.md",
   ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
   ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
   ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
@@ -141,7 +512,12 @@ $requiredFiles = @(
   "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
   "docs/work-items/2026-06-05-refactor-as-code/deltas/testing-guide.delta.md",
   "docs/work-items/2026-06-05-refactor-as-code/deltas/operator-manual.delta.md",
-  "docs/work-items/2026-06-05-refactor-as-code/deltas/architecture-summary.delta.md"
+  "docs/work-items/2026-06-05-refactor-as-code/deltas/architecture-summary.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/testing-guide.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/operator-manual.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md"
 )
 
 foreach ($path in $requiredFiles) {
@@ -149,62 +525,19 @@ foreach ($path in $requiredFiles) {
 }
 Write-CheckResult "paths.required-files"
 
-$moduleOwners = @(
-  @{ Path = ".agents/skills/dev-doc-harness/references/policy-architecture.md"; Pattern = "module:architecture" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "module:lifecycle" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "module:freeze-gate" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "module:models" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"; Pattern = "module:quality" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"; Pattern = "module:execution-quality" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md"; Pattern = "module:evidence" }
-)
+$graph = Get-OwnerGraph
+$references = Get-ReferenceRecords
+Assert-GraphReferences $graph $references
+Write-CheckResult "graph.references"
 
-foreach ($owner in $moduleOwners) {
-  Assert-TextContains "ids.module-owners" $owner.Path ([regex]::Escape($owner.Pattern)) $owner.Pattern
-}
-Write-CheckResult "ids.module-owners"
+Assert-OwnerHeadings $graph
+Write-CheckResult "graph.owner-headings"
 
-$safetyRules = @(
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.work-sizing" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.immutable-snapshots" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.variance-policy" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.changelog-before-commit" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.documentation-matrix" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "rule:freeze.draft-review" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "rule:freeze.approval-freeze" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "rule:freeze.stop-before-implementation" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "rule:models.strategy-required" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "rule:models.approved-strategy-authorized" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "rule:models.fresh-confirmation" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"; Pattern = "rule:quality.phase-plan-fresh-thread" }
-)
-
-foreach ($rule in $safetyRules) {
-  Assert-TextContains "ids.safety-rules" $rule.Path ([regex]::Escape($rule.Pattern)) $rule.Pattern
-}
-
-foreach ($publicRule in @("rule:lifecycle.work-sizing", "rule:lifecycle.variance-policy", "rule:lifecycle.changelog-before-commit", "rule:freeze.draft-review", "rule:freeze.approval-freeze", "rule:freeze.stop-before-implementation", "rule:models.strategy-required", "rule:quality.phase-plan-fresh-thread")) {
-  Assert-TextContains "ids.safety-rules" ".agents/skills/dev-doc-harness/SKILL.md" ([regex]::Escape($publicRule)) "$publicRule public route"
-}
-Write-CheckResult "ids.safety-rules"
-
-$schemaAnchors = @(
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"; Pattern = "schema:spec.small-medium" },
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"; Pattern = "schema:plan.small-medium" },
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"; Pattern = "schema:spec.large-phased" },
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"; Pattern = "schema:plan.phase" },
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"; Pattern = "schema:plan.amendment" },
-  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/variance-log.md"; Pattern = "schema:variance-log" }
-)
-
-foreach ($schema in $schemaAnchors) {
-  Assert-TextContains "templates.schema-anchors" $schema.Path ([regex]::Escape($schema.Pattern)) $schema.Pattern
-  Assert-TextContains "templates.schema-anchors" $schema.Path "Policy references:" "policy-reference anchor"
-}
-Write-CheckResult "templates.schema-anchors"
+Assert-TemplateRoutes
+Write-CheckResult "graph.template-routes"
 
 Assert-RouteContains "Classify work size" @("module:lifecycle", "rule:lifecycle.work-sizing")
-Assert-RouteContains "Draft or review small/medium specs and plans" @("module:lifecycle", "module:quality")
+Assert-RouteContains "Draft or review small/medium specs and plans" @("module:lifecycle", "module:quality", "module:models")
 Assert-RouteContains "Draft or review large anchor specs" @("module:lifecycle", "module:quality", "module:models")
 Assert-RouteContains "Draft or review phase plans" @("module:quality", "module:lifecycle", "module:models")
 Assert-RouteContains "Freeze planning packages" @("module:freeze-gate", "module:lifecycle")
@@ -214,6 +547,9 @@ Assert-RouteContains "Evidence-heavy review or reports" @("module:evidence")
 Assert-RouteContains "Update templates or router guidance" @("module:architecture")
 Assert-RouteContains "Superpowers or spec-kit compatibility" @("module:lifecycle")
 Write-CheckResult "router.required-routes"
+
+Assert-RouteBudgets
+Write-CheckResult "router.route-budget"
 
 $discoverability = @(
   @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "Classify work size"; Label = "work sizing" },
@@ -225,7 +561,7 @@ $discoverability = @(
   @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "Documentation artifact matrix"; Label = "documentation matrix" },
   @{ Path = "AGENTS.md"; Pattern = "single repository-local selection point"; Label = "active repository model policy" },
   @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "Superpowers compatibility"; Label = "Superpowers compatibility" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/policy-architecture.md"; Pattern = "Historical artifacts are not updated"; Label = "historical artifact handling" }
+  @{ Path = ".agents/skills/dev-doc-harness/references/policy-architecture.md"; Pattern = "Historical artifacts are tracked documentation"; Label = "historical artifact handling" }
 )
 
 foreach ($topic in $discoverability) {
@@ -250,7 +586,8 @@ $disallowedPhrases = @(
   "Context strategy must say how",
   "Before approval, operator feedback edits this draft directly",
   "When this .*ready for operator review, follow",
-  "After this .*approved, frozen, and followed"
+  "After this .*approved, frozen, and followed",
+  "module:models.*when model or sub-agent strategy is assessed"
 )
 foreach ($target in $duplicatePhraseTargets) {
   foreach ($phrase in $disallowedPhrases) {
@@ -258,6 +595,9 @@ foreach ($target in $duplicatePhraseTargets) {
   }
 }
 Write-CheckResult "phrases.duplicated-policy"
+
+Assert-DuplicateBlocks
+Write-CheckResult "phrases.duplicate-blocks"
 
 $placeholderTargets = @(
   "AGENTS.md",
@@ -274,7 +614,12 @@ $placeholderTargets = @(
   "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
   "docs/work-items/2026-06-05-refactor-as-code/deltas/testing-guide.delta.md",
   "docs/work-items/2026-06-05-refactor-as-code/deltas/operator-manual.delta.md",
-  "docs/work-items/2026-06-05-refactor-as-code/deltas/architecture-summary.delta.md"
+  "docs/work-items/2026-06-05-refactor-as-code/deltas/architecture-summary.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/test-cases.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/testing-guide.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/operator-manual.delta.md",
+  "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md"
 )
 $placeholderPatterns = @("Status:[ ]Draft", "T[D]B", "T[O]DO", "R[e]place", "blank u[n]less", "unresolved d[e]cision")
 foreach ($target in $placeholderTargets) {
@@ -283,6 +628,9 @@ foreach ($target in $placeholderTargets) {
   }
 }
 Write-CheckResult "placeholders.current-surfaces"
+
+Assert-WorkItemTracking
+Write-CheckResult "tracking.work-items"
 
 $scenarioSnapshot = "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md"
 $scenarioIds = @(
@@ -346,7 +694,7 @@ Assert-ScenarioEvidence "scenario:compat.superpowers" @(
 )
 Assert-ScenarioEvidence "scenario:history.historical-artifact-handling" @(
   @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.immutable-snapshots"; Label = "immutable rule" },
-  @{ Path = ".agents/skills/dev-doc-harness/references/policy-architecture.md"; Pattern = "Historical artifacts are not updated"; Label = "historical handling" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/policy-architecture.md"; Pattern = "Historical artifacts are tracked documentation"; Label = "historical handling" },
   @{ Path = "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md"; Pattern = "scenario:history.historical-artifact-handling"; Label = "source scenario" }
 )
 Write-CheckResult "scenarios.golden-traversal"

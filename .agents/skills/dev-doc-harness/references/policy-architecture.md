@@ -75,7 +75,7 @@ Future router work should load by operation rather than eagerly loading every re
 | Operation family | Typical modules |
 |---|---|
 | Classify work size | `module:lifecycle` |
-| Draft or review durable specs and plans | `module:lifecycle`, `module:quality`, `module:models` when sub-agent strategy is assessed |
+| Draft or review durable specs and plans | `module:lifecycle`, `module:quality`, `module:models` for substantial planning |
 | Freeze planning packages | `module:freeze-gate`, `module:lifecycle` |
 | Execute approved work and record variance | `module:lifecycle`, `module:execution-quality` |
 | Use or review sub-agent strategy | `module:models`, optionally `module:role-examples` |
@@ -87,3 +87,21 @@ Future router work should load by operation rather than eagerly loading every re
 Full rule versioning is deferred. Module and rule IDs are stable identifiers for this refactor, not a complete versioned policy system.
 
 Future phases should avoid choices that block later versioning, deprecation, or supersession metadata. If an ID changes, prefer a clear replacement note such as `Superseded by:` in the canonical owner and do not rewrite frozen historical artifacts solely to update cited IDs.
+
+## Validation Model
+
+Current validation treats the harness as a graph of declared owners and references. Owner sets come from canonical module declarations, rule owner tables, template schema anchors, and current scenario or metric anchors. Reference sets come from template `Policy references:` lines, the operation router, README route tables, validation documentation, and validation script check definitions.
+
+Validation should fail when a current reference has no owner, when a current rule or schema has more than one owner, when an owner-table local heading is missing, when a template policy-reference list omits modules required by the matching router operation, or when a router target points to a missing file, module, rule, or template.
+
+Historical artifacts are tracked documentation for repository development. Historical work-item artifacts preserve review history. They may cite older policy text, but they are not current reusable-policy owners and are excluded from duplicate-policy cleanup enforcement.
+
+## Route And Duplication Budgets
+
+Common operation routes should stay within the architecture budget: routine routes should not require more than three canonical modules before optional supplemental context, and freeze or execution routes may require four when changelog, immutability, or execution-quality checks are separate.
+
+Duplicate-block validation should detect broad reusable policy blocks copied across current harness surfaces. It should ignore frozen historical work-item artifacts, code fences, tables, headings, and short intentional summaries. Keep the high-signal phrase blacklist as a fast regression check.
+
+## Lifecycle Decomposition Direction
+
+Do not split `references/artifact-contract.md` until graph validation is in place. The recommended next step is section-level ownership unless future edit pressure proves a file split is worthwhile. If a split becomes useful, first consider moving changelog and documentation-matrix policy to a documentation module while leaving work sizing, artifact layout, immutability, and variance in lifecycle.

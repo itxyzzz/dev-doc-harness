@@ -4,6 +4,20 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-followup-hardening: complete implementation
+
+### Added
+
+- Added structural graph validation for current harness policy owners, references, route budgets, template route consistency, duplicate reusable policy blocks, and tracked work-item Markdown artifacts.
+- Added follow-up testing, operator-manual, and architecture-summary deltas for graph validation, tracked work-item history, required model-policy routing, and lifecycle decomposition guidance.
+- Added previously ignored historical work-item Markdown artifacts under `docs/work-items` to tracked repository history.
+
+### Changed
+
+- Removed the local-only `docs/work-items` ignore rule and documented work-item artifacts as repository development history.
+- Made `module:models` required for substantial small, medium, and large durable planning routes.
+- Documented the structural validation model, route and duplication budgets, and lifecycle decomposition direction in the policy architecture reference.
+
 ## 2026-06-07-followup-hardening: approve implementation plan
 
 ### Added
