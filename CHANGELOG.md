@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-followup-hardening: approve planning package
+
+### Added
+
+- Added the approved spec for tracking work-item docs, requiring model policy in substantial small/medium planning, structural policy graph validation, route and duplicate-policy checks, and lifecycle-module decomposition planning.
+
 ## 2026-06-05-refactor-as-code: complete Phase 05 validation hardening
 
 ### Added
