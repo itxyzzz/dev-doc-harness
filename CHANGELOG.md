@@ -4,6 +4,23 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: complete Phase 02 release package implementation
+
+Release target: `0.3.0`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added package-local release identity, release policy, and `0.3.0` release notes under `.agents/skills/dev-doc-harness/`.
+- Added `Harness release: <version or unknown>` to current work-item templates.
+- Added Phase 02 operator-manual and architecture-summary deltas for package adoption, rollback, and compatibility guidance.
+
+### Changed
+
+- Routed release/package/adoption work through `module:release` and replaced the broad rule-versioning deferral with the `0.3.0` release-level compatibility model.
+- Normalized current release-versioning changelog entries with release target, package impact, and release-note relevance.
+
 ## 2026-06-07-release-versioning: approve Phase 02 release package plan
 
 Release target: `0.3.0`
@@ -31,11 +48,19 @@ Release-note: `source-only`
 
 ## 2026-06-07-release-versioning: approve Phase 01 release policy plan
 
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
 ### Added
 
 - Added the approved Phase 01 plan for defining the Dev Doc Harness `0.3` release policy architecture, package boundary, changelog-to-release-notes contract, release-note aggregation behavior, and team adoption flow.
 
 ## 2026-06-07-release-versioning: approve anchor spec
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
 
 ### Added
 

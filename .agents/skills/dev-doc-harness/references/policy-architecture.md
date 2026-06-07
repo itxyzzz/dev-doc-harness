@@ -21,11 +21,12 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 
 | Module ID | Owner file | Content type | Owned rule families |
 |---|---|---|---|
-| `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, router inputs, and rule versioning status. |
+| `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, and router inputs. |
 | `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item folders, short artifact IDs, work sizing, large/phased anchors, compatibility, immutable snapshots, documentation matrix, variance, and changelog rules. |
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
+| `module:release` | `references/release-policy.md` | Normative policy | Release identity, distributable package boundary, changelog as release source, release notes, release compatibility, artifact release context, and team adoption flow. |
 | `module:execution-quality` | `references/context-and-quality-gates.md` | Advisory guidance | Context load order, task preflight, environment compensation, and increment quality gates. |
 | `module:evidence` | `references/evidence-and-report-artifacts.md` | Advisory guidance | Evidence preservation, report sections, and evidence stop conditions. |
 | `module:role-examples` | `references/subagent-role-examples.md` | Example | Optional sub-agent role patterns, portable role shape, and role report examples. |
@@ -82,11 +83,11 @@ Future router work should load by operation rather than eagerly loading every re
 | Handle evidence-heavy review or reports | `module:evidence` |
 | Update templates or router guidance | `module:architecture`, plus the canonical owner for each referenced rule family |
 
-## Versioning Status
+## Release Compatibility
 
-Full rule versioning is deferred. Module and rule IDs are stable identifiers for this refactor, not a complete versioned policy system.
+Release compatibility is owned by `module:release` in `references/release-policy.md`.
 
-Future phases should avoid choices that block later versioning, deprecation, or supersession metadata. If an ID changes, prefer a clear replacement note such as `Superseded by:` in the canonical owner and do not rewrite frozen historical artifacts solely to update cited IDs.
+Module and rule IDs are stable retrieval and ownership anchors, not full semantic versions. If an ID changes, prefer a clear replacement note such as `Superseded by:` in the canonical owner and do not rewrite frozen historical artifacts solely to update cited IDs.
 
 ## Validation Model
 

@@ -3,6 +3,7 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
+Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
 Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 

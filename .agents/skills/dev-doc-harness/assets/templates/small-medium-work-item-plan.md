@@ -3,6 +3,7 @@
 Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
 Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
+Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
 Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 

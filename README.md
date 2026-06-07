@@ -142,6 +142,7 @@ The router sends each operation to the minimum useful owner modules:
 | Durable spec and phase-plan quality | `module:quality` in `references/durable-planning-quality.md` |
 | Model and sub-agent strategy | `module:models` in `references/subagent-model-policy.md` |
 | Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
+| Release identity, package boundary, and team adoption | `module:release` in `references/release-policy.md` |
 | Execution-time quality checks | `module:execution-quality` in `references/context-and-quality-gates.md` |
 
 For harness maintenance, agents can run this lightweight local validation check
@@ -155,12 +156,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .agents/skills/dev-doc-harne
 The command checks current harness surfaces and golden traversal evidence. The
 canonical policy owners remain the routed references, not this README.
 
-There is not an installation script yet. After checking out this repository, use
-the harness in either of these ways:
+There is not an installation script yet. The copyable distributable package is
+the root `AGENTS.md` file plus the `.agents/` folder. The package records its
+release in `.agents/skills/dev-doc-harness/VERSION`, and package-local release
+notes live under `.agents/skills/dev-doc-harness/docs/releases/`.
+
+After checking out this repository, use the harness in either of these ways:
 
 - Copy `AGENTS.md` and the `.agents/` folder into the repository where you want
   to use the harness. If the destination repository already has an `AGENTS.md`,
   merge or append the harness instructions instead of replacing the file.
+  Do not copy this repository's `docs/work-items/` folder; downstream projects
+  keep their own work-item artifacts. Commit or open a PR for the harness update
+  separately from product work, and roll back by reverting that dedicated update.
 - Install it globally. Codex can do this for you, or you can manually copy the
   contents of `.agents/skills/dev-doc-harness/` into
   `$HOME\.agents\skills\dev-doc-harness`.
@@ -217,8 +225,10 @@ The internal machinery is intentionally small:
 - `AGENTS.md` bootstraps the harness and selects repository-specific defaults.
 - `.agents/skills/dev-doc-harness/SKILL.md` is the operation router.
 - `references/policy-architecture.md` defines the module catalog, rule ID
-  conventions, content types, dependency direction, router inputs, and
-  rule-versioning status.
+  conventions, content types, dependency direction, and router inputs.
+- `references/release-policy.md` defines release identity, package boundaries,
+  changelog-derived release notes, compatibility, artifact release context, and
+  team adoption flow.
 - `references/artifact-contract.md` defines work item folders, short-ID
   artifact filenames, snapshots, deltas, changelog rules, and variance
   handling.
@@ -230,6 +240,8 @@ The internal machinery is intentionally small:
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
   templates. Templates own artifact shape and prompts, not reusable policy.
+- `docs/releases/` contains package-local release notes that travel with
+  `.agents/`.
 
 Read the routed owner documents for the full contract. The README is only the
 operator overview and does not override canonical references.

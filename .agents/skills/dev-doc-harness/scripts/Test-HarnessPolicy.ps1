@@ -24,6 +24,7 @@ $Script:CanonicalReferences = @(
   ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
   ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
   ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+  ".agents/skills/dev-doc-harness/references/release-policy.md",
   ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
   ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
   ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
@@ -500,6 +501,7 @@ $requiredFiles = @(
   ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
   ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
   ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+  ".agents/skills/dev-doc-harness/references/release-policy.md",
   ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
   ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
   ".agents/skills/dev-doc-harness/references/subagent-role-examples.md",
