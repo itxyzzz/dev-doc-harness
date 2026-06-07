@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: approve Phase 02 release package plan
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved Phase 02 plan for implementing package-local release identity, `module:release`, `0.3.0` release notes, changelog schema normalization, template release stamping, README adoption guidance, and Phase 02 documentation deltas.
+
 ## 2026-06-07-release-versioning: complete Phase 01 release policy architecture
 
 Release target: `0.3.0`
