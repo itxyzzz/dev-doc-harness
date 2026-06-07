@@ -4,6 +4,19 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## Dev Doc Harness 0.3.0 - 2026-06-07
+
+Release status: `released`
+Release branch: `release/0.3`
+
+### Added
+
+- Released package-local harness identity, package-local release notes, release policy, template release context, and release validation checks for Dev Doc Harness `0.3.0`.
+
+### Changed
+
+- Released the harness-level compatibility model, changelog-derived release-note policy, package boundary guidance, and minimal team adoption or rollback flow for team repositories.
+
 ## 2026-06-07-release-versioning: complete Phase 03 release hardening
 
 Release target: `0.3.0`
