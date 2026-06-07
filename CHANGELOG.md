@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-followup-hardening: approve implementation plan
+
+### Added
+
+- Added the approved plan, validation test snapshot, architecture snapshot, and variance log for follow-up hardening of tracked work-item docs, model-policy routing, graph validation, route/de-duplication checks, and lifecycle decomposition guidance.
+
 ## 2026-06-07-followup-hardening: approve planning package
 
 ### Added
