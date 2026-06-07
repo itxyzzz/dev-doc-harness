@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: approve Phase 03 release hardening plan
+
+Release target: `0.3.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved Phase 03 plan and release-validation test-case snapshot for hardening `0.3.0` package identity, release notes, changelog schema, package boundary, template release context, release routing, and final release checkpoint documentation.
+
 ## 2026-06-07-release-versioning: complete Phase 02 release package implementation
 
 Release target: `0.3.0`
