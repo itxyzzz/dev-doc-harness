@@ -4,6 +4,12 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-07-release-versioning: approve Phase 01 release policy plan
+
+### Added
+
+- Added the approved Phase 01 plan for defining the Dev Doc Harness `0.3` release policy architecture, package boundary, changelog-to-release-notes contract, release-note aggregation behavior, and team adoption flow.
+
 ## 2026-06-07-release-versioning: approve anchor spec
 
 ### Added
