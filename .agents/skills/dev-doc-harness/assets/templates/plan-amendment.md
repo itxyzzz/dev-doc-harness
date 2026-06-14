@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Proposed
 Harness release: `<version or unknown>`
 Schema: `schema:plan.amendment`
-Policy references: `module:lifecycle`, `module:freeze-gate`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:freeze-gate`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Original plan reference
 
@@ -43,6 +43,15 @@ Explain why the implementation cannot proceed under the approved plan.
 - Required: Yes
 - Status: Proposed / Approved / Rejected / Superseded
 - Superseded by: record only when this artifact is superseded
+
+## Planned commits
+
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during amendment approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets.
+
+| Stage | Planned subject | Changelog title or snippet | Notes |
+|---|---|---|---|
+| Amendment approval | `<short-id> - Amendment NNN: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this amendment. |
+| Amended implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add or update rows for implementation commits affected by this amendment. |
 
 ## Planning artifact freeze gate
 

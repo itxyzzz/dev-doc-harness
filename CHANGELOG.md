@@ -4,6 +4,21 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-14-commit-message-format: define harness commit message format
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Added
+
+- Added `rule:lifecycle.commit-message-format` as the canonical harness commit-subject policy for short-ID-prefixed approval and typed implementation commits.
+- Added planned commit subject sections to the current work-item templates so operators can review commit names alongside specs, plans, phase plans, and amendments.
+
+### Changed
+
+- Updated freeze-gate, changelog, and README guidance so approval commits use planned subjects and commit title snippets stay synchronized with matching changelog entries.
+
 ## 2026-06-14-commit-message-format: commit message format
 
 Release target: `unreleased`

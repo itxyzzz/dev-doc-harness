@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Objective
 
@@ -36,6 +36,15 @@ Sub-agents: record `None` with rationale, or list bounded phase-specific roles i
 ## Tasks
 
 Write one checkbox per phase step. Include implementation, test, validation, documentation, and handoff work in execution order.
+
+## Planned commits
+
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets. Update this table before committing if implementation changes the subject wording.
+
+| Stage | Planned subject | Changelog title or snippet | Notes |
+|---|---|---|---|
+| Phase plan approval | `<short-id> - Phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this phase plan. |
+| Phase implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add one row per expected phase implementation, validation, release, or maintenance commit. |
 
 ## Tests and validation
 
@@ -69,5 +78,6 @@ Include assigned scope, files inspected or changed, commands and tests run, assu
 - Validation commands have been run and recorded.
 - Documentation tasks are complete or explicitly deferred with reason.
 - `CHANGELOG.md` has a newest-first entry for the phase before each commit.
+- Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
 - Variance log is present and current.
 - De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.

@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Implementation summary
 
@@ -31,6 +31,15 @@ Sub-agents: record `None` with rationale, or list bounded task-specific roles in
 
 Write one checkbox per implementation, test, validation, or documentation step. Each step should be specific enough for a fresh agent to execute without choosing an approach.
 
+## Planned commits
+
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during plan approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets. Update this table before committing if implementation changes the subject wording.
+
+| Stage | Planned subject | Changelog title or snippet | Notes |
+|---|---|---|---|
+| Planning approval | `<short-id> - Spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this spec and plan, or replace with the artifact set being approved. |
+| Implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add one row per expected implementation, validation, release, or maintenance commit. |
+
 ## Validation commands
 
 | Command | Expected result |
@@ -53,6 +62,7 @@ Record the draft review, approval commit, and post-freeze implementation authori
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.
+- Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
 - Variance log is present and current.
 - De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
 

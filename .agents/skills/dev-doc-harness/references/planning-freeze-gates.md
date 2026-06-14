@@ -43,11 +43,12 @@ After the operator explicitly approves the staged planning package, or explicitl
 
 1. Update `CHANGELOG.md` with a newest-first entry for the approved artifact set.
 2. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
-3. Verify the worktree status, stage only the approved planning artifacts and `CHANGELOG.md`, and commit only those staged paths together. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
-4. Stop before implementation, task execution, or the next planning stage.
-5. Report the commit hash and approved artifact paths.
-6. Remind the operator that they may push and create a draft plan-only PR at this point.
-7. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and to say whether implementation should begin now.
+3. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the `CHANGELOG.md` entry title snippet matches that planned subject.
+4. Verify the worktree status, stage only the approved planning artifacts and `CHANGELOG.md`, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
+5. Stop before implementation, task execution, or the next planning stage.
+6. Report the commit hash and approved artifact paths.
+7. Remind the operator that they may push and create a draft plan-only PR at this point.
+8. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and to say whether implementation should begin now.
 
 The planning package is frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
 
