@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-14-commit-message-format: commit message format
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for making harness commit subjects reviewable planning content, starting subjects with the work short ID, avoiding duplicated issue keys, using typed implementation subjects, and synchronizing commit title snippets with `CHANGELOG.md` entries.
+
 ## 2026-06-07-release-versioning: complete Phase 03 release hardening
 
 Release target: `0.3.0`
