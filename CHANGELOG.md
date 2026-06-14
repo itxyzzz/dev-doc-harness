@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-14-commit-message-format: unify commit subject pattern
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Changed harness approval commit examples and templates to use the same `SHORT-ID TYPE: TITLE-SNIPPET` pattern as implementation commits, with artifact approval types such as `spec`, `plan`, `phase N plan`, and `amendment NNN`.
+
 ## 2026-06-14-commit-message-format: define harness commit message format
 
 Release target: `unreleased`

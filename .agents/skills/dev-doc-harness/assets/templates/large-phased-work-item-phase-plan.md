@@ -43,7 +43,7 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Phase plan approval | `<short-id> - Phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this phase plan. |
+| Phase plan approval | `<short-id> phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this phase plan. |
 | Phase implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add one row per expected phase implementation, validation, release, or maintenance commit. |
 
 ## Tests and validation

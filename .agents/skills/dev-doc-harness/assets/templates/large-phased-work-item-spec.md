@@ -95,8 +95,8 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Anchor spec approval | `<short-id> - Spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this anchor spec. |
-| Phase plan approval pattern | `<short-id> - Phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Replace or refine in each concrete phase plan. |
+| Anchor spec approval | `<short-id> spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this anchor spec. |
+| Phase plan approval pattern | `<short-id> phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Replace or refine in each concrete phase plan. |
 | Implementation pattern | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Replace with concrete rows in phase plans. |
 
 ## Model and Sub-agent Strategy

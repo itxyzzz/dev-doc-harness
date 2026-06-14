@@ -45,7 +45,7 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Planning approval | `<short-id> - Spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this spec and related planning artifacts. |
+| Planning approval | `<short-id> spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this spec and related planning artifacts. |
 | Implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Replace with the expected implementation commit subject, or defer to the plan with a reason. |
 
 ## Documentation artifact matrix

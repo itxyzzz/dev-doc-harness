@@ -216,29 +216,29 @@ Every harness commit subject must start with the work short ID. When the work
 ID includes an issue tracking key, the short ID already includes that key; do
 not duplicate the issue key as a separate prefix.
 
-Use these approval commit formats:
+Use one subject pattern for all harness commits:
 
 ```text
-SHORT-ID - Spec: TITLE-SNIPPET
-SHORT-ID - Plan: TITLE-SNIPPET
-SHORT-ID - Phase N plan: TITLE-SNIPPET
-SHORT-ID - Amendment NNN: TITLE-SNIPPET
+SHORT-ID TYPE: TITLE-SNIPPET
 ```
 
-Use this format for implementation, validation, release, maintenance, and other
-non-approval commits:
+Planning approval commits use artifact types:
 
 ```text
-SHORT-ID TYPE: EXPANDED-TITLE-SNIPPET
+SHORT-ID spec: TITLE-SNIPPET
+SHORT-ID plan: TITLE-SNIPPET
+SHORT-ID phase N plan: TITLE-SNIPPET
+SHORT-ID amendment NNN: TITLE-SNIPPET
 ```
 
-Allowed types are `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `spike`,
-`release`, and `security`.
+Implementation, validation, release, maintenance, and other non-approval commits
+use action types. Allowed action types are `feat`, `fix`, `docs`, `test`,
+`refactor`, `chore`, `spike`, `release`, and `security`.
 
 Examples:
 
 ```text
-PROJ-123 - Spec: user profile import
+PROJ-123 spec: user profile import
 PROJ-123 chore: update Spring Boot to 3.4
 release-versioning release: publish 0.3.0 package notes
 ```

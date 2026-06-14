@@ -50,7 +50,7 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Amendment approval | `<short-id> - Amendment NNN: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this amendment. |
+| Amendment approval | `<short-id> amendment NNN: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this amendment. |
 | Amended implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add or update rows for implementation commits affected by this amendment. |
 
 ## Planning artifact freeze gate
