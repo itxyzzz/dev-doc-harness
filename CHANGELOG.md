@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-14-version-pointer: surface harness version marker
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Updated the harness entrypoint to point agents at the package-local `VERSION` marker before they stamp work-item artifacts as `unknown`.
+
 ## 2026-06-14-commit-message-format: unify commit subject pattern
 
 Release target: `unreleased`

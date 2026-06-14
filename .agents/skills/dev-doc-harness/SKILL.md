@@ -7,7 +7,7 @@ description: Use for repository development work except very small mechanical ed
 
 This skill is the repository-local entrypoint and operation router for the documentation harness. It routes agents to canonical policy modules, templates, supplemental references, and current work-item artifacts without making every task load every reference.
 
-For the canonical module catalog, rule ID conventions, dependency direction, content types, and release compatibility routing, use `references/policy-architecture.md` (`module:architecture`). For release identity, package boundary, release notes, changelog source, compatibility, artifact release context, and team adoption, use `references/release-policy.md` (`module:release`).
+For the canonical module catalog, rule ID conventions, dependency direction, content types, and release compatibility routing, use `references/policy-architecture.md` (`module:architecture`). For release identity, package boundary, release notes, changelog source, compatibility, artifact release context, and team adoption, use `references/release-policy.md` (`module:release`). When an artifact or template needs the current harness release value, read the package-local marker at `.agents/skills/dev-doc-harness/VERSION` (this skill directory's `VERSION` file) before falling back to `unknown`.
 
 ## When to invoke
 
