@@ -4,6 +4,17 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-17-freeze-gate-status-reminders: clarify approval reminders
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Updated the planning freeze gate to require approved artifacts to move from draft or proposed status to approved status before the approval commit.
+- Expanded the post-freeze operator reminder to include compacting the thread alongside pushing or creating a draft plan-only PR.
+
 ## 2026-06-14-version-pointer: surface harness version marker
 
 Release target: `unreleased`
