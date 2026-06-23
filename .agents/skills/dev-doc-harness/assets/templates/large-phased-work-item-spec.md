@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 
 ## Goal
 
@@ -89,6 +89,16 @@ Use actual phases for this work item.
 
 Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`. Record the draft review, approval commit or handoff snapshot, and pause before implementation or later phase execution.
 
+## Planned commits
+
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets.
+
+| Stage | Planned subject | Changelog title or snippet | Notes |
+|---|---|---|---|
+| Anchor spec approval | `<short-id> spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this anchor spec. |
+| Phase plan approval pattern | `<short-id> phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Replace or refine in each concrete phase plan. |
+| Implementation pattern | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Replace with concrete rows in phase plans. |
+
 ## Model and Sub-agent Strategy
 
 Current orchestration: record the model/profile and reasoning effort if known.
@@ -105,7 +115,7 @@ Sub-agents: record `None` with rationale, or list bounded phase-level roles in t
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
+| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with planned commit subjects |
 | Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |

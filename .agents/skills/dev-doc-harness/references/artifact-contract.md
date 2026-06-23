@@ -16,6 +16,7 @@ Owned rule IDs:
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
 | `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
 | `rule:lifecycle.variance-policy` | `## Variance policy` and `## Variance classes` |
+| `rule:lifecycle.commit-message-format` | `## Commit messages` |
 | `rule:lifecycle.changelog-before-commit` | `## Changelog` |
 
 ## Work item folders
@@ -190,7 +191,7 @@ Every substantial spec or plan must include a compact matrix:
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type |
+| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with commit subjects |
 | Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
@@ -202,6 +203,61 @@ Every substantial spec or plan must include a compact matrix:
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
 
 `CHANGELOG.md` is always required before commits.
+
+## Commit messages
+
+All commits made under the harness must use a planned or documented subject.
+Commit subjects are reviewable planning content: specs, plans, phase plans, and
+amendments must include the expected approval and implementation subjects that
+are known at that stage. Operators may request subject wording changes during
+normal artifact review.
+
+Every harness commit subject must start with the work short ID. When the work
+ID includes an issue tracking key, the short ID already includes that key; do
+not duplicate the issue key as a separate prefix.
+
+Use one subject pattern for all harness commits:
+
+```text
+SHORT-ID TYPE: TITLE-SNIPPET
+```
+
+Planning approval commits use artifact types:
+
+```text
+SHORT-ID spec: TITLE-SNIPPET
+SHORT-ID plan: TITLE-SNIPPET
+SHORT-ID phase N plan: TITLE-SNIPPET
+SHORT-ID amendment NNN: TITLE-SNIPPET
+```
+
+Implementation, validation, release, maintenance, and other non-approval commits
+use action types. Allowed action types are `feat`, `fix`, `docs`, `test`,
+`refactor`, `chore`, `spike`, `release`, and `security`.
+
+Examples:
+
+```text
+PROJ-123 spec: user profile import
+PROJ-123 chore: update Spring Boot to 3.4
+release-versioning release: publish 0.3.0 package notes
+```
+
+The title snippet is the human-readable phrase shared by the durable planning
+artifact, planned commit row, and `CHANGELOG.md` entry heading or bullet-level
+snippet. Implementation snippets should be more informative than planning
+approval snippets and should describe the concrete delivered change or phase
+output.
+
+Commit subjects and changelog entry titles must stay synchronized:
+
+- The `CHANGELOG.md` entry heading for a commit must include the work ID and the
+  same title snippet represented in the planned commit subject.
+- When a commit subject changes during review or implementation, update the
+  matching planned commit row and changelog heading before committing.
+- When one changelog entry covers multiple commits for the same work item, each
+  commit subject must match a listed planned commit row or a clear bullet-level
+  title snippet under that changelog heading.
 
 ## Variance policy
 
@@ -239,6 +295,8 @@ Use a Keep a Changelog style:
 
 - Newest entries first.
 - Each entry heading is the work ID plus a short descriptive snippet.
+- Entry headings or bullet-level title snippets must stay synchronized with the
+  planned commit subjects for the same work.
 - Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Keep descriptions concise and tied to specific phases, tasks, specs, or plan decisions.
 

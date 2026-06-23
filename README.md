@@ -105,7 +105,9 @@ security, scope, acceptance criteria, or feasibility, the agent must stop for an
 amendment and operator approval.
 
 Before commits, the agent updates `CHANGELOG.md` with newest-first entries tied
-to the current work item, phase, task, or planning decision.
+to the current work item, phase, task, or planning decision. Harness commit
+subjects are planned during artifact review, start with the work short ID, and
+keep their title snippets synchronized with the matching changelog entry.
 
 ## Operator outcomes
 
@@ -231,7 +233,7 @@ The internal machinery is intentionally small:
   changelog-derived release notes, compatibility, artifact release context, and
   team adoption flow.
 - `references/artifact-contract.md` defines work item folders, short-ID
-  artifact filenames, snapshots, deltas, changelog rules, and variance
+  artifact filenames, snapshots, deltas, commit-message and changelog rules, and variance
   handling.
 - `references/planning-freeze-gates.md` defines the approval-first planning
   workflow.

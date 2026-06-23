@@ -4,6 +4,62 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-17-freeze-gate-status-reminders: clarify approval reminders
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Updated the planning freeze gate to require approved artifacts to move from draft or proposed status to approved status before the approval commit.
+- Expanded the post-freeze operator reminder to include compacting the thread alongside pushing or creating a draft plan-only PR.
+
+## 2026-06-14-version-pointer: surface harness version marker
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Updated the harness entrypoint to point agents at the package-local `VERSION` marker before they stamp work-item artifacts as `unknown`.
+
+## 2026-06-14-commit-message-format: unify commit subject pattern
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Changed harness approval commit examples and templates to use the same `SHORT-ID TYPE: TITLE-SNIPPET` pattern as implementation commits, with artifact approval types such as `spec`, `plan`, `phase N plan`, and `amendment NNN`.
+
+## 2026-06-14-commit-message-format: define harness commit message format
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Added
+
+- Added `rule:lifecycle.commit-message-format` as the canonical harness commit-subject policy for short-ID-prefixed approval and typed implementation commits.
+- Added planned commit subject sections to the current work-item templates so operators can review commit names alongside specs, plans, phase plans, and amendments.
+
+### Changed
+
+- Updated freeze-gate, changelog, and README guidance so approval commits use planned subjects and commit title snippets stay synchronized with matching changelog entries.
+
+## 2026-06-14-commit-message-format: commit message format
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for making harness commit subjects reviewable planning content, starting subjects with the work short ID, avoiding duplicated issue keys, using typed implementation subjects, and synchronizing commit title snippets with `CHANGELOG.md` entries.
+
 ## 2026-06-07-release-versioning: complete Phase 03 release hardening
 
 Release target: `0.3.0`
