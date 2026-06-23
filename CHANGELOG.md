@@ -4,6 +4,17 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-23-documentation-improvements: migrate backlog to Notion
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Migrated the active follow-up backlog from root `TODO.md` into a private Notion `Dev Doc Harness Backlog` database with grouped cards, priorities, complexity estimates, dependency notes, and clarified scope.
+- Removed root `TODO.md` so the repository no longer carries a duplicate backlog source.
+
 ## 2026-06-23-documentation-improvements: move backlog to Notion
 
 Release target: `unreleased`
