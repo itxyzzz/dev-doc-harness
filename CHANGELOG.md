@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-23-documentation-improvements: move backlog to Notion
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved amendment for replacing the repository `TODO.md` backlog with Notion cards and removing completed documentation-improvement items from the active backlog.
+
 ## 2026-06-23-documentation-improvements: improve harness documentation surfaces
 
 Release target: `unreleased`
