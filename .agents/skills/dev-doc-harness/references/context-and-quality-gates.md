@@ -60,5 +60,9 @@ Before a commit, PR-ready handoff, or completion report, check:
 - Relevant docs and changelog updated.
 - Diff reviewed for unrelated changes, placeholders, contradictions, and generated noise.
 
+After the final commit, PR-ready handoff, or completion report, report the
+commit outcome consistently: include the commit hash and subject when a commit
+was created, or state that no commit was created and why.
+
 Do not use this gate to bypass the Planning Artifact Freeze Gate. Finalized
 specs, plans, phase plans, and amendments still follow `planning-freeze-gates.md`.

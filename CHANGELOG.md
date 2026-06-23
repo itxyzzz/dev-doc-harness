@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-17-commit-outcome-reporting: clarify completion reports
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Updated the execution-quality gate so completion reports consistently include the commit hash and subject when a commit was created, or state why no commit was created.
+
 ## 2026-06-17-freeze-gate-status-reminders: clarify approval reminders
 
 Release target: `unreleased`
