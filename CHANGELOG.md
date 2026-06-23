@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-23-documentation-improvements: document planned documentation updates
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for improving documentation surfaces with a package-local operator note, portfolio README summary, validator-evolution boundary, and normalized TODO backlog.
+
 ## 2026-06-17-commit-outcome-reporting: clarify completion reports
 
 Release target: `unreleased`
