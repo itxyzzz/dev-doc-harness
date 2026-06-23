@@ -1,103 +1,178 @@
 # TODO
 
-Future work collected from the original handoff and follow-up design discussion. Items are ordered from more useful short-term additions to more complex, risky, or governance-heavy work.
+This backlog tracks future improvements for the Dev Doc Harness repository.
+Items use a common format so they can be promoted into harness work items when
+they are ready.
 
-## Near-Term Validation And Polish
+Priority labels:
 
-- [ ] Test the harness on one fake large work item.
-  - Exercise `spec-<short-id>.md` as the anchor handoff, `plan-phase-NN-title-<short-id>.md`, multiple freeze gates, model/sub-agent strategy, and amendment flow.
-- [ ] Test a Superpowers-generated spec or plan converted into `docs/work-items/<work-id>/`.
-  - Confirm the harness layers cleanly over Superpowers without duplicating its methodology.
-- [ ] Confirm current model classes available in the operator environment.
-  - Keep policy language model-class based unless concrete names are required by the environment.
-- [ ] Add a short planning-only PR note or checklist.
-  - Document how to use the freeze gate as the point to push a draft plan-only PR before implementation.
-- [ ] Review agentic instructions from other public repositories for useful ideas to extract.
-  - Include public references such as `https://github.com/itxyzzz/gen-ai-se-hw` and any other public repos with `AGENTS.md`, repo-local skills, prompts, or planning docs.
-  - Borrow only patterns that improve this harness without duplicating project-specific workflow or Superpowers methodology.
-  - Extract concise patterns: context load order, environment-compensation gates, portable policy-relative agent roles, immutable source evidence with derived review artifacts, sparse report sections, and explicit stop conditions.
+- `P0`: Required before the next meaningful adoption or release checkpoint.
+- `P1`: High-value near-term work with a clear owner path.
+- `P2`: Useful after the core workflow has more evidence.
+- `P3`: Deferred, experimental, or governance-heavy work.
 
-## Mechanical Validation
+Item format:
 
-- [ ] Create optional `scripts/check-agent-artifacts.py`.
-  - Use only the Python standard library.
-  - Support `python scripts/check-agent-artifacts.py docs/work-items/<work-id>`.
-  - Validate work item folder presence, `spec-<short-id>.md`, `plan-<short-id>.md` or `plan-phase-*-<short-id>.md`, `implementation-notes/variance-log.md`, expected snapshot and delta folders, and `CHANGELOG.md`.
-  - Avoid semantic review of plan quality.
-- [ ] Add validator usage notes to the harness.
-  - Reference the script from the skill or a short operator note without making it mandatory.
-- [ ] Decide whether to wire validation into CI or pre-commit later.
-  - Keep this separate from the zero-dependency script until the script has stabilized.
+```md
+- [ ] [P1] Short title.
+  - Value: Why this matters.
+  - Scope: Expected work.
+  - Depends on: Prior decision, evidence, or none.
+```
 
-## Superpowers Compatibility
+## P0 Current Documentation Work
 
-- [ ] Verify how Superpowers is installed and invoked in target environments.
-- [ ] Confirm whether Superpowers writes specs or plans to fixed default locations.
-- [ ] Document the exact copy/convert flow from Superpowers artifacts into `docs/work-items/<work-id>/`.
-- [ ] Test minimal `docs/superpowers` pointer stubs that link to canonical `docs/work-items/<work-id>/` packages.
-- [ ] Confirm freeze gates interrupt the normal "implement this plan" transition cleanly.
-- [ ] Add a separate `references/superpowers-compatibility.md` only if the compatibility section grows too large.
+- [x] [P0] Add a package-local operator note.
+  - Value: Adopters who copy only root `AGENTS.md` plus `.agents/` get a compact usage explanation.
+  - Scope: Add `.agents/skills/dev-doc-harness/docs/operator-note.md` and keep it summary-level.
+  - Depends on: `2026-06-23-documentation-improvements`.
+- [x] [P0] Add a portfolio-oriented README summary.
+  - Value: Non-operator readers can understand the repository quickly.
+  - Scope: Add a concise summary near the top of `README.md`.
+  - Depends on: `2026-06-23-documentation-improvements`.
+- [x] [P0] Clarify the validator evolution boundary.
+  - Value: Future checks stay lightweight and structural instead of becoming a heavy semantic parser.
+  - Scope: Add guidance to `references/policy-architecture.md`.
+  - Depends on: `2026-06-23-documentation-improvements`.
+- [x] [P0] Normalize this backlog.
+  - Value: Future work is easier to compare, prioritize, and convert into work items.
+  - Scope: Reformat `TODO.md` with priority labels, consistent fields, and current review follow-ups.
+  - Depends on: `2026-06-23-documentation-improvements`.
 
-## spec-kit Adapter
+## P1 Validation And Adoption Evidence
 
-- [ ] Verify installed spec-kit version and local command behavior.
-- [ ] Check available preset, override, template, and extension behavior.
-- [ ] Decide whether the first adapter should use a preset, full local template overrides, or a later extension.
-- [ ] Create a minimal `.specify/presets/dev-doc-harness/` adapter if local spec-kit behavior supports it.
-- [ ] Keep adapter templates short and point back to the canonical harness references.
-- [ ] Test template resolution with local spec-kit commands.
-- [ ] Document version-specific assumptions and unsupported composition behavior.
-- [ ] Preserve draft plan-only PR workflow as a first-class adapter use case.
+- [ ] [P1] Run a disposable large-work trial.
+  - Value: Exercises the harness promise end to end before more adoption polish.
+  - Scope: Use a throwaway sample repository or contained fixture to exercise an anchor spec, phase plan, freeze gate, amendment, validation, and rollback note.
+  - Depends on: None.
+- [ ] [P1] Add CI wiring for `Test-HarnessPolicy.ps1`.
+  - Value: Creates a shared safety net for harness changes.
+  - Scope: Add a minimal CI workflow that runs the existing PowerShell validator.
+  - Depends on: Current validator staying stable.
+- [ ] [P1] Add a planning-only PR note or checklist.
+  - Value: Makes the freeze gate usable as a draft PR checkpoint before implementation.
+  - Scope: Document what to include in a plan-only PR and where to link approved artifacts.
+  - Depends on: Existing freeze-gate behavior.
+- [ ] [P1] Track validation failures caught during real use.
+  - Value: Turns validator value into evidence and helps prioritize future checks.
+  - Scope: Add a lightweight record in work-item evidence, changelog notes, or a small validation learnings file.
+  - Depends on: At least one real or disposable validation failure worth recording.
+- [ ] [P1] Test a Superpowers-generated spec or plan conversion.
+  - Value: Confirms this harness layers over Superpowers without duplicating methodology.
+  - Scope: Convert a Superpowers artifact into `docs/work-items/<work-id>/` and record friction.
+  - Depends on: A representative Superpowers artifact or controlled trial.
 
-## Documentation Artifact Schemas
+## P2 Validator And Artifact Tooling
 
-- [ ] Define a sparse template for `snapshots/test-cases.snapshot.md`.
-- [ ] Define a sparse template for `snapshots/architecture.snapshot.md`.
-- [ ] Define a sparse template for `snapshots/api-contract.snapshot.md`.
-- [ ] Define sparse templates for living deltas:
-  - `deltas/testing-guide.delta.md`
-  - `deltas/operator-manual.delta.md`
-  - `deltas/api-reference.delta.md`
-  - `deltas/architecture-summary.delta.md`
-- [ ] Define sparse templates for evidence-heavy report artifacts.
-  - Keep sections short: verification summary, checked claims, discrepancies, commands run, results, remaining gaps, unresolved risks, and references.
-  - Borrow the report-section pattern from public artifacts in `https://github.com/itxyzzz/gen-ai-se-hw` without importing homework-specific pipeline structure.
-- [ ] Consider future templates for migration notes, rollout notes, runbooks, and troubleshooting guides.
-- [ ] Decide whether living deltas are automatically merged into long-lived docs or only proposed for review.
-- [ ] Define ownership and approval rules for living docs.
+- [ ] [P2] Split the PowerShell validator by logical check groups if it continues to grow.
+  - Value: Keeps validation maintainable as new checks are added.
+  - Scope: Extract path, graph, router, placeholder, release, and scenario checks only when the current single file becomes hard to review.
+  - Depends on: Clear pressure from additional validation work.
+- [ ] [P2] Create optional portable artifact validator.
+  - Value: Helps adopters in environments where PowerShell is not a good baseline.
+  - Scope: Add a standard-library Python script such as `scripts/check-agent-artifacts.py` for work-item folder shape checks.
+  - Depends on: Confirmed cross-platform adoption need.
+- [ ] [P2] Add validator usage notes.
+  - Value: Helps operators understand which checks are mandatory, optional, or maintenance-only.
+  - Scope: Reference validation from the router, package-local note, or a short maintenance note without making every downstream project run it.
+  - Depends on: Validator boundary staying clear.
+- [ ] [P2] Decide whether to add pre-commit wiring.
+  - Value: Catches issues earlier for contributors who opt in.
+  - Scope: Evaluate pre-commit only after CI behavior is clear.
+  - Depends on: CI validation experience.
 
-## PR And Review Workflow
+## P2 Examples And Documentation Artifacts
 
-- [ ] Define whether every work item folder must be linked from PR descriptions.
-- [ ] Define whether every PR must include artifact validation output.
-- [ ] Define how approved amendments should appear in GitHub, Bitbucket, or Stash PRs.
-- [ ] Define how PRs should present preserved source evidence versus derived review artifacts.
-  - Keep source evidence immutable after review use; place repaired or normalized summaries in a separate derived-artifact location.
-- [ ] Add a planning-only PR checklist for finalized specs/plans.
-- [ ] Add an implementation PR checklist that references freeze-gate commits and variance logs.
+- [ ] [P2] Add a small examples directory.
+  - Value: Gives adopters concrete models for a completed work item and a plan-only PR narrative.
+  - Scope: Curate examples as illustrative content that points back to canonical references.
+  - Depends on: Disposable large-work trial and at least one real work item worth summarizing.
+- [ ] [P2] Define sparse snapshot templates.
+  - Value: Makes test-case, architecture, and API-contract snapshots easier to create consistently.
+  - Scope: Add templates for `snapshots/test-cases.snapshot.md`, `snapshots/architecture.snapshot.md`, and `snapshots/api-contract.snapshot.md`.
+  - Depends on: More evidence from real use.
+- [ ] [P2] Define sparse living-delta templates.
+  - Value: Makes documentation deltas easier to review and merge later.
+  - Scope: Add templates for testing guide, operator manual, API reference, and architecture summary deltas.
+  - Depends on: Clearer ownership and approval rules for living docs.
+- [ ] [P2] Define evidence-heavy report templates.
+  - Value: Gives investigations a compact evidence format.
+  - Scope: Include checked claims, commands run, results, discrepancies, remaining gaps, and references.
+  - Depends on: Evidence/report guidance proving useful in real work.
+- [ ] [P2] Consider templates for migration, rollout, runbook, and troubleshooting notes.
+  - Value: Covers operational work without overloading the core spec and plan.
+  - Scope: Add only after repeated need appears.
+  - Depends on: Real work items showing recurring operational documentation gaps.
 
-## Governance And Process Maturity
+## P2 Compatibility And Adapters
 
-- [ ] Add an in-team distribution mechanism across repositories.
-  - Design how harness updates, policy changes, templates, and skills should be published, versioned, adopted, audited, and rolled back across multiple team repositories.
-  - Treat this as major, important, and complicated; avoid a quick copy-paste rollout until ownership, compatibility, migration, and update cadence are defined.
-- [ ] Harden testing-related documentation artifact rules and coverage guidance.
-  - Define when test-case snapshots, testing-guide deltas, validation evidence, and coverage expectations are required versus optional.
-  - Add general testing coverage rules for feature plans, bug-fix plans, prior issue investigations, risky refactors, documentation-only changes, and cases where automated tests are not feasible.
-  - Treat this as major, important, and complicated because it affects acceptance criteria, review quality, and future agent claims about correctness.
-- [ ] Define plan-amendment approval markers.
-- [ ] Define who may approve controlled variances.
-- [ ] Define documentation debt tracking.
-- [ ] Define retention and archive policy for old `docs/work-items/` folders.
-- [ ] Define migration path for existing specs and plans in older repositories.
-- [ ] Define harness versioning and update policy across repositories.
-- [ ] Add an examples library only after the core contract has been tested on fake and real work items, including features, bug fixes, and investigations.
-- [ ] Add a bootstrapping script only if repeated manual setup becomes painful.
+- [ ] [P2] Verify Superpowers invocation in target environments.
+  - Value: Avoids documenting compatibility based on assumptions.
+  - Scope: Confirm install, invocation, default output locations, pointer-stub behavior, and freeze-gate interaction.
+  - Depends on: Access to representative target environments.
+- [ ] [P2] Document the Superpowers copy/convert flow.
+  - Value: Gives agents a safe bridge from Superpowers artifacts into `docs/work-items/<work-id>/`.
+  - Scope: Add a short compatibility reference only if the existing section grows too large.
+  - Depends on: Superpowers conversion trial.
+- [ ] [P2] Verify spec-kit version and adapter mechanics.
+  - Value: Prevents building an adapter against unsupported assumptions.
+  - Scope: Check preset, override, template, and extension behavior.
+  - Depends on: Installed spec-kit access.
+- [ ] [P2] Create a minimal spec-kit adapter if local behavior supports it.
+  - Value: Lets spec-kit users keep the harness lifecycle contract.
+  - Scope: Add short templates or presets that point back to canonical harness references.
+  - Depends on: Verified spec-kit composition behavior.
 
-## Deferred Or Riskier Ideas
+## P3 PR Workflow And Governance
 
-- [ ] Add CI validation after the optional validator is stable.
-- [ ] Add pre-commit integration after CI behavior is clear.
-- [ ] Add advanced spec-kit composition only after verifying the installed version supports the needed behavior.
-- [ ] Add detailed supplemental documentation schemas only after the snapshot-vs-living lifecycle has proven useful.
-- [ ] Add team/enterprise governance around approvers, ownership, retention, and cross-repo rollout only after individual-repo usage stabilizes.
+- [ ] [P3] Define PR artifact-link expectations.
+  - Value: Makes reviews connect implementation diffs to approved planning artifacts.
+  - Scope: Decide whether every PR must link work-item folders, validation output, amendments, and variance logs.
+  - Depends on: Plan-only PR checklist experience.
+- [ ] [P3] Define preserved-source versus derived-review artifact handling.
+  - Value: Keeps evidence immutable while allowing cleaned summaries.
+  - Scope: Describe where source evidence and repaired summaries should live.
+  - Depends on: Evidence-heavy report usage.
+- [ ] [P3] Design in-team distribution.
+  - Value: Makes harness updates adoptable across multiple repositories.
+  - Scope: Define publishing, versioning, migration, audit, rollback, and ownership.
+  - Depends on: Single-repository usage stabilizing.
+- [ ] [P3] Harden testing-related documentation policy.
+  - Value: Improves acceptance criteria and correctness claims.
+  - Scope: Define when test snapshots, testing-guide deltas, validation evidence, and coverage notes are required.
+  - Depends on: More work-item evidence across features, bugs, investigations, and refactors.
+- [ ] [P3] Define plan-amendment approval markers.
+  - Value: Makes controlled changes after freeze easier to audit.
+  - Scope: Decide how approval is represented in artifacts and PRs.
+  - Depends on: More amendment examples.
+- [ ] [P3] Define documentation debt tracking.
+  - Value: Prevents deferred documentation work from disappearing.
+  - Scope: Pick a lightweight tracking model before adding process.
+  - Depends on: Living-delta workflow evidence.
+- [ ] [P3] Define retention and archive policy for old work-item folders.
+  - Value: Keeps repository history useful without clutter becoming unbounded.
+  - Scope: Decide how long to keep artifacts and how to archive superseded work.
+  - Depends on: Repository history volume becoming material.
+- [ ] [P3] Define migration path for older repositories.
+  - Value: Helps teams adopt the harness without rewriting useful historical docs.
+  - Scope: Describe how to map older specs and plans into current work-item layout.
+  - Depends on: At least one older repository migration.
+- [ ] [P3] Define cross-repository harness versioning policy.
+  - Value: Makes team-wide updates predictable.
+  - Scope: Expand beyond current release marker only after adoption creates real compatibility needs.
+  - Depends on: In-team distribution design.
+- [ ] [P3] Add a bootstrapping script.
+  - Value: Reduces manual setup if copying becomes repetitive.
+  - Scope: Add only after repeated manual setup is proven painful.
+  - Depends on: Multiple adoption attempts.
+
+## Parking Lot
+
+- [ ] [P3] Review public agentic-instruction repositories for reusable patterns.
+  - Value: May surface compact patterns for context loading, evidence handling, role examples, and stop conditions.
+  - Scope: Review public repositories such as `https://github.com/itxyzzz/gen-ai-se-hw` and extract only portable, non-project-specific ideas.
+  - Depends on: Timeboxed research scope.
+- [ ] [P3] Confirm current model classes available in the operator environment.
+  - Value: Helps policy examples stay accurate without hardcoding model names unnecessarily.
+  - Scope: Record environment observations only when concrete names become necessary.
+  - Depends on: Stable platform exposure of model/profile details.

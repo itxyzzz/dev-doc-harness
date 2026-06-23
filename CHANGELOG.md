@@ -4,6 +4,22 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-23-documentation-improvements: improve harness documentation surfaces
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added a package-local operator note that travels with copied harness packages.
+- Added a portfolio-oriented README summary for non-operator readers.
+
+### Changed
+
+- Clarified that validator evolution should stay structural, graph-oriented, and high-signal instead of becoming a heavy semantic parser.
+- Reorganized `TODO.md` into a priority-labeled backlog with consistent item fields and current documentation-review follow-ups.
+
 ## 2026-06-23-documentation-improvements: document planned documentation updates
 
 Release target: `unreleased`

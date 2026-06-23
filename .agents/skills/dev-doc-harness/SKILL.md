@@ -9,6 +9,8 @@ This skill is the repository-local entrypoint and operation router for the docum
 
 For the canonical module catalog, rule ID conventions, dependency direction, content types, and release compatibility routing, use `references/policy-architecture.md` (`module:architecture`). For release identity, package boundary, release notes, changelog source, compatibility, artifact release context, and team adoption, use `references/release-policy.md` (`module:release`). When an artifact or template needs the current harness release value, read the package-local marker at `.agents/skills/dev-doc-harness/VERSION` (this skill directory's `VERSION` file) before falling back to `unknown`.
 
+For a compact package-local orientation that travels with copied harness packages, see `docs/operator-note.md`. It is an operator-facing summary and does not override this router or the canonical references.
+
 ## When to invoke
 
 Use this skill for all repository development work except very small mechanical edits. Classify work size through `module:lifecycle` in `references/artifact-contract.md`, especially `rule:lifecycle.work-sizing`.
