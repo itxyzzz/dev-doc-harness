@@ -1,5 +1,11 @@
 # Dev Doc Harness
 
+Dev Doc Harness is a small, repository-local process harness for making
+agent-assisted software work easier to review, pause, resume, and hand off. It
+turns planning, approval, implementation variance, and documentation updates
+into versioned repository artifacts instead of leaving them only in chat
+history.
+
 This repository contains a lightweight documentation harness for agent-assisted
 development. Its job is to make the development process more inspectable,
 reviewable, and durable from the operator's point of view.
@@ -162,7 +168,9 @@ references, not this README.
 There is not an installation script yet. The copyable distributable package is
 the root `AGENTS.md` file plus the `.agents/` folder. The package records its
 release in `.agents/skills/dev-doc-harness/VERSION`, and package-local release
-notes live under `.agents/skills/dev-doc-harness/docs/releases/`.
+notes live under `.agents/skills/dev-doc-harness/docs/releases/`. A compact
+package-local operator note travels with the package at
+`.agents/skills/dev-doc-harness/docs/operator-note.md`.
 
 After checking out this repository, use the harness in either of these ways:
 
@@ -243,6 +251,8 @@ The internal machinery is intentionally small:
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
   templates. Templates own artifact shape and prompts, not reusable policy.
+- `docs/operator-note.md` is a compact package-local usage summary for adopters
+  who copy only root `AGENTS.md` plus `.agents/`.
 - `docs/releases/` contains package-local release notes that travel with
   `.agents/`.
 

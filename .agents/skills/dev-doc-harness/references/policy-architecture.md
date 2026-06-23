@@ -95,6 +95,8 @@ Current validation treats the harness as a graph of declared owners and referenc
 
 Validation should fail when a current reference has no owner, when a current rule or schema has more than one owner, when an owner-table local heading is missing, when a template policy-reference list omits modules required by the matching router operation, or when a router target points to a missing file, module, rule, or template.
 
+Validator evolution should stay structural, graph-oriented, and high-signal. Add checks that protect discoverability, package boundaries, ownership, route consistency, placeholder cleanup, or other explicitly declared artifact contracts. Do not turn validation into a heavy semantic parser for plan quality, operator judgment, or policy interpretation that belongs in routed references, approved work-item artifacts, focused tests, or human review.
+
 Historical artifacts are tracked documentation for repository development. Historical work-item artifacts preserve review history. They may cite older policy text, but they are not current reusable-policy owners and are excluded from duplicate-policy cleanup enforcement.
 
 ## Route And Duplication Budgets

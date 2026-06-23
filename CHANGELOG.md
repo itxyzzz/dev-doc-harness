@@ -4,6 +4,53 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-23-documentation-improvements: migrate backlog to Notion
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Migrated the active follow-up backlog from root `TODO.md` into a private Notion `Dev Doc Harness Backlog` database with grouped cards, priorities, complexity estimates, dependency notes, and clarified scope.
+- Removed root `TODO.md` so the repository no longer carries a duplicate backlog source.
+
+## 2026-06-23-documentation-improvements: move backlog to Notion
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved amendment for replacing the repository `TODO.md` backlog with Notion cards and removing completed documentation-improvement items from the active backlog.
+
+## 2026-06-23-documentation-improvements: improve harness documentation surfaces
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Added
+
+- Added a package-local operator note that travels with copied harness packages.
+- Added a portfolio-oriented README summary for non-operator readers.
+
+### Changed
+
+- Clarified that validator evolution should stay structural, graph-oriented, and high-signal instead of becoming a heavy semantic parser.
+- Reorganized `TODO.md` into a priority-labeled backlog with consistent item fields and current documentation-review follow-ups.
+
+## 2026-06-23-documentation-improvements: document planned documentation updates
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for improving documentation surfaces with a package-local operator note, portfolio README summary, validator-evolution boundary, and normalized TODO backlog.
+
 ## 2026-06-17-commit-outcome-reporting: clarify completion reports
 
 Release target: `unreleased`
