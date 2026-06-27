@@ -94,6 +94,8 @@ Create only the supplemental snapshot and delta files that are required for the 
 
 ## Large or phased work item layout
 
+The full lifecycle package for large or phased work may eventually contain these files:
+
 ```text
 docs/work-items/<work-id>/
   spec-<short-id>.md
@@ -121,11 +123,13 @@ docs/work-items/<work-id>/
     variance-log.md
 ```
 
-Phase plan names should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
+The normal initial planning package is anchor-spec-only: create `spec-<short-id>.md` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `plan-phase-*-<short-id>.md` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
+
+Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
 
 ## Large or phased work item spec as handoff anchor
 
-For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans.
+For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans. The anchor-spec-only initial planning package stops at the spec freeze unless the operator explicitly requests combined planning.
 
 `spec-<short-id>.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-title-<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 

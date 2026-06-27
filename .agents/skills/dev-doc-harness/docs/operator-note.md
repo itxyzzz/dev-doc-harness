@@ -40,8 +40,9 @@ For substantial work, expect a work item package under:
 docs/work-items/<work-id>/
 ```
 
-Small or medium work usually gets a spec and plan. Large or phased work uses an
-anchor spec and one or more phase plans.
+Small or medium work usually gets a spec and plan. Large or phased work gets an
+anchor spec first. Phase plans come later from the approved anchor spec unless
+you explicitly ask for combined planning.
 
 ## Review And Pause Points
 
@@ -54,6 +55,11 @@ The normal substantial-work flow is:
    approval commit, and a pause.
 5. The next operator response may confirm execution settings and authorize
    implementation.
+
+For large or phased work, the anchor-spec freeze also pauses before phase-plan
+drafting. Later phase-plan drafting can happen in the main thread, or through
+curated-context sub-agents when the phases are independent enough and the
+platform supports it.
 
 Frozen planning artifacts should not be silently rewritten to make later
 implementation look cleaner. Nontrivial drift is recorded as variance. Drift
