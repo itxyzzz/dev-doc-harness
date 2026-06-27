@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-large-phase-orchestration-owner: define large phase orchestration owner
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for defining a lifecycle-owned large/phased planning orchestration rule that keeps phase ordering separate from artifact shape, freeze mechanics, and model/sub-agent policy.
+
 ## 2026-06-27-phased-planning-orchestration: enforce anchor-spec-first phase planning
 
 Release target: `unreleased`
