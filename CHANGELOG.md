@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-portable-harness-validator: replace PowerShell validator with Python
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Replaced the PowerShell-only harness validator with a Python standard-library validator and updated current harness validation guidance to use the cross-platform command.
+
 ## 2026-06-27-portable-harness-validator: plan portable harness validator
 
 Release target: `unreleased`

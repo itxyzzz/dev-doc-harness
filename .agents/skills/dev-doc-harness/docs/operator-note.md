@@ -92,8 +92,8 @@ Create a plan-only PR checkpoint before code changes.
 
 For harness maintenance work, run the package validation command when practical:
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1
+```bash
+python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 ```
 
 The validator is a lightweight structural check. It supports review; it does
