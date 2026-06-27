@@ -12,6 +12,7 @@ Owned rule IDs:
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
 | `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
+| `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
 | `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
@@ -94,6 +95,8 @@ Create only the supplemental snapshot and delta files that are required for the 
 
 ## Large or phased work item layout
 
+The full lifecycle package for large or phased work may eventually contain these files:
+
 ```text
 docs/work-items/<work-id>/
   spec-<short-id>.md
@@ -121,11 +124,30 @@ docs/work-items/<work-id>/
     variance-log.md
 ```
 
-Phase plan names should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
+The normal initial planning package is anchor-spec-only: create `spec-<short-id>.md` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `plan-phase-*-<short-id>.md` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
+
+Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
+
+## Large or phased planning orchestration
+
+`rule:lifecycle.large-phase-orchestration` owns the large/phased planning state sequence. Other modules own their local mechanics: artifact layout stays in this lifecycle reference, approval checkpoint mechanics stay in `planning-freeze-gates.md`, model and sub-agent choices stay in `subagent-model-policy.md`, and durable quality stays in `durable-planning-quality.md`.
+
+The normal large/phased planning sequence is:
+
+1. Draft the anchor `spec-<short-id>.md`.
+2. Stage the anchor-spec planning package for draft review.
+3. Freeze the anchor spec after explicit approval or create an explicit handoff snapshot.
+4. Stop before implementation and before phase-plan drafting.
+5. Resume post-anchor phase-plan drafting only after fresh operator instruction.
+6. Freeze one or more phase plans after explicit approval.
+7. Begin implementation only after the applicable frozen phase plan and fresh post-freeze operator authorization.
+8. Use an amendment gate for high-impact post-freeze changes.
+
+Combined anchor-spec and phase-plan drafting is allowed only when the operator explicitly requests combined planning and the artifact records that exception.
 
 ## Large or phased work item spec as handoff anchor
 
-For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans.
+For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
 
 `spec-<short-id>.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-title-<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 

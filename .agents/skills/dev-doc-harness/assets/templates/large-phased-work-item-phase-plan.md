@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Objective
 
@@ -13,7 +13,7 @@ Describe the phase outcome.
 
 ## Input context
 
-List the approved `spec-<short-id>.md`, prior phase outputs, decisions, and repository areas the implementing agent must read. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
+List the approved anchor spec or handoff snapshot, approved amendments, prior phase outputs, decisions, repository areas, and recorded context strategy the implementing agent must read. Confirm this phase plan follows `rule:lifecycle.large-phase-orchestration`. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
 
 Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
 
@@ -27,7 +27,7 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Sub-agents: record `None` with rationale, or list bounded phase-specific roles in the table. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
+Sub-agents: record `None` with rationale, or list bounded phase-specific roles in the table. When this phase plan was drafted with a curated-artifact sub-agent, name the approved spec, amendments, prior phase outputs, and handoff artifacts used as input context. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
 
 | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|

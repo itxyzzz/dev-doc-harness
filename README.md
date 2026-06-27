@@ -37,7 +37,7 @@ flowchart TD
 
     D --> E{"Planning shape?"}:::house
     E -->|Small or medium| F["Draft spec and plan"]:::house
-    E -->|Large or phased| G["Anchor spec, then phase plans"]:::house
+    E -->|Large or phased| G["Anchor spec first, phase plans later"]:::house
 
     F --> H["Stage draft planning package"]:::house
     G --> H
@@ -86,7 +86,10 @@ references. For example, `2026-05-31-artifact-root` uses
 
 For large work, expect a more deliberate handoff. The agent first writes an
 anchor `spec-<short-id>.md` that preserves goals, boundaries, decisions, risks,
-tests, and acceptance criteria. Then it writes phase plans such as
+tests, and acceptance criteria. The normal first planning package is
+anchor-spec-only; listed phase-plan filenames are future outputs unless the
+operator explicitly asks for combined planning. After the anchor spec is frozen
+and the operator gives a fresh instruction, the agent drafts phase plans such as
 `plan-phase-01-discovery-<short-id>.md` that a fresh agent or future thread can
 execute without relying on hidden chat history.
 
@@ -100,9 +103,12 @@ step, giving the operator a clean plan-only review point before product changes.
 Sub-agent use is a planning judgment, not a keyword the operator must repeat on
 every request. For substantial work, the agent records either a bounded strategy
 or a reason for using none, then reports de-facto use at completion when
-sub-agents were authorized or used. The active repository policy is selected in
-`AGENTS.md`; detailed model, reasoning, context-strategy, and authorization
-rules live in `references/subagent-model-policy.md`.
+sub-agents were authorized or used. For large/phased work, curated-context
+sub-agents may replace separate operator-visible phase-planning threads when
+the phases are independent enough and the platform supports it. The active
+repository policy is selected in `AGENTS.md`; detailed model, reasoning,
+context-strategy, and authorization rules live in
+`references/subagent-model-policy.md`.
 
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is

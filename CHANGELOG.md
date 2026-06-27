@@ -4,6 +4,46 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Added `rule:lifecycle.large-phase-orchestration` as the lifecycle-owned state sequence for large/phased planning and aligned freeze-gate, model-policy, router, template, and validation references to cite that owner.
+
+## 2026-06-27-large-phase-orchestration-owner: define large phase orchestration owner
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for defining a lifecycle-owned large/phased planning orchestration rule that keeps phase ordering separate from artifact shape, freeze mechanics, and model/sub-agent policy.
+
+## 2026-06-27-phased-planning-orchestration: enforce anchor-spec-first phase planning
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Clarified large/phased harness guidance so the initial planning package is anchor-spec-only by default, phase-plan drafting starts after anchor freeze and fresh operator instruction, and curated-artifact sub-agents are preferred for bounded phase-plan drafting when justified and supported.
+
+## 2026-06-27-phased-planning-orchestration: clarify phased planning orchestration
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for enforcing anchor-spec-first large/phased planning, post-anchor phase-plan drafting, and curated-artifact sub-agent phase-plan orchestration when justified and supported.
+
 ## 2026-06-23-documentation-improvements: migrate backlog to Notion
 
 Release target: `unreleased`

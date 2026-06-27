@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 
 ## Goal
 
@@ -14,6 +14,8 @@ Describe the outcome and why this work needs phase planning.
 ## Planning handoff quality bar
 
 This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve work-item-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
+
+The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`. Do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
 Phase plans must derive from this spec. If later planning discovers missing context before this spec is frozen, update the draft spec directly. If missing context is discovered after freeze, create an amendment.
 
@@ -79,7 +81,9 @@ Write one bullet per observable outcome. Each criterion should be testable by a 
 
 Use actual phases for this work item.
 
-| Phase | Objective | Output |
+The output filenames below are future phase-plan outputs, not files to create during the anchor-spec planning package unless combined planning was explicitly requested.
+
+| Phase | Objective | Future phase-plan output |
 |---|---|---|
 | 01 | Discovery or preparation | `plan-phase-01-discovery-<short-id>.md` |
 | 02 | Core implementation | `plan-phase-02-core-implementation-<short-id>.md` |
@@ -87,7 +91,7 @@ Use actual phases for this work item.
 
 ## Planning artifact freeze gates
 
-Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`. Record the draft review, approval commit or handoff snapshot, and pause before implementation or later phase execution.
+Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`. Record the draft review, approval commit or handoff snapshot, and pause before implementation, later phase-plan drafting, or later phase execution.
 
 ## Planned commits
 
@@ -105,7 +109,7 @@ Current orchestration: record the model/profile and reasoning effort if known.
 Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
 Recommended change: record `None` or a concrete model/reasoning change with reason.
 
-Sub-agents: record `None` with rationale, or list bounded phase-level roles in the table. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
+Sub-agents: record `None` with rationale, or list bounded phase-level roles in the table. Prefer curated-artifact sub-agent phase-plan drafting after anchor-spec freeze when phases are independently plannable and platform support is available. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|

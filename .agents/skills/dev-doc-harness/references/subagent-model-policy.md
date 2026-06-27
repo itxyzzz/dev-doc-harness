@@ -44,6 +44,8 @@ Context strategy describes how the sub-agent receives context, not just which fi
 
 Prefer curated context for bounded sub-agent work. Do not use full-history forks as a convenience default. If a task appears to need both full conversational context and a different model or reasoning profile, choose the trade-off explicitly in the plan and record why.
 
+For large or phased work, post-anchor phase-plan drafting should prefer curated-artifact sub-agent orchestration when phases are independently plannable, the approved anchor spec and amendments provide enough context, and the platform supports sub-agents. Use `rule:lifecycle.large-phase-orchestration` for phase order. Use the approved spec, approved amendments, and relevant prior phase outputs as curated artifacts. When a curated-artifact sub-agent is not used for phase-plan drafting, record the fallback reason, such as unavailable tooling, tightly coupled phases, coordination overhead, or a need for main-thread synthesis.
+
 When known, account for the current orchestration model and reasoning effort. Judge fit against complexity, risk, ambiguity, blast radius, budget, and latency. Recommend changing the orchestration model/profile or reasoning effort when the current setup is clearly mismatched to the work.
 
 Prefer stronger reasoning for planning, architecture, integration design, unclear debugging, security, privacy, compliance, migrations, irreversible changes, high-blast-radius changes, and final review.

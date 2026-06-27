@@ -822,12 +822,21 @@ Assert-ScenarioEvidence "scenario:planning.small-medium" @(
 Assert-ScenarioEvidence "scenario:planning.large-anchor-freeze" @(
   @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "Draft or review large anchor specs"; Label = "large route" },
   @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"; Pattern = "schema:spec.large-phased"; Label = "large spec schema" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "rule:lifecycle.large-phase-orchestration"; Label = "large phase orchestration rule owner" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "Large or phased planning orchestration"; Label = "large phase orchestration heading" },
+  @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "rule:lifecycle.large-phase-orchestration"; Label = "large route orchestration rule" },
+  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"; Pattern = "rule:lifecycle.large-phase-orchestration"; Label = "large spec orchestration rule" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/artifact-contract.md"; Pattern = "anchor-spec-only"; Label = "anchor spec only package" },
+  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"; Pattern = "combined planning"; Label = "combined planning exception" },
   @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "Approval freeze checkpoint"; Label = "freeze owner" }
 )
 Assert-ScenarioEvidence "scenario:planning.phase-plan-freeze" @(
   @{ Path = ".agents/skills/dev-doc-harness/SKILL.md"; Pattern = "Draft or review phase plans"; Label = "phase plan route" },
   @{ Path = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"; Pattern = "rule:quality.phase-plan-fresh-thread"; Label = "fresh thread rule" },
   @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"; Pattern = "schema:plan.phase"; Label = "phase schema" },
+  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"; Pattern = "rule:lifecycle.large-phase-orchestration"; Label = "phase plan orchestration rule" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "phase-plan drafting resumes only after fresh operator instruction"; Label = "post anchor phase planning authorization" },
+  @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"; Pattern = "approved anchor spec"; Label = "approved anchor input" },
   @{ Path = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"; Pattern = "rule:freeze.approval-freeze"; Label = "phase freeze owner" }
 )
 Assert-ScenarioEvidence "scenario:execution.post-freeze-authorization" @(
@@ -844,6 +853,7 @@ Assert-ScenarioEvidence "scenario:variance.high-impact-amendment" @(
 Assert-ScenarioEvidence "scenario:models.sub-agent-authorization" @(
   @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "rule:models.approved-strategy-authorized"; Label = "approved strategy rule" },
   @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "rule:models.fresh-confirmation"; Label = "fresh confirmation rule" },
+  @{ Path = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"; Pattern = "curated-artifact sub-agent"; Label = "curated artifact phase planning" },
   @{ Path = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"; Pattern = "Context strategy"; Label = "small plan strategy table" },
   @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"; Pattern = "Context strategy"; Label = "large spec strategy table" },
   @{ Path = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"; Pattern = "Context strategy"; Label = "phase plan strategy table" }
