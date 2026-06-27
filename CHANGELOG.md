@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-phased-planning-orchestration: clarify phased planning orchestration
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec and plan for enforcing anchor-spec-first large/phased planning, post-anchor phase-plan drafting, and curated-artifact sub-agent phase-plan orchestration when justified and supported.
+
 ## 2026-06-23-documentation-improvements: migrate backlog to Notion
 
 Release target: `unreleased`
