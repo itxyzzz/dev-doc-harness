@@ -4,6 +4,16 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Added `rule:lifecycle.large-phase-orchestration` as the lifecycle-owned state sequence for large/phased planning and aligned freeze-gate, model-policy, router, template, and validation references to cite that owner.
+
 ## 2026-06-27-large-phase-orchestration-owner: define large phase orchestration owner
 
 Release target: `unreleased`

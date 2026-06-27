@@ -65,7 +65,7 @@ Very large or phased work items may have multiple freeze gates:
 - Phase-plan freeze: after one or more `plan-phase-*-<short-id>.md` files are approved.
 - Amendment freeze: after any high-impact `plan-amendment-*-<short-id>.md` is approved.
 
-Use the same draft review and approval freeze checkpoints each time.
+Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order; this freeze-gate rule owns the approval mechanics at each stop.
 
 ## Compatibility
 

@@ -5,7 +5,7 @@ Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 
 ## Goal
 
@@ -15,7 +15,7 @@ Describe the outcome and why this work needs phase planning.
 
 This spec is the central handoff from the initial large-scale planning session to later planning sessions that produce the phase plans. Preserve work-item-specific decisions, constraints, assumptions, risks, acceptance criteria, known unknowns, and rejected alternatives here before writing phase plans.
 
-The initial planning package is anchor-spec-only by default. Do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
+The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`. Do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
 Phase plans must derive from this spec. If later planning discovers missing context before this spec is frozen, update the draft spec directly. If missing context is discovered after freeze, create an amendment.
 

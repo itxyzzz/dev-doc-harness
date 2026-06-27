@@ -22,7 +22,7 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 | Module ID | Owner file | Content type | Owned rule families |
 |---|---|---|---|
 | `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, and router inputs. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item folders, short artifact IDs, work sizing, large/phased anchors, compatibility, immutable snapshots, documentation matrix, variance, commit-message format, and changelog rules. |
+| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item folders, short artifact IDs, work sizing, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit-message format, and changelog rules. |
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
@@ -107,4 +107,4 @@ Duplicate-block validation should detect broad reusable policy blocks copied acr
 
 ## Lifecycle Decomposition Direction
 
-Do not split `references/artifact-contract.md` until graph validation is in place. The recommended next step is section-level ownership unless future edit pressure proves a file split is worthwhile. If a split becomes useful, first consider moving changelog and documentation-matrix policy to a documentation module while leaving work sizing, artifact layout, immutability, and variance in lifecycle.
+Do not split `references/artifact-contract.md` until graph validation is in place. Prefer section-level lifecycle ownership unless future edit pressure proves a file split is worthwhile. Large/phased planning orchestration is lifecycle-owned as `rule:lifecycle.large-phase-orchestration`; freeze-gate and model-policy references should cite it for ordering instead of owning the sequence. If a split becomes useful, first consider moving changelog and documentation-matrix policy to a documentation module while leaving work sizing, artifact layout, orchestration, immutability, and variance in lifecycle.
