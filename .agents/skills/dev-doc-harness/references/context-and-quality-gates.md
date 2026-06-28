@@ -64,5 +64,10 @@ After the final commit, PR-ready handoff, or completion report, report the
 commit outcome consistently: include the commit hash and subject when a commit
 was created, or state that no commit was created and why.
 
+Implementation completion with uncommitted implementation changes is not a
+normal completion state. Either create the planned implementation commit, or
+report the exact blocker or explicit no-commit instruction plus the current
+worktree status.
+
 Do not use this gate to bypass the Planning Artifact Freeze Gate. Finalized
 specs, plans, phase plans, and amendments still follow `planning-freeze-gates.md`.

@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Clarified that implementation completion with uncommitted implementation changes is exceptional: agents must either create the planned implementation commit or report the exact blocker or explicit no-commit instruction with current worktree status.
+
 ### 2026-06-28-changelog-release-sections: group changelog by release
 
 Release target: `unreleased`
