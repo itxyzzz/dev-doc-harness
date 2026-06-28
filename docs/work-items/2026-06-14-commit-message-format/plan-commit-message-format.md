@@ -82,7 +82,7 @@ Changing planned commit subjects during implementation is allowed only when the 
 Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.stop-before-implementation`.
 
 Draft review status: completed.
-Approval commit status: approved by operator on 2026-06-14; freeze commit pending.
+Approval commit status: completed by approval freeze commit `dafb047`.
 Post-freeze implementation authorization: pending a fresh operator instruction after approval freeze.
 
 ## Completion criteria

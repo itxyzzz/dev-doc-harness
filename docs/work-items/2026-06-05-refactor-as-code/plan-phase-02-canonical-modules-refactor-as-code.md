@@ -2,7 +2,7 @@
 
 Work ID: `2026-06-05-refactor-as-code`
 Short ID: `refactor-as-code`
-Status: Draft
+Status: Approved
 
 ## Objective
 

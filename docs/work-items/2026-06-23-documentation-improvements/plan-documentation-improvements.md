@@ -85,7 +85,7 @@ Expected low-impact variance that may be recorded in the implementation summary 
 Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.stop-before-implementation`.
 
 Draft review status: Draft package approved by operator on 2026-06-23.
-Approval commit status: Approved; approval commit pending.
+Approval commit status: completed by approval freeze commit `8b6b582`.
 Post-freeze implementation authorization status: Not authorized yet.
 
 ## Completion criteria
