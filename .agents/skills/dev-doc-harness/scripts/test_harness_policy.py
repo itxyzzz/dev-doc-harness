@@ -488,7 +488,7 @@ def assert_release_notes() -> None:
         add_failure(check_id, "No source changelog entries listed in release notes")
 
     for entry in source_entries:
-        if not re.search(rf"^##\s+{re.escape(entry)}\s*$", changelog, flags=re.MULTILINE):
+        if not re.search(rf"^###?\s+{re.escape(entry)}\s*$", changelog, flags=re.MULTILINE):
             add_failure(check_id, f"Release-note source entry is missing from CHANGELOG.md: {entry}")
 
 
@@ -497,7 +497,7 @@ def get_changelog_sections() -> list[ChangelogSection]:
     return [
         ChangelogSection(match.group("heading").strip(), match.group("body"))
         for match in re.finditer(
-            r"^##\s+(?P<heading>2026-06-07-release-versioning:[^\r\n]+)\r?\n(?P<body>.*?)(?=^##\s+|\Z)",
+            r"^###?\s+(?P<heading>2026-06-07-release-versioning:[^\r\n]+)\r?\n(?P<body>.*?)(?=^###?\s+|\Z)",
             text,
             flags=re.MULTILINE | re.DOTALL,
         )
