@@ -163,8 +163,8 @@ For harness maintenance, agents can run this lightweight local validation check
 before commits that change current harness entrypoints, canonical references,
 templates, README, or validation artifacts:
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .agents/skills/dev-doc-harness/scripts/Test-HarnessPolicy.ps1
+```bash
+python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 ```
 
 The command checks current harness surfaces, golden traversal evidence, and

@@ -29,7 +29,7 @@ The implementing agent must read these approved artifacts and current references
 - `docs/work-items/2026-06-05-refactor-as-code/plan-phase-02-canonical-modules-refactor-as-code.md`
 - `docs/work-items/2026-06-05-refactor-as-code/implementation-notes/variance-log.md`
 
-The Phase 02 completion handoff is the current repository state at commit `ab8ea5b10f1df428d9afc85dc07a948fa49d498f`, which added `references/policy-architecture.md` and stable module or rule IDs to canonical references. Treat the existing `Status: Draft` text inside the frozen Phase 02 plan as historical artifact state; do not edit that file during Phase 03.
+The Phase 02 completion handoff is the current repository state at commit `ab8ea5b10f1df428d9afc85dc07a948fa49d498f`, which added `references/policy-architecture.md` and stable module or rule IDs to canonical references. Treat the Phase 02 plan as a frozen historical artifact; do not edit that file during Phase 03.
 
 ## Likely files and areas
 

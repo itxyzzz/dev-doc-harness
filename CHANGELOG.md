@@ -4,6 +4,26 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first and grouped by change type.
 
+## 2026-06-27-portable-harness-validator: replace PowerShell validator with Python
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+### Changed
+
+- Replaced the PowerShell-only harness validator with a Python standard-library validator and updated current harness validation guidance to use the cross-platform command.
+
+## 2026-06-27-portable-harness-validator: plan portable harness validator
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+### Added
+
+- Added the approved spec, plan, and validation snapshots for replacing the PowerShell-only harness validator with a Python standard-library validator through a parity-first migration.
+
 ## 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
 
 Release target: `unreleased`
