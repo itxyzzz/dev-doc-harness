@@ -1,11 +1,11 @@
 # Plan Amendment NNN: <Short Title>
 
-Work ID: `<YYYY-MM-DD[_ISSUE-123]_short-kebab-title>`
-Short ID: `<[ISSUE-123_]short-kebab-title>`
+Work ID: `<work-id>`
+Short ID: `<short-id>`
 Status: Proposed
 Harness release: `<version or unknown>`
 Schema: `schema:plan.amendment`
-Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.work-item-paths`, `rule:naming.artifact-filenames`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Original plan reference
 
@@ -50,8 +50,8 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Amendment approval | `[<issue-key> ]amendment NNN: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Approval commit for this amendment. |
-| Amended implementation | `[<issue-key> ]<type>: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Add or update rows for implementation commits affected by this amendment. |
+| Amendment approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this amendment. |
+| Amended implementation | `<commit-subject>` | `<changelog-heading>` | Add or update rows for implementation commits affected by this amendment. |
 
 ## Planning artifact freeze gate
 

@@ -9,6 +9,7 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:naming.fields` | `## Fields` |
+| `rule:naming.derived-patterns` | `## Derived patterns` |
 | `rule:naming.normalization` | `## Normalization` |
 | `rule:naming.work-item-paths` | `## Work item paths` |
 | `rule:naming.artifact-filenames` | `## Artifact filenames` |
@@ -28,10 +29,29 @@ Use these field names consistently in current harness policy, templates, and exa
 | `<short-title>` | Short lower-kebab-case title. Prefer two to six words. |
 | `<phase-id>` | Phase number in `phase-NN` form, such as `phase-01`. |
 | `<phase-title>` | Lower-kebab-case phase title. |
+| `<artifact-type>` | Planning artifact type such as `spec`, `plan`, `phase N plan`, or `amendment NNN`. |
 | `<work-id>` | `<date>[_<issue-key>]_<short-title>`. |
 | `<short-id>` | `[<issue-key>_]<short-title>`. |
 
 Include the issue key whenever available. Do not duplicate the issue key in the same name.
+
+## Derived patterns
+
+Use these derived pattern names from other current harness references and templates instead of restating their internal grammar:
+
+| Pattern | Expansion |
+|---|---|
+| `<work-item-path>` | `docs/work-items/<work-id>/` |
+| `<spec-filename>` | `spec_<short-id>.md` |
+| `<plan-filename>` | `plan_<short-id>.md` |
+| `<phase-plan-filename>` | `plan_<phase-id>_<phase-title>_<short-id>.md` |
+| `<amendment-filename>` | `plan_amendment-NNN_<amendment-title>_<short-id>.md` |
+| `<variance-log-path>` | `implementation-notes/variance-log.md` |
+| `<commit-subject>` | `[<issue-key> ]<type>: <title>[ -- <plain-language-elaboration>]` |
+| `<planning-commit-subject>` | `[<issue-key> ]<artifact-type>: <title>[ -- <plain-language-elaboration>]` |
+| `<changelog-heading>` | One of the heading forms in `rule:naming.changelog-entries`. |
+
+Use the explicit expansions in this file when creating actual paths, examples, validation fixtures, or migration notes. Use the derived names in lifecycle, quality, freeze-gate, router, and template guidance when the exact spelling is not the point being taught.
 
 ## Normalization
 
@@ -48,7 +68,7 @@ Elaboration snippets use plain language. Start lowercase unless a proper noun is
 Each substantial work item uses one folder:
 
 ```text
-docs/work-items/<work-id>/
+<work-item-path>
 ```
 
 Use this work ID grammar:
@@ -68,13 +88,13 @@ docs/work-items/2026-01-01_user-profile-import/
 
 Durable planning artifact filenames use the short ID so operators can distinguish files in chat references when a repository contains many work-item packages.
 
-Use these filename grammars:
+Use these derived filename patterns:
 
 ```text
-spec_<short-id>.md
-plan_<short-id>.md
-plan_<phase-id>_<phase-title>_<short-id>.md
-plan_amendment-NNN_<amendment-title>_<short-id>.md
+<spec-filename>
+<plan-filename>
+<phase-plan-filename>
+<amendment-filename>
 ```
 
 Examples:

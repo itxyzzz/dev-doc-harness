@@ -45,8 +45,8 @@ Use these supplemental references when relevant:
 ## Workflow
 
 1. Classify the work as small/mechanical, small/medium work item, or large/phased work item through the router.
-2. Choose a work ID using `rule:naming.work-item-paths`, such as `YYYY-MM-DD[_ISSUE]_short-kebab-title` rendered with `_` between semantic fields.
-3. Create or update the work item folder under `docs/work-items/<work-id>/`.
+2. Choose a work ID using `rule:naming.work-item-paths`.
+3. Create or update the work item folder at `<work-item-path>` from `rule:naming.derived-patterns`.
 4. Draft the required artifacts using `assets/templates/` and the routed canonical modules.
 5. Keep draft artifacts editable until explicit approval, approval commit, or explicit handoff.
 6. Run the Planning Artifact Freeze Gate before implementation or later planning continues.
@@ -66,8 +66,8 @@ If spec-kit is installed and active, prefer a project-local adapter that points 
 
 ## Completion checklist
 
-- The work item folder follows `docs/work-items/<work-id>/`.
-- Top-level durable artifact filenames follow `rule:naming.artifact-filenames`, such as `spec_<short-id>.md` and `plan_<short-id>.md`.
+- The work item folder follows `<work-item-path>` from `rule:naming.derived-patterns`.
+- Top-level durable artifact filenames follow `rule:naming.derived-patterns`, including `<spec-filename>` and `<plan-filename>`.
 - Required small/medium or large/phased artifacts exist and meet `module:quality`.
 - Each approved or handed-off spec, plan, phase plan, or amendment has passed `module:freeze-gate`.
 - The documentation artifact matrix uses `rule:lifecycle.documentation-matrix`.

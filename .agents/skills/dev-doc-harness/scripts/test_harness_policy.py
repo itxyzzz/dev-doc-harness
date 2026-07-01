@@ -756,7 +756,8 @@ def run_checks() -> None:
     assert_scenario_evidence(
         "scenario:variance.high-impact-amendment",
         [
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "plan_amendment-NNN", "label": "amendment path"},
+            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "<amendment-filename>", "label": "amendment path"},
+            {"path": ".agents/skills/dev-doc-harness/references/naming-conventions.md", "pattern": "plan_amendment-NNN", "label": "amendment filename grammar"},
             {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "Amendment freeze", "label": "amendment freeze"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", "pattern": "schema:plan.amendment", "label": "amendment schema"},
         ],

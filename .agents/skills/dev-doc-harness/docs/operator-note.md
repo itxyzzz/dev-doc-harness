@@ -37,7 +37,7 @@ context, naming conventions, and model or sub-agent policy.
 For substantial work, expect a work item package under:
 
 ```text
-docs/work-items/<work-id>/
+<work-item-path>
 ```
 
 Small or medium work usually gets a spec and plan. Large or phased work gets an

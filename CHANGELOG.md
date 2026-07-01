@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01-naming-conventions: deduplicate naming pattern references
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added derived naming pattern variables for work-item paths, durable artifact filenames, commit subjects, changelog headings, and variance-log paths.
+
+#### Changed
+
+- Replaced repeated naming grammar in current lifecycle, freeze-gate, quality, template, operator-facing, and validation surfaces with references to the naming owner.
+
 ### 2026-07-01-naming-conventions: centralize naming convention rules
 
 Release target: `unreleased`

@@ -25,10 +25,10 @@ Owned rule IDs:
 Each substantial work item uses one folder:
 
 ```text
-docs/work-items/<work-id>/
+<work-item-path>
 ```
 
-Use `rule:naming.work-item-paths` for `<work-id>` grammar, issue-key placement, separators, and collision handling. Examples:
+Use `rule:naming.derived-patterns` and `rule:naming.work-item-paths` for `<work-item-path>` grammar, issue-key placement, separators, and collision handling. Examples:
 
 ```text
 docs/work-items/2026-05-25_user-profile-import/
@@ -39,7 +39,7 @@ docs/work-items/2026-05-25_PROJ-123_user-profile-import/
 
 Durable planning artifact filenames include a short ID suffix so operators can distinguish files in chat `@` references when a repository contains many work item packages.
 
-Use `rule:naming.fields` and `rule:naming.artifact-filenames` to derive `<short-id>` and construct current durable artifact filenames. Examples:
+Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id>` and construct current durable artifact filenames. Examples:
 
 ```text
 2026-05-25_user-profile-import -> user-profile-import
@@ -57,9 +57,9 @@ Large or phased work includes broad multi-step features, complex bug fixes, prio
 ## Small/medium layout
 
 ```text
-docs/work-items/<work-id>/
-  spec_<short-id>.md
-  plan_<short-id>.md
+<work-item-path>
+  <spec-filename>
+  <plan-filename>
 
   snapshots/
     test-cases.snapshot.md
@@ -83,12 +83,10 @@ Create only the supplemental snapshot and delta files that are required for the 
 The full lifecycle package for large or phased work may eventually contain these files:
 
 ```text
-docs/work-items/<work-id>/
-  spec_<short-id>.md
-  plan_phase-01_discovery_<short-id>.md
-  plan_phase-02_core-implementation_<short-id>.md
-  plan_phase-03_hardening_<short-id>.md
-  plan_amendment-001_short-title_<short-id>.md
+<work-item-path>
+  <spec-filename>
+  <phase-plan-filename>      # one per concrete phase
+  <amendment-filename>
 
   snapshots/
     test-cases.snapshot.md
@@ -109,7 +107,7 @@ docs/work-items/<work-id>/
     variance-log.md
 ```
 
-The normal initial planning package is anchor-spec-only: create `spec_<short-id>.md` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `plan_<phase-id>_<phase-title>_<short-id>.md` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
+The normal initial planning package is anchor-spec-only: create `<spec-filename>` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `<phase-plan-filename>` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
 
 Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
 
@@ -119,7 +117,7 @@ Phase plan names are planned future outputs until phase-plan drafting begins. Wh
 
 The normal large/phased planning sequence is:
 
-1. Draft the anchor `spec_<short-id>.md`.
+1. Draft the anchor `<spec-filename>`.
 2. Stage the anchor-spec planning package for draft review.
 3. Freeze the anchor spec after explicit approval or create an explicit handoff snapshot.
 4. Stop before implementation and before phase-plan drafting.
@@ -132,11 +130,11 @@ Combined anchor-spec and phase-plan drafting is allowed only when the operator e
 
 ## Large or phased work item spec as handoff anchor
 
-For large or phased work items, `spec_<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec_<short-id>.md` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
+For large or phased work items, `<spec-filename>` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `<spec-filename>` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
 
-`spec_<short-id>.md` must be detailed enough that a fresh planning thread can write `plan_<phase-id>_<phase-title>_<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
-Phase plans must derive from `spec_<short-id>.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
+Phase plans must derive from `<spec-filename>`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
 Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
 
@@ -144,13 +142,13 @@ Follow `durable-planning-quality.md` for the full spec and phase-plan quality ba
 
 When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
 
-The full durable package must live under `docs/work-items/<work-id>/` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
+The full durable package must live under `<work-item-path>` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
 
 If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs. A valid stub contains:
 
 - A title.
 - A status.
-- A link to the canonical package or artifact under `docs/work-items/<work-id>/`.
+- A link to the canonical package or artifact under `<work-item-path>`.
 
 Do not duplicate full specs or plans under `docs/superpowers`, and do not maintain a second source of truth for harness-managed artifacts.
 
@@ -163,11 +161,11 @@ Run the workflow defined in `planning-freeze-gates.md` whenever durable planning
 Draft artifacts may be edited until explicit operator approval and the approval commit, or until explicit handoff. After the approval commit or explicit handoff snapshot, these artifacts are immutable snapshots:
 
 ```text
-spec_<short-id>.md
-plan_<short-id>.md
-plan_<phase-id>_<phase-title>_<short-id>.md
+<spec-filename>
+<plan-filename>
+<phase-plan-filename>
 snapshots/*.md
-plan_amendment-*_<amendment-title>_<short-id>.md
+<amendment-filename>
 ```
 
 Allowed post-freeze changes are:
@@ -235,13 +233,13 @@ Frozen specs and plans are immutable snapshots. Implementation agents must not r
 Record nontrivial variance in:
 
 ```text
-implementation-notes/variance-log.md
+<variance-log-path>
 ```
 
 Create an immutable amendment in:
 
 ```text
-plan_amendment-NNN_<amendment-title>_<short-id>.md
+<amendment-filename>
 ```
 
 and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
@@ -276,9 +274,9 @@ Example:
 
 ### Added
 
-- Added validation tasks for duplicate profile identifiers in `plan_phase-02_core-implementation_PROJ-123_user-profile-import.md`.
+- Added validation tasks for duplicate profile identifiers in the phase plan.
 
 ### Changed
 
-- Clarified API acceptance criteria in `spec_PROJ-123_user-profile-import.md`.
+- Clarified API acceptance criteria in the spec.
 ```

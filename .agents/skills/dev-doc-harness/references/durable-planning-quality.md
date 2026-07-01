@@ -20,7 +20,7 @@ Durable planning is especially important when the work mentions layered plans, f
 
 ## Spec quality bar
 
-A durable `spec_<short-id>.md` must preserve the handoff in repository terms. Include the applicable details from the planning discussion:
+A durable `<spec-filename>` must preserve the handoff in repository terms. Include the applicable details from the planning discussion:
 
 - Goals and user or operator outcomes.
 - Scope, non-scope, and boundaries.
@@ -36,7 +36,7 @@ A chat summary, outline, or heading-only checklist is not a durable spec.
 
 ## Phase plan quality bar
 
-Each `plan_<phase-id>_<phase-title>_<short-id>.md` must be executable by a fresh agent or thread. Include:
+Each `<phase-plan-filename>` must be executable by a fresh agent or thread. Include:
 
 - Exact input artifacts and context to read.
 - Files, directories, modules, interfaces, schemas, APIs, config, or docs likely to change.
@@ -54,7 +54,7 @@ Before implementation begins, compare the frozen docs against the original hando
 
 - No placeholders or undecided required items.
 - No vague instructions such as "implement the work item" without concrete tasks.
-- No important detail lost between `spec_<short-id>.md` and phase plans.
+- No important detail lost between `<spec-filename>` and phase plans.
 - Every major handoff detail is preserved, adapted, or explicitly deferred with a reason.
 
 If important context is missing before approval and freeze, update the draft. If it is discovered after freeze, use the variance and amendment process from `artifact-contract.md`.

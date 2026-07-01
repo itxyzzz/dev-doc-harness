@@ -1,11 +1,11 @@
 # <Work Item Name> Plan
 
-Work ID: `<YYYY-MM-DD[_ISSUE-123]_short-kebab-title>`
-Short ID: `<[ISSUE-123_]short-kebab-title>`
+Work ID: `<work-id>`
+Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.work-item-paths`, `rule:naming.artifact-filenames`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Implementation summary
 
@@ -37,8 +37,8 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Planning approval | `[<issue-key> ]spec: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Approval commit for this spec and plan, or replace with the artifact set being approved. |
-| Implementation | `[<issue-key> ]<type>: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Add one row per expected implementation, validation, release, or maintenance commit. |
+| Planning approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this spec and plan, or replace with the artifact set being approved. |
+| Implementation | `<commit-subject>` | `<changelog-heading>` | Add one row per expected implementation, validation, release, or maintenance commit. |
 
 ## Validation commands
 
@@ -58,7 +58,7 @@ Record the draft review, approval commit, and post-freeze implementation authori
 
 ## Completion criteria
 
-- Acceptance criteria in `spec_<short-id>.md` are met.
+- Acceptance criteria in `<spec-filename>` are met.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.

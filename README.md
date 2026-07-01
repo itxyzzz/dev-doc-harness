@@ -72,7 +72,7 @@ For very small mechanical edits, little changes. The agent can usually make the
 edit directly, preserve behavior, and run the relevant checks.
 
 For small or medium substantial work, expect the agent to create a work item
-package under `docs/work-items/<work-id>/`. This applies to features, bug fixes with
+package at `<work-item-path>`. This applies to features, bug fixes with
 nontrivial investigation, prior issue investigations that turn into changes,
 refactors, migrations, and documentation/process changes. That folder captures
 the spec, plan, required documentation updates, and any implementation variance.
@@ -86,12 +86,12 @@ references. For example, `2026-05-31_artifact-root` uses
 lives in `references/naming-conventions.md`.
 
 For large work, expect a more deliberate handoff. The agent first writes an
-anchor `spec_<short-id>.md` that preserves goals, boundaries, decisions, risks,
+anchor `<spec-filename>` that preserves goals, boundaries, decisions, risks,
 tests, and acceptance criteria. The normal first planning package is
 anchor-spec-only; listed phase-plan filenames are future outputs unless the
 operator explicitly asks for combined planning. After the anchor spec is frozen
-and the operator gives a fresh instruction, the agent drafts phase plans such as
-`plan_phase-01_discovery_<short-id>.md` that a fresh agent or future thread can
+and the operator gives a fresh instruction, the agent drafts phase plans named
+with `<phase-plan-filename>` that a fresh agent or future thread can
 execute without relying on hidden chat history.
 
 When durable planning artifacts are ready for review, the agent stages the draft
