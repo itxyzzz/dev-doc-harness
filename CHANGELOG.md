@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Updated the small/medium spec template with source/intent, scope boundary, repository context, requirements, acceptance criteria, interface/control-flow, risks/rejected alternatives, and readiness checklist prompts while deferring plan-template changes.
+
 ### 2026-07-01_small-medium-template-structure -- approve spec-template update plan
 
 Release target: `unreleased`
