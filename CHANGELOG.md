@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01-naming-conventions: define naming convention policy
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and validation snapshot for centralizing harness naming rules for work-item paths, planning artifact filenames, commit messages, and changelog entries.
+
 ### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
 
 Release target: `unreleased`
