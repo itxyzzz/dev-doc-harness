@@ -1,11 +1,11 @@
 # <Work Item Name> Spec
 
-Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
-Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
+Work ID: `<YYYY-MM-DD[_ISSUE-123]_short-kebab-title>`
+Short ID: `<[ISSUE-123_]short-kebab-title>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
-Policy references: `module:lifecycle`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.work-item-paths`, `rule:naming.artifact-filenames`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
 ## Goal
 
@@ -45,8 +45,8 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Planning approval | `<short-id> spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this spec and related planning artifacts. |
-| Implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Replace with the expected implementation commit subject, or defer to the plan with a reason. |
+| Planning approval | `[<issue-key> ]spec: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Approval commit for this spec and related planning artifacts. |
+| Implementation | `[<issue-key> ]<type>: <title>[ -- <elaboration>]` | `<work-id>[ -- <elaboration>]` | Replace with the expected implementation commit subject, or defer to the plan with a reason. |
 
 ## Documentation artifact matrix
 

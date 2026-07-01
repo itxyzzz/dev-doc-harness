@@ -31,8 +31,8 @@ model_policy: standard-review
 reasoning_effort: medium
 context_strategy: curated artifacts
 inputs:
-  - docs/work-items/<work-id>/spec-<short-id>.md
-  - docs/work-items/<work-id>/plan-<short-id>.md
+  - docs/work-items/<work-id>/spec_<short-id>.md
+  - docs/work-items/<work-id>/plan_<short-id>.md
 outputs:
   - review/test-risk-notes.md
 allowed_actions:

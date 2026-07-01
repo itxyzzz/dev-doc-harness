@@ -1,6 +1,6 @@
 # Artifact Contract
 
-This document is the canonical source for repository work item artifact layout, lifecycle rules, and variance handling. A work item can be a feature, bug fix, prior issue investigation, refactor, migration, documentation/process change, or other substantial body of work.
+This document is the canonical source for repository work item artifact layout, lifecycle rules, and variance handling. A work item can be a feature, bug fix, prior issue investigation, refactor, migration, documentation/process change, or other substantial body of work. Naming grammar for work IDs, short IDs, artifact filenames, commit messages, and changelog entries is owned by `module:naming` in `references/naming-conventions.md`.
 
 Module: `module:lifecycle`
 
@@ -28,37 +28,22 @@ Each substantial work item uses one folder:
 docs/work-items/<work-id>/
 ```
 
-Use this work ID format:
+Use `rule:naming.work-item-paths` for `<work-id>` grammar, issue-key placement, separators, and collision handling. Examples:
 
 ```text
-YYYY-MM-DD-short-kebab-title
-```
-
-When a JIRA key or another issue-tracker ID is available, include it after the date:
-
-```text
-YYYY-MM-DD-ISSUE-short-kebab-title
-```
-
-Examples:
-
-```text
-docs/work-items/2026-05-25-user-profile-import/
-docs/work-items/2026-05-25-fix-profile-import-timeout/
-docs/work-items/2026-05-25-PROJ-123-user-profile-import/
+docs/work-items/2026-05-25_user-profile-import/
+docs/work-items/2026-05-25_PROJ-123_user-profile-import/
 ```
 
 ## Short artifact ID
 
 Durable planning artifact filenames include a short ID suffix so operators can distinguish files in chat `@` references when a repository contains many work item packages.
 
-Derive `<short-id>` by removing only the leading `YYYY-MM-DD-` from `<work-id>`. Preserve issue keys.
-
-Examples:
+Use `rule:naming.fields` and `rule:naming.artifact-filenames` to derive `<short-id>` and construct current durable artifact filenames. Examples:
 
 ```text
-2026-05-25-user-profile-import -> user-profile-import
-2026-05-25-PROJ-123-user-profile-import -> PROJ-123-user-profile-import
+2026-05-25_user-profile-import -> user-profile-import
+2026-05-25_PROJ-123_user-profile-import -> PROJ-123_user-profile-import
 ```
 
 ## Work sizes
@@ -73,8 +58,8 @@ Large or phased work includes broad multi-step features, complex bug fixes, prio
 
 ```text
 docs/work-items/<work-id>/
-  spec-<short-id>.md
-  plan-<short-id>.md
+  spec_<short-id>.md
+  plan_<short-id>.md
 
   snapshots/
     test-cases.snapshot.md
@@ -99,11 +84,11 @@ The full lifecycle package for large or phased work may eventually contain these
 
 ```text
 docs/work-items/<work-id>/
-  spec-<short-id>.md
-  plan-phase-01-discovery-<short-id>.md
-  plan-phase-02-core-implementation-<short-id>.md
-  plan-phase-03-hardening-<short-id>.md
-  plan-amendment-001-short-title-<short-id>.md
+  spec_<short-id>.md
+  plan_phase-01_discovery_<short-id>.md
+  plan_phase-02_core-implementation_<short-id>.md
+  plan_phase-03_hardening_<short-id>.md
+  plan_amendment-001_short-title_<short-id>.md
 
   snapshots/
     test-cases.snapshot.md
@@ -124,7 +109,7 @@ docs/work-items/<work-id>/
     variance-log.md
 ```
 
-The normal initial planning package is anchor-spec-only: create `spec-<short-id>.md` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `plan-phase-*-<short-id>.md` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
+The normal initial planning package is anchor-spec-only: create `spec_<short-id>.md` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `plan_<phase-id>_<phase-title>_<short-id>.md` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
 
 Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
 
@@ -134,7 +119,7 @@ Phase plan names are planned future outputs until phase-plan drafting begins. Wh
 
 The normal large/phased planning sequence is:
 
-1. Draft the anchor `spec-<short-id>.md`.
+1. Draft the anchor `spec_<short-id>.md`.
 2. Stage the anchor-spec planning package for draft review.
 3. Freeze the anchor spec after explicit approval or create an explicit handoff snapshot.
 4. Stop before implementation and before phase-plan drafting.
@@ -147,11 +132,11 @@ Combined anchor-spec and phase-plan drafting is allowed only when the operator e
 
 ## Large or phased work item spec as handoff anchor
 
-For large or phased work items, `spec-<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec-<short-id>.md` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
+For large or phased work items, `spec_<short-id>.md` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `spec_<short-id>.md` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
 
-`spec-<short-id>.md` must be detailed enough that a fresh planning thread can write `plan-phase-NN-title-<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+`spec_<short-id>.md` must be detailed enough that a fresh planning thread can write `plan_<phase-id>_<phase-title>_<short-id>.md` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
-Phase plans must derive from `spec-<short-id>.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
+Phase plans must derive from `spec_<short-id>.md`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
 Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
 
@@ -178,11 +163,11 @@ Run the workflow defined in `planning-freeze-gates.md` whenever durable planning
 Draft artifacts may be edited until explicit operator approval and the approval commit, or until explicit handoff. After the approval commit or explicit handoff snapshot, these artifacts are immutable snapshots:
 
 ```text
-spec-<short-id>.md
-plan-<short-id>.md
-plan-phase-*-<short-id>.md
+spec_<short-id>.md
+plan_<short-id>.md
+plan_<phase-id>_<phase-title>_<short-id>.md
 snapshots/*.md
-plan-amendment-*-<short-id>.md
+plan_amendment-*_<amendment-title>_<short-id>.md
 ```
 
 Allowed post-freeze changes are:
@@ -228,53 +213,15 @@ Use `No` only when the artifact is not applicable. Use `Deferred` only with a re
 
 ## Commit messages
 
-All commits made under the harness must use a planned or documented subject.
-Commit subjects are reviewable planning content: specs, plans, phase plans, and
-amendments must include the expected approval and implementation subjects that
-are known at that stage. Operators may request subject wording changes during
-normal artifact review.
+All commits made under the harness must use a planned or documented subject. Commit subjects are reviewable planning content: specs, plans, phase plans, and amendments must include the expected approval and implementation subjects that are known at that stage. Operators may request subject wording changes during normal artifact review.
 
-Every harness commit subject must start with the work short ID. When the work
-ID includes an issue tracking key, the short ID already includes that key; do
-not duplicate the issue key as a separate prefix.
+Use `rule:naming.commit-messages` for the current subject grammar, action types, issue-key handling, elaboration snippets, and nonredundancy rules.
 
-Use one subject pattern for all harness commits:
-
-```text
-SHORT-ID TYPE: TITLE-SNIPPET
-```
-
-Planning approval commits use artifact types:
-
-```text
-SHORT-ID spec: TITLE-SNIPPET
-SHORT-ID plan: TITLE-SNIPPET
-SHORT-ID phase N plan: TITLE-SNIPPET
-SHORT-ID amendment NNN: TITLE-SNIPPET
-```
-
-Implementation, validation, release, maintenance, and other non-approval commits
-use action types. Allowed action types are `feat`, `fix`, `docs`, `test`,
-`refactor`, `chore`, `spike`, `release`, and `security`.
-
-Examples:
-
-```text
-PROJ-123 spec: user profile import
-PROJ-123 chore: update Spring Boot to 3.4
-release-versioning release: publish 0.3.0 package notes
-```
-
-The title snippet is the human-readable phrase shared by the durable planning
-artifact, planned commit row, and `CHANGELOG.md` entry heading or bullet-level
-snippet. Implementation snippets should be more informative than planning
-approval snippets and should describe the concrete delivered change or phase
-output.
+The title or elaboration snippet is the phrase shared by the durable planning artifact, planned commit row, and `CHANGELOG.md` entry heading or bullet-level snippet. Implementation subjects should be more informative than planning approval subjects and should describe the concrete delivered change or phase output.
 
 Commit subjects and changelog entry titles must stay synchronized:
 
-- The `CHANGELOG.md` entry heading for a commit must include the work ID and the
-  same title snippet represented in the planned commit subject.
+- The `CHANGELOG.md` entry heading for a commit must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the planned commit subject.
 - When a commit subject changes during review or implementation, update the
   matching planned commit row and changelog heading before committing.
 - When one changelog entry covers multiple commits for the same work item, each
@@ -294,7 +241,7 @@ implementation-notes/variance-log.md
 Create an immutable amendment in:
 
 ```text
-plan-amendment-NNN-short-title-<short-id>.md
+plan_amendment-NNN_<amendment-title>_<short-id>.md
 ```
 
 and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
@@ -311,12 +258,12 @@ and request operator approval before proceeding when post-freeze variance affect
 
 ## Changelog
 
-Maintain a living `CHANGELOG.md` at the repository root. Update it before every commit.
+Maintain a living `CHANGELOG.md` at the repository root. Update it before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar.
 
 Use a Keep a Changelog style:
 
 - Newest entries first.
-- Each entry heading is the work ID plus a short descriptive snippet.
+- Each entry heading follows the naming reference and contains the work ID or full commit message plus a useful title or elaboration snippet.
 - Entry headings or bullet-level title snippets must stay synchronized with the
   planned commit subjects for the same work.
 - Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
@@ -325,13 +272,13 @@ Use a Keep a Changelog style:
 Example:
 
 ```md
-## 2026-05-25-PROJ-123-user-profile-import: Phase 02 import validation
+## 2026-05-25 PROJ-123 docs: import-validation -- document duplicate profile checks
 
 ### Added
 
-- Added validation tasks for duplicate profile identifiers in `plan-phase-02-core-implementation-PROJ-123-user-profile-import.md`.
+- Added validation tasks for duplicate profile identifiers in `plan_phase-02_core-implementation_PROJ-123_user-profile-import.md`.
 
 ### Changed
 
-- Clarified API acceptance criteria in `spec-PROJ-123-user-profile-import.md`.
+- Clarified API acceptance criteria in `spec_PROJ-123_user-profile-import.md`.
 ```

@@ -32,7 +32,7 @@ mechanical edit, the agent should load:
 
 The router sends the agent to the smallest useful set of canonical references
 for sizing, planning, freeze gates, implementation, variance, changelog, release
-context, and model or sub-agent policy.
+context, naming conventions, and model or sub-agent policy.
 
 For substantial work, expect a work item package under:
 
@@ -43,6 +43,10 @@ docs/work-items/<work-id>/
 Small or medium work usually gets a spec and plan. Large or phased work gets an
 anchor spec first. Phase plans come later from the approved anchor spec unless
 you explicitly ask for combined planning.
+
+Current naming grammar lives in `references/naming-conventions.md`. For example,
+`2026-05-31_artifact-root` uses `spec_artifact-root.md` and
+`plan_artifact-root.md`.
 
 ## Review And Pause Points
 

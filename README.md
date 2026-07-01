@@ -81,16 +81,17 @@ agent starts changing the product.
 
 The work item folder keeps the full dated ID for sorting and uniqueness, while
 the durable artifact filenames include a shorter suffix for easier chat
-references. For example, `2026-05-31-artifact-root` uses
-`spec-artifact-root.md` and `plan-artifact-root.md`.
+references. For example, `2026-05-31_artifact-root` uses
+`spec_artifact-root.md` and `plan_artifact-root.md`. The exact naming grammar
+lives in `references/naming-conventions.md`.
 
 For large work, expect a more deliberate handoff. The agent first writes an
-anchor `spec-<short-id>.md` that preserves goals, boundaries, decisions, risks,
+anchor `spec_<short-id>.md` that preserves goals, boundaries, decisions, risks,
 tests, and acceptance criteria. The normal first planning package is
 anchor-spec-only; listed phase-plan filenames are future outputs unless the
 operator explicitly asks for combined planning. After the anchor spec is frozen
 and the operator gives a fresh instruction, the agent drafts phase plans such as
-`plan-phase-01-discovery-<short-id>.md` that a fresh agent or future thread can
+`plan_phase-01_discovery_<short-id>.md` that a fresh agent or future thread can
 execute without relying on hidden chat history.
 
 When durable planning artifacts are ready for review, the agent stages the draft
@@ -118,8 +119,9 @@ amendment and operator approval.
 
 Before commits, the agent updates `CHANGELOG.md` with newest-first entries tied
 to the current work item, phase, task, or planning decision. Harness commit
-subjects are planned during artifact review, start with the work short ID, and
-keep their title snippets synchronized with the matching changelog entry.
+subjects are planned during artifact review and follow the naming reference,
+including issue-key handling, title normalization, and nonredundant elaboration
+snippets synchronized with matching changelog entries.
 
 ## Operator outcomes
 
@@ -243,12 +245,15 @@ The internal machinery is intentionally small:
 - `.agents/skills/dev-doc-harness/SKILL.md` is the operation router.
 - `references/policy-architecture.md` defines the module catalog, rule ID
   conventions, content types, dependency direction, and router inputs.
+- `references/naming-conventions.md` (`module:naming`) defines work IDs, artifact filenames,
+  commit-message grammar, changelog-entry grammar, collision handling, and
+  title normalization.
 - `references/release-policy.md` defines release identity, package boundaries,
   changelog-derived release notes, compatibility, artifact release context, and
   team adoption flow.
-- `references/artifact-contract.md` defines work item folders, short-ID
-  artifact filenames, snapshots, deltas, commit-message and changelog rules, and variance
-  handling.
+- `references/artifact-contract.md` defines work item artifact layout,
+  snapshots, deltas, lifecycle checkpoints, variance handling, and changelog
+  update requirements.
 - `references/planning-freeze-gates.md` defines the approval-first planning
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable

@@ -64,6 +64,7 @@ CHECK_IDS = [
 
 CANONICAL_REFERENCES = [
     ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+    ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
@@ -108,6 +109,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/VERSION",
     ".agents/skills/dev-doc-harness/scripts/test_harness_policy.py",
     ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+    ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
@@ -610,6 +612,7 @@ def run_checks() -> None:
 
     discoverability = [
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Classify work size", "label": "work sizing"},
+        {"path": ".agents/skills/dev-doc-harness/references/naming-conventions.md", "pattern": "rule:naming.work-item-paths", "label": "naming convention owner"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Planning Artifact Freeze Gate", "label": "planning freeze gates"},
         {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "stop before implementation", "label": "stop before implementation"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Immutable snapshots", "label": "immutable snapshots"},
@@ -657,6 +660,7 @@ def run_checks() -> None:
         "README.md",
         ".agents/skills/dev-doc-harness/SKILL.md",
         ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+        ".agents/skills/dev-doc-harness/references/naming-conventions.md",
         ".agents/skills/dev-doc-harness/references/artifact-contract.md",
         ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
         ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
@@ -752,7 +756,7 @@ def run_checks() -> None:
     assert_scenario_evidence(
         "scenario:variance.high-impact-amendment",
         [
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "plan-amendment-NNN-short-title", "label": "amendment path"},
+            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "plan_amendment-NNN", "label": "amendment path"},
             {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "Amendment freeze", "label": "amendment freeze"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", "pattern": "schema:plan.amendment", "label": "amendment schema"},
         ],

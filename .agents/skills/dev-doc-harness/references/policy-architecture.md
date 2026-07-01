@@ -22,7 +22,8 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 | Module ID | Owner file | Content type | Owned rule families |
 |---|---|---|---|
 | `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, and router inputs. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item folders, short artifact IDs, work sizing, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit-message format, and changelog rules. |
+| `module:naming` | `references/naming-conventions.md` | Normative policy | Work ID fields, normalization, work-item paths, artifact filenames, commit-message grammar, changelog-entry grammar, collision handling, and redundancy deduplication. |
+| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
@@ -76,7 +77,7 @@ Future router work should load by operation rather than eagerly loading every re
 | Operation family | Typical modules |
 |---|---|
 | Classify work size | `module:lifecycle` |
-| Draft or review durable specs and plans | `module:lifecycle`, `module:quality`, `module:models` for substantial planning |
+| Draft or review durable specs and plans | `module:lifecycle`, `module:naming`, `module:quality`, `module:models` for substantial planning |
 | Freeze planning packages | `module:freeze-gate`, `module:lifecycle` |
 | Execute approved work and record variance | `module:lifecycle`, `module:execution-quality` |
 | Use or review sub-agent strategy | `module:models`, optionally `module:role-examples` |

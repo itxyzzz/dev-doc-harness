@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01-naming-conventions: centralize naming convention rules
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added a canonical naming conventions reference for work-item IDs, artifact filenames, commit subjects, changelog entries, collision handling, and title normalization.
+
+#### Changed
+
+- Updated lifecycle, router, template, operator-facing, example, and validation surfaces to cite the naming reference and use the new underscore-separated semantic field examples.
+
 ### 2026-07-01-naming-conventions: define naming convention policy
 
 Release target: `unreleased`
