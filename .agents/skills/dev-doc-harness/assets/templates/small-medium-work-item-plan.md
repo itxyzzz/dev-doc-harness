@@ -63,6 +63,7 @@ Record the draft review, approval commit, and post-freeze implementation authori
 - Required documentation artifacts have been created or updated.
 - `CHANGELOG.md` has a newest-first entry for the work before each commit.
 - Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
+- Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
 - Variance log is present and current.
 - De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
 

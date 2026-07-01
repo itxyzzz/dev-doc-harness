@@ -72,6 +72,8 @@ Describe what the implementing agent must report at phase completion.
 
 Include assigned scope, files inspected or changed, commands and tests run, assumptions, uncertainty or residual risk, and recommended next step. When sub-agents were authorized or used, include de-facto sub-agent count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
 
+If planned implementation changes remain uncommitted, name the exact blocker or explicit no-commit instruction and include the current worktree status.
+
 ## Completion criteria
 
 - Phase objective is met.
@@ -79,5 +81,6 @@ Include assigned scope, files inspected or changed, commands and tests run, assu
 - Documentation tasks are complete or explicitly deferred with reason.
 - `CHANGELOG.md` has a newest-first entry for the phase before each commit.
 - Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
+- Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
 - Variance log is present and current.
 - De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
