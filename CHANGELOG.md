@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01_small-medium-template-structure -- approve spec-template update plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec-template update spec, plan, and research report for improving the small/medium spec template structure while deferring plan-template changes.
+
 ### 2026-07-01-naming-conventions: deduplicate naming pattern references
 
 Release target: `unreleased`
