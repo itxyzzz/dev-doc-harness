@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01_small-medium-plan-template-structure -- approve plan-template update plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved plan-template update spec and plan for improving the small/medium plan template structure, including spec traceability, bounded sub-agent strategy, execution detail, validation mapping, and orchestration saturation checks.
+
 ### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
 
 Release target: `unreleased`
