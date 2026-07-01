@@ -1,11 +1,11 @@
 # <Work Item Name> Large or Phased Work Spec
 
-Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
-Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
+Work ID: `<work-id>`
+Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
 
 ## Goal
 
@@ -85,9 +85,9 @@ The output filenames below are future phase-plan outputs, not files to create du
 
 | Phase | Objective | Future phase-plan output |
 |---|---|---|
-| 01 | Discovery or preparation | `plan-phase-01-discovery-<short-id>.md` |
-| 02 | Core implementation | `plan-phase-02-core-implementation-<short-id>.md` |
-| 03 | Hardening and review | `plan-phase-03-hardening-<short-id>.md` |
+| 01 | Discovery or preparation | `<phase-plan-filename>` |
+| 02 | Core implementation | `<phase-plan-filename>` |
+| 03 | Hardening and review | `<phase-plan-filename>` |
 
 ## Planning artifact freeze gates
 
@@ -99,9 +99,9 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Anchor spec approval | `<short-id> spec: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this anchor spec. |
-| Phase plan approval pattern | `<short-id> phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Replace or refine in each concrete phase plan. |
-| Implementation pattern | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Replace with concrete rows in phase plans. |
+| Anchor spec approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this anchor spec. |
+| Phase plan approval pattern | `<planning-commit-subject>` | `<changelog-heading>` | Replace or refine in each concrete phase plan. |
+| Implementation pattern | `<commit-subject>` | `<changelog-heading>` | Replace with concrete rows in phase plans. |
 
 ## Model and Sub-agent Strategy
 

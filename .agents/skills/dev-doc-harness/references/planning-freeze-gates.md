@@ -18,10 +18,12 @@ Owned rule IDs:
 
 Use this workflow whenever one of these durable planning artifacts is ready for operator review or approval:
 
-- `spec-<short-id>.md`
-- `plan-<short-id>.md`
-- `plan-phase-*-<short-id>.md`
-- `plan-amendment-*-<short-id>.md`
+- `<spec-filename>`
+- `<plan-filename>`
+- `<phase-plan-filename>`
+- `<amendment-filename>`
+
+Use `rule:naming.derived-patterns` for the current filename expansions.
 
 Draft artifacts may be edited until the operator explicitly approves them and the approval commit is created, or until the operator explicitly asks for a handoff snapshot. After that approval commit or explicit handoff snapshot, the artifacts are frozen and follow the immutable snapshot rules in `artifact-contract.md`.
 
@@ -61,9 +63,9 @@ If the operator only confirms execution settings without clear start authorizati
 
 Very large or phased work items may have multiple freeze gates:
 
-- Anchor spec freeze: after `spec-<short-id>.md` is approved or explicitly handed off for phase planning. This gate pauses before implementation and before later phase-plan drafting; phase-plan drafting resumes only after fresh operator instruction.
-- Phase-plan freeze: after one or more `plan-phase-*-<short-id>.md` files are approved.
-- Amendment freeze: after any high-impact `plan-amendment-*-<short-id>.md` is approved.
+- Anchor spec freeze: after `<spec-filename>` is approved or explicitly handed off for phase planning. This gate pauses before implementation and before later phase-plan drafting; phase-plan drafting resumes only after fresh operator instruction.
+- Phase-plan freeze: after one or more `<phase-plan-filename>` files are approved.
+- Amendment freeze: after any high-impact `<amendment-filename>` is approved.
 
 Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order; this freeze-gate rule owns the approval mechanics at each stop.
 

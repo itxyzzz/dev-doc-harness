@@ -6,6 +6,44 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01-naming-conventions: deduplicate naming pattern references
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added derived naming pattern variables for work-item paths, durable artifact filenames, commit subjects, changelog headings, and variance-log paths.
+
+#### Changed
+
+- Replaced repeated naming grammar in current lifecycle, freeze-gate, quality, template, operator-facing, and validation surfaces with references to the naming owner.
+
+### 2026-07-01-naming-conventions: centralize naming convention rules
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added a canonical naming conventions reference for work-item IDs, artifact filenames, commit subjects, changelog entries, collision handling, and title normalization.
+
+#### Changed
+
+- Updated lifecycle, router, template, operator-facing, example, and validation surfaces to cite the naming reference and use the new underscore-separated semantic field examples.
+
+### 2026-07-01-naming-conventions: define naming convention policy
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and validation snapshot for centralizing harness naming rules for work-item paths, planning artifact filenames, commit messages, and changelog entries.
+
 ### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
 
 Release target: `unreleased`

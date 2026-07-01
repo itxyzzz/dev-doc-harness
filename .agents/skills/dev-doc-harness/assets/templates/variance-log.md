@@ -1,13 +1,13 @@
 # Variance Log
 
-Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
+Work ID: `<work-id>`
 Harness release: `<version or unknown>`
 Schema: `schema:variance-log`
-Policy references: `module:lifecycle`, `rule:lifecycle.variance-policy`
+Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`
 
 ## Entries
 
-### YYYY-MM-DD - <Short title>
+### <date> - <short-title>
 
 - Variance class:
 - Original plan reference:

@@ -1,11 +1,11 @@
 # Large or Phased Work Item Phase NN: <Phase Name>
 
-Work ID: `<YYYY-MM-DD-short-kebab-title>` or `<YYYY-MM-DD-ISSUE-short-kebab-title>`
-Short ID: `<short-kebab-title>` or `<ISSUE-short-kebab-title>`
+Work ID: `<work-id>`
+Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
-Policy references: `module:lifecycle`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
 ## Objective
 
@@ -43,8 +43,8 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|
-| Phase plan approval | `<short-id> phase N plan: <title snippet>` | `<work-id>: <title snippet>` | Approval commit for this phase plan. |
-| Phase implementation | `<short-id> <type>: <expanded title snippet>` | `<work-id>: <expanded title snippet>` | Add one row per expected phase implementation, validation, release, or maintenance commit. |
+| Phase plan approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this phase plan. |
+| Phase implementation | `<commit-subject>` | `<changelog-heading>` | Add one row per expected phase implementation, validation, release, or maintenance commit. |
 
 ## Tests and validation
 
