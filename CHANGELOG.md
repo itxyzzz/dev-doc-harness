@@ -6,6 +6,17 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Updated the small/medium plan template with input-artifact grounding, spec traceability, implementation/change-surface prompts, SMART task guidance, validation mapping, readable sub-agent strategy blocks, readiness checks, and orchestration saturation guards.
+- Clarified that compact model and sub-agent strategy notation applies to substantial small/medium plans as well as large or phased planning artifacts.
+
 ### 2026-07-01_small-medium-plan-template-structure -- approve plan-template update plan
 
 Release target: `unreleased`
