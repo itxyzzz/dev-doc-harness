@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Labeled task dependencies explicitly in the small/medium plan template task guidance and examples.
+
 ### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
 
 Release target: `unreleased`

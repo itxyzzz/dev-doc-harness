@@ -104,10 +104,10 @@ Write one checkbox per implementation, test, validation, or documentation step. 
 - Relevant to a spec requirement, acceptance criterion, risk, interface, documentation need, or commit boundary.
 - Time-bounded by lifecycle checkpoint, such as before editing, before validation, before commit, or during final review.
 
-Order tasks by implementation dependency and reviewability. Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
+Order tasks by implementation dependency and reviewability. Label dependencies explicitly as `Dependencies: <None, task ids, artifacts, or external event>`. Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
 
-- [ ] `<T-001>` `<specific task with files/scope and linked REQ/AC/risk>`
-- [ ] `<T-002>` `<specific validation, documentation, changelog, or review task>`
+- [ ] `<T-001>` Dependencies: `<None or task/artifact ids>`; `<specific task with files/scope>`; Traces: `<REQ/AC/risk ids>`.
+- [ ] `<T-002>` Dependencies: `<T-001 or None>`; `<specific validation, documentation, changelog, or review task>`; Traces: `<AC/risk ids>`.
 
 ## Planned commits
 
