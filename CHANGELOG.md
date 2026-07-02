@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-02_template-block-assembly -- approve modular template plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for assembling harness templates from ordered shared source blocks, updating the harness release marker to `0.4+`, and applying tag-header formatting conventions to future template requirement, acceptance-criterion, and risk blocks.
+
 ### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
 
 Release target: `unreleased`
