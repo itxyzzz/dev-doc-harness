@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-02_orchestration-sizing-large-templates -- approve sizing and large-template plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for aligning harness work sizing around one orchestration thread with bounded delegation, updating README sizing guidance, and improving large/phased templates in line with the latest small/medium template structure.
+
 ### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
 
 Release target: `unreleased`
