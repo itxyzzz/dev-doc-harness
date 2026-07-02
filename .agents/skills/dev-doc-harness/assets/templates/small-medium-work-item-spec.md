@@ -31,7 +31,7 @@ Success summary:
 ### In scope
 
 - List the behavior, files, interfaces, workflows, docs, or validation surfaces included in this change.
-- Keep scope bounded enough for small/medium work: one implementation thread and a manageable context window.
+- Keep scope bounded enough for small/medium work: one orchestration thread with bounded delegation and a manageable context window.
 
 ### Non-scope
 
@@ -88,7 +88,7 @@ Notes:
 Requirement quality prompts:
 
 - Specific: names the concrete behavior, documentation surface, interface, or decision.
-- Achievable: fits the approved small/medium boundary and one implementation thread.
+- Achievable: fits the approved small/medium boundary and one orchestration thread with bounded delegation.
 - Relevant: traces back to the stated operator/user outcome.
 - Bounded: has clear lifecycle timing such as before freeze, during validation, or before commit.
 - Testable: can be connected to at least one acceptance criterion.
@@ -161,7 +161,7 @@ Risk prompts:
 
 - Behavioral or compatibility regressions.
 - Migration, security, privacy, compliance, or operational concerns.
-- Over-scoping, under-specifying, or making the work too large for one thread.
+- Over-scoping, under-specifying, or making the work too large for one orchestration thread with bounded delegation.
 - Alternatives rejected because they duplicate canonical harness policy, import too much external process, or create reviewer burden.
 
 ## Planned commits

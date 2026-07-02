@@ -9,54 +9,158 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 
 ## Objective
 
-Describe the phase outcome.
+Describe the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
 
-## Input context
+## Input Artifacts
 
-List the approved anchor spec or handoff snapshot, approved amendments, prior phase outputs, decisions, repository areas, and recorded context strategy the implementing agent must read. Confirm this phase plan follows `rule:lifecycle.large-phase-orchestration`. Preserve all applicable details from the large/phased work item spec; do not narrow, drop, or reinterpret spec decisions in the phase plan.
+Read these before finalizing phase implementation planning:
 
-Follow the repository-root reference `.agents/skills/dev-doc-harness/references/durable-planning-quality.md` so this phase plan is executable by a fresh agent or thread.
+- Approved anchor spec: `<spec-filename or handoff snapshot>`.
+- Approved amendments: `<paths or None>`.
+- Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
+- Required snapshots or deltas: `<paths or None>`.
+- Relevant repository files, tests, docs, logs, or review comments: `<paths or notes>`.
+- Recorded context strategy from the anchor spec: `<curated artifacts / curated prompt / full-history fork / no repo context / not applicable>`.
+- Unresolved phase context to confirm before editing: `<questions, owners, or None identified>`.
 
-## Likely files and areas
+Confirm this phase plan follows `rule:lifecycle.large-phase-orchestration`, preserves applicable details from the large/phased work item spec, and does not narrow, drop, or reinterpret spec decisions.
 
-List files, directories, APIs, schemas, docs, or workflows expected to change.
+## Spec Traceability
+
+Map the approved anchor spec to this phase without restating the whole spec. Use compact bullets or short blocks; avoid wide tables when cells need more than a few words.
+
+Phase objective coverage:
+
+- Anchor phase `<phase id or objective>`: implemented by `<task ids>`; verified by `<validation ids or acceptance criteria>`.
+
+Requirement coverage:
+
+- `REQ-001`: implemented by `<task ids or deferred to phase ids>`; verified by `<validation ids or acceptance criteria>`.
+
+Acceptance coverage:
+
+- `AC-001`: implemented by `<task ids or later phase ids>`; verified by `<validation ids, manual check, review finding, or operator acceptance path>`.
+
+Risk and boundary coverage:
+
+- `RISK-001` or scope boundary: handled by `<task ids, validation ids, later phase ids, or explicit no-op rationale>`.
+
+## Implementation Approach
+
+Describe the phase implementation approach in a few paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the anchor spec except to explain phase-specific tradeoffs.
+
+## Change Surfaces
+
+Expected edits:
+
+- `<file or directory>`: `<kind of change and boundary>`.
+
+Stable interfaces:
+
+- `<API, schema, config, template, workflow, or None>`: `<what must remain compatible>`.
+
+Changed interfaces:
+
+- `<API, schema, config, template, workflow, or None>`: `<what changes and who consumes it>`.
+
+Implementation boundaries:
+
+- `<nearby file, behavior, cleanup, later phase, or follow-up>` stays out of scope because `<reason>`.
+
+Fresh-thread readiness:
+
+- This phase should be safely executable by one orchestration thread with bounded delegation.
+- If the phase still needs hidden chat context, split the phase, update the anchor spec before freeze, or create an amendment after freeze.
 
 ## Model and Sub-agent Strategy
 
-Current orchestration: record the model/profile and reasoning effort if known.
-Fit assessment: judge complexity, risk, ambiguity, blast radius, budget, and latency.
-Recommended change: record `None` or a concrete model/reasoning change with reason.
+Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this phase.
 
-Sub-agents: record `None` with rationale, or list bounded phase-specific roles in the table. When this phase plan was drafted with a curated-artifact sub-agent, name the approved spec, amendments, prior phase outputs, and handoff artifacts used as input context. Use canonical model policy rules for strategy requirements, context strategy labels, approved-strategy authorization, and confirmation boundaries.
+Current orchestration:
 
-| Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
-|---|---|---|---|---|---|---|---|---|---|
-| Example bounded explorer/reviewer/worker task; omit this table when sub-agents are `None` | curated prompt / curated artifacts / full-history fork / no repo context | Files, docs, specs, or decisions to read | Expected deliverable | Active repository policy unless changed by operator | Policy-relative class | low/medium/high | Selection rationale | Yes/No | Low/Medium/High plus consequence |
+- Model/profile and reasoning effort if known: `<value or not exposed>`.
 
-## Tasks
+Fit assessment:
 
-Write one checkbox per phase step. Include implementation, test, validation, documentation, and handoff work in execution order.
+- Complexity: `<low/medium/high plus reason>`.
+- Risk and blast radius: `<low/medium/high plus consequence>`.
+- Ambiguity: `<low/medium/high plus reason>`.
+- Budget and latency fit: `<acceptable constraints or tradeoff>`.
+
+Recommended orchestration change:
+
+- `<None, or concrete model/profile/reasoning change with reason>`.
+
+Sub-agents:
+
+- `<None with rationale, or bounded strategy below>`.
+
+When this phase plan was drafted with a curated-artifact sub-agent, name the approved spec, amendments, prior phase outputs, and handoff artifacts used as input context. For each proposed phase-specific sub-agent, record a short block:
+
+Sub-agent `<role or task id>`:
+
+- Purpose: `<bounded task-specific purpose>`.
+- Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
+- Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
+- Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
+- Model policy: `<active repository policy unless changed by operator>`.
+- Model class/profile: `<policy-relative class or concrete profile if required>`.
+- Reasoning effort: `<low/medium/high plus reason>`.
+- Selection reason: `<why this delegation is useful>`.
+- Parallel execution: `<Yes/No and dependency>`.
+- Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+
+## Task Plan
+
+Write one checkbox per implementation, test, validation, documentation, or handoff step. Tasks should be SMART:
+
+- Specific enough that a fresh implementation agent or delegated sub-agent knows which files, behavior, tests, docs, or decisions are in scope.
+- Measurable through a linked acceptance criterion, validation command, review finding, or explicit artifact update.
+- Achievable within this phase and one orchestration thread with bounded delegation.
+- Relevant to the approved anchor spec, phase objective, acceptance criterion, risk, interface, documentation need, or commit boundary.
+- Time-bounded by lifecycle checkpoint, such as before editing, before validation, before commit, or during final review.
+
+Order tasks by implementation dependency and reviewability. Label dependencies explicitly as `Dependencies: <None, task ids, artifacts, prior phase, or external event>`. Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
+
+- [ ] `<T-001>` Dependencies: `<None or task/artifact ids>`; `<specific task with files/scope>`; Traces: `<REQ/AC/risk/phase ids>`.
+- [ ] `<T-002>` Dependencies: `<T-001 or None>`; `<specific validation, documentation, changelog, or review task>`; Traces: `<AC/risk/phase ids>`.
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets. Update this table before committing if implementation changes the subject wording.
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording.
 
-| Stage | Planned subject | Changelog title or snippet | Notes |
-|---|---|---|---|
-| Phase plan approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this phase plan. |
-| Phase implementation | `<commit-subject>` | `<changelog-heading>` | Add one row per expected phase implementation, validation, release, or maintenance commit. |
+Phase plan approval:
 
-## Tests and validation
+- Planned subject: `<planning-commit-subject>`.
+- Changelog title or snippet: `<changelog-heading>`.
+- Notes: `Approval commit for this phase plan.`
+
+Phase implementation:
+
+- Planned subject: `<commit-subject>`.
+- Changelog title or snippet: `<changelog-heading>`.
+- Notes: `<add one block per expected phase implementation, validation, release, or maintenance commit>`.
+
+## Validation Plan
 
 | Command | Expected result |
 |---|---|
-| Record the exact command before the phase starts | Record the expected signal for success or failure |
+| `<exact command, manual check, review finding, or operator acceptance path>` | `<expected signal and linked AC/risk/phase coverage>` |
 
-## Documentation tasks
+Every validation entry must state the expected signal before phase implementation starts. Include command exit behavior, important output text, manual observation, review criterion, or operator acceptance condition as applicable.
+
+## Documentation Tasks
 
 List snapshot or delta artifacts this phase must create, update, or mark not applicable.
 
-## Variance reminder
+- Changelog: `CHANGELOG.md` before each commit.
+- Test cases: `<snapshot path or not applicable with reason>`.
+- Testing guide delta: `<delta path or not applicable with reason>`.
+- Operator manual delta: `<delta path or not applicable with reason>`.
+- API reference delta: `<delta path or not applicable with reason>`.
+- Architecture snapshot or summary delta: `<path or not applicable with reason>`.
+
+## Plan variance handling
 
 Use `rule:lifecycle.variance-policy`. Before freeze, edit this draft directly for operator feedback. After freeze, record nontrivial implementation variance in `implementation-notes/variance-log.md`; use a plan amendment for high-impact architecture, API, data, security, privacy, compliance, scope, acceptance-criteria, or feasibility changes.
 
@@ -74,13 +178,35 @@ Include assigned scope, files inspected or changed, commands and tests run, assu
 
 If planned implementation changes remain uncommitted, name the exact blocker or explicit no-commit instruction and include the current worktree status.
 
+## Plan readiness checklist
+
+- [ ] Input artifacts and relevant repository context have been read and listed.
+- [ ] The phase preserves the approved anchor spec, amendments, and prior phase outputs without silent reinterpretation.
+- [ ] Every in-phase requirement and acceptance criterion has at least one task and one validation path.
+- [ ] Deferred requirements, risks, boundaries, interfaces, and documentation decisions are covered by later phase references or explicit no-op rationale.
+- [ ] Task detail is sufficient for a fresh implementation agent or delegated sub-agent to execute its assigned part without inventing task order, file scope, validation, or documentation steps.
+- [ ] Validation entries have exact commands, manual checks, review findings, or operator acceptance paths with expected signals.
+- [ ] Planned commits and changelog title snippets are synchronized.
+- [ ] Variance handling is clear for likely implementation drift.
+- [ ] This phase fits one orchestration thread with bounded delegation. If it does not, split the phase, re-scope it, or amend the anchor before freeze.
+- [ ] Sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
+- [ ] No unresolved placeholders remain before approval or handoff.
+
 ## Completion criteria
 
 - Phase objective is met.
+- Acceptance criteria assigned to this phase are met or explicitly deferred to named later phases.
 - Validation commands have been run and recorded.
 - Documentation tasks are complete or explicitly deferred with reason.
+- The frozen phase plan had enough detail for each assigned execution part or delegated sub-agent to proceed safely.
+- Execution remained within one orchestration thread with a bounded sub-agent strategy; otherwise the phase was split, re-scoped, or amended before implementation.
 - `CHANGELOG.md` has a newest-first entry for the phase before each commit.
 - Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
 - Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
 - Variance log is present and current.
 - De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
+
+## Approval
+
+- Status: Draft / Approved / Superseded
+- Superseded by: record only when this artifact is superseded

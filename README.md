@@ -79,20 +79,33 @@ the spec, plan, required documentation updates, and any implementation variance.
 The operator gets a stable place to review what is about to happen before the
 agent starts changing the product.
 
+The practical small/medium boundary is whether one orchestration thread can
+safely coordinate the work with bounded delegation. That coordinating thread
+must be able to hold the scope, decisions, validation, variance, final
+integration, and completion report without needing another layer of planning.
+This is similar only as an analogy to the Scrum Guide's Sprint Planning
+readiness idea: a Product Backlog item is ready when it can be completed within
+one Sprint, while a harness work item is small/medium-ready when it can be
+coordinated by one orchestration thread. The harness is not adopting Scrum
+roles, events, or commitments.
+
 The work item folder keeps the full dated ID for sorting and uniqueness, while
 the durable artifact filenames include a shorter suffix for easier chat
 references. For example, `2026-05-31_artifact-root` uses
 `spec_artifact-root.md` and `plan_artifact-root.md`. The exact naming grammar
 lives in `references/naming-conventions.md`.
 
-For large work, expect a more deliberate handoff. The agent first writes an
-anchor `<spec-filename>` that preserves goals, boundaries, decisions, risks,
-tests, and acceptance criteria. The normal first planning package is
-anchor-spec-only; listed phase-plan filenames are future outputs unless the
-operator explicitly asks for combined planning. After the anchor spec is frozen
-and the operator gives a fresh instruction, the agent drafts phase plans named
-with `<phase-plan-filename>` that a fresh agent or future thread can
-execute without relying on hidden chat history.
+For large or phased work, expect a more deliberate handoff. The agent first
+writes an anchor `<spec-filename>` that preserves goals, boundaries, decisions,
+risks, tests, acceptance criteria, and phase objectives. Use this path when the
+whole effort would saturate one orchestration thread, when bounded delegation is
+not enough to keep integration and review clear, or when staged review
+materially reduces risk. The normal first planning package is anchor-spec-only;
+listed phase-plan filenames are future outputs unless the operator explicitly
+asks for combined planning. After the anchor spec is frozen and the operator
+gives a fresh instruction, the agent drafts phase plans named with
+`<phase-plan-filename>` that a fresh agent or future thread can execute without
+relying on hidden chat history.
 
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or

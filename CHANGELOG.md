@@ -6,6 +6,17 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Clarified harness sizing around one orchestration thread with bounded delegation and aligned README, small/medium template wording, and large/phased templates with that distinction.
+- Updated large/phased spec and phase-plan templates to inherit the improved small/medium structure while adding anchor-specific phase decomposition and fresh-thread phase execution prompts.
+
 ### 2026-07-02_orchestration-sizing-large-templates -- approve sizing and large-template plan
 
 Release target: `unreleased`
