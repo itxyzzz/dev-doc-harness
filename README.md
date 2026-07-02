@@ -186,6 +186,31 @@ The command checks current harness surfaces, golden traversal evidence, and
 release package consistency. The canonical policy owners remain the routed
 references, not this README.
 
+Primary planning templates are maintained from ordered source blocks and
+explicit assembly manifests:
+
+```text
+.agents/skills/dev-doc-harness/assets/templates/blocks/
+.agents/skills/dev-doc-harness/assets/templates/assemblies/
+.agents/skills/dev-doc-harness/scripts/assemble_templates.py
+```
+
+Edit the block files or manifest files first, then regenerate and validate in
+one step:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
+```
+
+Use `--list` to inspect which common, small, large, and phase blocks make up
+each published template. Use `--check` for a non-mutating freshness check; the
+main harness validator calls that check so stale generated templates fail
+validation.
+
+This repository also provides an optional root-local `.githooks/pre-commit`
+hook that runs the validator. It is not installed automatically, it does not
+write files, and it is outside the copyable distributable package.
+
 There is not an installation script yet. The copyable distributable package is
 the root `AGENTS.md` file plus the `.agents/` folder. The package records its
 release in `.agents/skills/dev-doc-harness/VERSION`, and package-local release
@@ -274,7 +299,10 @@ The internal machinery is intentionally small:
 - `references/subagent-model-policy.md` defines the available sub-agent and
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
-  templates. Templates own artifact shape and prompts, not reusable policy.
+  templates. The primary spec and plan templates are assembled from
+  `assets/templates/blocks/` and `assets/templates/assemblies/`, but the
+  published files stay complete Markdown. Templates own artifact shape and
+  prompts, not reusable policy.
 - `docs/operator-note.md` is a compact package-local usage summary for adopters
   who copy only root `AGENTS.md` plus `.agents/`.
 - `docs/releases/` contains package-local release notes that travel with

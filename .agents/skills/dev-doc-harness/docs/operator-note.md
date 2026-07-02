@@ -102,3 +102,25 @@ python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 
 The validator is a lightweight structural check. It supports review; it does
 not replace operator approval or engineering judgment.
+
+Primary planning templates are maintained from ordered source files:
+
+```text
+.agents/skills/dev-doc-harness/assets/templates/blocks/
+.agents/skills/dev-doc-harness/assets/templates/assemblies/
+.agents/skills/dev-doc-harness/scripts/assemble_templates.py
+```
+
+Edit blocks or manifests, then run:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
+```
+
+The command writes the flat templates, checks that they are current, and runs
+the full validator. Use `--list` to inspect the block order or `--check` for a
+non-mutating freshness check.
+
+Optional root-local hook files under `.githooks/` are development aids for this
+repository only. They are outside the distributable package and are not copied
+to downstream adopters.

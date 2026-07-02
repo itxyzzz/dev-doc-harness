@@ -6,6 +6,22 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
+
+Release target: `0.4+`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added ordered source blocks, explicit assembly manifests, `assemble_templates.py`, and validation coverage so the four primary planning templates stay generated and self-contained.
+- Added a root-local non-mutating pre-commit hook for harness repository development.
+
+#### Changed
+
+- Updated the package-local release marker and current release notes to `0.4+`.
+- Regenerated the small/medium and large/phased spec and plan templates from shared blocks, with tag-header examples for requirement, acceptance-criterion, and risk entries.
+
 ### 2026-07-02_template-block-assembly -- approve modular template plan
 
 Release target: `unreleased`
