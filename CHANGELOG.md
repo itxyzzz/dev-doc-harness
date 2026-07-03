@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-04_release-branch-process -- approve release process plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for documenting an agent-executable release branch process triggered from chat, including version derivation, package-local release notes, release branch push, and post-release master reset boundaries.
+
 ### 2026-07-03_artifact-style-guidance -- add artifact style module
 
 Release target: `unreleased`
