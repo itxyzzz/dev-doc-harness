@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-03_work-item-architecture-decisions -- approve architecture-decision flow plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and architecture snapshot for making work-item-bounded architecture decisions first-class planning content while leaving repository-level `ARCHITECTURE.md` workflows for future work.
+
 ### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
 
 Release target: `0.4+`
