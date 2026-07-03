@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-04_release-branch-process -- document release branch workflow
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added a root-level agent-executable release branch runbook and an `AGENTS.md` pointer for chat-triggered release branch creation, including remote release version derivation, package-local release notes, release branch push, and post-release `master` reset steps.
+
 ### 2026-07-04_release-branch-process -- approve release process plan
 
 Release target: `unreleased`
