@@ -31,6 +31,8 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 Current orchestration:
 
 1. Model/profile and reasoning effort if known: `<value or not exposed>`.
+2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+3. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -55,7 +57,7 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy unless changed by operator>`.
+5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
 6. Model class/profile: `<policy-relative class or concrete profile if required>`.
 7. Reasoning effort: `<low/medium/high plus reason>`.
 8. Selection reason: `<why this delegation is useful>`.

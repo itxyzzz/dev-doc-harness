@@ -23,7 +23,7 @@ Architecture coverage:
 
 ## Implementation Approach
 
-Describe the implementation approach in a few paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to explain implementation tradeoffs.
+State the implementation approach in a few concise paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to record implementation tradeoffs.
 
 ## Change Surfaces
 

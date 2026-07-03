@@ -7,9 +7,11 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
+Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
+
 ## Objective
 
-Describe the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
+State the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
 
 ## Input Artifacts
 

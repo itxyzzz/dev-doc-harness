@@ -6,6 +6,23 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-03_artifact-style-guidance -- add artifact style module
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added `module:artifact-style` as the canonical owner for final artifact content, scannable structure, placeholder control, traceability density, and template prompt style.
+- Added validator coverage for artifact-style ownership, large-anchor routing, template style cues, decision/amendment/variance IDs, and canonical model-policy examples.
+
+#### Changed
+
+- Made artifact-style guidance mandatory for large anchor specs and conditional for other large or hard-to-scan artifacts while preserving routine small/medium route budgets.
+- Updated planning templates, the architecture snapshot template, amendment template, and variance log template with stronger final-state fields, unresolved-decision readiness checks, evidence cross-references, and model-policy source prompts.
+- Updated operator-facing docs and 0.4+ release notes to mention artifact-style guidance and template readability hardening.
+
 ### 2026-07-03_artifact-style-guidance -- approve artifact style plan
 
 Release target: `unreleased`

@@ -7,17 +7,19 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+
+Artifact style: large anchor specs must load `module:artifact-style`. Write final artifact content with scannable structure, stable trace IDs, and no unresolved authoring scaffolds before approval or handoff.
 
 ## Goal
 
-Describe the operator-visible or user-visible outcome and why the whole work item needs the large/phased path instead of a small/medium spec and plan.
+State the operator-visible or user-visible outcome and why the whole work item needs the large/phased path instead of a small/medium spec and plan.
 
 ## Source and Intent
 
 Source input:
 
-1. Summarize the operator request, issue, review comment, incident, prior artifact, or external source that started this work.
+1. Record the operator request, issue, review comment, incident, prior artifact, or external source that started this work.
 
 Desired operator/user outcome:
 
@@ -32,12 +34,12 @@ Success summary:
 
 ### In scope
 
-1. List the behavior, files, interfaces, workflows, docs, validation surfaces, or decisions covered by this work item.
+1. Record the behavior, files, interfaces, workflows, docs, validation surfaces, or decisions covered by this work item.
 2. Keep the boundary clear enough that later implementation can preserve scope without hidden chat context.
 
 ### Non-scope
 
-1. List nearby work intentionally excluded, deferred, or left unchanged.
+1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
 ### Assumptions
@@ -55,11 +57,12 @@ Success summary:
 
 ### Current state
 
-1. Summarize the relevant repository behavior, architecture, documentation, tests, operational behavior, or process before implementation.
+1. Record the relevant repository behavior, architecture, documentation, tests, operational behavior, or process before implementation.
 
 ### Evidence read
 
 1. List only repository files, docs, tests, prior artifacts, logs, review comments, or external references actually inspected while drafting.
+2. Preserve mutable external evidence through `module:evidence` and `rule:evidence.preservation` when the artifact depends on it.
 
 ### Constraints and compatibility
 
@@ -75,7 +78,7 @@ Use one block per requirement:
 
 Rationale:
 
-1. Explain why this requirement belongs in scope and what value or risk it addresses.
+1. State why this requirement belongs in scope and what value or risk it addresses.
 
 Acceptance links:
 
@@ -223,6 +226,8 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 Current orchestration:
 
 1. Model/profile and reasoning effort if known: `<value or not exposed>`.
+2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+3. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -247,7 +252,7 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy unless changed by operator>`.
+5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
 6. Model class/profile: `<policy-relative class or concrete profile if required>`.
 7. Reasoning effort: `<low/medium/high plus reason>`.
 8. Selection reason: `<why this delegation is useful>`.
@@ -308,9 +313,9 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 - [ ] Model and sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] No unresolved placeholders remain before approval or handoff.
+- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval
 
-- Status: Draft / Approved / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Draft
+- Superseded by: None

@@ -18,6 +18,18 @@ Apply this quality bar to all harness-managed specs and plans except very small 
 
 Durable planning is especially important when the work mentions layered plans, future threads, phase plans, preserving a handoff, or work that must be more than a task list.
 
+## Baseline artifact readability
+
+Every durable planning artifact should read as final artifact content. Remove
+authoring scaffolds before approval or handoff, resolve required decisions and
+open questions, give every deferral an owner or resolving event, and prefer
+scannable sections, lists, and tables over dense prose.
+
+When a spec, plan, phase plan, snapshot, amendment, report, or handoff becomes
+large or hard to scan, load `module:artifact-style`. Large anchor specs always
+load that module. Mutable external evidence used by an artifact is preserved
+through `module:evidence` and `rule:evidence.preservation`.
+
 ## Spec quality bar
 
 A durable `<spec-filename>` must preserve the handoff in repository terms. Include the applicable details from the planning discussion:

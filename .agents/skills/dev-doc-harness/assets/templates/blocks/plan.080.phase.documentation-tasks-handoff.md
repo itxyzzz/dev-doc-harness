@@ -11,7 +11,7 @@ List snapshot or delta artifacts this phase must create, update, or mark not app
 
 ## Handoff output
 
-Describe what the implementing agent must report at phase completion:
+Record what the implementing agent must report at phase completion:
 
 1. Assigned scope.
 2. Files inspected or changed.

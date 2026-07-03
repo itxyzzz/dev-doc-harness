@@ -64,6 +64,7 @@ CHECK_IDS = [
     "release.package-boundary",
     "release.template-context",
     "architecture.decisions",
+    "artifact-style.guidance",
 ]
 
 CANONICAL_REFERENCES = [
@@ -73,6 +74,7 @@ CANONICAL_REFERENCES = [
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
     ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+    ".agents/skills/dev-doc-harness/references/artifact-style.md",
     ".agents/skills/dev-doc-harness/references/release-policy.md",
     ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
     ".agents/skills/dev-doc-harness/references/evidence-and-report-artifacts.md",
@@ -133,6 +135,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
     ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
+    ".agents/skills/dev-doc-harness/references/artifact-style.md",
     ".agents/skills/dev-doc-harness/references/release-policy.md",
     f".agents/skills/dev-doc-harness/docs/releases/{CURRENT_RELEASE}.md",
     ".agents/skills/dev-doc-harness/scripts/assemble_templates.py",
@@ -317,7 +320,7 @@ def get_policy_references(path: str) -> list[str]:
 def assert_template_routes() -> None:
     operation_requirements = {
         "small-medium": ["module:lifecycle", "module:quality", "module:models"],
-        "large-anchor": ["module:lifecycle", "module:quality", "module:models"],
+        "large-anchor": ["module:lifecycle", "module:quality", "module:models", "module:artifact-style"],
         "phase-plan": ["module:lifecycle", "module:quality", "module:models"],
         "amendment": ["module:lifecycle", "module:freeze-gate"],
     }
@@ -357,7 +360,7 @@ def assert_route_budgets() -> None:
     budgets = {
         "Classify work size": 1,
         "Draft or review small/medium specs and plans": 3,
-        "Draft or review large anchor specs": 3,
+        "Draft or review large anchor specs": 4,
         "Draft or review phase plans": 3,
         "Freeze planning packages": 4,
         "Execute approved work and record variance": 4,
@@ -719,12 +722,15 @@ def assert_work_item_architecture_decisions() -> None:
 
     assert_text_contains(check_id, snapshot_template, r"Schema:\s+`" + "schema" + r":snapshot[.]architecture`", "architecture snapshot schema")
     for pattern, label in [
+        (r"## Decision Ledger", "decision ledger section"),
+        (r"DEC-001", "decision ID example"),
+        (r"Source spec sections", "source spec trace"),
         (r"## Decision Drivers", "decision drivers section"),
         (r"## Constraints", "constraints section"),
-        (r"## Selected Approach", "selected approach section"),
-        (r"## Affected Boundaries", "affected boundaries section"),
-        (r"## Rejected Alternatives", "rejected alternatives section"),
-        (r"## Validation Cues", "validation cues section"),
+        (r"Selected approach", "selected approach field"),
+        (r"Affected boundaries", "affected boundaries field"),
+        (r"Rejected alternatives", "rejected alternatives field"),
+        (r"Validation cues", "validation cues field"),
         (r"ARCHITECTURE\.md.+future work", "future durable docs boundary"),
     ]:
         assert_text_contains(check_id, snapshot_template, pattern, label)
@@ -732,6 +738,58 @@ def assert_work_item_architecture_decisions() -> None:
     disallowed_architecture_workflow = r"(?i)(create|update|maintain|require)\s+`?ARCHITECTURE\.md`?"
     for path in [lifecycle, router, *operator_docs, *spec_templates, *plan_templates, snapshot_template]:
         assert_text_not_contains(check_id, path, disallowed_architecture_workflow, "active ARCHITECTURE.md workflow")
+
+
+def assert_artifact_style_guidance() -> None:
+    check_id = "artifact-style.guidance"
+    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
+    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
+    template_paths = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md",
+        ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
+        ".agents/skills/dev-doc-harness/assets/templates/variance-log.md",
+    ]
+
+    assert_text_contains(check_id, style, r"Module:\s+`module:artifact-style`", "artifact-style module declaration")
+    for rule_id in [
+        "rule:style.final-artifact-content",
+        "rule:style.scannable-structure",
+        "rule:style.placeholder-control",
+        "rule:style.trace-density",
+        "rule:style.template-prompts",
+    ]:
+        assert_text_contains(check_id, style, re.escape(rule_id), f"{rule_id} owner")
+
+    assert_text_contains(check_id, architecture, r"module:artifact-style", "module catalog entry")
+    assert_text_contains(check_id, architecture, r"large anchor specs", "large anchor routing condition")
+    assert_text_contains(check_id, architecture, r"hard-to-scan", "hard-to-scan routing condition")
+    assert_text_contains(check_id, quality, r"Baseline artifact readability", "baseline readability section")
+    assert_text_contains(check_id, quality, "rule" + r":evidence[.]preservation", "quality evidence cross-reference")
+    assert_text_contains(check_id, router, r"Draft or review large anchor specs.+module:artifact-style", "large route style requirement")
+    assert_text_contains(check_id, router, r"artifact readability risk", "small route conditional style")
+    assert_text_not_contains(check_id, role_examples, r"standard-review", "non-canonical model policy")
+
+    for path in template_paths:
+        assert_text_contains(check_id, path, r"final artifact|Final artifact|Superseded by: None|DEC-001|AMD-001|VAR-001", "template final-state or trace cue")
+
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]:
+        assert_text_contains(check_id, path, r"unresolved required decisions", "readiness unresolved-decision check")
+
+    assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md", r"DEC-001", "architecture decision ID")
+    assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", r"AMD-001", "amendment ID")
+    assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/variance-log.md", r"VAR-001", "variance ID")
 
 
 def assert_release_scenarios() -> None:
@@ -986,6 +1044,9 @@ def run_checks() -> None:
 
     assert_work_item_architecture_decisions()
     write_check_result("architecture.decisions")
+
+    assert_artifact_style_guidance()
+    write_check_result("artifact-style.guidance")
 
 
 def main() -> int:

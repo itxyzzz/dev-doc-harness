@@ -2,7 +2,7 @@
 
 Source input:
 
-1. Summarize the operator request, issue, review comment, incident, prior artifact, or external source that started this work.
+1. Record the operator request, issue, review comment, incident, prior artifact, or external source that started this work.
 
 Desired operator/user outcome:
 
@@ -17,12 +17,12 @@ Success summary:
 
 ### In scope
 
-1. List the behavior, files, interfaces, workflows, docs, validation surfaces, or decisions covered by this work item.
+1. Record the behavior, files, interfaces, workflows, docs, validation surfaces, or decisions covered by this work item.
 2. Keep the boundary clear enough that later implementation can preserve scope without hidden chat context.
 
 ### Non-scope
 
-1. List nearby work intentionally excluded, deferred, or left unchanged.
+1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
 ### Assumptions
@@ -40,11 +40,12 @@ Success summary:
 
 ### Current state
 
-1. Summarize the relevant repository behavior, architecture, documentation, tests, operational behavior, or process before implementation.
+1. Record the relevant repository behavior, architecture, documentation, tests, operational behavior, or process before implementation.
 
 ### Evidence read
 
 1. List only repository files, docs, tests, prior artifacts, logs, review comments, or external references actually inspected while drafting.
+2. Preserve mutable external evidence through `module:evidence` and `rule:evidence.preservation` when the artifact depends on it.
 
 ### Constraints and compatibility
 

@@ -8,7 +8,7 @@ Use one block per requirement:
 
 Rationale:
 
-1. Explain why this requirement belongs in scope and what value or risk it addresses.
+1. State why this requirement belongs in scope and what value or risk it addresses.
 
 Acceptance links:
 

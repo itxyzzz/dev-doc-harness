@@ -52,6 +52,12 @@ that architecture input instead of making hidden architecture decisions.
 Repository-level durable documents such as `ARCHITECTURE.md` are future work for
 a separate harness extension.
 
+Artifact readability has its own routed owner. Routine artifacts use the short
+baseline guidance in `references/durable-planning-quality.md` and the templates.
+Large anchor specs, and any artifact that becomes large or hard to scan, load
+`references/artifact-style.md` for final artifact content, scannable structure,
+placeholder control, traceability density, and template prompt style.
+
 Current naming grammar lives in `references/naming-conventions.md`. For example,
 `2026-05-31_artifact-root` uses `spec_artifact-root.md` and
 `plan_artifact-root.md`.

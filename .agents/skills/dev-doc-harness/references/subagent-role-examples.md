@@ -27,7 +27,10 @@ environment-specific adapters or run metadata.
 ```yaml
 id: test-risk-reviewer
 role: review
-model_policy: standard-review
+model_policy: active repository policy
+model_policy_source: AGENTS.md
+model_policy_scope: this work item
+model_policy_expires: when the work item completes unless the operator changes it
 reasoning_effort: medium
 context_strategy: curated artifacts
 inputs:

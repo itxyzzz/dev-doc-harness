@@ -115,6 +115,13 @@ they are not the place to silently invent new architectural direction. Durable
 repository-level architecture documents such as `ARCHITECTURE.md` are future work
 for a separate harness extension.
 
+Durable artifact readability is routed separately from durable completeness.
+Routine small/medium artifacts use the baseline readability cues in the quality
+reference and templates. Large anchor specs, and any artifact that becomes large
+or hard to scan, load `module:artifact-style` for final artifact content,
+scannable structure, placeholder control, traceability density, and template
+prompt style.
+
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
 feedback. Explicit approval runs the freeze gate: changelog, approval commit,
@@ -177,6 +184,7 @@ The router sends each operation to the minimum useful owner modules:
 | Work sizing and artifact lifecycle | `module:lifecycle` in `references/artifact-contract.md` |
 | Planning review and freeze checkpoints | `module:freeze-gate` in `references/planning-freeze-gates.md` |
 | Durable spec and phase-plan quality | `module:quality` in `references/durable-planning-quality.md` |
+| Artifact readability and template prompt style | `module:artifact-style` in `references/artifact-style.md` |
 | Model and sub-agent strategy | `module:models` in `references/subagent-model-policy.md` |
 | Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
 | Release identity, package boundary, and team adoption | `module:release` in `references/release-policy.md` |
@@ -304,6 +312,9 @@ The internal machinery is intentionally small:
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
   specs and phase plans.
+- `references/artifact-style.md` defines final artifact content, scannable
+  structure, placeholder control, traceability density, and template prompt
+  style for large or hard-to-scan artifacts.
 - `references/subagent-model-policy.md` defines the available sub-agent and
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance

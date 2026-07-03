@@ -9,6 +9,8 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
+Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the plan becomes large or hard to scan.
+
 ## Input Artifacts
 
 Read these before finalizing implementation planning:
@@ -46,7 +48,7 @@ Architecture coverage:
 
 ## Implementation Approach
 
-Describe the implementation approach in a few paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to explain implementation tradeoffs.
+State the implementation approach in a few concise paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to record implementation tradeoffs.
 
 ## Change Surfaces
 
@@ -73,6 +75,8 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 Current orchestration:
 
 1. Model/profile and reasoning effort if known: `<value or not exposed>`.
+2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+3. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -99,7 +103,7 @@ Sub-agent `<role or task id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
 4. Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy unless changed by operator>`.
+5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
 6. Model class/profile: `<policy-relative class or concrete profile if required>`.
 7. Reasoning effort: `<low/medium/high plus reason>`.
 8. Selection reason: `<why this delegation is useful>`.
@@ -166,7 +170,7 @@ Record the draft review, approval commit, and post-freeze implementation authori
 - [ ] Variance handling is clear for likely implementation drift.
 - [ ] The work still fits one orchestration thread with a bounded sub-agent strategy. If it does not, split, re-scope, or escalate to large/phased handling before freeze.
 - [ ] Sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
-- [ ] No unresolved placeholders remain before approval or handoff.
+- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Completion criteria
 
@@ -183,5 +187,5 @@ Record the draft review, approval commit, and post-freeze implementation authori
 
 ## Approval
 
-- Status: Draft / Approved / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Draft
+- Superseded by: None

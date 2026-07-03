@@ -7,6 +7,8 @@ Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
+Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the artifact becomes large or hard to scan.
+
 ## Goal
 
-Describe the user-visible or operator-visible outcome.
+State the user-visible or operator-visible outcome.

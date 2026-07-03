@@ -9,9 +9,11 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 
+Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
+
 ## Objective
 
-Describe the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
+State the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
 
 ## Input Artifacts
 
@@ -54,7 +56,7 @@ Architecture coverage:
 
 ## Implementation Approach
 
-Describe the implementation approach in a few paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to explain implementation tradeoffs.
+State the implementation approach in a few concise paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to record implementation tradeoffs.
 
 ## Change Surfaces
 
@@ -86,6 +88,8 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 Current orchestration:
 
 1. Model/profile and reasoning effort if known: `<value or not exposed>`.
+2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+3. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -112,7 +116,7 @@ Sub-agent `<role or task id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
 4. Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy unless changed by operator>`.
+5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
 6. Model class/profile: `<policy-relative class or concrete profile if required>`.
 7. Reasoning effort: `<low/medium/high plus reason>`.
 8. Selection reason: `<why this delegation is useful>`.
@@ -181,7 +185,7 @@ List snapshot or delta artifacts this phase must create, update, or mark not app
 
 ## Handoff output
 
-Describe what the implementing agent must report at phase completion:
+Record what the implementing agent must report at phase completion:
 
 1. Assigned scope.
 2. Files inspected or changed.
@@ -203,7 +207,7 @@ Describe what the implementing agent must report at phase completion:
 - [ ] Variance handling is clear for likely implementation drift.
 - [ ] This phase fits one orchestration thread with bounded delegation. If it does not, split the phase, re-scope it, or amend the anchor before freeze.
 - [ ] Sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
-- [ ] No unresolved placeholders remain before approval or handoff.
+- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Completion criteria
 
@@ -221,5 +225,5 @@ Describe what the implementing agent must report at phase completion:
 
 ## Approval
 
-- Status: Draft / Approved / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Draft
+- Superseded by: None

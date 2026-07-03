@@ -9,9 +9,9 @@
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] No unresolved placeholders remain before approval or handoff.
+- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval
 
-- Status: Draft / Approved / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Draft
+- Superseded by: None

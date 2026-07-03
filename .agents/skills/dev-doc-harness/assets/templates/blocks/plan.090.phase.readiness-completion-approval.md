@@ -10,7 +10,7 @@
 - [ ] Variance handling is clear for likely implementation drift.
 - [ ] This phase fits one orchestration thread with bounded delegation. If it does not, split the phase, re-scope it, or amend the anchor before freeze.
 - [ ] Sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
-- [ ] No unresolved placeholders remain before approval or handoff.
+- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Completion criteria
 
@@ -28,5 +28,5 @@
 
 ## Approval
 
-- Status: Draft / Approved / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Draft
+- Superseded by: None
