@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-03_artifact-style-guidance -- approve artifact style plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and architecture snapshot for adding artifact-style guidance, conditional large-document routing, stronger template readability cues, and future-facing validation without rewriting already implemented specs.
+
 ### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
 
 Release target: `unreleased`
