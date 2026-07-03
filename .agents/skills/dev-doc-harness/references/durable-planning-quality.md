@@ -27,6 +27,7 @@ A durable `<spec-filename>` must preserve the handoff in repository terms. Inclu
 - Domain and data model.
 - Public APIs, internal interfaces, config, schemas, and persistence.
 - State flow, lifecycle, or control flow.
+- Architectural decisions, including problem-imposed constraints, selected approaches, affected boundaries, rejected alternatives, and any required `snapshots/architecture.snapshot.md`.
 - Safety, security, privacy, compliance, migration, and rollback rules.
 - Tests, validation strategy, and acceptance criteria.
 - Triage, debugging, and operational notes.
@@ -46,6 +47,8 @@ Each `<phase-plan-filename>` must be executable by a fresh agent or thread. Incl
 - Documentation tasks and required changelog update.
 - Handoff output expected from the implementing agent.
 
+Phase plans derive from the approved spec, approved amendments, and any approved architecture snapshot. They may reference architectural decisions as implementation inputs, but they must not silently reinterpret frozen architecture or introduce new high-impact architecture decisions. Missing architecture before freeze is a draft spec or draft snapshot quality issue. Architecture drift discovered after freeze follows the variance and amendment process from `artifact-contract.md`.
+
 If a phase plan cannot be executed independently by a fresh thread, split or rewrite it before implementation.
 
 ## Handoff preservation check
@@ -55,6 +58,7 @@ Before implementation begins, compare the frozen docs against the original hando
 - No placeholders or undecided required items.
 - No vague instructions such as "implement the work item" without concrete tasks.
 - No important detail lost between `<spec-filename>` and phase plans.
+- Architectural decisions are preserved in the spec or architecture snapshot before plans depend on them.
 - Every major handoff detail is preserved, adapted, or explicitly deferred with a reason.
 
 If important context is missing before approval and freeze, update the draft. If it is discovered after freeze, use the variance and amendment process from `artifact-contract.md`.

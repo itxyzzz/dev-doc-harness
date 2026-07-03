@@ -18,9 +18,11 @@ Read these before finalizing phase implementation planning:
 1. Approved anchor spec: `<spec-filename or handoff snapshot>`.
 2. Approved amendments: `<paths or None>`.
 3. Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
-4. Required snapshots or deltas: `<paths or None>`.
-5. Relevant repository files, tests, docs, logs, or review comments: `<paths or notes>`.
-6. Recorded context strategy from the anchor spec: `<curated artifacts / curated prompt / full-history fork / no repo context / not applicable>`.
-7. Unresolved phase context to confirm before editing: `<questions, owners, or None identified>`.
+4. Architecture input: `<architecture decisions in approved spec, snapshots/architecture.snapshot.md, amendments, or None with reason>`.
+5. Required snapshots or deltas: `<paths or None>`.
+6. Relevant repository files, tests, docs, logs, or review comments: `<paths or notes>`.
+7. Recorded context strategy from the anchor spec: `<curated artifacts / curated prompt / full-history fork / no repo context / not applicable>`.
+8. Unresolved phase context to confirm before editing: `<questions, owners, or None identified>`.
 
 Confirm this phase plan follows `rule:lifecycle.large-phase-orchestration`, preserves applicable details from the large/phased work item spec, and does not narrow, drop, or reinterpret spec decisions.
+If architecture is missing, ambiguous, or changed before phase-plan freeze, update the draft spec or architecture snapshot when still draftable. After freeze, route architecture drift through variance handling and an amendment when `rule:lifecycle.variance-policy` requires approval.

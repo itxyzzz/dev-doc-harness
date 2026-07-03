@@ -107,6 +107,14 @@ gives a fresh instruction, the agent drafts phase plans named with
 `<phase-plan-filename>` that a fresh agent or future thread can execute without
 relying on hidden chat history.
 
+Work-item architecture decisions are part of the planning package. When a work
+item makes or depends on consequential boundaries or tradeoffs, the spec records
+them and may use `snapshots/architecture.snapshot.md` as a frozen decision
+snapshot. Plans reference that architecture input for sequencing and validation;
+they are not the place to silently invent new architectural direction. Durable
+repository-level architecture documents such as `ARCHITECTURE.md` are future work
+for a separate harness extension.
+
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
 feedback. Explicit approval runs the freeze gate: changelog, approval commit,

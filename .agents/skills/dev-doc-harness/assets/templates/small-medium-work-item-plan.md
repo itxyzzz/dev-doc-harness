@@ -14,9 +14,12 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 Read these before finalizing implementation planning:
 
 1. Approved spec: `<spec-filename>`.
-2. Required snapshots or deltas: `<paths or None>`.
-3. Relevant repository files, tests, docs, logs, or review comments: `<paths or notes>`.
-4. Unresolved implementation context to confirm before editing: `<questions, owners, or None identified>`.
+2. Architecture input: `<architecture decisions in spec, snapshots/architecture.snapshot.md, or None with reason>`.
+3. Required snapshots or deltas: `<paths or None>`.
+4. Relevant repository files, tests, docs, logs, or review comments: `<paths or notes>`.
+5. Unresolved implementation context to confirm before editing: `<questions, owners, or None identified>`.
+
+If architecture is missing, ambiguous, or changed before freeze, update the draft spec or architecture snapshot before finalizing this plan. If architecture changes after freeze, use variance handling and an amendment when `rule:lifecycle.variance-policy` requires approval. Do not reinterpret architecture decisions in the plan.
 
 ## Spec Traceability
 
@@ -33,6 +36,13 @@ Acceptance coverage:
 Risk and boundary coverage:
 
 1. `RISK-001` or scope boundary: handled by `<task ids, validation ids, later phase ids, or explicit no-op rationale>`.
+
+Architecture coverage:
+
+1. Architecture input: `<spec section, snapshots/architecture.snapshot.md, amendment, or None with reason>`.
+2. Plan usage: `<how tasks consume architecture decisions for sequencing, boundaries, validation, rollout, or review>`.
+3. Drift path: `<draft spec/snapshot update before freeze, or variance/amendment after freeze>`.
+4. Reinterpretation guard: plans reference approved architecture decisions and do not reinterpret missing or frozen architecture silently.
 
 ## Implementation Approach
 

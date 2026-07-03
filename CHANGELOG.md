@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added lifecycle, quality, router, template, documentation, and validator support for work-item architecture decisions and the reusable `architecture-snapshot.md` template.
+
+#### Changed
+
+- Updated spec and plan templates so specs capture architecture decisions, plans consume architecture inputs, and repository-level `ARCHITECTURE.md` documents remain future work.
+
 ### 2026-07-03_work-item-architecture-decisions -- approve architecture-decision flow plan
 
 Release target: `unreleased`

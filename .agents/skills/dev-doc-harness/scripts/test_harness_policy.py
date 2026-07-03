@@ -63,6 +63,7 @@ CHECK_IDS = [
     "release.changelog-schema",
     "release.package-boundary",
     "release.template-context",
+    "architecture.decisions",
 ]
 
 CANONICAL_REFERENCES = [
@@ -83,6 +84,7 @@ TEMPLATE_FILES = [
     ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md",
     ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
     ".agents/skills/dev-doc-harness/assets/templates/variance-log.md",
 ]
@@ -144,6 +146,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md",
     ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
     ".agents/skills/dev-doc-harness/assets/templates/variance-log.md",
     "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
@@ -672,6 +675,65 @@ def assert_release_template_context() -> None:
             add_failure(check_id, f"{template} must contain exactly one Harness release field; found {count}")
 
 
+def assert_work_item_architecture_decisions() -> None:
+    check_id = "architecture.decisions"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    snapshot_template = ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md"
+    operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
+    spec_templates = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]
+    plan_templates = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+
+    assert_text_contains(check_id, lifecycle, "rule" + r":lifecycle[.]work-item-architecture-decisions", "lifecycle architecture rule owner")
+    assert_text_contains(check_id, lifecycle, r"## Work-item architecture decisions", "lifecycle architecture rule heading")
+    assert_text_contains(check_id, lifecycle, r"required, not applicable, or deferred", "architecture snapshot matrix states")
+    assert_text_contains(check_id, lifecycle, r"plans? and phase plans?.+consume", "plans consume architecture")
+    assert_text_contains(check_id, lifecycle, r"ARCHITECTURE\.md.+future work", "future durable architecture docs boundary")
+
+    assert_text_contains(check_id, quality, r"architectural decisions", "quality architecture preservation")
+    assert_text_contains(check_id, quality, r"silently reinterpret", "quality prevents silent reinterpretation")
+    assert_text_contains(check_id, router, r"architecture snapshot", "router architecture snapshot discoverability")
+
+    for path in operator_docs:
+        assert_text_contains(check_id, path, r"work-item architecture", "operator work-item architecture guidance")
+        assert_text_contains(check_id, path, r"ARCHITECTURE\.md.+future work", "operator durable architecture boundary")
+
+    for path in spec_templates:
+        assert_text_contains(check_id, path, r"## Architecture Decisions", "spec architecture section")
+        assert_text_contains(check_id, path, r"drivers", "spec architecture drivers prompt")
+        assert_text_contains(check_id, path, r"rejected alternatives", "spec architecture alternatives prompt")
+        assert_text_contains(check_id, path, r"architecture snapshot", "spec architecture snapshot prompt")
+
+    for path in plan_templates:
+        assert_text_contains(check_id, path, r"architecture.+input", "plan architecture input prompt")
+        assert_text_contains(check_id, path, r"architecture snapshot", "plan architecture snapshot reference")
+        assert_text_contains(check_id, path, r"amendment", "plan architecture amendment path")
+        assert_text_contains(check_id, path, r"reinterpret", "plan architecture reinterpretation guard")
+
+    assert_text_contains(check_id, snapshot_template, r"Schema:\s+`" + "schema" + r":snapshot[.]architecture`", "architecture snapshot schema")
+    for pattern, label in [
+        (r"## Decision Drivers", "decision drivers section"),
+        (r"## Constraints", "constraints section"),
+        (r"## Selected Approach", "selected approach section"),
+        (r"## Affected Boundaries", "affected boundaries section"),
+        (r"## Rejected Alternatives", "rejected alternatives section"),
+        (r"## Validation Cues", "validation cues section"),
+        (r"ARCHITECTURE\.md.+future work", "future durable docs boundary"),
+    ]:
+        assert_text_contains(check_id, snapshot_template, pattern, label)
+
+    disallowed_architecture_workflow = r"(?i)(create|update|maintain|require)\s+`?ARCHITECTURE\.md`?"
+    for path in [lifecycle, router, *operator_docs, *spec_templates, *plan_templates, snapshot_template]:
+        assert_text_not_contains(check_id, path, disallowed_architecture_workflow, "active ARCHITECTURE.md workflow")
+
+
 def assert_release_scenarios() -> None:
     check_id = "release.notes"
     snapshot_path = "docs/work-items/2026-06-07-release-versioning/snapshots/test-cases.snapshot.md"
@@ -921,6 +983,9 @@ def run_checks() -> None:
 
     assert_release_template_context()
     write_check_result("release.template-context")
+
+    assert_work_item_architecture_decisions()
+    write_check_result("architecture.decisions")
 
 
 def main() -> int:

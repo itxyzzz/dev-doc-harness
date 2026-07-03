@@ -44,6 +44,14 @@ Small or medium work usually gets a spec and plan. Large or phased work gets an
 anchor spec first. Phase plans come later from the approved anchor spec unless
 you explicitly ask for combined planning.
 
+Work-item architecture decisions live in the spec and, when useful, in
+`snapshots/architecture.snapshot.md`. The snapshot is work-item-bound: it
+preserves drivers, constraints, selected approach, affected boundaries, and
+rejected alternatives for later implementation or phase planning. Plans consume
+that architecture input instead of making hidden architecture decisions.
+Repository-level durable documents such as `ARCHITECTURE.md` are future work for
+a separate harness extension.
+
 Current naming grammar lives in `references/naming-conventions.md`. For example,
 `2026-05-31_artifact-root` uses `spec_artifact-root.md` and
 `plan_artifact-root.md`.

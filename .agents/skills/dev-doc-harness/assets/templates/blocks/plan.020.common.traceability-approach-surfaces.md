@@ -14,6 +14,13 @@ Risk and boundary coverage:
 
 1. `RISK-001` or scope boundary: handled by `<task ids, validation ids, later phase ids, or explicit no-op rationale>`.
 
+Architecture coverage:
+
+1. Architecture input: `<spec section, snapshots/architecture.snapshot.md, amendment, or None with reason>`.
+2. Plan usage: `<how tasks consume architecture decisions for sequencing, boundaries, validation, rollout, or review>`.
+3. Drift path: `<draft spec/snapshot update before freeze, or variance/amendment after freeze>`.
+4. Reinterpretation guard: plans reference approved architecture decisions and do not reinterpret missing or frozen architecture silently.
+
 ## Implementation Approach
 
 Describe the implementation approach in a few paragraphs. Focus on sequencing, dependencies, technical shape, integration points, and review strategy. Do not repeat the spec except to explain implementation tradeoffs.

@@ -14,6 +14,7 @@ Owned rule IDs:
 | `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
 | `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
+| `rule:lifecycle.work-item-architecture-decisions` | `## Work-item architecture decisions` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
 | `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
 | `rule:lifecycle.variance-policy` | `## Variance policy` and `## Variance classes` |
@@ -156,6 +157,18 @@ If Superpowers creates or expects files under `docs/superpowers`, those files ma
 
 Do not duplicate full specs or plans under `docs/superpowers`, and do not maintain a second source of truth for harness-managed artifacts.
 
+## Work-item architecture decisions
+
+`rule:lifecycle.work-item-architecture-decisions` owns when architectural decisions are captured for a work item. Work-item architecture means consequential boundaries or tradeoffs across repositories, components, interfaces, data models, config, infrastructure, agentic or process orchestration, security, privacy, compliance, migration, rollout, rollback, or phase ownership.
+
+Architectural decisions belong in the draft spec and, when the decision record needs dedicated shape, in `snapshots/architecture.snapshot.md`. A spec may summarize simple architectural decisions inline. Use `snapshots/architecture.snapshot.md` when the work makes or depends on meaningful architecture decisions, when multiple boundaries or alternatives need preservation, when a future phase or fresh thread will depend on the decision, or when the operator asks for architecture to be explicit.
+
+The documentation artifact matrix must mark the architecture snapshot as required, not applicable, or deferred. Use required when meaningful work-item architecture decisions are made or depended on. Use not applicable when the work has no architectural decision beyond local implementation mechanics, and record the reason. Use deferred only with a reason plus the owner or event that will resolve it before implementation, phase planning, or approval.
+
+Plans and phase plans consume the approved spec and architecture snapshot as inputs. They may cite architecture to explain sequencing, dependencies, validation, and drift handling, but they must not invent or silently reinterpret architectural decisions that are absent from the approved spec or snapshot. Before freeze, missing architecture is corrected by editing the draft spec or draft architecture snapshot. After freeze, high-impact architecture drift follows `rule:lifecycle.variance-policy` and uses an amendment when the variance class requires operator approval.
+
+`deltas/architecture-summary.delta.md` remains an optional living delta for later project documentation updates. Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate lifecycle extension.
+
 ## Planning Artifact Freeze Gate
 
 Run the workflow defined in `planning-freeze-gates.md` whenever durable planning artifacts are ready for operator review, approval, handoff, or freeze. That reference is the canonical source for triggers, required actions, operator reminders, continuation rules, and multi-gate flow for very large or phased work items.
@@ -205,8 +218,8 @@ Every substantial spec or plan must include a compact matrix:
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
 | API reference delta | Living delta | Yes/No | During or after API work | deltas/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
-| Architecture summary delta | Living delta | Yes/No | After review | deltas/architecture-summary.delta.md | Update if long-lived architecture docs change |
+| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | snapshots/architecture.snapshot.md | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
+| Architecture summary delta | Living delta | Yes/No/Deferred | After review | deltas/architecture-summary.delta.md | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
 ```
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
