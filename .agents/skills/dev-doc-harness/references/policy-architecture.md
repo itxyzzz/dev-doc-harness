@@ -27,12 +27,13 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
+| `module:artifact-style` | `references/artifact-style.md` | Normative policy | Final artifact content, scannable structure, placeholder and example control, traceability density, and template prompt style. |
 | `module:release` | `references/release-policy.md` | Normative policy | Release identity, distributable package boundary, changelog as release source, release notes, release compatibility, artifact release context, and team adoption flow. |
 | `module:execution-quality` | `references/context-and-quality-gates.md` | Advisory guidance | Context load order, task preflight, environment compensation, and increment quality gates. |
 | `module:evidence` | `references/evidence-and-report-artifacts.md` | Advisory guidance | Evidence preservation, report sections, and evidence stop conditions. |
 | `module:role-examples` | `references/subagent-role-examples.md` | Example | Optional sub-agent role patterns, portable role shape, and role report examples. |
 
-`module:evidence` and `module:role-examples` are supplemental unless a router entry, spec, plan, phase plan, or operator instruction explicitly invokes them.
+`module:evidence` and `module:role-examples` are supplemental unless a router entry, spec, plan, phase plan, or operator instruction explicitly invokes them. `module:artifact-style` is conditional for routine small/medium work, required for large anchor specs, and required for large or hard-to-scan artifacts.
 
 ## Rule ID Conventions
 
@@ -77,7 +78,9 @@ Future router work should load by operation rather than eagerly loading every re
 | Operation family | Typical modules |
 |---|---|
 | Classify work size | `module:lifecycle` |
-| Draft or review durable specs and plans | `module:lifecycle`, `module:naming`, `module:quality`, `module:models` for substantial planning |
+| Draft or review routine small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:naming` for work IDs or planned subjects, and add `module:artifact-style` when readability risk is material |
+| Draft or review large anchor specs | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style` |
+| Draft or review phase plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:artifact-style` for large or hard-to-scan phase artifacts |
 | Freeze planning packages | `module:freeze-gate`, `module:lifecycle` |
 | Execute approved work and record variance | `module:lifecycle`, `module:execution-quality` |
 | Use or review sub-agent strategy | `module:models`, optionally `module:role-examples` |
@@ -102,7 +105,9 @@ Historical artifacts are tracked documentation for repository development. Histo
 
 ## Route And Duplication Budgets
 
-Common operation routes should stay within the architecture budget: routine routes should not require more than three canonical modules before optional supplemental context, and freeze or execution routes may require four when changelog, immutability, or execution-quality checks are separate.
+Common operation routes should stay within the architecture budget: routine routes should not require more than three canonical modules before optional supplemental context, and freeze, execution, or large anchor routes may require four when changelog, immutability, execution-quality, or artifact-style checks are separate.
+
+Use `module:artifact-style` as a required route only when the artifact shape makes readability a policy input: large anchor specs always qualify, and any other artifact qualifies when size, wide tables, long sections, dense traceability, or fresh-agent handoff risk makes the document hard to scan. Keep the short baseline readability guidance in `module:quality` available for routine routes that do not load the style module.
 
 Duplicate-block validation should detect broad reusable policy blocks copied across current harness surfaces. It should ignore frozen historical work-item artifacts, code fences, tables, headings, and short intentional summaries. Keep the high-signal phrase blacklist as a fast regression check.
 

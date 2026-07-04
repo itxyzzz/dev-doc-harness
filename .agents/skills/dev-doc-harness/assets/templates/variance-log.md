@@ -7,15 +7,17 @@ Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance
 
 ## Entries
 
-### <date> - <short-title>
+### `VAR-001` <date> - <short-title>
 
-- Variance class:
-- Original plan reference:
-- What changed:
-- Why it changed:
-- Impact on scope:
-- Impact on tests:
-- Impact on documentation:
-- Risk:
-- Approval required: Yes/No
-- Approval status:
+- Variance class: `<Mechanical / Local technical / Architectural/API/data/security / Scope change / Plan invalidation>`
+- Original plan reference: `<file and section, task, requirement, acceptance criterion, or decision ID>`
+- What changed: `<final description>`
+- Why it changed: `<reason>`
+- Impact on scope: `<None or concrete impact>`
+- Impact on tests: `<None or concrete impact>`
+- Impact on documentation: `<None or concrete impact>`
+- Risk: `<Low/Medium/High plus consequence>`
+- Approval required: `<Yes or No>`
+- Approval status: `<Not required / Proposed amendment / Approved amendment / Blocked>`
+- Approval evidence: `<operator approval message, amendment path, commit hash, or None>`
+- Superseded by: None

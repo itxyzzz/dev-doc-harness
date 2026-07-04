@@ -1,0 +1,12 @@
+{
+  "output": ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+  "blocks": [
+    "blocks/plan.010.small.header-inputs.md",
+    "blocks/plan.020.common.traceability-approach-surfaces.md",
+    "blocks/plan.040.common.model-strategy.md",
+    "blocks/plan.050.common.task-plan.md",
+    "blocks/plan.060.small.planned-commits.md",
+    "blocks/plan.070.common.validation-variance-freeze.md",
+    "blocks/plan.090.small.readiness-completion-approval.md"
+  ]
+}

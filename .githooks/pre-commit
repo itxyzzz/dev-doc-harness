@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+set -eu
+
+python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py

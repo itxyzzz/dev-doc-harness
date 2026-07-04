@@ -9,21 +9,22 @@ Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `r
 
 ## Original plan reference
 
-- File:
-- Section or task:
-- Original instruction:
+- Amendment ID: `AMD-001`
+- File: `<plan, phase plan, spec, or snapshot path>`
+- Section or task: `<heading, task ID, requirement ID, or decision ID>`
+- Original instruction: `<approved text or concise summary>`
 
 ## Discovered issue
 
-Describe the issue that makes the approved plan insufficient or unsafe to follow as written.
+State the issue that makes the approved plan insufficient or unsafe to follow as written.
 
 ## Proposed change
 
-Describe the replacement instruction or scope adjustment.
+State the replacement instruction or scope adjustment.
 
 ## Reason this change is necessary
 
-Explain why the implementation cannot proceed under the approved plan.
+State why the implementation cannot proceed under the approved plan.
 
 ## Impact assessment
 
@@ -41,8 +42,9 @@ Explain why the implementation cannot proceed under the approved plan.
 ## Approval
 
 - Required: Yes
-- Status: Proposed / Approved / Rejected / Superseded
-- Superseded by: record only when this artifact is superseded
+- Status: Proposed
+- Approval evidence: `<operator approval message, approval commit, or None while proposed>`
+- Superseded by: None
 
 ## Planned commits
 

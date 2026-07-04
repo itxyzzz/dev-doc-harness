@@ -22,6 +22,8 @@ Owned rule IDs:
 
 Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Do not treat lack of operator mention as a prohibition on sub-agent use. For substantial work, assess whether sub-agents are justified by isolation, review quality, parallel throughput, or risk reduction. Record either a bounded sub-agent strategy or `Sub-agents: None` with a brief fit reason.
 
+When `module:lifecycle` uses one orchestration thread with bounded delegation as a work-sizing boundary, this module owns the related context strategy, concurrency, model-selection, authorization, and final integration mechanics.
+
 Plans that propose sub-agents must specify:
 
 - Purpose.
@@ -104,7 +106,7 @@ A cheaper sub-agent must not be the final authority for high-blast-radius decisi
 
 ## Required notation
 
-Large or phased work item specs or phase plans using sub-agents must include a compact Model and Sub-agent Strategy:
+Substantial small/medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Small/medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read; the table below is an example shape, not a required presentation.
 
 ```md
 ## Model and Sub-agent Strategy

@@ -1,0 +1,15 @@
+{
+  "output": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+  "blocks": [
+    "blocks/spec.010.large.header.md",
+    "blocks/spec.020.common.intent-scope-context.md",
+    "blocks/spec.030.common.requirements-acceptance.md",
+    "blocks/spec.035.common.architecture-decisions.md",
+    "blocks/spec.040.common.interfaces-risks.md",
+    "blocks/spec.050.large.operations.md",
+    "blocks/spec.060.large.phase-decomposition-model.md",
+    "blocks/spec.070.large.planned-commits-freeze.md",
+    "blocks/spec.080.common.documentation-matrix.md",
+    "blocks/spec.090.large.readiness-approval.md"
+  ]
+}

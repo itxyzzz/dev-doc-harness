@@ -20,6 +20,7 @@ Owned rule IDs:
 ## Evidence policy
 
 - Preserve source evidence once it is used for review, comparison, or handoff.
+- Preserve mutable external evidence when a durable artifact depends on it; cite the preserved source or derived artifact rather than relying only on a live URL.
 - Put repaired, normalized, or derived review artifacts in a separate location.
 - Link derived artifacts back to their source evidence.
 - Do not rewrite original evidence to hide drift, failed checks, or manual repair.

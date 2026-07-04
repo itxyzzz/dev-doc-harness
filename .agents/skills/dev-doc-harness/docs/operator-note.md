@@ -44,6 +44,20 @@ Small or medium work usually gets a spec and plan. Large or phased work gets an
 anchor spec first. Phase plans come later from the approved anchor spec unless
 you explicitly ask for combined planning.
 
+Work-item architecture decisions live in the spec and, when useful, in
+`snapshots/architecture.snapshot.md`. The snapshot is work-item-bound: it
+preserves drivers, constraints, selected approach, affected boundaries, and
+rejected alternatives for later implementation or phase planning. Plans consume
+that architecture input instead of making hidden architecture decisions.
+Repository-level durable documents such as `ARCHITECTURE.md` are future work for
+a separate harness extension.
+
+Artifact readability has its own routed owner. Routine artifacts use the short
+baseline guidance in `references/durable-planning-quality.md` and the templates.
+Large anchor specs, and any artifact that becomes large or hard to scan, load
+`references/artifact-style.md` for final artifact content, scannable structure,
+placeholder control, traceability density, and template prompt style.
+
 Current naming grammar lives in `references/naming-conventions.md`. For example,
 `2026-05-31_artifact-root` uses `spec_artifact-root.md` and
 `plan_artifact-root.md`.
@@ -102,3 +116,25 @@ python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 
 The validator is a lightweight structural check. It supports review; it does
 not replace operator approval or engineering judgment.
+
+Primary planning templates are maintained from ordered source files:
+
+```text
+.agents/skills/dev-doc-harness/assets/templates/blocks/
+.agents/skills/dev-doc-harness/assets/templates/assemblies/
+.agents/skills/dev-doc-harness/scripts/assemble_templates.py
+```
+
+Edit blocks or manifests, then run:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
+```
+
+The command writes the flat templates, checks that they are current, and runs
+the full validator. Use `--list` to inspect the block order or `--check` for a
+non-mutating freshness check.
+
+Optional root-local hook files under `.githooks/` are development aids for this
+repository only. They are outside the distributable package and are not copied
+to downstream adopters.

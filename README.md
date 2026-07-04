@@ -79,20 +79,48 @@ the spec, plan, required documentation updates, and any implementation variance.
 The operator gets a stable place to review what is about to happen before the
 agent starts changing the product.
 
+The practical small/medium boundary is whether one orchestration thread can
+safely coordinate the work with bounded delegation. That coordinating thread
+must be able to hold the scope, decisions, validation, variance, final
+integration, and completion report without needing another layer of planning.
+This is similar only as an analogy to the Scrum Guide's Sprint Planning
+readiness idea: a Product Backlog item is ready when it can be completed within
+one Sprint, while a harness work item is small/medium-ready when it can be
+coordinated by one orchestration thread. The harness is not adopting Scrum
+roles, events, or commitments.
+
 The work item folder keeps the full dated ID for sorting and uniqueness, while
 the durable artifact filenames include a shorter suffix for easier chat
 references. For example, `2026-05-31_artifact-root` uses
 `spec_artifact-root.md` and `plan_artifact-root.md`. The exact naming grammar
 lives in `references/naming-conventions.md`.
 
-For large work, expect a more deliberate handoff. The agent first writes an
-anchor `<spec-filename>` that preserves goals, boundaries, decisions, risks,
-tests, and acceptance criteria. The normal first planning package is
-anchor-spec-only; listed phase-plan filenames are future outputs unless the
-operator explicitly asks for combined planning. After the anchor spec is frozen
-and the operator gives a fresh instruction, the agent drafts phase plans named
-with `<phase-plan-filename>` that a fresh agent or future thread can
-execute without relying on hidden chat history.
+For large or phased work, expect a more deliberate handoff. The agent first
+writes an anchor `<spec-filename>` that preserves goals, boundaries, decisions,
+risks, tests, acceptance criteria, and phase objectives. Use this path when the
+whole effort would saturate one orchestration thread, when bounded delegation is
+not enough to keep integration and review clear, or when staged review
+materially reduces risk. The normal first planning package is anchor-spec-only;
+listed phase-plan filenames are future outputs unless the operator explicitly
+asks for combined planning. After the anchor spec is frozen and the operator
+gives a fresh instruction, the agent drafts phase plans named with
+`<phase-plan-filename>` that a fresh agent or future thread can execute without
+relying on hidden chat history.
+
+Work-item architecture decisions are part of the planning package. When a work
+item makes or depends on consequential boundaries or tradeoffs, the spec records
+them and may use `snapshots/architecture.snapshot.md` as a frozen decision
+snapshot. Plans reference that architecture input for sequencing and validation;
+they are not the place to silently invent new architectural direction. Durable
+repository-level architecture documents such as `ARCHITECTURE.md` are future work
+for a separate harness extension.
+
+Durable artifact readability is routed separately from durable completeness.
+Routine small/medium artifacts use the baseline readability cues in the quality
+reference and templates. Large anchor specs, and any artifact that becomes large
+or hard to scan, load `module:artifact-style` for final artifact content,
+scannable structure, placeholder control, traceability density, and template
+prompt style.
 
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
@@ -156,6 +184,7 @@ The router sends each operation to the minimum useful owner modules:
 | Work sizing and artifact lifecycle | `module:lifecycle` in `references/artifact-contract.md` |
 | Planning review and freeze checkpoints | `module:freeze-gate` in `references/planning-freeze-gates.md` |
 | Durable spec and phase-plan quality | `module:quality` in `references/durable-planning-quality.md` |
+| Artifact readability and template prompt style | `module:artifact-style` in `references/artifact-style.md` |
 | Model and sub-agent strategy | `module:models` in `references/subagent-model-policy.md` |
 | Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
 | Release identity, package boundary, and team adoption | `module:release` in `references/release-policy.md` |
@@ -172,6 +201,31 @@ python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 The command checks current harness surfaces, golden traversal evidence, and
 release package consistency. The canonical policy owners remain the routed
 references, not this README.
+
+Primary planning templates are maintained from ordered source blocks and
+explicit assembly manifests:
+
+```text
+.agents/skills/dev-doc-harness/assets/templates/blocks/
+.agents/skills/dev-doc-harness/assets/templates/assemblies/
+.agents/skills/dev-doc-harness/scripts/assemble_templates.py
+```
+
+Edit the block files or manifest files first, then regenerate and validate in
+one step:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
+```
+
+Use `--list` to inspect which common, small, large, and phase blocks make up
+each published template. Use `--check` for a non-mutating freshness check; the
+main harness validator calls that check so stale generated templates fail
+validation.
+
+This repository also provides an optional root-local `.githooks/pre-commit`
+hook that runs the validator. It is not installed automatically, it does not
+write files, and it is outside the copyable distributable package.
 
 There is not an installation script yet. The copyable distributable package is
 the root `AGENTS.md` file plus the `.agents/` folder. The package records its
@@ -258,10 +312,16 @@ The internal machinery is intentionally small:
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
   specs and phase plans.
+- `references/artifact-style.md` defines final artifact content, scannable
+  structure, placeholder control, traceability density, and template prompt
+  style for large or hard-to-scan artifacts.
 - `references/subagent-model-policy.md` defines the available sub-agent and
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance
-  templates. Templates own artifact shape and prompts, not reusable policy.
+  templates. The primary spec and plan templates are assembled from
+  `assets/templates/blocks/` and `assets/templates/assemblies/`, but the
+  published files stay complete Markdown. Templates own artifact shape and
+  prompts, not reusable policy.
 - `docs/operator-note.md` is a compact package-local usage summary for adopters
   who copy only root `AGENTS.md` plus `.agents/`.
 - `docs/releases/` contains package-local release notes that travel with

@@ -8,6 +8,14 @@ For all development work except very small mechanical edits, use the repository 
 
 The router points to the canonical modules for work sizing, artifact lifecycle, planning freeze gates, variance, changelog, documentation matrices, quality bars, compatibility, and model/sub-agent notation. Very small mechanical edits may proceed without durable artifacts only when the router's `module:lifecycle` sizing rules allow it, and they must still preserve existing behavior and relevant checks.
 
+## Release branch creation
+
+When the operator asks an agent in chat to create the next release branch, follow the repository-local process in:
+
+`docs/release-branch-process.md`
+
+That process defines the agent-executed release flow, including the `master` preflight, remote release-branch version derivation, package-local release notes under `.agents/skills/dev-doc-harness/docs/releases/`, the release branch push, and the post-release `master` reset.
+
 ## Active sub-agent model policy
 
 This section is the single repository-local selection point for the active model policy.

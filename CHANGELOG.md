@@ -6,6 +6,175 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-04_release-branch-process -- document release branch workflow
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added a root-level agent-executable release branch runbook and an `AGENTS.md` pointer for chat-triggered release branch creation, including remote release version derivation, package-local release notes, release branch push, and post-release `master` reset steps.
+
+### 2026-07-04_release-branch-process -- approve release process plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for documenting an agent-executable release branch process triggered from chat, including version derivation, package-local release notes, release branch push, and post-release master reset boundaries.
+
+### 2026-07-03_artifact-style-guidance -- add artifact style module
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added `module:artifact-style` as the canonical owner for final artifact content, scannable structure, placeholder control, traceability density, and template prompt style.
+- Added validator coverage for artifact-style ownership, large-anchor routing, template style cues, decision/amendment/variance IDs, and canonical model-policy examples.
+
+#### Changed
+
+- Made artifact-style guidance mandatory for large anchor specs and conditional for other large or hard-to-scan artifacts while preserving routine small/medium route budgets.
+- Updated planning templates, the architecture snapshot template, amendment template, and variance log template with stronger final-state fields, unresolved-decision readiness checks, evidence cross-references, and model-policy source prompts.
+- Updated operator-facing docs and 0.4+ release notes to mention artifact-style guidance and template readability hardening.
+
+### 2026-07-03_artifact-style-guidance -- approve artifact style plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and architecture snapshot for adding artifact-style guidance, conditional large-document routing, stronger template readability cues, and future-facing validation without rewriting already implemented specs.
+
+### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added lifecycle, quality, router, template, documentation, and validator support for work-item architecture decisions and the reusable `architecture-snapshot.md` template.
+
+#### Changed
+
+- Updated spec and plan templates so specs capture architecture decisions, plans consume architecture inputs, and repository-level `ARCHITECTURE.md` documents remain future work.
+
+### 2026-07-03_work-item-architecture-decisions -- approve architecture-decision flow plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, and architecture snapshot for making work-item-bounded architecture decisions first-class planning content while leaving repository-level `ARCHITECTURE.md` workflows for future work.
+
+### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
+
+Release target: `0.4+`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added ordered source blocks, explicit assembly manifests, `assemble_templates.py`, and validation coverage so the four primary planning templates stay generated and self-contained.
+- Added a root-local non-mutating pre-commit hook for harness repository development.
+
+#### Changed
+
+- Updated the package-local release marker and current release notes to `0.4+`.
+- Regenerated the small/medium and large/phased spec and plan templates from shared blocks, with tag-header examples for requirement, acceptance-criterion, and risk entries.
+
+### 2026-07-02_template-block-assembly -- approve modular template plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for assembling harness templates from ordered shared source blocks, updating the harness release marker to `0.4+`, and applying tag-header formatting conventions to future template requirement, acceptance-criterion, and risk blocks.
+
+### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Clarified harness sizing around one orchestration thread with bounded delegation and aligned README, small/medium template wording, and large/phased templates with that distinction.
+- Updated large/phased spec and phase-plan templates to inherit the improved small/medium structure while adding anchor-specific phase decomposition and fresh-thread phase execution prompts.
+
+### 2026-07-02_orchestration-sizing-large-templates -- approve sizing and large-template plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for aligning harness work sizing around one orchestration thread with bounded delegation, updating README sizing guidance, and improving large/phased templates in line with the latest small/medium template structure.
+
+### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Labeled task dependencies explicitly in the small/medium plan template task guidance and examples.
+
+### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Updated the small/medium plan template with input-artifact grounding, spec traceability, implementation/change-surface prompts, SMART task guidance, validation mapping, readable sub-agent strategy blocks, readiness checks, and orchestration saturation guards.
+- Clarified that compact model and sub-agent strategy notation applies to substantial small/medium plans as well as large or phased planning artifacts.
+
+### 2026-07-01_small-medium-plan-template-structure -- approve plan-template update plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved plan-template update spec and plan for improving the small/medium plan template structure, including spec traceability, bounded sub-agent strategy, execution detail, validation mapping, and orchestration saturation checks.
+
+### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Updated the small/medium spec template with source/intent, scope boundary, repository context, requirements, acceptance criteria, interface/control-flow, risks/rejected alternatives, and readiness checklist prompts while deferring plan-template changes.
+
+### 2026-07-01_small-medium-template-structure -- approve spec-template update plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec-template update spec, plan, and research report for improving the small/medium spec template structure while deferring plan-template changes.
+
 ### 2026-07-01-naming-conventions: deduplicate naming pattern references
 
 Release target: `unreleased`

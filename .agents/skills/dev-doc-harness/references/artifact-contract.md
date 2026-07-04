@@ -14,6 +14,7 @@ Owned rule IDs:
 | `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
 | `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
+| `rule:lifecycle.work-item-architecture-decisions` | `## Work-item architecture decisions` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
 | `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
 | `rule:lifecycle.variance-policy` | `## Variance policy` and `## Variance classes` |
@@ -50,9 +51,13 @@ Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id
 
 Small mechanical work may skip the harness unless the operator requests durable artifacts.
 
-Small/medium work includes one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
+Small/medium work is substantial work that one orchestration thread can safely coordinate with bounded delegation and a manageable context window. The orchestration thread owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
 
-Large or phased work includes broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work that needs phase plans to fit in one implementation thread.
+Small/medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
+
+Large or phased work needs an anchor spec and later phase plans when one orchestration thread cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
+
+`module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
 
 ## Small/medium layout
 
@@ -109,7 +114,7 @@ The full lifecycle package for large or phased work may eventually contain these
 
 The normal initial planning package is anchor-spec-only: create `<spec-filename>` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `<phase-plan-filename>` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
 
-Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be implementable in one Codex thread. Create handoff files when they are useful for continuity.
+Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be safely executable by one orchestration thread with bounded delegation. Create handoff files when they are useful for continuity.
 
 ## Large or phased planning orchestration
 
@@ -151,6 +156,18 @@ If Superpowers creates or expects files under `docs/superpowers`, those files ma
 - A link to the canonical package or artifact under `<work-item-path>`.
 
 Do not duplicate full specs or plans under `docs/superpowers`, and do not maintain a second source of truth for harness-managed artifacts.
+
+## Work-item architecture decisions
+
+`rule:lifecycle.work-item-architecture-decisions` owns when architectural decisions are captured for a work item. Work-item architecture means consequential boundaries or tradeoffs across repositories, components, interfaces, data models, config, infrastructure, agentic or process orchestration, security, privacy, compliance, migration, rollout, rollback, or phase ownership.
+
+Architectural decisions belong in the draft spec and, when the decision record needs dedicated shape, in `snapshots/architecture.snapshot.md`. A spec may summarize simple architectural decisions inline. Use `snapshots/architecture.snapshot.md` when the work makes or depends on meaningful architecture decisions, when multiple boundaries or alternatives need preservation, when a future phase or fresh thread will depend on the decision, or when the operator asks for architecture to be explicit.
+
+The documentation artifact matrix must mark the architecture snapshot as required, not applicable, or deferred. Use required when meaningful work-item architecture decisions are made or depended on. Use not applicable when the work has no architectural decision beyond local implementation mechanics, and record the reason. Use deferred only with a reason plus the owner or event that will resolve it before implementation, phase planning, or approval.
+
+Plans and phase plans consume the approved spec and architecture snapshot as inputs. They may cite architecture to explain sequencing, dependencies, validation, and drift handling, but they must not invent or silently reinterpret architectural decisions that are absent from the approved spec or snapshot. Before freeze, missing architecture is corrected by editing the draft spec or draft architecture snapshot. After freeze, high-impact architecture drift follows `rule:lifecycle.variance-policy` and uses an amendment when the variance class requires operator approval.
+
+`deltas/architecture-summary.delta.md` remains an optional living delta for later project documentation updates. Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate lifecycle extension.
 
 ## Planning Artifact Freeze Gate
 
@@ -201,8 +218,8 @@ Every substantial spec or plan must include a compact matrix:
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
 | API reference delta | Living delta | Yes/No | During or after API work | deltas/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No | Before or after design stabilization | snapshots/architecture.snapshot.md | Work-item-bound decision snapshot |
-| Architecture summary delta | Living delta | Yes/No | After review | deltas/architecture-summary.delta.md | Update if long-lived architecture docs change |
+| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | snapshots/architecture.snapshot.md | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
+| Architecture summary delta | Living delta | Yes/No/Deferred | After review | deltas/architecture-summary.delta.md | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
 ```
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
