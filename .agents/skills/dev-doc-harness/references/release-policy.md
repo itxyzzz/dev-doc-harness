@@ -20,11 +20,13 @@ Owned rule IDs:
 
 The package-local release marker is `.agents/skills/dev-doc-harness/VERSION`.
 
-For this release it contains:
+On a stable release branch it contains the exact release version, such as:
 
 ```text
-0.4+
+0.5.0
 ```
+
+On `master` after that release branch is cut, it may use a development marker such as `0.5+`.
 
 Use the harness release version as the compatibility unit for team adoption and rollback. Do not introduce per-rule semantic versions unless a later approved release expands scope.
 
@@ -50,10 +52,12 @@ Release notes live under:
 .agents/skills/dev-doc-harness/docs/releases/
 ```
 
-The `0.4+` notes are:
+Stable release notes use exact release-version filenames. Development markers such as `0.5+` do not require separate `+.md` release-note files.
+
+The `0.5.0` notes are:
 
 ```text
-.agents/skills/dev-doc-harness/docs/releases/0.4+.md
+.agents/skills/dev-doc-harness/docs/releases/0.5.0.md
 ```
 
 Release notes should include a source changelog section so adopters can trace release-facing summaries back to repository history.

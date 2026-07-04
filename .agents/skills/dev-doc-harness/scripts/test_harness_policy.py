@@ -41,7 +41,24 @@ class ChangelogSection:
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FAILURES: list[Failure] = []
-CURRENT_RELEASE = "0.4+"
+
+
+def read_current_version_marker() -> str:
+    version_path = REPO_ROOT / ".agents/skills/dev-doc-harness/VERSION"
+    if not version_path.exists():
+        return "unknown"
+    return version_path.read_text(encoding="utf-8").strip()
+
+
+def release_notes_version(version_marker: str) -> str:
+    development_match = re.fullmatch(r"(?P<major>\d+)\.(?P<minor>\d+)\+", version_marker)
+    if development_match:
+        return f"{development_match.group('major')}.{development_match.group('minor')}.0"
+    return version_marker
+
+
+CURRENT_VERSION = read_current_version_marker()
+CURRENT_RELEASE = release_notes_version(CURRENT_VERSION)
 
 CHECK_IDS = [
     "paths.required-files",
@@ -569,11 +586,11 @@ def assert_release_identity() -> None:
     check_id = "release.identity"
     version_path = ".agents/skills/dev-doc-harness/VERSION"
     version_text = read_repo_text(version_path)
-    if not re.search(rf"\A{re.escape(CURRENT_RELEASE)}\r?\n?\Z", version_text):
-        add_failure(check_id, f"{version_path} must contain exactly {CURRENT_RELEASE} plus an optional trailing newline")
+    if not re.search(r"\A(?:\d+\.\d+\.\d+|\d+\.\d+\+)\r?\n?\Z", version_text):
+        add_failure(check_id, f"{version_path} must contain an exact release version or development marker plus an optional trailing newline")
         return
     version = version_text.rstrip("\r\n")
-    assert_path_exists(check_id, f".agents/skills/dev-doc-harness/docs/releases/{version}.md")
+    assert_path_exists(check_id, f".agents/skills/dev-doc-harness/docs/releases/{release_notes_version(version)}.md")
 
 
 def assert_release_notes() -> None:
