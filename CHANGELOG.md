@@ -20,6 +20,7 @@ Release-note: `include`
 #### Changed
 
 - Updated the harness development marker and validator expectations from `0.4+` to `0.5+` while keeping release notes on concrete released versions.
+- Updated the release branch process so future release prep synchronizes `VERSION`, release policy, release notes, validator expectations, and the post-release development marker.
 
 ### 2026-07-07_superpowers-compat-guidance -- approve adapter guidance plan
 
