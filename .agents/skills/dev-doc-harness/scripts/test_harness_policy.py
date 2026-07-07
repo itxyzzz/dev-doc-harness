@@ -41,7 +41,9 @@ class ChangelogSection:
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FAILURES: list[Failure] = []
-CURRENT_RELEASE = "0.4+"
+CURRENT_DEVELOPMENT_MARKER = "0.5+"
+RELEASE_NOTE_VERSIONS = ["0.4.0", "0.5.0"]
+LATEST_RELEASE_NOTE_VERSION = RELEASE_NOTE_VERSIONS[-1]
 
 CHECK_IDS = [
     "paths.required-files",
@@ -137,7 +139,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
     ".agents/skills/dev-doc-harness/references/artifact-style.md",
     ".agents/skills/dev-doc-harness/references/release-policy.md",
-    f".agents/skills/dev-doc-harness/docs/releases/{CURRENT_RELEASE}.md",
+    *[f".agents/skills/dev-doc-harness/docs/releases/{version}.md" for version in RELEASE_NOTE_VERSIONS],
     ".agents/skills/dev-doc-harness/scripts/assemble_templates.py",
     ".agents/skills/dev-doc-harness/assets/templates/blocks",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies",
@@ -569,20 +571,20 @@ def assert_release_identity() -> None:
     check_id = "release.identity"
     version_path = ".agents/skills/dev-doc-harness/VERSION"
     version_text = read_repo_text(version_path)
-    if not re.search(rf"\A{re.escape(CURRENT_RELEASE)}\r?\n?\Z", version_text):
-        add_failure(check_id, f"{version_path} must contain exactly {CURRENT_RELEASE} plus an optional trailing newline")
+    if not re.search(rf"\A{re.escape(CURRENT_DEVELOPMENT_MARKER)}\r?\n?\Z", version_text):
+        add_failure(check_id, f"{version_path} must contain exactly {CURRENT_DEVELOPMENT_MARKER} plus an optional trailing newline")
         return
-    version = version_text.rstrip("\r\n")
-    assert_path_exists(check_id, f".agents/skills/dev-doc-harness/docs/releases/{version}.md")
+    for version in RELEASE_NOTE_VERSIONS:
+        assert_path_exists(check_id, f".agents/skills/dev-doc-harness/docs/releases/{version}.md")
 
 
 def assert_release_notes() -> None:
     check_id = "release.notes"
-    release_notes_path = f".agents/skills/dev-doc-harness/docs/releases/{CURRENT_RELEASE}.md"
+    release_notes_path = f".agents/skills/dev-doc-harness/docs/releases/{LATEST_RELEASE_NOTE_VERSION}.md"
     release_notes = read_repo_text(release_notes_path)
     changelog = read_repo_text("CHANGELOG.md")
     required_headings = [
-        f"# Dev Doc Harness {CURRENT_RELEASE}",
+        f"# Dev Doc Harness {LATEST_RELEASE_NOTE_VERSION}",
         "## Release",
         "## Package Contents",
         "## Added",
@@ -638,7 +640,7 @@ def assert_release_changelog_schema() -> None:
 
         if len(release_target_lines) != 1:
             add_failure(check_id, f"{section.heading} must contain exactly one Release target field")
-        elif not re.search(r"^(?:unreleased|0\.\d+\.\d+|0\.4\+)$", release_target_lines[0].group(1)):
+        elif not re.search(r"^(?:unreleased|0\.\d+\.\d+|0\.\d+\+)$", release_target_lines[0].group(1)):
             add_failure(check_id, f"{section.heading} has invalid Release target '{release_target_lines[0].group(1)}'")
 
         if len(package_impact_lines) != 1:
@@ -655,7 +657,7 @@ def assert_release_changelog_schema() -> None:
 def assert_release_package_boundary() -> None:
     check_id = "release.package-boundary"
     release_policy = ".agents/skills/dev-doc-harness/references/release-policy.md"
-    release_notes = f".agents/skills/dev-doc-harness/docs/releases/{CURRENT_RELEASE}.md"
+    release_notes = f".agents/skills/dev-doc-harness/docs/releases/{LATEST_RELEASE_NOTE_VERSION}.md"
 
     assert_text_contains(check_id, release_policy, r"distributable harness package is root `AGENTS\.md` plus `\.agents/`", "release policy package boundary")
     assert_text_contains(check_id, release_notes, r"distributable package is root `AGENTS\.md` plus `\.agents/`", "release notes package boundary")

@@ -62,6 +62,19 @@ Current naming grammar lives in `references/naming-conventions.md`. For example,
 `2026-05-31_artifact-root` uses `spec_artifact-root.md` and
 `plan_artifact-root.md`.
 
+## Using Superpowers
+
+When Superpowers is installed and active, use it for brainstorming, planning,
+TDD, execution, review, and finishing. Use this harness alongside it for the
+repository artifact contract: canonical work item location, planning freeze
+gates, variance records, changelog and commit discipline, and model or
+sub-agent notation.
+
+Before implementation, approved Superpowers planning content that governs the
+work should be copied or converted into the harness work item folder. If
+Superpowers creates or expects `docs/superpowers` files, keep them as pointer
+stubs to the canonical harness package instead of duplicate specs or plans.
+
 ## Review And Pause Points
 
 The normal substantial-work flow is:

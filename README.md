@@ -190,6 +190,28 @@ The router sends each operation to the minimum useful owner modules:
 | Release identity, package boundary, and team adoption | `module:release` in `references/release-policy.md` |
 | Execution-time quality checks | `module:execution-quality` in `references/context-and-quality-gates.md` |
 
+### Using Superpowers With The Harness
+
+When Superpowers is installed and active, use it for its normal development
+methodology: brainstorming, planning, TDD, execution, review, and finishing.
+Use the harness alongside it for the repository artifact contract: where durable
+planning artifacts live, when planning freezes, how variance is recorded, which
+changelog and commit rules apply, and how model or sub-agent policy is noted.
+
+The practical adapter flow is:
+
+1. Let Superpowers guide the methodology for the current phase.
+2. Before implementation, convert or copy the approved Superpowers planning
+   content into the harness work item folder under `docs/work-items/<work-id>/`.
+3. Run the harness draft-review and approval freeze gate on the canonical
+   harness artifacts.
+4. Start implementation only after the freeze gate and a fresh operator
+   instruction to proceed.
+
+If Superpowers creates or expects files under `docs/superpowers`, keep those
+files as minimal pointer stubs that link to the canonical harness work item
+package. Do not maintain duplicate full specs or plans in both places.
+
 For harness maintenance, agents can run this lightweight local validation check
 before commits that change current harness entrypoints, canonical references,
 templates, README, or validation artifacts:
@@ -262,7 +284,9 @@ Before editing implementation-target files for substantial work, complete the ha
 
 Treat `dev-doc-harness` as the canonical source for repository artifact location and lifecycle. README summaries and templates do not override canonical harness references.
 
-When Superpowers or spec-kit is active, use those tools for their normal methodology, but keep the harness as the artifact-location and lifecycle contract.
+When Superpowers is active, use Superpowers for its normal methodology and keep the harness as the artifact-location and lifecycle contract. Canonical specs, plans, snapshots, amendments, variance logs, changelog entries, and freeze gates remain in the harness work item package. Any `docs/superpowers` files should be pointer stubs only.
+
+When spec-kit is active, use the repository adapter if present, but keep the harness as the artifact-location and lifecycle contract.
 ```
 
 Operators usually do not need to invoke the internals by hand. Ask for the work

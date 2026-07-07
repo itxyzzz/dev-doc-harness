@@ -73,4 +73,4 @@ Use the same draft review and approval freeze checkpoints each time. `rule:lifec
 
 This gate layers on top of Codex plan mode, Superpowers, and spec-kit. Those tools may produce or refine the artifacts, but the harness owns the approval, commit, and pause transition before implementation.
 
-If another workflow would normally ask to implement immediately after planning, pause instead and run this gate.
+If another workflow would normally continue directly from approved planning into execution, pause and run this gate instead. The next operator response may authorize implementation and select any execution methodology or tool, including Superpowers.

@@ -61,6 +61,8 @@ When durable planning artifacts are ready for review, approval, handoff, or free
 
 When Superpowers is installed and active, use it for its normal development methodology. This harness still owns artifact location, planning freeze gates, variance records, commit-message and changelog discipline, and model/sub-agent policy notation. The lifecycle owner is `module:lifecycle`, especially `rule:lifecycle.superpowers-compatibility`.
 
+Before implementation, any Superpowers-produced spec or plan content that will govern the work must be copied or converted into the canonical harness work item package and pass the harness freeze gate. If Superpowers creates or expects `docs/superpowers` files, keep them as pointer stubs to the harness artifacts.
+
 ## spec-kit compatibility
 
 If spec-kit is installed and active, prefer a project-local adapter that points back to this skill and `module:lifecycle`. Do not make spec-kit templates the canonical source of harness rules.

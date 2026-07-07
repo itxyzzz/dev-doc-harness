@@ -149,6 +149,8 @@ When Superpowers is installed and active, use Superpowers for brainstorming, pla
 
 The full durable package must live under `<work-item-path>` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
 
+Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers execution flow begins.
+
 If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs. A valid stub contains:
 
 - A title.
