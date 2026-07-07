@@ -192,25 +192,18 @@ The router sends each operation to the minimum useful owner modules:
 
 ### Using Superpowers With The Harness
 
-When Superpowers is installed and active, use it for its normal development
-methodology: brainstorming, planning, TDD, execution, review, and finishing.
-Use the harness alongside it for the repository artifact contract: where durable
-planning artifacts live, when planning freezes, how variance is recorded, which
-changelog and commit rules apply, and how model or sub-agent policy is noted.
+For maintainers, Superpowers and this harness are complementary rather than
+competing workflows. Superpowers can shape how the agent brainstorms, plans,
+tests, executes, reviews, and finishes work. The harness keeps the repository
+record stable: the reviewable spec, plan, snapshots, variance records, and
+changelog trail still live in the harness work item package.
 
-The practical adapter flow is:
-
-1. Let Superpowers guide the methodology for the current phase.
-2. Before implementation, convert or copy the approved Superpowers planning
-   content into the harness work item folder under `docs/work-items/<work-id>/`.
-3. Run the harness draft-review and approval freeze gate on the canonical
-   harness artifacts.
-4. Start implementation only after the freeze gate and a fresh operator
-   instruction to proceed.
-
-If Superpowers creates or expects files under `docs/superpowers`, keep those
-files as minimal pointer stubs that link to the canonical harness work item
-package. Do not maintain duplicate full specs or plans in both places.
+The user-visible checkpoint is unchanged. Before implementation starts, expect
+one canonical planning package under `docs/work-items/<work-id>/`, followed by
+the normal harness approval freeze and a fresh instruction to proceed. If a
+Superpowers workflow also refers to `docs/superpowers`, those files should be
+short pointers to the harness package rather than a second copy of the spec or
+plan.
 
 For harness maintenance, agents can run this lightweight local validation check
 before commits that change current harness entrypoints, canonical references,

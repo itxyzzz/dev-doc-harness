@@ -62,25 +62,13 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 
 1. Update `.agents/skills/dev-doc-harness/VERSION` to exactly the current version.
 
-2. Update `.agents/skills/dev-doc-harness/references/release-policy.md`.
-
-   - In `Release Identity`, show the exact current version for the release branch.
-   - In `Release Notes`, add the package-local release-note file for the current version.
-   - Do not add a development-marker release-note filename such as `0.5+.md`.
-
-3. Update `.agents/skills/dev-doc-harness/scripts/test_harness_policy.py` for the release-prep commit.
-
-   - Ensure the validator accepts the exact current version on the release branch.
-   - Ensure the current version's release-note file is present in the required release-note list.
-   - Keep release-note checks pointed at the concrete release-note file, not a `+` development marker.
-
-4. Update `CHANGELOG.md`.
+2. Update `CHANGELOG.md`.
 
    - Rename the top `## Unreleased` group to the release group for the current version.
    - Use the current changelog heading style, such as `## Release 0.5`, while keeping entry metadata release targets as exact versions such as `0.5.0`.
    - Do not add the next empty `Unreleased` group yet. That happens after the release branch is created and `master` is checked out again.
 
-5. Create package-local release notes at:
+3. Create package-local release notes at:
 
    ```text
    .agents/skills/dev-doc-harness/docs/releases/<current-version>.md
@@ -92,7 +80,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    .agents/skills/dev-doc-harness/docs/releases/0.5.0.md
    ```
 
-6. Curate the release notes from the changelog entries for the current version.
+4. Curate the release notes from the changelog entries for the current version.
 
    Use the current release-note structure from the latest package-local release note. At minimum, include:
 
@@ -105,22 +93,16 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 
    The release notes should summarize delivered release-facing changes once. Planning-only entries may appear in `Source Changelog Entries` for traceability when they support the delivered change, but they should not become duplicate feature bullets.
 
-7. Run the harness validator.
+5. Review the release-prep diff.
 
    ```powershell
-   python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
+   git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/docs/releases
    ```
 
-8. Review the release-prep diff.
+6. Commit the release-prep changes on `master`.
 
    ```powershell
-   git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py .agents/skills/dev-doc-harness/docs/releases
-   ```
-
-9. Commit the release-prep changes on `master`.
-
-   ```powershell
-   git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py .agents/skills/dev-doc-harness/docs/releases/<current-version>.md
+   git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/docs/releases/<current-version>.md
    git commit -m "release: prepare <current-version>"
    ```
 
@@ -176,40 +158,20 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    0.5+
    ```
 
-   `master` and other non-release development branches should stay on `<major>.<minor>+` after `0.<minor>.0` has been released and before `0.<minor+1>.0` release preparation begins. Do not advance the development marker to the next minor until the next release branch is actually being prepared.
-
-4. Update `.agents/skills/dev-doc-harness/references/release-policy.md` for the post-release development branch.
-
-   - In `Release Identity`, describe the development marker now used after the branch cut.
-   - Keep the release-note list on concrete release-note files.
-   - Do not create `<development-marker>.md`; for example, do not create `0.5+.md`.
-
-5. Update `.agents/skills/dev-doc-harness/scripts/test_harness_policy.py` for post-release development.
-
-   - Set the current development marker to `<major>.<minor>+`.
-   - Keep all released concrete note files in the release-note list.
-   - Keep the latest release-note check pointed at `<current-version>.md`.
-
-6. Run the harness validator.
+4. Review the post-release reset diff.
 
    ```powershell
-   python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
+   git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md
    ```
 
-7. Review the post-release reset diff.
+5. Commit the post-release reset on `master`.
 
    ```powershell
-   git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
-   ```
-
-8. Commit the post-release reset on `master`.
-
-   ```powershell
-   git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
+   git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md
    git commit -m "chore: start <major>.<minor>+ development"
    ```
 
-9. Stop and report the outcome.
+6. Stop and report the outcome.
 
    Include:
 

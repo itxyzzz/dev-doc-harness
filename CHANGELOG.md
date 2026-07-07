@@ -15,12 +15,11 @@ Release-note: `include`
 #### Added
 
 - Added Superpowers adapter guidance to the operator README, package-local operator note, harness entrypoint, and canonical lifecycle and freeze-gate references.
-- Added package-local `0.5.0` release notes as the latest concrete release-note file.
+- Restored package-local `0.5.0` release notes verbatim from `origin/release/0.5` as the latest concrete release-note file.
 
 #### Changed
 
 - Updated the harness development marker and validator expectations from `0.4+` to `0.5+` while keeping release notes on concrete released versions.
-- Updated the release branch process so future release prep synchronizes `VERSION`, release policy, release notes, validator expectations, and the post-release development marker.
 
 ### 2026-07-07_superpowers-compat-guidance -- approve adapter guidance plan
 
