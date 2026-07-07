@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-07_superpowers-compat-guidance -- approve adapter guidance plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, architecture snapshot, and test-case snapshot for documenting the Superpowers adapter flow, preserving harness artifact canonicality and freeze gates, and correcting the `0.5+` release-baseline validation plan.
+
 ### 2026-07-04_release-branch-process -- document release branch workflow
 
 Release target: `unreleased`
