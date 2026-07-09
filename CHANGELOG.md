@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-09_plan-task-block-format -- plan sectioned task blocks
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for replacing checklist-shaped plan task rows with sectioned task blocks and a centralized requirement and acceptance traceability matrix.
+
 ### 2026-07-07_superpowers-compat-guidance -- document adapter flow and fix release baseline
 
 Release target: `0.5+`
