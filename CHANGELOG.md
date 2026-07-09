@@ -6,6 +6,17 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-09_plan-task-block-format -- replace checklist task rows
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Replaced checklist-shaped plan task prompts with sectioned task blocks and centralized requirement and acceptance traceability matrix guidance.
+- Added harness validation coverage so current plan templates must keep task-block fields, traceability matrix headers, and no checkbox task examples.
+
 ### 2026-07-09_plan-task-block-format -- plan sectioned task blocks
 
 Release target: `unreleased`

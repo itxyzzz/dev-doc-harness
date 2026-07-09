@@ -25,19 +25,14 @@ If architecture is missing, ambiguous, or changed before freeze, update the draf
 
 ## Spec Traceability
 
-Map the approved spec to execution without restating the spec. Use compact numbered lists or short blocks; avoid wide tables when cells need more than a few words.
+Map the approved spec to execution without restating the spec. Use one compact review matrix for requirement and acceptance coverage. Keep cells short by citing IDs plus a short title only when useful.
 
-Requirement coverage:
+| Requirement or acceptance criterion | Primary tasks | Validation |
+|---|---|---|
+| `REQ-001` `<short title>` | `T-001`, `T-002` | `V-001`, `V-002` |
+| `AC-001` `<short title>` | `T-002`, `T-003` | `V-003` |
 
-1. `REQ-001`: implemented by `<task ids>`; verified by `<validation ids or acceptance criteria>`.
-
-Acceptance coverage:
-
-1. `AC-001`: implemented by `<task ids>`; verified by `<validation ids, manual check, review finding, or operator acceptance path>`.
-
-Risk and boundary coverage:
-
-1. `RISK-001` or scope boundary: handled by `<task ids, validation ids, later phase ids, or explicit no-op rationale>`.
+Include one row for each `REQ` and `AC` that must be implemented, validated, or marked not applicable with a reason. Do not include risk rows in the default matrix; cover risks through task `Notes`, implementation boundaries, validation entries, or a separate plan-specific risk section only when needed.
 
 Architecture coverage:
 
@@ -112,7 +107,7 @@ Sub-agent `<role or task id>`:
 
 ## Task Plan
 
-Write one checkbox per implementation, test, validation, documentation, or handoff step. Tasks should be SMART:
+Write one section per implementation, test, validation, documentation, or handoff task. Tasks should be SMART:
 
 1. Specific enough that a fresh implementation agent or delegated sub-agent knows which files, behavior, tests, docs, or decisions are in scope.
 2. Measurable through a linked acceptance criterion, validation command, review finding, or explicit artifact update.
@@ -120,10 +115,42 @@ Write one checkbox per implementation, test, validation, documentation, or hando
 4. Relevant to the approved spec, phase objective, acceptance criterion, risk, interface, documentation need, or commit boundary.
 5. Time-bounded by lifecycle checkpoint, such as before editing, before validation, before commit, or during final review.
 
-Order tasks by implementation dependency and reviewability. Label dependencies explicitly as `Dependencies: <None, task ids, artifacts, prior phase, or external event>`. Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
+Order tasks by implementation dependency and reviewability. Use a stable task ID in each `###` heading. Each task must include `Dependencies`, `Implementation`, and `Exit criteria`. Add `Notes` only when the task needs boundaries, gotchas, risk-specific guidance, or optional per-task traceability that is not already clear from the `Spec Traceability` matrix.
 
-- [ ] `<T-001>` Dependencies: `<None or task/artifact ids>`; `<specific task with files/scope>`; Traces: `<REQ/AC/risk/phase ids>`.
-- [ ] `<T-002>` Dependencies: `<T-001 or None>`; `<specific validation, documentation, changelog, or review task>`; Traces: `<AC/risk/phase ids>`.
+Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
+
+### `T-001` `<short imperative task title>`
+
+Dependencies:
+
+1. `<None, task ids, artifacts, prior phase, or external event>`.
+
+Implementation:
+
+1. `<specific implementation, test, validation, documentation, or handoff step with files/scope>`.
+2. `<next concrete step, or remove this row when not needed>`.
+
+Exit criteria:
+
+1. `<observable completion signal, validation result, review finding, or artifact update>`.
+
+Notes:
+
+1. `<optional boundary, gotcha, risk-specific guidance, or per-task trace IDs when useful>`.
+
+### `T-002` `<short imperative task title>`
+
+Dependencies:
+
+1. `<T-001 or None>`.
+
+Implementation:
+
+1. `<specific validation, documentation, changelog, or review task with files/scope>`.
+
+Exit criteria:
+
+1. `<observable completion signal, validation result, review finding, or artifact update>`.
 
 ## Planned commits
 

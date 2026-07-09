@@ -100,6 +100,11 @@ PRIMARY_TEMPLATE_FILES = [
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
 ]
 
+PLAN_TEMPLATE_FILES = [
+    ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+    ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+]
+
 ASSEMBLY_MANIFEST_FILES = [
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/small-medium-work-item-spec.json",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/small-medium-work-item-plan.json",
@@ -531,6 +536,34 @@ def assert_template_assembly() -> None:
             add_failure(check_id, f"{template} must start with the generated-source note")
         if unresolved_include_pattern.search(text):
             add_failure(check_id, f"{template} contains unresolved include or source-block syntax")
+
+    traceability_header_pattern = re.compile(
+        r"\|\s*Requirement or acceptance criterion\s*\|\s*Primary tasks\s*\|\s*Validation\s*\|"
+    )
+    checkbox_task_pattern = re.compile(r"(?m)^\s*-\s*\[[ xX]?\]\s*`?<T-00[12]>`?")
+    for template in PLAN_TEMPLATE_FILES:
+        text = read_repo_text(template)
+        task_plan_match = re.search(r"^## Task Plan\s*(?P<body>.*?)(?=^##\s+|\Z)", text, flags=re.MULTILINE | re.DOTALL)
+        traceability_match = re.search(
+            r"^## Spec Traceability\s*(?P<body>.*?)(?=^##\s+|\Z)",
+            text,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+
+        if not task_plan_match:
+            add_failure(check_id, f"{template} is missing ## Task Plan")
+        else:
+            task_plan = task_plan_match.group("body")
+            for label in ["Dependencies:", "Implementation:", "Exit criteria:"]:
+                if label not in task_plan:
+                    add_failure(check_id, f"{template} task plan is missing task-block field label: {label}")
+            if checkbox_task_pattern.search(task_plan):
+                add_failure(check_id, f"{template} task plan contains checkbox task examples for T-001 or T-002")
+
+        if not traceability_match:
+            add_failure(check_id, f"{template} is missing ## Spec Traceability")
+        elif not traceability_header_pattern.search(traceability_match.group("body")):
+            add_failure(check_id, f"{template} traceability section is missing the requirement/acceptance matrix header")
 
     if join_repo_path(script_path).exists():
         result = subprocess.run(

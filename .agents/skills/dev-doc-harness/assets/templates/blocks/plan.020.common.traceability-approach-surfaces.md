@@ -1,18 +1,13 @@
 ## Spec Traceability
 
-Map the approved spec to execution without restating the spec. Use compact numbered lists or short blocks; avoid wide tables when cells need more than a few words.
+Map the approved spec to execution without restating the spec. Use one compact review matrix for requirement and acceptance coverage. Keep cells short by citing IDs plus a short title only when useful.
 
-Requirement coverage:
+| Requirement or acceptance criterion | Primary tasks | Validation |
+|---|---|---|
+| `REQ-001` `<short title>` | `T-001`, `T-002` | `V-001`, `V-002` |
+| `AC-001` `<short title>` | `T-002`, `T-003` | `V-003` |
 
-1. `REQ-001`: implemented by `<task ids>`; verified by `<validation ids or acceptance criteria>`.
-
-Acceptance coverage:
-
-1. `AC-001`: implemented by `<task ids>`; verified by `<validation ids, manual check, review finding, or operator acceptance path>`.
-
-Risk and boundary coverage:
-
-1. `RISK-001` or scope boundary: handled by `<task ids, validation ids, later phase ids, or explicit no-op rationale>`.
+Include one row for each `REQ` and `AC` that must be implemented, validated, or marked not applicable with a reason. Do not include risk rows in the default matrix; cover risks through task `Notes`, implementation boundaries, validation entries, or a separate plan-specific risk section only when needed.
 
 Architecture coverage:
 
