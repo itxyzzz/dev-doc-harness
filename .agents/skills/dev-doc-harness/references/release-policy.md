@@ -1,6 +1,8 @@
-# Release Policy
+# Dev Doc Harness Distribution Release Policy
 
-This document is the canonical source for harness release identity, package boundaries, package-local release notes, release compatibility, artifact release context, and team adoption flow.
+This document is the canonical source for Dev Doc Harness distribution release identity, package boundaries, package-local release notes, release compatibility, artifact release context, and team adoption flow. It is addressed to harness users, operators, and maintainers who need to understand the distributable harness package.
+
+This policy does not define release processes for downstream applications, packages, or agentic systems developed with the help of the harness. Downstream projects keep their own release, deployment, publication, and release-note processes; the harness controls only its work-item artifact contract and changelog fragment consolidation points.
 
 Module: `module:release`
 
@@ -38,9 +40,11 @@ Package-critical release policy, release notes, and release identity live under 
 
 ## Changelog As Release Source
 
-Root `CHANGELOG.md` is the repository source material for package-local release notes.
+Root `CHANGELOG.md` is the repository source material for Dev Doc Harness package-local release notes after fragment consolidation.
 
-Release notes are curated from changelog entries and must not become an independent feature history. Multiple changelog entries for one delivered feature, such as spec approval, phase-plan approval, and implementation, are source evidence; release notes should summarize the delivered package-facing change once unless an approval entry matters for audit, migration, or compatibility.
+Work-item-local changelog fragments under `docs/work-items/<work-id>/changelog/*.md` are pre-publication source evidence. They are consolidated into root `CHANGELOG.md` at an operator-owned checkpoint before Dev Doc Harness distribution release-note curation in this repository. Fragments are not independent Dev Doc Harness release notes, and package-local release notes must not be curated directly from unconsolidated fragments.
+
+Release notes are curated from changelog entries in the consolidated root changelog and must not become an independent feature history. Multiple changelog entries for one delivered feature, such as spec approval, phase-plan approval, and implementation, are source evidence; release notes should summarize the delivered package-facing change once unless an approval entry matters for audit, migration, or compatibility.
 
 ## Release Notes
 
@@ -59,7 +63,7 @@ Release-note files use concrete released versions, not development markers. Curr
 
 Do not create a `0.5+.md` release-note file for development-marker work. Create `0.6.0.md` only when the `release/0.6` branch is being prepared.
 
-Release notes should include a source changelog section so adopters can trace release-facing summaries back to repository history.
+Release notes should include a source changelog section so adopters can trace release-facing summaries back to consolidated repository history.
 
 ## Compatibility Model
 

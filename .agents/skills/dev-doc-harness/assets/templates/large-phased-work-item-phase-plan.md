@@ -167,7 +167,7 @@ Exit criteria:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording.
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
 Phase plan approval:
 
@@ -203,12 +203,13 @@ Record the draft review, approval commit, and post-freeze implementation authori
 
 List snapshot or delta artifacts this phase must create, update, or mark not applicable.
 
-1. Changelog: `CHANGELOG.md` before each commit.
-2. Test cases: `<snapshot path or not applicable with reason>`.
-3. Testing guide delta: `<delta path or not applicable with reason>`.
-4. Operator manual delta: `<delta path or not applicable with reason>`.
-5. API reference delta: `<delta path or not applicable with reason>`.
-6. Architecture snapshot or summary delta: `<path or not applicable with reason>`.
+1. Changelog source: `docs/work-items/<work-id>/changelog/*.md` before each commit.
+2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned checkpoint when root changelog completeness is needed.
+3. Test cases: `<snapshot path or not applicable with reason>`.
+4. Testing guide delta: `<delta path or not applicable with reason>`.
+5. Operator manual delta: `<delta path or not applicable with reason>`.
+6. API reference delta: `<delta path or not applicable with reason>`.
+7. Architecture snapshot or summary delta: `<path or not applicable with reason>`.
 
 ## Handoff output
 
@@ -244,7 +245,7 @@ Record what the implementing agent must report at phase completion:
 - Documentation tasks are complete or explicitly deferred with reason.
 - The frozen phase plan had enough detail for each assigned execution part or delegated sub-agent to proceed safely.
 - Execution remained within one orchestration thread with a bounded sub-agent strategy; otherwise the phase was split, re-scoped, or amended before implementation.
-- `CHANGELOG.md` has a newest-first entry for the phase before each commit.
+- The matching `docs/work-items/<work-id>/changelog/*.md` fragment has a newest-first entry for the phase before each commit.
 - Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
 - Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
 - Variance log is present and current.

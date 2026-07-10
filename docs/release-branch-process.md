@@ -74,13 +74,28 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    - Ensure the current version's release-note file is present in the required release-note list.
    - Keep release-note checks pointed at the concrete release-note file, not a `+` development marker.
 
-4. Update `CHANGELOG.md`.
+4. Consolidate changelog fragments before editing the release group.
+
+   ```powershell
+   python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --check
+   ```
+
+   If the check reports valid unreleased fragments missing from root `CHANGELOG.md`, run consolidation and review the diff before continuing:
+
+   ```powershell
+   python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+   git diff -- CHANGELOG.md
+   ```
+
+   Do this before renaming `## Unreleased` so package-local Dev Doc Harness release notes are curated from the consolidated root changelog. Stop if consolidation reports malformed fragments or ambiguous entries.
+
+5. Update `CHANGELOG.md`.
 
    - Rename the top `## Unreleased` group to the release group for the current version.
    - Use the current changelog heading style, such as `## Release 0.5`, while keeping entry metadata release targets as exact versions such as `0.5.0`.
    - Do not add the next empty `Unreleased` group yet. That happens after the release branch is created and `master` is checked out again.
 
-5. Create package-local release notes at:
+6. Create package-local release notes at:
 
    ```text
    .agents/skills/dev-doc-harness/docs/releases/<current-version>.md
@@ -92,7 +107,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    .agents/skills/dev-doc-harness/docs/releases/0.5.0.md
    ```
 
-6. Curate the release notes from the changelog entries for the current version.
+7. Curate the release notes from the consolidated changelog entries for the current version.
 
    Use the current release-note structure from the latest package-local release note. At minimum, include:
 
@@ -105,19 +120,19 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 
    The release notes should summarize delivered release-facing changes once. Planning-only entries may appear in `Source Changelog Entries` for traceability when they support the delivered change, but they should not become duplicate feature bullets.
 
-7. Run the harness validator.
+8. Run the harness validator.
 
    ```powershell
    python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
    ```
 
-8. Review the release-prep diff.
+9. Review the release-prep diff.
 
    ```powershell
    git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py .agents/skills/dev-doc-harness/docs/releases
    ```
 
-9. Commit the release-prep changes on `master`.
+10. Commit the release-prep changes on `master`.
 
    ```powershell
    git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py .agents/skills/dev-doc-harness/docs/releases/<current-version>.md

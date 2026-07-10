@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import tempfile
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,7 @@ CHECK_IDS = [
     "release.changelog-schema",
     "release.package-boundary",
     "release.template-context",
+    "changelog.fragments",
     "architecture.decisions",
     "artifact-style.guidance",
 ]
@@ -136,6 +138,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/SKILL.md",
     ".agents/skills/dev-doc-harness/VERSION",
     ".agents/skills/dev-doc-harness/scripts/test_harness_policy.py",
+    ".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py",
     ".agents/skills/dev-doc-harness/references/policy-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
@@ -713,6 +716,161 @@ def assert_release_template_context() -> None:
             add_failure(check_id, f"{template} must contain exactly one Harness release field; found {count}")
 
 
+def run_consolidation_fixture(args: list[str], repo_root: Path) -> subprocess.CompletedProcess[str]:
+    script_path = join_repo_path(".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py")
+    return subprocess.run(
+        [sys.executable, str(script_path), "--repo-root", str(repo_root), *args],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def write_fixture_file(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def assert_changelog_fragment_contract() -> None:
+    check_id = "changelog.fragments"
+    script_path = ".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    naming = ".agents/skills/dev-doc-harness/references/naming-conventions.md"
+    release_policy = ".agents/skills/dev-doc-harness/references/release-policy.md"
+    release_process = "docs/release-branch-process.md"
+    operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
+
+    assert_text_contains(check_id, lifecycle, r"docs/work-items/<work-id>/changelog/\*\.md", "lifecycle fragment location")
+    assert_text_contains(check_id, lifecycle, r"root `CHANGELOG\.md` remains the consolidated publication view", "root changelog publication view")
+    assert_text_contains(check_id, freeze, r"approved planning artifacts.+changelog source fragment", "freeze stages fragment")
+    assert_text_contains(check_id, naming, r"<changelog-fragment-path>", "fragment path derived pattern")
+    assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
+    assert_text_contains(check_id, release_policy, r"after fragment consolidation", "root source after consolidation")
+    assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
+    assert_text_contains(check_id, release_process, r"before renaming `## Unreleased`", "release process ordering")
+
+    for path in operator_docs:
+        assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
+        assert_text_contains(check_id, path, r"product/application release", f"{path} downstream release boundary")
+
+    for template in PRIMARY_TEMPLATE_FILES:
+        assert_text_contains(check_id, template, r"docs/work-items/<work-id>/changelog/\*\.md", f"{template} fragment matrix guidance")
+        assert_text_contains(check_id, template, r"consolidat", f"{template} consolidation guidance")
+
+    if not join_repo_path(script_path).exists():
+        add_failure(check_id, f"Missing consolidation script: {script_path}")
+        return
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        changelog = repo_root / "CHANGELOG.md"
+        write_fixture_file(
+            changelog,
+            "# Changelog\n\n## Unreleased\n\n## 0.5.0 - 2026-06-01\n\n### Changed\n\n- Previous release.\n",
+        )
+        valid_fragment = repo_root / "docs/work-items/2027-01-02_example/changelog/implementation.md"
+        valid_entry = (
+            "### 2027-01-02_example -- add fixture entry\n\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Added\n\n"
+            "- Added a fixture entry.\n"
+        )
+        write_fixture_file(valid_fragment, valid_entry)
+
+        missing_check = run_consolidation_fixture(["--check"], repo_root)
+        if missing_check.returncode == 0:
+            add_failure(check_id, "--check should fail when a valid fragment is missing from CHANGELOG.md")
+        elif "2027-01-02_example -- add fixture entry" not in (missing_check.stdout + missing_check.stderr):
+            add_failure(check_id, "--check failure should name the missing fragment heading")
+        if "add fixture entry" in changelog.read_text(encoding="utf-8"):
+            add_failure(check_id, "--check modified CHANGELOG.md")
+
+        write_result = run_consolidation_fixture([], repo_root)
+        if write_result.returncode != 0:
+            add_failure(check_id, f"write consolidation failed: {(write_result.stdout + write_result.stderr).strip()}")
+        consolidated = changelog.read_text(encoding="utf-8")
+        if consolidated.count("### 2027-01-02_example -- add fixture entry") != 1:
+            add_failure(check_id, "write consolidation should insert the valid fragment exactly once")
+        if "## 0.5.0 - 2026-06-01" not in consolidated:
+            add_failure(check_id, "write consolidation should preserve historical release sections")
+
+        duplicate_result = run_consolidation_fixture([], repo_root)
+        if duplicate_result.returncode != 0:
+            add_failure(check_id, f"duplicate consolidation failed: {(duplicate_result.stdout + duplicate_result.stderr).strip()}")
+        duplicate_text = changelog.read_text(encoding="utf-8")
+        if duplicate_text.count("### 2027-01-02_example -- add fixture entry") != 1:
+            add_failure(check_id, "rerunning consolidation should not duplicate an existing heading")
+
+        final_check = run_consolidation_fixture(["--check"], repo_root)
+        if final_check.returncode != 0:
+            add_failure(check_id, f"--check should pass after consolidation: {(final_check.stdout + final_check.stderr).strip()}")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
+        invalid_fragment = repo_root / "docs/work-items/2026-07-09_bad/changelog/implementation.md"
+        write_fixture_file(
+            invalid_fragment,
+            "### 2026-07-09_bad -- malformed fragment\n\n"
+            "Release target: `unreleased`\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n\n"
+            "#### Changed\n\n"
+            "- Missing release note metadata.\n",
+        )
+        invalid_result = run_consolidation_fixture(["--check"], repo_root)
+        invalid_output = invalid_result.stdout + invalid_result.stderr
+        if invalid_result.returncode == 0:
+            add_failure(check_id, "malformed fragment should make --check fail")
+        for expected in ["docs/work-items/2026-07-09_bad/changelog/implementation.md", "Release target", "Release-note"]:
+            if expected not in invalid_output:
+                add_failure(check_id, f"malformed fragment output should mention {expected}")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
+        for filename in ["first.md", "second.md"]:
+            write_fixture_file(
+                repo_root / f"docs/work-items/2026-07-09_duplicate/changelog/{filename}",
+                "### 2026-07-09_duplicate -- shared heading\n\n"
+                "Release target: `unreleased`\n"
+                "Package impact: `repository-only`\n"
+                "Release-note: `source-only`\n\n"
+                "#### Changed\n\n"
+                f"- Duplicate fixture from {filename}.\n",
+            )
+        duplicate_result = run_consolidation_fixture(["--check"], repo_root)
+        duplicate_output = duplicate_result.stdout + duplicate_result.stderr
+        if duplicate_result.returncode == 0:
+            add_failure(check_id, "duplicate fragment headings should make --check fail")
+        for expected in ["Duplicate changelog fragment heading", "first.md", "second.md"]:
+            if expected not in duplicate_output:
+                add_failure(check_id, f"duplicate fragment output should mention {expected}")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
+        write_fixture_file(
+            repo_root / "docs/work-items/2026-07-09_downstream/changelog/release-target.md",
+            "### 2026-07-09_downstream -- accept downstream release target\n\n"
+            "Release target: `1.2.3`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Changed\n\n"
+            "- Accepted a downstream release target value.\n",
+        )
+        downstream_result = run_consolidation_fixture(["--check"], repo_root)
+        if downstream_result.returncode != 0:
+            add_failure(
+                check_id,
+                f"non-harness release target values should validate: {(downstream_result.stdout + downstream_result.stderr).strip()}",
+            )
+
+
 def assert_work_item_architecture_decisions() -> None:
     check_id = "architecture.decisions"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
@@ -1076,6 +1234,9 @@ def run_checks() -> None:
 
     assert_release_template_context()
     write_check_result("release.template-context")
+
+    assert_changelog_fragment_contract()
+    write_check_result("changelog.fragments")
 
     assert_work_item_architecture_decisions()
     write_check_result("architecture.decisions")

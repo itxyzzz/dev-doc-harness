@@ -261,7 +261,7 @@ Sub-agent `<role or phase id>`:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets.
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
 Anchor spec approval:
 
@@ -291,7 +291,8 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with planned commit subjects |
+| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with planned commit subjects |
+| Root changelog consolidation | Living | As needed | After merge, before release-note preparation, before product/application release, or at another project-owned checkpoint | `CHANGELOG.md` | Consolidated publication view; run consolidation when the operator's process needs root changelog completeness |
 | Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |

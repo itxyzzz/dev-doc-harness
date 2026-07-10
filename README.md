@@ -124,10 +124,11 @@ prompt style.
 
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
-feedback. Explicit approval runs the freeze gate: changelog, approval commit,
-reported artifact paths, and a pause before implementation. The next operator
-response can confirm execution settings and authorize implementation in one
-step, giving the operator a clean plan-only review point before product changes.
+feedback. Explicit approval runs the freeze gate: changelog source fragment,
+approval commit, reported artifact paths, and a pause before implementation. The
+next operator response can confirm execution settings and authorize
+implementation in one step, giving the operator a clean plan-only review point
+before product changes.
 
 Sub-agent use is a planning judgment, not a keyword the operator must repeat on
 every request. For substantial work, the agent records either a bounded strategy
@@ -145,11 +146,20 @@ recorded. If the post-freeze deviation affects architecture, APIs, data,
 security, scope, acceptance criteria, or feasibility, the agent must stop for an
 amendment and operator approval.
 
-Before commits, the agent updates `CHANGELOG.md` with newest-first entries tied
+Before commits, the agent updates a work-item-local changelog source fragment
+under `docs/work-items/<work-id>/changelog/*.md` with newest-first entries tied
 to the current work item, phase, task, or planning decision. Harness commit
 subjects are planned during artifact review and follow the naming reference,
 including issue-key handling, title normalization, and nonredundant elaboration
 snippets synchronized with matching changelog entries.
+
+Root `CHANGELOG.md` remains the consolidated publication view. Run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
+at a project-owned checkpoint such as after merging work branches, before
+preparing release notes, before product/application release, or whenever the
+project process needs root changelog completeness. The harness owns this
+fragment and consolidation contract; downstream applications, packages, and
+agentic systems keep their own release processes.
 
 ## Operator outcomes
 
@@ -269,7 +279,7 @@ compact bootstrap instructions like this to your global `AGENTS.md`:
 
 **For any repository development work, apply `dev-doc-harness` before implementation.** Use the harness selected by normal precedence: repository-local harness instructions when present, otherwise the installed global `dev-doc-harness`.
 
-For substantial development work, use the selected harness entrypoint as the operation router. The router owns which canonical references, templates, and work-item artifacts to load for work sizing, planning, freeze gates, implementation, variance, changelog, compatibility, and model/sub-agent notation.
+For substantial development work, use the selected harness entrypoint as the operation router. The router owns which canonical references, templates, and work-item artifacts to load for work sizing, planning, freeze gates, implementation, variance, changelog source fragments, compatibility, and model/sub-agent notation.
 
 Only a **very small mechanical edit** may skip durable harness artifacts when the routed lifecycle sizing rules allow it. If uncertain, default to using the harness.
 
@@ -277,7 +287,7 @@ Before editing implementation-target files for substantial work, complete the ha
 
 Treat `dev-doc-harness` as the canonical source for repository artifact location and lifecycle. README summaries and templates do not override canonical harness references.
 
-When Superpowers is active, use Superpowers for its normal methodology and keep the harness as the artifact-location and lifecycle contract. Canonical specs, plans, snapshots, amendments, variance logs, changelog entries, and freeze gates remain in the harness work item package. Any `docs/superpowers` files should be pointer stubs only.
+When Superpowers is active, use Superpowers for its normal methodology and keep the harness as the artifact-location and lifecycle contract. Canonical specs, plans, snapshots, amendments, variance logs, changelog source fragments, and freeze gates remain in the harness work item package. Any `docs/superpowers` files should be pointer stubs only.
 
 When spec-kit is active, use the repository adapter if present, but keep the harness as the artifact-location and lifecycle contract.
 ```
@@ -319,12 +329,12 @@ The internal machinery is intentionally small:
 - `references/naming-conventions.md` (`module:naming`) defines work IDs, artifact filenames,
   commit-message grammar, changelog-entry grammar, collision handling, and
   title normalization.
-- `references/release-policy.md` defines release identity, package boundaries,
-  changelog-derived release notes, compatibility, artifact release context, and
-  team adoption flow.
+- `references/release-policy.md` defines Dev Doc Harness distribution release
+  identity, package boundaries, changelog-derived release notes, compatibility,
+  artifact release context, and team adoption flow.
 - `references/artifact-contract.md` defines work item artifact layout,
-  snapshots, deltas, lifecycle checkpoints, variance handling, and changelog
-  update requirements.
+  snapshots, deltas, lifecycle checkpoints, variance handling, changelog source
+  fragments, and root changelog consolidation requirements.
 - `references/planning-freeze-gates.md` defines the approval-first planning
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
@@ -367,4 +377,5 @@ why the harness changed.
 
 Contributions should commit the harness changes themselves, relevant
 `docs/work-items/` artifacts, user-facing documentation updates, and the
-required `CHANGELOG.md` entry.
+required changelog source fragment. Root `CHANGELOG.md` is updated when the
+operator runs consolidation for the repository checkpoint.

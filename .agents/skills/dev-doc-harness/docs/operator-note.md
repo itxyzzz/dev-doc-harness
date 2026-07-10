@@ -31,8 +31,8 @@ mechanical edit, the agent should load:
 ```
 
 The router sends the agent to the smallest useful set of canonical references
-for sizing, planning, freeze gates, implementation, variance, changelog, release
-context, naming conventions, and model or sub-agent policy.
+for sizing, planning, freeze gates, implementation, variance, changelog source
+fragments, release context, naming conventions, and model or sub-agent policy.
 
 For substantial work, expect a work item package under:
 
@@ -67,7 +67,7 @@ Current naming grammar lives in `references/naming-conventions.md`. For example,
 Operators do not need to choose between Superpowers and the harness. When both
 are active, Superpowers may shape the agent's working method, while the harness
 remains the visible repository record for specs, plans, snapshots, variance,
-changelog entries, and freeze gates.
+changelog source fragments, and freeze gates.
 
 The reviewable package should still appear under the harness work item folder
 before implementation starts. If a Superpowers workflow also leaves files under
@@ -81,8 +81,8 @@ The normal substantial-work flow is:
 1. The agent drafts the planning artifacts.
 2. The agent stages the draft planning package and asks for approval.
 3. Operator feedback edits the drafts directly.
-4. Operator approval triggers the freeze gate: changelog, approved artifacts,
-   approval commit, and a pause.
+4. Operator approval triggers the freeze gate: changelog source fragment,
+   approved artifacts, approval commit, and a pause.
 5. The next operator response may confirm execution settings and authorize
    implementation.
 
@@ -95,6 +95,16 @@ Frozen planning artifacts should not be silently rewritten to make later
 implementation look cleaner. Nontrivial drift is recorded as variance. Drift
 that changes architecture, public APIs, data, security, privacy, compliance,
 scope, acceptance criteria, or feasibility requires an amendment and approval.
+
+Before ordinary commits, agents update `docs/work-items/<work-id>/changelog/*.md`
+rather than the root changelog. Root `CHANGELOG.md` remains the consolidated
+publication view. Run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
+at a project-owned checkpoint such as after merging work branches, before
+preparing release notes, before product/application release, or whenever the
+project process needs root changelog completeness. The harness owns this
+fragment and consolidation contract; downstream applications, packages, and
+agentic systems keep their own release processes.
 
 ## Useful Prompts
 

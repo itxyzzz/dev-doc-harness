@@ -66,6 +66,10 @@ Large or phased work needs an anchor spec and later phase plans when one orchest
   <spec-filename>
   <plan-filename>
 
+  changelog/
+    planning-approval.md
+    implementation.md
+
   snapshots/
     test-cases.snapshot.md
     architecture.snapshot.md
@@ -92,6 +96,10 @@ The full lifecycle package for large or phased work may eventually contain these
   <spec-filename>
   <phase-plan-filename>      # one per concrete phase
   <amendment-filename>
+
+  changelog/
+    planning-approval.md
+    phase-01.md
 
   snapshots/
     test-cases.snapshot.md
@@ -215,7 +223,8 @@ Every substantial spec or plan must include a compact matrix:
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with commit subjects |
+| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with commit subjects |
+| Root changelog consolidation | Living | As needed | After merge, before publication or release-note work, or at an operator-owned checkpoint | `CHANGELOG.md` | Consolidated curated publication view generated from reviewed fragments and manual release curation |
 | Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
@@ -226,7 +235,7 @@ Every substantial spec or plan must include a compact matrix:
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
 
-`CHANGELOG.md` is always required before commits.
+The matching changelog source fragment is always required before commits. Root `CHANGELOG.md` is consolidated at operator-owned checkpoints, while changelog source fragments are required before commits.
 
 ## Commit messages
 
@@ -234,11 +243,11 @@ All commits made under the harness must use a planned or documented subject. Com
 
 Use `rule:naming.commit-messages` for the current subject grammar, action types, issue-key handling, elaboration snippets, and nonredundancy rules.
 
-The title or elaboration snippet is the phrase shared by the durable planning artifact, planned commit row, and `CHANGELOG.md` entry heading or bullet-level snippet. Implementation subjects should be more informative than planning approval subjects and should describe the concrete delivered change or phase output.
+The title or elaboration snippet is the phrase shared by the durable planning artifact, planned commit row, and the matching changelog source fragment heading or bullet-level snippet. Implementation subjects should be more informative than planning approval subjects and should describe the concrete delivered change or phase output.
 
 Commit subjects and changelog entry titles must stay synchronized:
 
-- The `CHANGELOG.md` entry heading for a commit must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the planned commit subject.
+- The changelog source fragment entry heading for a commit must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the planned commit subject.
 - When a commit subject changes during review or implementation, update the
   matching planned commit row and changelog heading before committing.
 - When one changelog entry covers multiple commits for the same work item, each
@@ -275,7 +284,15 @@ and request operator approval before proceeding when post-freeze variance affect
 
 ## Changelog
 
-Maintain a living `CHANGELOG.md` at the repository root. Update it before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar.
+Maintain living changelog source fragments under:
+
+```text
+docs/work-items/<work-id>/changelog/*.md
+```
+
+Update the matching fragment before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`.
+
+Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog.
 
 Use a Keep a Changelog style:
 
@@ -285,17 +302,22 @@ Use a Keep a Changelog style:
   planned commit subjects for the same work.
 - Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Keep descriptions concise and tied to specific phases, tasks, specs, or plan decisions.
+- Include exactly one `Release target`, `Package impact`, and `Release-note` metadata field in each fragment entry.
 
 Example:
 
 ```md
-## 2026-05-25 PROJ-123 docs: import-validation -- document duplicate profile checks
+### 2026-05-25 PROJ-123 docs: import-validation -- document duplicate profile checks
 
-### Added
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Added
 
 - Added validation tasks for duplicate profile identifiers in the phase plan.
 
-### Changed
+#### Changed
 
 - Clarified API acceptance criteria in the spec.
 ```

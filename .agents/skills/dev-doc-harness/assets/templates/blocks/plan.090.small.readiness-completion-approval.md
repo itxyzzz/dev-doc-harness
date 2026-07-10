@@ -18,7 +18,7 @@
 - Required documentation artifacts have been created or updated.
 - The frozen plan had enough detail for each assigned execution part or delegated sub-agent to proceed safely.
 - Execution remained within one orchestration thread with a bounded sub-agent strategy; otherwise the work was split, re-scoped, or escalated before implementation.
-- `CHANGELOG.md` has a newest-first entry for the work before each commit.
+- The matching `docs/work-items/<work-id>/changelog/*.md` fragment has a newest-first entry for the work before each commit.
 - Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
 - Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
 - Variance log is present and current.

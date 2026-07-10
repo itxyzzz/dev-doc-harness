@@ -28,7 +28,7 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
 | `module:artifact-style` | `references/artifact-style.md` | Normative policy | Final artifact content, scannable structure, placeholder and example control, traceability density, and template prompt style. |
-| `module:release` | `references/release-policy.md` | Normative policy | Release identity, distributable package boundary, changelog as release source, release notes, release compatibility, artifact release context, and team adoption flow. |
+| `module:release` | `references/release-policy.md` | Normative policy | Dev Doc Harness distribution release identity, distributable package boundary, changelog as release source, package-local release notes, release compatibility, artifact release context, and team adoption flow. |
 | `module:execution-quality` | `references/context-and-quality-gates.md` | Advisory guidance | Context load order, task preflight, environment compensation, and increment quality gates. |
 | `module:evidence` | `references/evidence-and-report-artifacts.md` | Advisory guidance | Evidence preservation, report sections, and evidence stop conditions. |
 | `module:role-examples` | `references/subagent-role-examples.md` | Example | Optional sub-agent role patterns, portable role shape, and role report examples. |
