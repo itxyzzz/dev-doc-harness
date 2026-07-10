@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-09_changelog-fragment-consolidation -- plan merge-friendly changelog sources
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, architecture snapshot, and test-case snapshot for replacing root changelog pre-commit edits with work-item-local changelog fragments and an explicit consolidation checkpoint.
+
 ### 2026-07-09_plan-task-block-format -- replace checklist task rows
 
 Release target: `unreleased`
