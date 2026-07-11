@@ -6,6 +6,41 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-11_post-release-pr-flow plan: approve protected post-release synchronization
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, implementation plan, architecture snapshot, and test cases for synchronizing protected `master` from a release branch through a post-release PR and verifying the remote release history before new development branches begin.
+
+### 2026-07-11_post-release-pr-flow docs: require protected post-release synchronization
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Required post-release development state to reach protected `master` through a topic-branch pull request, followed by remote ancestry and released-changelog verification before new development branches are created.
+
+### 2026-07-11_model-selection-dimensions -- define tier, orchestration, and handoff axes
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added an approved implementation plan for explicit model generation, capability tier, reasoning effort, orchestration mode, fallback, and execution-continuity policy.
+- Added approved architecture and evidence snapshots covering GPT-5.6 Sol, Terra, Luna, `ultra`, restrictive sub-agent authorization, model-transition risk, context visibility, and fresh-task startup.
+
+#### Changed
+
+- Planned minimal copy-ready handoffs and canonical artifact-grounded task startup so model transitions do not require context rediscovery.
+
 ### 2026-07-09_changelog-fragment-consolidation -- add work-item changelog sources
 
 Release target: `unreleased`
@@ -79,19 +114,22 @@ Release-note: `source-only`
 
 - Added the approved spec, plan, architecture snapshot, and test-case snapshot for documenting the Superpowers adapter flow, preserving harness artifact canonicality and freeze gates, and correcting the `0.5+` release-baseline validation plan.
 
+## Release 0.5
+
 ### 2026-07-04_release-branch-process -- document release branch workflow
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
 #### Added
 
 - Added a root-level agent-executable release branch runbook and an `AGENTS.md` pointer for chat-triggered release branch creation, including remote release version derivation, package-local release notes, release branch push, and post-release `master` reset steps.
+- Aligned release policy and validation with stable release-note filenames such as `0.5.0.md`, while allowing post-release development markers such as `0.5+` in `VERSION`.
 
 ### 2026-07-04_release-branch-process -- approve release process plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -101,7 +139,7 @@ Release-note: `source-only`
 
 ### 2026-07-03_artifact-style-guidance -- add artifact style module
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -118,7 +156,7 @@ Release-note: `include`
 
 ### 2026-07-03_artifact-style-guidance -- approve artifact style plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -128,7 +166,7 @@ Release-note: `source-only`
 
 ### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -142,7 +180,7 @@ Release-note: `include`
 
 ### 2026-07-03_work-item-architecture-decisions -- approve architecture-decision flow plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -152,7 +190,7 @@ Release-note: `source-only`
 
 ### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
 
-Release target: `0.4+`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -168,7 +206,7 @@ Release-note: `include`
 
 ### 2026-07-02_template-block-assembly -- approve modular template plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -178,7 +216,7 @@ Release-note: `source-only`
 
 ### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -189,7 +227,7 @@ Release-note: `include`
 
 ### 2026-07-02_orchestration-sizing-large-templates -- approve sizing and large-template plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -199,7 +237,7 @@ Release-note: `source-only`
 
 ### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -209,7 +247,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -220,7 +258,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-plan-template-structure -- approve plan-template update plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -230,7 +268,7 @@ Release-note: `source-only`
 
 ### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -240,7 +278,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-template-structure -- approve spec-template update plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -250,7 +288,7 @@ Release-note: `source-only`
 
 ### 2026-07-01-naming-conventions: deduplicate naming pattern references
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -264,7 +302,7 @@ Release-note: `include`
 
 ### 2026-07-01-naming-conventions: centralize naming convention rules
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -278,7 +316,7 @@ Release-note: `include`
 
 ### 2026-07-01-naming-conventions: define naming convention policy
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -288,7 +326,7 @@ Release-note: `source-only`
 
 ### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -298,7 +336,7 @@ Release-note: `include`
 
 ### 2026-06-28-changelog-release-sections: group changelog by release
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -309,7 +347,7 @@ Release-note: `include`
 
 ### 2026-06-27-portable-harness-validator: replace PowerShell validator with Python
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -319,7 +357,7 @@ Release-note: `include`
 
 ### 2026-06-27-portable-harness-validator: plan portable harness validator
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -329,7 +367,7 @@ Release-note: `source-only`
 
 ### 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -339,7 +377,7 @@ Release-note: `include`
 
 ### 2026-06-27-large-phase-orchestration-owner: define large phase orchestration owner
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -349,7 +387,7 @@ Release-note: `source-only`
 
 ### 2026-06-27-phased-planning-orchestration: enforce anchor-spec-first phase planning
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -359,7 +397,7 @@ Release-note: `include`
 
 ### 2026-06-27-phased-planning-orchestration: clarify phased planning orchestration
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
