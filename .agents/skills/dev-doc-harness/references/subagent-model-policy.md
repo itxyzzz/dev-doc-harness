@@ -9,6 +9,9 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:models.strategy-required` | `## Common rules` and `## Required notation` |
+| `rule:models.selection-dimensions` | `## Selection dimensions` |
+| `rule:models.orchestration-mode` | `## Orchestration mode` |
+| `rule:models.execution-continuity` | `## Execution continuity` |
 | `rule:models.context-strategy` | `## Common rules` |
 | `rule:models.approved-strategy-authorized` | `## Common rules` |
 | `rule:models.fresh-confirmation` | `## Common rules` |
@@ -17,6 +20,52 @@ Owned rule IDs:
 | `rule:models.economy-default` | `## Policy: economy-default` |
 | `rule:models.final-review` | `## Final review` |
 | `rule:models.final-integration-ownership` | `## Final integration ownership` |
+
+## Selection dimensions
+
+Model selection for substantial work records independent dimensions rather than collapsing them into one model-class/profile label:
+
+- Model generation: the provider generation or `not exposed`.
+- Capability tier: the durable policy-relative tier.
+- Reasoning effort: the independently selected effort or `not exposed`.
+- Orchestration mode: the execution shape defined by `rule:models.orchestration-mode`.
+- Resolved profile: the concrete runtime model/profile when exposed; otherwise `not exposed`.
+- Availability/fallback: runtime availability plus the approved fallback if the preferred combination is unavailable or prohibited.
+
+Permanent capability tiers are vendor-neutral:
+
+- `flagship`: strongest available tier for architecture, subtle integration, high-blast-radius work, and final review.
+- `balanced`: capable general-purpose tier for bounded implementation and review where cost and latency matter.
+- `fast/economy`: fastest or lowest-cost suitable tier for mechanical and low-risk bounded work.
+
+Concrete names are current mappings, not permanent policy vocabulary. The current GPT-5.6 mapping is Sol to `flagship`, Terra to `balanced`, and Luna to `fast/economy`. Later generations or providers may map differently without changing the tier definitions.
+
+Reasoning effort stays independent of capability tier. Use the effort values exposed by the runtime, commonly low, medium, high, and `max` where supported. `Ultra` is not a reasoning-effort value or capability tier.
+
+## Orchestration mode
+
+Record one orchestration mode and a fit reason:
+
+- `single-agent`: one orchestration thread performs implementation and integration.
+- `bounded delegated sub-agents`: the harness strategy names controlled roles, context, outputs, and review boundaries.
+- `platform multi-agent`: platform-managed multi-agent coordination; current GPT-5.6 `ultra` maps here.
+- `hybrid`: platform multi-agent plus separately controlled harness roles, only when the runtime supports both and the plan justifies the boundary.
+
+Platform multi-agent mode does not automatically provide harness-managed task partitioning, context strategies, per-agent model selection, file ownership, independent reports, or reviewer gates. The orchestration thread still owns validation, integration judgment, variance, and the user-facing result.
+
+## Execution continuity
+
+Every substantial strategy records:
+
+- Execution continuity: `same task`, `new task with curated-artifact handoff`, or another explicit justified choice.
+- Context visibility: `exposed` with the available signal, or `not exposed`.
+- Artifact rehydration required: `Yes` or `No` with a reason.
+
+Prefer `new task with curated-artifact handoff` when the main model generation, capability tier, resolved profile, or platform multi-agent profile changes. Preserve same-task continuation when the current model/profile remains suitable or when an explicit continuity reason outweighs the transition benefit.
+
+A same-task model switch must re-read the frozen package and reconcile scope before edits, regardless of operator-requested or runtime-managed compaction. When exact remaining context is not exposed, do not claim a precise remaining context value or prescribe compaction from an inferred threshold; runtime-managed compaction remains a platform responsibility.
+
+Keep transition handoffs minimal. Name the authoritative frozen artifacts, approved strategy and fallback, startup rule, first activity, and variance stop condition without restating the full requirements.
 
 ## Common rules
 
@@ -31,7 +80,10 @@ Plans that propose sub-agents must specify:
 - Input context.
 - Output artifact.
 - Model policy.
-- Model class or profile.
+- Model generation.
+- Capability tier.
+- Resolved profile when exposed.
+- Availability/fallback.
 - Reasoning effort.
 - Reason for selection.
 - Whether the task can run in parallel.
@@ -56,7 +108,18 @@ Prefer lower or medium reasoning for bounded exploration, mechanical edits, loca
 
 If an approved frozen spec, plan, phase plan, or amendment includes a sub-agent strategy, that strategy is authorized after the normal post-freeze operator authorization to begin implementation. Do not ask for another sub-agent-specific confirmation solely because the start instruction does not repeat the word `sub-agent`.
 
+Keep these four layers distinct:
+
+1. Recommendation: the planning agent's preferred model and orchestration strategy.
+2. Harness authorization: approval of the frozen strategy plus the fresh instruction to begin implementation.
+3. Runtime permission: higher-priority platform or session rules that may require explicit operator wording or prohibit an action.
+4. Platform availability: whether the runtime exposes the selected tier, effort, orchestration mode, and resolved profile.
+
+At execution preflight, use the selected combination only when runtime permission and platform availability allow it. Otherwise use the approved fallback; stop for fresh confirmation if neither the preferred strategy nor its fallback is permitted and available.
+
 Fresh confirmation is required before applying choices not covered by the approved strategy, including unplanned sub-agents, more concurrent sub-agents than approved, a stronger model class or reasoning effort that was not recorded, write-capable work where only read-only work was approved, or more than 3 concurrent sub-agents.
+
+Any unplanned `ultra` or platform multi-agent escalation requires fresh confirmation, as does an unplanned capability-tier escalation, reasoning-effort escalation, broader write authority, or concurrency expansion.
 
 If platform or runtime policy restricts sub-agent spawning or model/reasoning overrides, still document the intended strategy and ask for explicit operator confirmation before applying any restricted action.
 
@@ -77,6 +140,8 @@ The normal cap is 3 concurrent sub-agents. This is a concurrency guardrail, not 
 
 Cost minimization is not the primary optimization factor.
 
+Under `enterprise-default`, proactively assess platform multi-agent/`ultra` when complex decomposable work may benefit from parallelism, coverage, or throughput, and record why it is or is not selected.
+
 Optimize for:
 
 1. Correctness.
@@ -96,6 +161,8 @@ Do not fall back to older or cheaper models solely to save cost.
 
 Cost and usage limits are active optimization factors.
 
+Under `economy-default`, normally start with a `fast/economy` or `balanced` tier and escalate only when risk, uncertainty, failure, or total cost/latency triggers justify `flagship`, `max`, or platform multi-agent execution.
+
 Default to next-to-latest or smaller faster model classes for bounded tasks when risk is low and the task has clear inputs and outputs.
 
 Escalate to the latest strongest available model class for unclear requirements, architecture decisions, subtle debugging, high-risk reviews, security, privacy, compliance, migrations, public APIs, persistence changes, and failures after one cheaper attempt.
@@ -111,16 +178,24 @@ Substantial small/medium plans and large or phased work item specs or phase plan
 ```md
 ## Model and Sub-agent Strategy
 
-Current orchestration: `<model/profile if known>`, `<reasoning effort if known>`
+Model generation: `<generation or not exposed>`
+Capability tier: `<flagship / balanced / fast/economy>`
+Reasoning effort: `<runtime value or not exposed>`
+Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`
+Resolved profile: `<concrete runtime profile or not exposed>`
+Availability/fallback: `<availability result and approved fallback>`
+Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`
+Context visibility: `<exposed signal or not exposed>`
+Artifact rehydration required: `<Yes/No plus reason>`
 Fit assessment: `<complexity/risk/ambiguity/blast-radius/budget/latency judgment>`
 Recommended change: `<none or concrete model/reasoning change with reason>`
 
-| Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model class/profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | active repository policy | smaller/faster | medium | Bounded exploration | Yes | Low plus consequence |
-| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | active repository policy | latest strongest | high | High blast radius | Yes/No | High plus consequence |
-| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | active repository policy | standard | medium | Clear inputs | Yes | Medium plus consequence |
-| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | active repository policy | latest strongest | high | Subtle integration risk | No | High plus consequence |
+| Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model generation | Capability tier | Resolved profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | active repository policy | not exposed | fast/economy | not exposed | medium | Bounded exploration | Yes | Low plus consequence |
+| 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | active repository policy | latest available | flagship | not exposed | high | High blast radius | Yes/No | High plus consequence |
+| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | active repository policy | not exposed | balanced | not exposed | medium | Clear inputs | Yes | Medium plus consequence |
+| 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | active repository policy | latest available | flagship | not exposed | high | Subtle integration risk | No | High plus consequence |
 ```
 
 The rows above are examples, not required phase names or required sub-agent choices. Use actual sub-agent tasks for the work item. Omit the table when no sub-agents are proposed.
@@ -147,6 +222,8 @@ The orchestration thread's implementation completion report must also include de
 - The de-facto model, model class, or profile used for each sub-agent when the platform exposes it.
 - Observed context/model inheritance behavior when known, such as full-history fork forcing inherited model, reasoning, or agent type.
 - An explicit note when exact model details are unavailable, with the planned policy-relative class or observed profile information instead.
+
+When the preferred execution strategy or fallback was exercised, completion also records the de-facto orchestration mode, runtime-permission result, platform-availability result, fallback use, execution continuity, context visibility, and artifact rehydration performed.
 
 ## Escalation rules
 

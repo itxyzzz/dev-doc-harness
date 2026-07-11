@@ -69,6 +69,8 @@ CHECK_IDS = [
     "changelog.fragments",
     "architecture.decisions",
     "artifact-style.guidance",
+    "models.selection-dimensions",
+    "execution.thread-start",
 ]
 
 CANONICAL_REFERENCES = [
@@ -456,11 +458,24 @@ def assert_duplicate_blocks() -> None:
         ".agents/skills/dev-doc-harness/SKILL.md",
     ] + CANONICAL_REFERENCES + TEMPLATE_FILES
 
+    shared_assembly_blocks = {
+        paragraph
+        for _, paragraph in get_normalized_paragraphs(
+            ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.execution-thread.md"
+        )
+    }
+    shared_generated_targets = set(PRIMARY_TEMPLATE_FILES)
     seen: dict[str, str] = {}
     for target in targets:
         for _, paragraph_text in get_normalized_paragraphs(target):
             if paragraph_text in seen and seen[paragraph_text] != target:
-                add_failure("phrases.duplicate-blocks", f"Duplicate broad policy block in {seen[paragraph_text]} and {target}")
+                is_intentional_generated_copy = (
+                    paragraph_text in shared_assembly_blocks
+                    and seen[paragraph_text] in shared_generated_targets
+                    and target in shared_generated_targets
+                )
+                if not is_intentional_generated_copy:
+                    add_failure("phrases.duplicate-blocks", f"Duplicate broad policy block in {seen[paragraph_text]} and {target}")
             else:
                 seen.setdefault(paragraph_text, target)
 
@@ -468,7 +483,9 @@ def assert_duplicate_blocks() -> None:
 def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
-    block_name_pattern = re.compile(r"^(spec|plan)\.\d{3}\.(common|small|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
+    block_name_pattern = re.compile(
+        r"^(?:(?:spec|plan)\.\d{3}\.(?:common|small|large|phase)|handoff\.\d{3}\.common)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+    )
     allowed_scopes = {"common", "small", "large", "phase"}
     expected_outputs = set(PRIMARY_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
@@ -478,7 +495,7 @@ def assert_template_assembly() -> None:
         for block_path in sorted(blocks_root.glob("*.md")):
             name = block_path.name
             if not block_name_pattern.match(name):
-                add_failure(check_id, f"Block filename does not follow <spec|plan>.<order>.<scope>.<kebab-name>.md: {name}")
+                add_failure(check_id, f"Block filename does not follow the spec/plan grammar or handoff.<order>.common.<kebab-name>.md: {name}")
                 continue
             scope = name.split(".")[2]
             if scope not in allowed_scopes:
@@ -513,7 +530,12 @@ def assert_template_assembly() -> None:
         if not isinstance(blocks, list) or not blocks:
             add_failure(check_id, f"Manifest {manifest} must have a non-empty blocks list")
             continue
-        if blocks != sorted(blocks):
+        def assembly_order(block: str) -> tuple[int, str]:
+            name = Path(block).name
+            match = block_name_pattern.match(name)
+            return (int(name.split(".")[1]), name) if match else (999, name)
+
+        if blocks != sorted(blocks, key=assembly_order):
             add_failure(check_id, f"Manifest {manifest} blocks should sort in assembly order")
         for block in blocks:
             if not isinstance(block, str):
@@ -985,6 +1007,103 @@ def assert_artifact_style_guidance() -> None:
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/variance-log.md", r"VAR-001", "variance ID")
 
 
+def assert_model_selection_dimensions() -> None:
+    check_id = "models.selection-dimensions"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
+    readme = "README.md"
+
+    for rule_id in [
+        "rule:models.selection-dimensions",
+        "rule:models.orchestration-mode",
+        "rule:models.execution-continuity",
+    ]:
+        assert_text_contains(check_id, models, re.escape(rule_id), f"{rule_id} owner")
+
+    for label in [
+        "Model generation",
+        "Capability tier",
+        "Reasoning effort",
+        "Orchestration mode",
+        "Resolved profile",
+        "Availability/fallback",
+        "Execution continuity",
+        "Context visibility",
+        "Artifact rehydration required",
+    ]:
+        assert_text_contains(check_id, models, re.escape(label), f"selection field '{label}'")
+
+    for tier in ["flagship", "balanced", "fast/economy"]:
+        assert_text_contains(check_id, models, re.escape(tier), f"vendor-neutral tier '{tier}'")
+    for mapping in ["GPT-5.6", "Sol", "Terra", "Luna"]:
+        assert_text_contains(check_id, models, re.escape(mapping), f"current provider mapping '{mapping}'")
+
+    assert_text_contains(check_id, models, r"[Uu]ltra.+platform[- ]managed.+multi-agent|platform[- ]managed.+multi-agent.+[Uu]ltra", "ultra orchestration classification")
+    assert_text_contains(check_id, models, r"does not (?:automatically )?provide.+task partitioning", "platform orchestration limitation")
+    assert_text_contains(check_id, models, r"enterprise-default.+(?:assess|consider).+(?:platform multi-agent|ultra)", "enterprise platform-orchestration assessment")
+    assert_text_contains(check_id, models, r"economy-default.+(?:fast/economy|balanced).+(?:escalat|trigger)", "economy tier start and escalation")
+
+    for layer in ["recommendation", "harness authorization", "runtime permission", "platform availability"]:
+        assert_text_contains(check_id, models, re.escape(layer), f"authorization layer '{layer}'")
+    assert_text_contains(check_id, models, r"approved fallback", "approved fallback behavior")
+    assert_text_contains(check_id, models, r"de-facto orchestration mode", "de-facto orchestration reporting")
+    assert_text_contains(check_id, models, r"unplanned.+(?:ultra|platform multi-agent).+(?:fresh confirmation|confirmation)", "unplanned orchestration confirmation")
+
+    strategy_templates = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+    for path in strategy_templates:
+        for label in ["Model generation", "Capability tier", "Reasoning effort", "Orchestration mode", "Resolved profile", "Availability/fallback"]:
+            assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
+        assert_text_not_contains(check_id, path, r"Model class/profile:", "conflated per-role model class/profile field")
+
+    assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
+
+    for path in [role_examples, readme]:
+        assert_text_contains(check_id, path, r"Capability tier", "capability-tier guidance")
+        assert_text_contains(check_id, path, r"Orchestration mode", "orchestration-mode guidance")
+        assert_text_contains(check_id, path, r"ultra", "ultra guidance")
+        assert_text_contains(check_id, path, r"execution-thread-start", "execution startup route")
+
+
+def assert_execution_thread_start() -> None:
+    check_id = "execution.thread-start"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+
+    assert_text_contains(check_id, execution, re.escape("rule:execution-quality.execution-thread-start"), "execution-thread-start owner")
+    assert_text_contains(check_id, execution, r"applicable instructions.+frozen artifacts", "instruction and artifact load order")
+    assert_text_contains(check_id, execution, r"avoid.+rediscover", "rediscovery avoidance")
+    assert_text_contains(check_id, execution, r"named task|first activity", "named starting activity")
+    assert_text_contains(check_id, execution, r"variance", "variance stop route")
+
+    assert_text_contains(check_id, models, r"new task with curated-artifact handoff", "new-task transition preference")
+    assert_text_contains(check_id, models, r"(?:exact|precise).+remaining context.+not exposed|not exposed.+(?:exact|precise).+remaining context", "no unexposed context estimate")
+    assert_text_contains(check_id, models, r"same-task.+re(?:-|)read.+frozen|same-task.+rehydrat", "same-task artifact rehydration")
+
+    for path in PRIMARY_TEMPLATE_FILES:
+        assert_text_contains(check_id, path, r"## Next-task handoff", "next-task handoff section")
+        for label in [
+            "Execution continuity",
+            "Context visibility",
+            "Artifact rehydration required",
+            "First activity",
+            "Variance stop condition",
+        ]:
+            assert_text_contains(check_id, path, re.escape(label), f"handoff field '{label}'")
+        assert_text_contains(check_id, path, re.escape("rule:execution-quality.execution-thread-start"), "startup rule reference")
+
+    for label in ["capability tier", "reasoning effort", "orchestration mode", "fallback", "execution continuity", "context visibility", "artifact rehydration"]:
+        assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
+    assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
+    assert_text_contains(check_id, router, r"execution-thread-start", "router discoverability")
+
+
 def assert_release_scenarios() -> None:
     check_id = "release.notes"
     snapshot_path = "docs/work-items/2026-06-07-release-versioning/snapshots/test-cases.snapshot.md"
@@ -1243,6 +1362,12 @@ def run_checks() -> None:
 
     assert_artifact_style_guidance()
     write_check_result("artifact-style.guidance")
+
+    assert_model_selection_dimensions()
+    write_check_result("models.selection-dimensions")
+
+    assert_execution_thread_start()
+    write_check_result("execution.thread-start")
 
 
 def main() -> int:

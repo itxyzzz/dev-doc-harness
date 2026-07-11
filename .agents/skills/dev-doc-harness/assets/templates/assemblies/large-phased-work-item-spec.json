@@ -10,6 +10,7 @@
     "blocks/spec.060.large.phase-decomposition-model.md",
     "blocks/spec.070.large.planned-commits-freeze.md",
     "blocks/spec.080.common.documentation-matrix.md",
+    "blocks/handoff.085.common.execution-thread.md",
     "blocks/spec.090.large.readiness-approval.md"
   ]
 }

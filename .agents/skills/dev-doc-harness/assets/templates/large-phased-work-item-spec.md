@@ -223,11 +223,19 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Current orchestration:
+Selection dimensions:
 
-1. Model/profile and reasoning effort if known: `<value or not exposed>`.
-2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-3. Override scope and expiry: `<work item, phase, final review, or None>`.
+1. Model generation: `<generation or not exposed>`.
+2. Capability tier: `<flagship / balanced / fast/economy>`.
+3. Reasoning effort: `<runtime value or not exposed>`.
+4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
+5. Resolved profile: `<concrete runtime profile or not exposed>`.
+6. Availability/fallback: `<availability result and approved fallback>`.
+7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+8. Context visibility: `<exposed signal or not exposed>`.
+9. Artifact rehydration required: `<Yes/No plus reason>`.
+10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+11. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -236,9 +244,9 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended orchestration change:
+Recommended selection change:
 
-1. `<None, or concrete model/profile/reasoning change with reason>`.
+1. `<None, or concrete generation/tier/effort/orchestration/continuity change with reason>`.
 
 Sub-agents:
 
@@ -253,11 +261,14 @@ Sub-agent `<role or phase id>`:
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
 5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model class/profile: `<policy-relative class or concrete profile if required>`.
-7. Reasoning effort: `<low/medium/high plus reason>`.
-8. Selection reason: `<why this delegation is useful>`.
-9. Parallel execution: `<Yes/No and dependency>`.
-10. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+6. Model generation: `<generation or not exposed>`.
+7. Capability tier: `<flagship / balanced / fast/economy>`.
+8. Resolved profile: `<concrete runtime profile or not exposed>`.
+9. Availability/fallback: `<availability result and approved fallback>`.
+10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
+11. Selection reason: `<why this delegation is useful>`.
+12. Parallel execution: `<Yes/No and dependency>`.
+13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
 
 ## Planned commits
 
@@ -299,6 +310,20 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 | API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
 | Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
 | Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+
+## Next-task handoff
+
+Use `rule:models.execution-continuity` and `rule:execution-quality.execution-thread-start`. Keep the handoff minimal and refer to authoritative artifacts instead of summarizing their requirements.
+
+1. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+2. Context visibility: `<exposed signal or not exposed>`.
+3. Artifact rehydration required: `<Yes/No plus reason>`.
+4. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
+5. Approved strategy and fallback: `<section or artifact reference>`.
+6. First activity: `<named task, phase-planning step, or review action>`.
+7. Variance stop condition: `<approval-required variance or other explicit stop>`.
+
+When execution continuity selects a new task or a different model/profile, include a copy-ready prompt that names the exact artifacts above, requires applicable `AGENTS.md` and harness rules, cites `rule:execution-quality.execution-thread-start`, refers to the approved strategy and fallback, starts at the first activity, and stops for approval-required variance. Do not duplicate the frozen requirements in the prompt.
 
 ## Spec readiness checklist
 

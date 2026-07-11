@@ -130,15 +130,24 @@ next operator response can confirm execution settings and authorize
 implementation in one step, giving the operator a clean plan-only review point
 before product changes.
 
-Sub-agent use is a planning judgment, not a keyword the operator must repeat on
-every request. For substantial work, the agent records either a bounded strategy
-or a reason for using none, then reports de-facto use at completion when
-sub-agents were authorized or used. For large/phased work, curated-context
-sub-agents may replace separate operator-visible phase-planning threads when
-the phases are independent enough and the platform supports it. The active
-repository policy is selected in `AGENTS.md`; detailed model, reasoning,
-context-strategy, and authorization rules live in
-`references/subagent-model-policy.md`.
+Model strategy records Model generation, Capability tier, Reasoning effort,
+Orchestration mode, resolved profile, and availability/fallback independently.
+The durable tiers are `flagship`, `balanced`, and `fast/economy`; current
+provider names are mappings, not permanent policy labels. Platform
+multi-agent/`ultra` is an orchestration mode, while bounded sub-agents retain
+explicit roles, curated context, outputs, and review boundaries. The active
+repository policy is selected in `AGENTS.md`; recommendation, harness
+authorization, runtime permission, and platform availability remain separate
+under `references/subagent-model-policy.md`.
+
+For substantial work, the agent records either a bounded sub-agent strategy or
+a reason for using none, then reports de-facto execution at completion. The
+strategy also records execution continuity, context visibility, and artifact
+rehydration. Prefer a fresh task with a minimal curated-artifact handoff when
+the main model/profile changes; runtime permission and availability decide
+whether the approved strategy or fallback runs. The new task starts through
+`rule:execution-quality.execution-thread-start`, loading the frozen package and
+beginning at the named activity without repeating discovery.
 
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is
@@ -172,8 +181,8 @@ The harness is designed to produce these outcomes:
 - Fewer surprise implementation turns after a planning discussion.
 - Cleaner handoffs to fresh agents, reviewers, or future maintainers.
 - More useful PRs, including plan-only PRs before expensive implementation.
-- Explicit model, reasoning-effort, context strategy, and justified sub-agent choices for substantial work.
-- De-facto reporting of sub-agent count, roles, concurrency or waves, context strategy, inheritance behavior, and observed model details when available.
+- Explicit generation, capability-tier, reasoning-effort, orchestration, continuity, fallback, context strategy, and justified sub-agent choices for substantial work.
+- De-facto reporting of orchestration mode, runtime permission and availability, fallback use, continuity, sub-agent roles or waves, and observed model details when available.
 - A visible record of plan variance instead of silent drift.
 - Documentation updates that are tied to the work instead of remembered later.
 - A compact audit trail for decisions, tests, acceptance criteria, and risks.
@@ -198,7 +207,7 @@ The router sends each operation to the minimum useful owner modules:
 | Model and sub-agent strategy | `module:models` in `references/subagent-model-policy.md` |
 | Router, ownership map, and rule IDs | `module:architecture` in `references/policy-architecture.md` |
 | Release identity, package boundary, and team adoption | `module:release` in `references/release-policy.md` |
-| Execution-time quality checks | `module:execution-quality` in `references/context-and-quality-gates.md` |
+| Execution-time quality checks and fresh-task startup | `module:execution-quality`, including `rule:execution-quality.execution-thread-start`, in `references/context-and-quality-gates.md` |
 
 ### Using Superpowers With The Harness
 

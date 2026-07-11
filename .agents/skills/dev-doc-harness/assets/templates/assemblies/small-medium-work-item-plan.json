@@ -7,6 +7,7 @@
     "blocks/plan.050.common.task-plan.md",
     "blocks/plan.060.small.planned-commits.md",
     "blocks/plan.070.common.validation-variance-freeze.md",
+    "blocks/handoff.085.common.execution-thread.md",
     "blocks/plan.090.small.readiness-completion-approval.md"
   ]
 }

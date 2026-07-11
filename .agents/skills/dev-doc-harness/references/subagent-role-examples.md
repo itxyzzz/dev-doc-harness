@@ -10,14 +10,16 @@ shape examples, but it does not make any sub-agent role mandatory policy.
 
 ## Common roles
 
-| Role | Use when | Model class | Effort | Output |
-|---|---|---|---|---|
-| Explorer | Inputs are scattered and read-heavy. | smaller/faster | low or medium | Discovery notes with file references. |
-| Research verifier | Plans depend on cited claims. | standard or latest strongest | medium or high | Verified claims, discrepancies, and reliability assessment. |
-| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | standard | medium | Test gaps and recommended cases. |
-| Bounded implementer | Files are disjoint and the plan is concrete. | coding-specialized or standard | medium | Patch plus commands run. |
-| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | latest strongest | high | Findings with severity, impact, and remediation. |
-| Final reviewer | Integration risk or blast radius is high. | latest strongest | high | Blocking findings, residual risk, and release recommendation. |
+Keep Model generation, Capability tier, Reasoning effort, and Orchestration mode separate. A bounded role below uses `bounded delegated sub-agents`; platform multi-agent/`ultra` is a different orchestration choice and does not imply these role boundaries or report gates.
+
+| Role | Use when | Capability tier | Reasoning effort | Orchestration mode | Output |
+|---|---|---|---|---|---|
+| Explorer | Inputs are scattered and read-heavy. | fast/economy or balanced | low or medium | bounded delegated sub-agents | Discovery notes with file references. |
+| Research verifier | Plans depend on cited claims. | balanced or flagship | medium or high | bounded delegated sub-agents | Verified claims, discrepancies, and reliability assessment. |
+| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | balanced | medium | bounded delegated sub-agents | Test gaps and recommended cases. |
+| Bounded implementer | Files are disjoint and the plan is concrete. | balanced | medium | bounded delegated sub-agents | Patch plus commands run. |
+| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | flagship | high | bounded delegated sub-agents | Findings with severity, impact, and remediation. |
+| Final reviewer | Integration risk or blast radius is high. | flagship | high | bounded delegated sub-agents | Blocking findings, residual risk, and release recommendation. |
 
 ## Portable role shape
 
@@ -31,7 +33,12 @@ model_policy: active repository policy
 model_policy_source: AGENTS.md
 model_policy_scope: this work item
 model_policy_expires: when the work item completes unless the operator changes it
+model_generation: not exposed
+capability_tier: balanced
 reasoning_effort: medium
+orchestration_mode: bounded delegated sub-agents
+resolved_profile: not exposed
+availability_fallback: orchestration thread review
 context_strategy: curated artifacts
 inputs:
   - <work-item-path><spec-filename>
@@ -57,3 +64,5 @@ Each sub-agent report must include:
 
 The orchestration thread owns decomposition, integration, conflict resolution,
 final validation, and the user-facing summary.
+
+For a fresh-task reviewer or model transition, use curated artifacts and `rule:execution-quality.execution-thread-start`; name the first activity and stop for approval-required variance.

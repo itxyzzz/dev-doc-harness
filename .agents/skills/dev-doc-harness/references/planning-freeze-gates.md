@@ -50,8 +50,9 @@ After the operator explicitly approves the staged planning package, or explicitl
 5. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
 6. Stop before implementation, task execution, or the next planning stage.
 7. Report the commit hash and approved artifact paths.
-8. Remind the operator that they may push, create a draft plan-only PR, and/or compact the thread at this point.
-9. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and to say whether implementation should begin now.
+8. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
+9. Ask the operator to confirm the capability tier, reasoning effort, orchestration mode, sub-agent policy, approved fallback, execution continuity, context visibility, and whether artifact rehydration is required, then to say whether implementation should begin now.
+10. When execution moves to another task or profile, provide the artifact's copy-ready next-task handoff. It should name the exact frozen artifacts, cite `rule:execution-quality.execution-thread-start`, refer to the approved strategy and fallback, identify the first activity, and state the approval-required variance stop condition without duplicating requirements.
 
 Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
 
