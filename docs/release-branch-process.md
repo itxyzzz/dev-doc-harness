@@ -165,15 +165,17 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    git ls-remote --heads origin "refs/heads/release/<major>.<minor>"
    ```
 
-## Reset Master For The Next Development Cycle
+## Start The Next Development Cycle Through A Protected Pull Request
 
-1. Check out `master`.
+1. Create a post-release topic branch from the pushed release branch.
 
    ```powershell
-   git checkout master
+   git checkout -b post-release/<major>.<minor>-start-development release/<major>.<minor>
    ```
 
-2. Add a new empty `Unreleased` group at the top of `CHANGELOG.md`, above the release group just created.
+   This branch must start from `release/<major>.<minor>`, not from `master`, so it includes the immutable released state that was pushed in the previous section.
+
+2. Add a new empty `Unreleased` group at the top of `CHANGELOG.md`, above the release group just created. Retain the concrete `## Release <major>.<minor>` group and its release-target metadata exactly as they appear on the release branch.
 
    Use the existing changelog metadata style for future entries, but do not invent a placeholder entry. The empty section should be just:
 
@@ -191,7 +193,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    0.5+
    ```
 
-   `master` and other non-release development branches should stay on `<major>.<minor>+` after `0.<minor>.0` has been released and before `0.<minor+1>.0` release preparation begins. Do not advance the development marker to the next minor until the next release branch is actually being prepared.
+   The post-release topic branch, `master` after its PR merges, and later non-release development branches should stay on `<major>.<minor>+` after `0.<minor>.0` has been released and before `0.<minor+1>.0` release preparation begins. Do not advance the development marker to the next minor until the next release branch is actually being prepared.
 
 4. Update `.agents/skills/dev-doc-harness/references/release-policy.md` for the post-release development branch.
 
@@ -211,30 +213,71 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
    ```
 
-7. Review the post-release reset diff.
+7. Review the post-release development diff.
 
    ```powershell
    git diff -- .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
    ```
 
-8. Commit the post-release reset on `master`.
+8. Commit the post-release development state on the topic branch.
 
    ```powershell
    git add .agents/skills/dev-doc-harness/VERSION CHANGELOG.md .agents/skills/dev-doc-harness/references/release-policy.md .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
    git commit -m "chore: start <major>.<minor>+ development"
    ```
 
-9. Stop and report the outcome.
+9. Push the topic branch and open a pull request targeting `master`.
+
+   ```powershell
+   git push -u origin post-release/<major>.<minor>-start-development
+   ```
+
+   Use the repository's normal GitHub pull-request flow with:
+
+   - Head: `post-release/<major>.<minor>-start-development`
+   - Base: `master`
+
+   Merge the pull request only after its required review and checks have passed. Do not commit or push the post-release reset directly to `master`.
+
+10. After the pull request merges, fetch the remotes and verify that `master` contains the release baseline before creating any new development branch.
+
+   ```powershell
+   git fetch --prune origin
+   git merge-base --is-ancestor origin/release/<major>.<minor> origin/master
+   if ($LASTEXITCODE -ne 0) {
+     Write-Error "origin/master does not contain origin/release/<major>.<minor>; do not create a new development branch."
+     exit 1
+   }
+
+   $marker = '## Release <major>.<minor>'
+   $masterChangelog = ((git show 'origin/master:CHANGELOG.md') -join "`n").Replace("`r`n", "`n")
+   $releaseChangelog = ((git show 'origin/release/<major>.<minor>:CHANGELOG.md') -join "`n").Replace("`r`n", "`n")
+   $masterStart = $masterChangelog.IndexOf($marker)
+   $releaseStart = $releaseChangelog.IndexOf($marker)
+
+   if ($masterStart -lt 0 -or $releaseStart -lt 0) {
+     Write-Error "Missing $marker on origin/master or origin/release/<major>.<minor>; do not create a new development branch."
+     exit 1
+   }
+
+   if ($masterChangelog.Substring($masterStart).TrimEnd("`n") -ne $releaseChangelog.Substring($releaseStart).TrimEnd("`n")) {
+     Write-Error "The released CHANGELOG.md portion differs between origin/master and origin/release/<major>.<minor>; do not create a new development branch."
+     exit 1
+   }
+   ```
+
+   Both commands must exit `0`. Only then may new development branches be created from the verified `origin/master`.
+
+11. Stop and report the outcome.
 
    Include:
 
    - The current version.
    - The release-prep commit hash.
    - The pushed release branch name.
-   - The post-release reset commit hash on `master`.
-   - Whether `master` has been pushed.
-
-   Do not push `master` unless the operator explicitly asks for that separate action.
+   - The post-release topic branch name and commit hash.
+   - The pull request URL and merge commit hash on `master`.
+   - The successful remote ancestry and changelog-segment verification.
 
 ## Failure Handling
 
@@ -242,4 +285,6 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 - If no remote `release/<major>.<minor>` branch exists, stop and ask the operator for the starting release version.
 - If a release branch for the current version already exists locally or remotely, stop and ask whether to inspect, reuse, or abandon that branch.
 - If release notes cannot be curated cleanly from the changelog, stop and report the ambiguous entries instead of guessing.
-- If any commit or push fails, stop on the current branch and report `git status --short --branch` plus the failing command.
+- If the post-release pull request is not merged, stop and do not create a new development branch from `master`.
+- If the post-merge ancestry check or released-changelog comparison fails, stop and repair the post-release pull request or resolve the remote divergence with a corrective pull request before creating a new development branch.
+- If any commit or topic-branch push fails, stop on the current branch and report `git status --short --branch` plus the failing command. Do not bypass `master` protection with a direct push.
