@@ -109,8 +109,10 @@ Stage the planning package for approval before committing it.
 Create a draft plan-only PR checkpoint before code changes.
 ```
 
-The copyable distributable package is the root `AGENTS.md` file plus the `.agents/` folder. Merge its instructions with an existing destination
-`AGENTS.md`; do not replace local policy. Do not copy this repository's `docs/work-items/` folder. Keep the adoption in a dedicated commit or PR so
+The copyable distributable package is the root `AGENTS.md` file plus the 
+`.agents/` folder. Merge its instructions with an existing destination
+`AGENTS.md`; do not replace local policy. Do not copy this repository's 
+`docs/work-items/` folder. Keep the adoption in a dedicated commit or PR so
 you can roll back by reverting that dedicated update.
 
 The copyable package records its version in
