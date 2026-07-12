@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-12_superpowers-stub-continuity -- require historical packages before pointers
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the combined spec, plan, and test cases for requiring pre-existing Superpowers documentation packages before compatibility pointer stubs may be added.
+
+#### Changed
+
+- Planned aligned live contract wording, validator coverage, and removal of the repository's current Superpowers stubs without rewriting frozen historical work items.
+
 ### 2026-07-11_commitment-verification-model -- map commitments to checks
 
 Release target: `unreleased`
