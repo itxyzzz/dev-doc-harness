@@ -465,7 +465,7 @@ def assert_duplicate_blocks() -> None:
     shared_assembly_blocks = {
         paragraph
         for _, paragraph in get_normalized_paragraphs(
-            ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.execution-thread.md"
+            ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.common.handoff.md"
         )
     }
     shared_generated_targets = set(PRIMARY_TEMPLATE_FILES)
@@ -488,18 +488,31 @@ def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
     block_name_pattern = re.compile(
-        r"^(?:(?:spec|plan)\.\d{3}\.(?:common|small|large|phase)|handoff\.\d{3}\.common)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+        r"^(?:spec|plan)\.\d{3}\.(?:common|small|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
     )
     allowed_scopes = {"common", "small", "large", "phase"}
     expected_outputs = set(PRIMARY_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
 
     blocks_root = join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks")
+    expected_handoff_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.small.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.common.handoff.md",
+    ]
+    for path in expected_handoff_blocks:
+        assert_path_exists(check_id, path)
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.combined-small-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.execution-thread.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.large-anchor-spec.md",
+    ]:
+        assert_path_absent(check_id, path)
     if blocks_root.exists():
         for block_path in sorted(blocks_root.glob("*.md")):
             name = block_path.name
             if not block_name_pattern.match(name):
-                add_failure(check_id, f"Block filename does not follow the spec/plan grammar or handoff.<order>.common.<kebab-name>.md: {name}")
+                add_failure(check_id, f"Block filename does not follow the spec/plan grammar: {name}")
                 continue
             scope = name.split(".")[2]
             if scope not in allowed_scopes:
