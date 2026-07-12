@@ -15,6 +15,9 @@ Owned rule IDs:
 | `rule:style.placeholder-control` | `## Placeholder control` |
 | `rule:style.trace-density` | `## Traceability density` |
 | `rule:style.template-prompts` | `## Template prompts` |
+| `rule:style.full-name-entity-headings` | `## Full-name entity headings` |
+| `rule:style.verification-criterion-placement` | `## Verification Criterion placement` |
+| `rule:style.asymmetric-traceability` | `## Asymmetric traceability` |
 
 ## When it applies
 
@@ -39,7 +42,7 @@ or drafting instructions.
 
 Use precise, descriptive language:
 
-- State decisions, constraints, scope, and acceptance criteria directly.
+- State Architecture Decisions, constraints, Specification Commitments, and Verification Criteria directly.
 - Prefer concrete paths, owners, events, IDs, commit subjects, and validation
   signals over vague future intent.
 - Use `None`, `Not applicable`, or a reasoned deferral when a field has no
@@ -53,11 +56,23 @@ Choose Markdown structure that helps a human or agent find the next decision
 quickly.
 
 - Use short sections with one purpose each.
-- Use numbered lists for ordered decisions, requirements, tasks, and checks.
+- Use numbered lists for ordered decisions, commitments, tasks, and checks.
 - Use tables when readers must compare the same fields across rows.
 - Break wide or dense tables into smaller sections when the row content becomes
   harder to read than a list.
 - Keep trace IDs stable and searchable when later work depends on them.
+
+## Full-name entity headings
+
+Current entity headings always pair the stable ID with the full entity name and a short title: `SPEC-NNN` Specification Commitment, `DEC-NNN` Architecture Decision, `VER-NNN` Verification Criterion, `TASK-NNN` Implementation Task, and `CHECK-NNN` Plan Check. Use full entity names in canonical prose. Bare prefixes are reserved for concrete IDs, ID-family patterns, and compact diagrams or tables whose surrounding text supplies the names.
+
+## Verification Criterion placement
+
+Keep the ordinary review path local: place a single-commitment Verification Criterion immediately below its Specification Commitment. Put a genuinely cross-cutting criterion exactly once in `## Cross-cutting Verification Criteria`. Explicit `Covers` metadata preserves navigation and stable IDs preserve references if Draft refinement moves a criterion.
+
+## Asymmetric traceability
+
+Present commitment dispositions and verification execution as separate compact mappings. Do not force readers to decode one symmetric entity-to-task-and-validation matrix. Keep tasks and checks in distinct sections, then show their coordination through dependencies and stages so delivery and conformance remain visibly integrated.
 
 Extra blank lines are useful around major sections, tables, and dense lists.
 Avoid spacing that makes one related unit look like several unrelated blocks.
@@ -79,7 +94,7 @@ a deferred item with an owner and resolving event.
 
 Traceability should reduce rereading, not bury the reader.
 
-- Use IDs for requirements, acceptance criteria, risks, decisions, amendments,
+- Use IDs for Specification Commitments, Verification Criteria, risks, Architecture Decisions, amendments,
   variance entries, and validation checks when later artifacts cite them.
 - Keep each ID attached to a short, concrete title.
 - Cross-reference only the relationships a future reader needs to execute,

@@ -23,13 +23,13 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 |---|---|---|---|
 | `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, and router inputs. |
 | `module:naming` | `references/naming-conventions.md` | Normative policy | Work ID fields, derived naming patterns, normalization, work-item paths, artifact filenames, commit-message grammar, changelog-entry grammar, collision handling, and redundancy deduplication. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
-| `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
-| `module:models` | `references/subagent-model-policy.md` | Normative policy | Model policy, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
-| `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec quality, phase-plan quality, and handoff preservation. |
-| `module:artifact-style` | `references/artifact-style.md` | Normative policy | Final artifact content, scannable structure, placeholder and example control, traceability density, and template prompt style. |
-| `module:release` | `references/release-policy.md` | Normative policy | Release identity, distributable package boundary, changelog as release source, release notes, release compatibility, artifact release context, and team adoption flow. |
-| `module:execution-quality` | `references/context-and-quality-gates.md` | Advisory guidance | Context load order, task preflight, environment compensation, and increment quality gates. |
+| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, combined or explicitly staged planning shape, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
+| `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, continuity-selected post-freeze routing, multi-gate flow, and freeze-gate compatibility. |
+| `module:models` | `references/subagent-model-policy.md` | Normative policy | Model selection dimensions, orchestration mode, execution continuity, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
+| `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec and phase-plan quality, Specification Commitments, Verification Criteria, Plan Checks, asymmetric plan coverage, evidence-to-conformance status, and handoff preservation. |
+| `module:artifact-style` | `references/artifact-style.md` | Normative policy | Final artifact content, full-name entity headings, Verification Criterion placement, asymmetric traceability, scannable structure, placeholder and example control, traceability density, and template prompt style. |
+| `module:release` | `references/release-policy.md` | Normative policy | Dev Doc Harness distribution release identity, distributable package boundary, changelog as release source, package-local release notes, release compatibility, artifact release context, and team adoption flow. |
+| `module:execution-quality` | `references/context-and-quality-gates.md` | Advisory guidance | Context load order, `rule:execution-quality.execution-thread-start`, task preflight, environment compensation, and increment quality gates. |
 | `module:evidence` | `references/evidence-and-report-artifacts.md` | Advisory guidance | Evidence preservation, report sections, and evidence stop conditions. |
 | `module:role-examples` | `references/subagent-role-examples.md` | Example | Optional sub-agent role patterns, portable role shape, and role report examples. |
 
@@ -81,8 +81,8 @@ Future router work should load by operation rather than eagerly loading every re
 | Draft or review routine small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:naming` for work IDs or planned subjects, and add `module:artifact-style` when readability risk is material |
 | Draft or review large anchor specs | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style` |
 | Draft or review phase plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:artifact-style` for large or hard-to-scan phase artifacts |
-| Freeze planning packages | `module:freeze-gate`, `module:lifecycle` |
-| Execute approved work and record variance | `module:lifecycle`, `module:execution-quality` |
+| Freeze planning packages | `module:freeze-gate`, `module:lifecycle`; determine planning shape, frozen package, and next activity before continuity routing |
+| Execute approved work and record variance | `module:lifecycle`, `module:execution-quality`; use `rule:execution-quality.execution-thread-start` for fresh-task or same-task model-transition handoff |
 | Use or review sub-agent strategy | `module:models`, optionally `module:role-examples` |
 | Handle evidence-heavy review or reports | `module:evidence` |
 | Update templates or router guidance | `module:architecture`, plus the canonical owner for each referenced rule family |

@@ -13,7 +13,7 @@ Capture work-item architecture decisions that future implementation, review, or 
 
 ## Decision Ledger
 
-### `DEC-001` `<decision title>`
+### `DEC-001` Architecture Decision — `<short decision title>`
 
 Selected approach:
 
@@ -29,11 +29,11 @@ Affected boundaries:
 
 Source spec sections:
 
-1. `<requirement, acceptance criterion, risk, architecture section, or source artifact path>`.
+1. `<Specification Commitment ID, risk, architecture section, or source artifact path>`.
 
 Validation cues:
 
-1. `<acceptance criterion, command, review check, phase handoff, rollout signal, or manual observation that verifies the architecture held>`.
+1. `<Verification Criterion, Plan Check, phase handoff, rollout signal, or manual observation that verifies the architecture held>`.
 
 Rejected alternatives:
 

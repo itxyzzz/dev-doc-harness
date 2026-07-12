@@ -47,6 +47,7 @@ Use these derived pattern names from other current harness references and templa
 | `<phase-plan-filename>` | `plan_<phase-id>_<phase-title>_<short-id>.md` |
 | `<amendment-filename>` | `plan_amendment-NNN_<amendment-title>_<short-id>.md` |
 | `<variance-log-path>` | `implementation-notes/variance-log.md` |
+| `<changelog-fragment-path>` | `docs/work-items/<work-id>/changelog/*.md` |
 | `<commit-subject>` | `[<issue-key> ]<type>: <title>[ -- <plain-language-elaboration>]` |
 | `<planning-commit-subject>` | `[<issue-key> ]<artifact-type>: <title>[ -- <plain-language-elaboration>]` |
 | `<changelog-heading>` | One of the heading forms in `rule:naming.changelog-entries`. |
@@ -105,6 +106,14 @@ plan_KEY-123_user-profile-import.md
 plan_phase-01_discovery_KEY-123_user-profile-import.md
 plan_amendment-001_validation-scope_KEY-123_user-profile-import.md
 ```
+
+Changelog source fragments live below the work item package:
+
+```text
+docs/work-items/<work-id>/changelog/*.md
+```
+
+Use stable, descriptive fragment filenames tied to the commit or checkpoint they cover, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, `validation.md`, or `release-prep.md`. Fragment filenames use lower-kebab-case. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
 
 ## Commit messages
 

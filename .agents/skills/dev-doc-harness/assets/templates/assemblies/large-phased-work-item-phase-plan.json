@@ -9,6 +9,7 @@
     "blocks/plan.060.phase.planned-commits.md",
     "blocks/plan.070.common.validation-variance-freeze.md",
     "blocks/plan.080.phase.documentation-tasks-handoff.md",
+    "blocks/plan.085.common.handoff.md",
     "blocks/plan.090.phase.readiness-completion-approval.md"
   ]
 }

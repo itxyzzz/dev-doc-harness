@@ -5,6 +5,16 @@ summary for operators and adopters; canonical policy still lives in
 `AGENTS.md`, `SKILL.md`, and the routed references under
 `.agents/skills/dev-doc-harness/references/`.
 
+The harness keeps important development decisions out of disappearing chat
+history. It creates reviewable plans before substantial edits, separates
+delivery commitments from evidence, preserves handoffs for fresh threads,
+records meaningful drift, and avoids routine root-changelog conflicts across
+parallel work.
+
+Normal use remains simple: ask for the work you want and refine it through the
+conversation. The agent applies the harness when needed; explicit prompts are
+useful only when you want a special stop point or review checkpoint.
+
 ## What To Copy
 
 The distributable package is:
@@ -24,15 +34,15 @@ a normal revert of that dedicated update.
 ## How Operators Use It
 
 Ask for the work normally. For repository development work beyond a very small
-mechanical edit, the agent should load:
+mechanical edit, the agent loads:
 
 ```text
 .agents/skills/dev-doc-harness/SKILL.md
 ```
 
 The router sends the agent to the smallest useful set of canonical references
-for sizing, planning, freeze gates, implementation, variance, changelog, release
-context, naming conventions, and model or sub-agent policy.
+for sizing, planning, freeze gates, implementation, variance, changelog source
+fragments, release context, naming conventions, and model or sub-agent policy.
 
 For substantial work, expect a work item package under:
 
@@ -40,9 +50,16 @@ For substantial work, expect a work item package under:
 <work-item-path>
 ```
 
-Small or medium work usually gets a spec and plan. Large or phased work gets an
-anchor spec first. Phase plans come later from the approved anchor spec unless
-you explicitly ask for combined planning.
+Small or medium work gets a spec and plan as one combined planning package by
+default, and its plan owns the implementation transition. A spec-only freeze is
+an explicit staged exception that records its reason and names plan drafting as
+the next activity. Large or phased work gets an anchor spec first; phase plans
+come later from the approved anchor unless you explicitly ask for combined
+planning.
+
+The Specification Package keeps meaning separate from procedure: Goal and Scope frame `SPEC-NNN` Specification Commitments, mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments, and `VER-NNN` Verification Criteria state conformance. The integrated Plan derives `TASK-NNN` Implementation Tasks from commitments plus applicable decisions and derives `CHECK-NNN` Plan Checks from criteria. It coordinates both paths through stages and dependencies; Architecture Decisions are not a linear layer between commitments and criteria.
+
+Execution closes a separate loop: a Plan Check produces evidence, evidence determines Verification Criterion status, and applicable criterion statuses support judging Specification Commitment conformance. Task completion alone is not conformance, and planning approval/freeze remains a separate lifecycle decision.
 
 Work-item architecture decisions live in the spec and, when useful, in
 `snapshots/architecture.snapshot.md`. The snapshot is work-item-bound: it
@@ -52,15 +69,19 @@ that architecture input instead of making hidden architecture decisions.
 Repository-level durable documents such as `ARCHITECTURE.md` are future work for
 a separate harness extension.
 
-Artifact readability has its own routed owner. Routine artifacts use the short
-baseline guidance in `references/durable-planning-quality.md` and the templates.
-Large anchor specs, and any artifact that becomes large or hard to scan, load
-`references/artifact-style.md` for final artifact content, scannable structure,
-placeholder control, traceability density, and template prompt style.
+## Using Superpowers
 
-Current naming grammar lives in `references/naming-conventions.md`. For example,
-`2026-05-31_artifact-root` uses `spec_artifact-root.md` and
-`plan_artifact-root.md`.
+Operators do not need to choose between Superpowers and the harness. When both
+are active, Superpowers may shape the agent's working method, while the harness
+remains the visible repository record for specs, plans, snapshots, variance,
+changelog source fragments, and freeze gates.
+
+The reviewable package should still appear under the harness work item folder
+before implementation starts. Add `docs/superpowers` documents only when the
+directory already exists and contains previous documentation packages from
+before the current work; never create or seed it to satisfy that compatibility
+condition. When continuity permits a new file there, it must be a short pointer
+stub to the harness package rather than a duplicate spec or plan.
 
 ## Review And Pause Points
 
@@ -69,46 +90,59 @@ The normal substantial-work flow is:
 1. The agent drafts the planning artifacts.
 2. The agent stages the draft planning package and asks for approval.
 3. Operator feedback edits the drafts directly.
-4. Operator approval triggers the freeze gate: changelog, approved artifacts,
-   approval commit, and a pause.
-5. The next operator response may confirm execution settings and authorize
-   implementation.
+4. Operator approval triggers the freeze gate: changelog source fragment,
+   approved artifacts, approval commit, and a pause.
+5. The agent names the planning shape, exact frozen package, and documented next
+   activity, then follows the approved continuity route.
+6. A same-task route requires fresh start authorization. A new-task route shows
+   the copy-ready handoff and proposed configuration, then asks approval to
+   create a task only when the platform supports the exact recorded settings.
+
+When configured task creation is unavailable or cannot honor the recorded model
+or reasoning settings, the visible copy-ready handoff remains the manual
+fallback. The agent reports the limitation and does not silently substitute a
+different configuration. An operator may explicitly request continuation in the
+current task, but the new-task route does not present that override as its
+recommended question.
 
 For large or phased work, the anchor-spec freeze also pauses before phase-plan
-drafting. Later phase-plan drafting can happen in the main thread, or through
+drafting and names that as the next activity. Later phase-plan drafting can happen in the main thread, or through
 curated-context sub-agents when the phases are independent enough and the
 platform supports it.
 
 Frozen planning artifacts should not be silently rewritten to make later
 implementation look cleaner. Nontrivial drift is recorded as variance. Drift
 that changes architecture, public APIs, data, security, privacy, compliance,
-scope, acceptance criteria, or feasibility requires an amendment and approval.
+scope, Specification Commitments, Verification Criteria, Plan Checks, or feasibility requires an amendment and approval.
 
-## Useful Prompts
+Before ordinary commits, agents update `docs/work-items/<work-id>/changelog/*.md`
+rather than the root changelog. Root `CHANGELOG.md` remains the consolidated
+publication view. Run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
+at a project-owned checkpoint such as after merging work branches, before
+preparing release notes, before product/application release, or whenever the
+project process needs root changelog completeness. The harness owns this
+fragment and consolidation contract; downstream applications, packages, and
+agentic systems keep their own release processes.
+
+## Useful Explicit Requests
+
+Use ordinary work requests by default. These requests are useful when you need
+to make a special boundary unambiguous:
 
 ```text
 Plan this as a large work item and stop after the freeze gate.
 ```
 
 ```text
-Stage the planning package for approval before committing it.
-```
-
-```text
-Use the harness, but treat this as a small mechanical edit if it qualifies.
-```
-
-```text
-Preserve this handoff for a future thread before implementation.
-```
-
-```text
 Create a plan-only PR checkpoint before code changes.
 ```
 
-## Validation
+## For Harness Maintainers
 
-For harness maintenance work, run the package validation command when practical:
+The following is for people changing the copied harness itself, not ordinary
+operators using it for product work. Run the package validation command when
+practical:
 
 ```bash
 python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py

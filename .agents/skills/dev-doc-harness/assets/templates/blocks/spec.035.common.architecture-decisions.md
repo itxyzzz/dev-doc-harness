@@ -15,6 +15,6 @@ Decision summary:
 3. Selected approach: `<architecture direction chosen before planning execution>`.
 4. Affected boundaries: `<repositories, components, interfaces, schemas, config, infra, docs, agents, or phases>`.
 5. Rejected alternatives: `<alternatives and why they were rejected>`.
-6. Validation cues: `<commands, review checks, acceptance criteria, or later phase signals that prove the decision held>`.
+6. Validation cues: `<Verification Criteria, Plan Checks, review findings, or later phase signals that prove the decision held>`.
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.

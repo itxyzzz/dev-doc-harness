@@ -11,7 +11,7 @@ Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `r
 
 - Amendment ID: `AMD-001`
 - File: `<plan, phase plan, spec, or snapshot path>`
-- Section or task: `<heading, task ID, requirement ID, or decision ID>`
+- Section or task: `<heading, TASK ID, SPEC ID, VER ID, CHECK ID, or DEC ID>`
 - Original instruction: `<approved text or concise summary>`
 
 ## Discovered issue
@@ -31,7 +31,7 @@ State why the implementation cannot proceed under the approved plan.
 | Area | Impact |
 |---|---|
 | Scope | |
-| Acceptance criteria | |
+| Verification Criteria and Plan Checks | |
 | API/interface | |
 | Data model/migration | |
 | Security/privacy/compliance | |
@@ -48,7 +48,7 @@ State why the implementation cannot proceed under the approved plan.
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during amendment approval, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets.
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during amendment approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|

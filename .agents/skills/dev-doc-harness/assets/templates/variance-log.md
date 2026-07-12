@@ -10,7 +10,7 @@ Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance
 ### `VAR-001` <date> - <short-title>
 
 - Variance class: `<Mechanical / Local technical / Architectural/API/data/security / Scope change / Plan invalidation>`
-- Original plan reference: `<file and section, task, requirement, acceptance criterion, or decision ID>`
+- Original plan reference: `<file and section, TASK, SPEC, VER, CHECK, or DEC ID>`
 - What changed: `<final description>`
 - Why it changed: `<reason>`
 - Impact on scope: `<None or concrete impact>`

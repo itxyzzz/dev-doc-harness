@@ -68,61 +68,82 @@ Success summary:
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
 
-## Requirements
+## Specification Commitments and Local Verification Criteria
 
-A requirement defines scope: what the work must provide, change, or preserve. Keep each requirement specific, achievable, relevant to the desired outcome, bounded by lifecycle timing, and testable through acceptance criteria.
+A Specification Commitment defines normative delivery scope. Keep every implementation obligation in its `Statement`; Architecture Decisions may realize or constrain mapped scope but cannot create an independent obligation.
 
-Use one block per requirement:
+Choose one `Kind`: `Outcome`, `Behavior`, `Quality`, `Constraint`, or `Deliverable`. Precedence is named output, measurable degree, conditional response, restriction/prohibition, otherwise implementation-controlled end state.
 
-### `REQ-001` `<specific requirement>`
+Choose one `Intent`: `Establish`, `Change`, `Preserve`, `Maintain`, or `Prevent`. Precedence is prohibition, named regression baseline, ongoing invariant, alteration, otherwise creation. `Concerns` are optional non-normative tags.
+
+### `SPEC-001` Specification Commitment — `<short descriptive title>`
+
+Kind: `<Outcome | Behavior | Quality | Constraint | Deliverable>`
+
+Intent: `<Establish | Change | Preserve | Maintain | Prevent>`
+
+Concerns: `<optional concise tags or None>`
+
+Statement:
+
+1. `<implementation-neutral normative obligation>`.
 
 Rationale:
 
-1. State why this requirement belongs in scope and what value or risk it addresses.
+1. `<non-normative reason; do not add scope here>`.
 
-Acceptance links:
+#### `VER-001` Verification Criterion — `<short descriptive title>`
 
-1. Link to acceptance criterion IDs, or write a short placeholder such as `Covered by AC-001`.
+Covers:
 
-Notes:
+1. `SPEC-001`.
 
-1. Add constraints, dependencies, deferrals, phase expectations, or implementation-neutral details when helpful.
+Criterion:
 
-Requirement quality prompts:
+1. `<pass/fail conformance proposition>`.
 
-1. Specific: names the concrete behavior, documentation surface, interface, or decision.
-2. Achievable: fits the approved work size or phase structure.
-3. Relevant: traces back to the stated operator/user outcome.
-4. Bounded: has clear lifecycle timing such as before freeze, during validation, or before commit.
-5. Testable: connects to at least one acceptance criterion.
+Expected evidence:
 
-## Acceptance Criteria
+1. `<evidence needed to judge the proposition>`.
 
-An acceptance criterion defines observable verification: how a reviewer, command, manual check, test, or operator acceptance can tell that a requirement has been satisfied.
+Applicability:
 
-Use one block per criterion:
+1. `<non-default timing, environment, phase, or condition; otherwise omit>`.
 
-### `AC-001` `<observable outcome or scenario>`
+Applicable criteria and numbered evidence items are conjunctive by default. Equivalent alternatives use an explicit `Any one of` group with an equivalence basis. Concrete procedures belong in Plan Checks.
 
-Verifies:
+### `SPEC-002` Specification Commitment — `<second short title when needed>`
 
-1. Link to requirement IDs or a named scope item.
+Kind: `<Outcome | Behavior | Quality | Constraint | Deliverable>`
 
-Method:
+Intent: `<Establish | Change | Preserve | Maintain | Prevent>`
 
-1. Name the command, manual check, review finding, phase completion signal, or operator acceptance path.
+Statement:
 
-Optional example shape:
+1. `<second normative obligation, or remove this example block when unused>`.
 
-1. Given `<initial context>`, when `<event or action>`, then `<observable outcome>`.
-2. Use this only when it makes the outcome clearer than prose.
+## Cross-cutting Verification Criteria
 
-Acceptance quality prompts:
+Define a criterion covering two or more commitments exactly once here. Cross-phase criteria name one owning phase in Applicability.
 
-1. Measurable: the outcome can be observed or reviewed.
-2. Specific: it names the expected result, not only the implementation activity.
-3. Time-bounded: it says when verification happens, such as before implementation, across phases, during validation, or before commit.
-4. Independent enough: each criterion can be checked without relying on unrelated criteria where practical.
+### `VER-002` Verification Criterion — `<short cross-cutting title>`
+
+Covers:
+
+1. `SPEC-001`.
+2. `SPEC-002`.
+
+Criterion:
+
+1. `<shared pass/fail conformance proposition without new delivery scope>`.
+
+Expected evidence:
+
+1. `<evidence needed across the covered commitments>`.
+
+Applicability:
+
+1. `<owning phase or other non-default condition>`.
 
 ## Architecture Decisions
 
@@ -141,7 +162,7 @@ Decision summary:
 3. Selected approach: `<architecture direction chosen before planning execution>`.
 4. Affected boundaries: `<repositories, components, interfaces, schemas, config, infra, docs, agents, or phases>`.
 5. Rejected alternatives: `<alternatives and why they were rejected>`.
-6. Validation cues: `<commands, review checks, acceptance criteria, or later phase signals that prove the decision held>`.
+6. Validation cues: `<Verification Criteria, Plan Checks, review findings, or later phase signals that prove the decision held>`.
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.
 
@@ -203,7 +224,7 @@ Phase `01`: `<phase name>`
 2. Scope: `<covered areas or decisions>`.
 3. Depends on: `<None, prior phase, external event, or approved amendment>`.
 4. Future phase-plan output: `<phase-plan-filename>`.
-5. Acceptance focus: `<AC ids or phase-specific review signal>`.
+5. Conformance focus: `<VER ids, owning phase, or phase-specific evidence signal>`.
 
 Phase `02`: `<phase name>`
 
@@ -211,7 +232,7 @@ Phase `02`: `<phase name>`
 2. Scope: `<covered areas or decisions>`.
 3. Depends on: `<phase ids, artifacts, or external events>`.
 4. Future phase-plan output: `<phase-plan-filename>`.
-5. Acceptance focus: `<AC ids or phase-specific review signal>`.
+5. Conformance focus: `<VER ids, owning phase, or phase-specific evidence signal>`.
 
 Phase decomposition prompts:
 
@@ -223,11 +244,19 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Current orchestration:
+Selection dimensions:
 
-1. Model/profile and reasoning effort if known: `<value or not exposed>`.
-2. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-3. Override scope and expiry: `<work item, phase, final review, or None>`.
+1. Model generation: `<generation or not exposed>`.
+2. Capability tier: `<flagship / balanced / fast/economy>`.
+3. Reasoning effort: `<runtime value or not exposed>`.
+4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
+5. Resolved profile: `<concrete runtime profile or not exposed>`.
+6. Availability/fallback: `<availability result and approved fallback>`.
+7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+8. Context visibility: `<exposed signal or not exposed>`.
+9. Artifact rehydration required: `<Yes/No plus reason>`.
+10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
+11. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -236,9 +265,9 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended orchestration change:
+Recommended selection change:
 
-1. `<None, or concrete model/profile/reasoning change with reason>`.
+1. `<None, or concrete generation/tier/effort/orchestration/continuity change with reason>`.
 
 Sub-agents:
 
@@ -253,15 +282,18 @@ Sub-agent `<role or phase id>`:
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
 5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model class/profile: `<policy-relative class or concrete profile if required>`.
-7. Reasoning effort: `<low/medium/high plus reason>`.
-8. Selection reason: `<why this delegation is useful>`.
-9. Parallel execution: `<Yes/No and dependency>`.
-10. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+6. Model generation: `<generation or not exposed>`.
+7. Capability tier: `<flagship / balanced / fast/economy>`.
+8. Resolved profile: `<concrete runtime profile or not exposed>`.
+9. Availability/fallback: `<availability result and approved fallback>`.
+10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
+11. Selection reason: `<why this delegation is useful>`.
+12. Parallel execution: `<Yes/No and dependency>`.
+13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with `CHANGELOG.md` headings or bullet-level snippets.
+Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
 Anchor spec approval:
 
@@ -291,7 +323,8 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with planned commit subjects |
+| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with planned commit subjects |
+| Root changelog consolidation | Living | As needed | After merge, before release-note preparation, before product/application release, or at another project-owned checkpoint | `CHANGELOG.md` | Consolidated publication view; run consolidation when the operator's process needs root changelog completeness |
 | Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
@@ -299,12 +332,29 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 | Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
 | Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
 
+## Next-task handoff
+
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+
+1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
+2. Frozen package: `<approved anchor spec plus required snapshots, amendments, evidence, and other anchor-named inputs>`.
+3. Next activity: `phase-plan drafting` for `<named phase or first phase-planning activity>`.
+4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+5. Context visibility: `<exposed signal or not exposed>`.
+6. Artifact rehydration required: `<Yes/No plus reason>`.
+7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
+8. Approved strategy and fallback: `<section or artifact reference>`.
+9. First activity: `<named phase-planning task or review action>`.
+10. Variance stop condition: `<approval-required variance or other explicit stop>`.
+
+After the anchor actually freezes, a new-task route displays a conditional copy-ready prompt for the documented phase-plan drafting activity. It names the exact artifacts above, applicable `AGENTS.md` and harness rules, `rule:execution-quality.execution-thread-start`, the approved strategy and fallback, and the variance stop condition without duplicating frozen requirements. Follow `rule:freeze.approval-freeze` for any configured task-creation offer or manual fallback.
+
 ## Spec readiness checklist
 
 - [ ] Source input and desired outcome are captured.
 - [ ] Scope, non-scope, assumptions, open questions, and known unknowns are explicit.
-- [ ] Requirements are specific, relevant, bounded, and linked to acceptance criteria.
-- [ ] Acceptance criteria are observable, testable, and tied to requirements or scope items.
+- [ ] Specification Commitments are atomic, classified, bounded, and contain every implementation obligation in their Statements.
+- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and explicit cross-phase ownership.
 - [ ] Repository evidence and compatibility constraints are recorded.
 - [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.

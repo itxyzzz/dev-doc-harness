@@ -6,7 +6,72 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
-### 2026-07-04_release-branch-process -- document release branch workflow
+### 2026-07-12_superpowers-stub-continuity -- prohibit bootstrapping compatibility pointers
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Required a pre-existing `docs/superpowers` directory containing previous documentation packages before new continuity pointers may be added, and prohibited creating or seeding that state during current work.
+- Retained the minimal pointer-stub schema and added golden traversal coverage across live compatibility surfaces.
+
+#### Removed
+
+- Removed the repository's six current Superpowers pointer stubs.
+
+### 2026-07-12_superpowers-stub-continuity -- require historical packages before pointers
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the combined spec, plan, and test cases for requiring pre-existing Superpowers documentation packages before compatibility pointer stubs may be added.
+
+#### Changed
+
+- Planned aligned live contract wording, validator coverage, and removal of the repository's current Superpowers stubs without rewriting frozen historical work items.
+
+### 2026-07-11_commitment-verification-model -- map commitments to checks
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the implementation plan with complete Specification Commitment dispositions, Verification Criterion coverage, integrated Implementation Tasks and Plan Checks, and the bounded model/sub-agent strategy.
+- Added the frozen test-case snapshot for RED, GREEN, REFACTOR, structural, historical-compatibility, and final semantic-review evidence.
+- Added a Superpowers pointer to the canonical harness plan without duplicating plan content.
+
+#### Changed
+
+- Frozen the plan-only package and preserved a fresh-task implementation handoff that starts at `TASK-001` and stops for approval-required variance.
+
+### 2026-07-11_post-release-pr-flow plan: approve protected post-release synchronization
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, implementation plan, architecture snapshot, and test cases for synchronizing protected `master` from a release branch through a post-release PR and verifying the remote release history before new development branches begin.
+
+### 2026-07-11_post-release-pr-flow docs: require protected post-release synchronization
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Required post-release development state to reach protected `master` through a topic-branch pull request, followed by remote ancestry and released-changelog verification before new development branches are created.
+
+### 2026-07-11_model-selection-dimensions -- define tier, orchestration, and handoff axes
 
 Release target: `unreleased`
 Package impact: `distributable`
@@ -14,11 +79,102 @@ Release-note: `include`
 
 #### Added
 
+- Added an approved implementation plan for explicit model generation, capability tier, reasoning effort, orchestration mode, fallback, and execution-continuity policy.
+- Added approved architecture and evidence snapshots covering GPT-5.6 Sol, Terra, Luna, `ultra`, restrictive sub-agent authorization, model-transition risk, context visibility, and fresh-task startup.
+
+#### Changed
+
+- Planned minimal copy-ready handoffs and canonical artifact-grounded task startup so model transitions do not require context rediscovery.
+
+### 2026-07-09_changelog-fragment-consolidation -- add work-item changelog sources
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added work-item-local changelog fragment policy, template guidance, operator documentation, and a consolidation script for inserting reviewed unreleased fragments into root `CHANGELOG.md`.
+- Added harness validation coverage for fragment parsing, duplicate-safe consolidation, check-mode failures, operator-owned checkpoints, and Dev Doc Harness distribution release-source compatibility.
+
+#### Changed
+
+- Changed routine harness commit guidance so independent work items update `docs/work-items/<work-id>/changelog/*.md` before commit and consolidate root `CHANGELOG.md` only at explicit checkpoints.
+- Clarified that Dev Doc Harness distribution release policy is separate from release processes for downstream applications, packages, or agentic systems that use the harness.
+
+### 2026-07-09_changelog-fragment-consolidation -- plan merge-friendly changelog sources
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, architecture snapshot, and test-case snapshot for replacing root changelog pre-commit edits with work-item-local changelog fragments and an explicit consolidation checkpoint.
+
+### 2026-07-09_plan-task-block-format -- replace checklist task rows
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Replaced checklist-shaped plan task prompts with sectioned task blocks and centralized requirement and acceptance traceability matrix guidance.
+- Added harness validation coverage so current plan templates must keep task-block fields, traceability matrix headers, and no checkbox task examples.
+
+### 2026-07-09_plan-task-block-format -- plan sectioned task blocks
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec and plan for replacing checklist-shaped plan task rows with sectioned task blocks and a centralized requirement and acceptance traceability matrix.
+
+### 2026-07-07_superpowers-compat-guidance -- document adapter flow and fix release baseline
+
+Release target: `0.5+`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added Superpowers adapter guidance to the operator README, package-local operator note, harness entrypoint, and canonical lifecycle and freeze-gate references.
+- Restored package-local `0.5.0` release notes verbatim from `origin/release/0.5` as the latest concrete release-note file.
+
+#### Changed
+
+- Updated the harness development marker and validator expectations from `0.4+` to `0.5+` while keeping release notes on concrete released versions.
+- Updated the release branch process so future release prep synchronizes `VERSION`, release policy, release notes, validator expectations, and the post-release development marker.
+
+### 2026-07-07_superpowers-compat-guidance -- approve adapter guidance plan
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved spec, plan, architecture snapshot, and test-case snapshot for documenting the Superpowers adapter flow, preserving harness artifact canonicality and freeze gates, and correcting the `0.5+` release-baseline validation plan.
+
+## Release 0.5
+
+### 2026-07-04_release-branch-process -- document release branch workflow
+
+Release target: `0.5.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
 - Added a root-level agent-executable release branch runbook and an `AGENTS.md` pointer for chat-triggered release branch creation, including remote release version derivation, package-local release notes, release branch push, and post-release `master` reset steps.
+- Aligned release policy and validation with stable release-note filenames such as `0.5.0.md`, while allowing post-release development markers such as `0.5+` in `VERSION`.
 
 ### 2026-07-04_release-branch-process -- approve release process plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -28,7 +184,7 @@ Release-note: `source-only`
 
 ### 2026-07-03_artifact-style-guidance -- add artifact style module
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -45,7 +201,7 @@ Release-note: `include`
 
 ### 2026-07-03_artifact-style-guidance -- approve artifact style plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -55,7 +211,7 @@ Release-note: `source-only`
 
 ### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -69,7 +225,7 @@ Release-note: `include`
 
 ### 2026-07-03_work-item-architecture-decisions -- approve architecture-decision flow plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -79,7 +235,7 @@ Release-note: `source-only`
 
 ### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
 
-Release target: `0.4+`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -95,7 +251,7 @@ Release-note: `include`
 
 ### 2026-07-02_template-block-assembly -- approve modular template plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -105,7 +261,7 @@ Release-note: `source-only`
 
 ### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -116,7 +272,7 @@ Release-note: `include`
 
 ### 2026-07-02_orchestration-sizing-large-templates -- approve sizing and large-template plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -126,7 +282,7 @@ Release-note: `source-only`
 
 ### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -136,7 +292,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -147,7 +303,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-plan-template-structure -- approve plan-template update plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -157,7 +313,7 @@ Release-note: `source-only`
 
 ### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -167,7 +323,7 @@ Release-note: `include`
 
 ### 2026-07-01_small-medium-template-structure -- approve spec-template update plan
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -177,7 +333,7 @@ Release-note: `source-only`
 
 ### 2026-07-01-naming-conventions: deduplicate naming pattern references
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -191,7 +347,7 @@ Release-note: `include`
 
 ### 2026-07-01-naming-conventions: centralize naming convention rules
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -205,7 +361,7 @@ Release-note: `include`
 
 ### 2026-07-01-naming-conventions: define naming convention policy
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -215,7 +371,7 @@ Release-note: `source-only`
 
 ### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -225,7 +381,7 @@ Release-note: `include`
 
 ### 2026-06-28-changelog-release-sections: group changelog by release
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -236,7 +392,7 @@ Release-note: `include`
 
 ### 2026-06-27-portable-harness-validator: replace PowerShell validator with Python
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -246,7 +402,7 @@ Release-note: `include`
 
 ### 2026-06-27-portable-harness-validator: plan portable harness validator
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -256,7 +412,7 @@ Release-note: `source-only`
 
 ### 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -266,7 +422,7 @@ Release-note: `include`
 
 ### 2026-06-27-large-phase-orchestration-owner: define large phase orchestration owner
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -276,7 +432,7 @@ Release-note: `source-only`
 
 ### 2026-06-27-phased-planning-orchestration: enforce anchor-spec-first phase planning
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -286,7 +442,7 @@ Release-note: `include`
 
 ### 2026-06-27-phased-planning-orchestration: clarify phased planning orchestration
 
-Release target: `unreleased`
+Release target: `0.5.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 

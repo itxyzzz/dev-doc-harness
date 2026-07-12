@@ -43,21 +43,42 @@ Do not create a plan amendment for feedback received before the planning package
 
 After the operator explicitly approves the staged planning package, or explicitly asks for a handoff snapshot:
 
-1. Update `CHANGELOG.md` with a newest-first entry for the approved artifact set.
+1. Update the matching changelog source fragment under `docs/work-items/<work-id>/changelog/*.md` with a newest-first entry for the approved artifact set.
 2. When the operator approved the package rather than requesting only a handoff snapshot, update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
 3. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
-4. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the `CHANGELOG.md` entry title snippet matches that planned subject.
-5. Verify the worktree status, stage only the approved planning artifacts and `CHANGELOG.md`, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, or implementation edits during a plan-only checkpoint.
+4. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
+5. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
 6. Stop before implementation, task execution, or the next planning stage.
 7. Report the commit hash and approved artifact paths.
-8. Remind the operator that they may push, create a draft plan-only PR, and/or compact the thread at this point.
-9. Ask the operator to confirm model, reasoning-effort, and sub-agent policy choices and to say whether implementation should begin now.
+8. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
+9. Confirm that the frozen package records the capability tier, reasoning effort, orchestration mode, sub-agent policy, approved fallback, execution continuity, context visibility, and whether artifact rehydration is required.
+10. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
+
+Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
 
 The planning package is frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
 
-Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may both confirm execution settings and authorize implementation when the response clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording.
+Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may authorize the action offered by the selected continuity route when the response clearly approves that action.
 
-If the operator only confirms execution settings without clear start authorization, ask a concise follow-up question about whether implementation should begin now. A bare `Confirm` may authorize implementation only when the agent's combined post-freeze prompt explicitly states that confirming also means beginning implementation now; otherwise treat it as settings-only confirmation and ask whether to start.
+For a `same task` route, a fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
+
+## Post-freeze transition routing
+
+Before rendering a handoff or offering task creation, read these values from the approved package:
+
+1. Planning shape: combined small/medium, explicit staged small/medium, large/phased anchor, plan, phase plan, or amendment.
+2. Frozen package: the exact approved spec, applicable plan or phase plan, required snapshots, applicable amendments, required evidence, and any other current input named by the plan.
+3. Next activity: the documented planning, implementation, review, or replanning activity that follows this actual boundary.
+
+Then apply the approved execution continuity and current capability:
+
+- `new task with curated-artifact handoff`: display the copy-ready handoff as a primary conversation result. Include the exact frozen package, applicable `AGENTS.md` and repository harness, `rule:execution-quality.execution-thread-start`, approved strategy and fallback, Next activity, and approval-required variance stop condition without restating frozen requirements. Display the proposed model generation, resolved profile when exposed, capability tier, reasoning effort, orchestration mode, and fallback.
+- Compatible task creation: ask for explicit approval specifically to create the task. Only after that approval may the platform action create it with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task.
+- Unavailable or incompatible task creation: state which action or recorded configuration is unavailable and display the same manual copy-ready handoff. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
+- `same task`: keep the current-task authorization route separate and use the fresh explicit start authorization described above.
+- Justified alternative: follow only the explicit transition recorded in the approved package; do not infer task creation or same-task authorization.
+
+An operator may explicitly direct continuation in the current task despite a recorded new-task recommendation. Present this only as an opt-in override, not as a question or recommended alternative.
 
 ## Multiple gates for very large or phased work items
 
@@ -67,10 +88,10 @@ Very large or phased work items may have multiple freeze gates:
 - Phase-plan freeze: after one or more `<phase-plan-filename>` files are approved.
 - Amendment freeze: after any high-impact `<amendment-filename>` is approved.
 
-Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order; this freeze-gate rule owns the approval mechanics at each stop.
+Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order, and `rule:lifecycle.planning-shape` distinguishes combined and explicitly staged small/medium packages; this freeze-gate rule owns the approval mechanics and continuity-selected conversation result at each actual stop.
 
 ## Compatibility
 
 This gate layers on top of Codex plan mode, Superpowers, and spec-kit. Those tools may produce or refine the artifacts, but the harness owns the approval, commit, and pause transition before implementation.
 
-If another workflow would normally ask to implement immediately after planning, pause instead and run this gate.
+If another workflow would normally continue directly from approved planning into execution, pause and run this gate instead. The next operator response may authorize implementation and select any execution methodology or tool, including Superpowers.

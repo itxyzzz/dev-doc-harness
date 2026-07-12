@@ -11,6 +11,7 @@ Owned rule IDs:
 | `rule:lifecycle.work-item-folders` | `## Work item folders` |
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
+| `rule:lifecycle.planning-shape` | `## Small/medium planning shape` |
 | `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
 | `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
@@ -59,12 +60,26 @@ Large or phased work needs an anchor spec and later phase plans when one orchest
 
 `module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
 
+## Small/medium planning shape
+
+`rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
+
+A small/medium spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. Before review and freeze, the spec must record the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide any handoff required for that activity. A generic template heading or continuity preference cannot create this exception.
+
+Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
+
+At every freeze boundary, record the planning shape, exact frozen package, and documented next activity before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
+
 ## Small/medium layout
 
 ```text
 <work-item-path>
   <spec-filename>
   <plan-filename>
+
+  changelog/
+    planning-approval.md
+    implementation.md
 
   snapshots/
     test-cases.snapshot.md
@@ -92,6 +107,10 @@ The full lifecycle package for large or phased work may eventually contain these
   <spec-filename>
   <phase-plan-filename>      # one per concrete phase
   <amendment-filename>
+
+  changelog/
+    planning-approval.md
+    phase-01.md
 
   snapshots/
     test-cases.snapshot.md
@@ -137,7 +156,7 @@ Combined anchor-spec and phase-plan drafting is allowed only when the operator e
 
 For large or phased work items, `<spec-filename>` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `<spec-filename>` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
 
-`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing Specification Commitments or Architecture Decisions. Include goals, scope, non-scope, assumptions, constraints, risks, Verification Criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
 Phase plans must derive from `<spec-filename>`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
@@ -149,7 +168,11 @@ When Superpowers is installed and active, use Superpowers for brainstorming, pla
 
 The full durable package must live under `<work-item-path>` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
 
-If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs. A valid stub contains:
+Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers execution flow begins.
+
+Add documents under `docs/superpowers` only when that directory already exists and contains previous documentation packages from before the current work. This exception exists solely for backward compatibility and continuity. Do not create or seed the directory, an empty placeholder, or package content during the current work to satisfy this condition.
+
+When that condition is satisfied, new files under `docs/superpowers` may exist only as minimal pointer stubs. A valid stub contains:
 
 - A title.
 - A status.
@@ -213,7 +236,8 @@ Every substantial spec or plan must include a compact matrix:
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog | Living | Yes | Before each commit | `CHANGELOG.md` | Newest-first entries grouped by change type; title snippets synchronized with commit subjects |
+| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with commit subjects |
+| Root changelog consolidation | Living | As needed | After merge, before publication or release-note work, or at an operator-owned checkpoint | `CHANGELOG.md` | Consolidated curated publication view generated from reviewed fragments and manual release curation |
 | Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
@@ -224,7 +248,7 @@ Every substantial spec or plan must include a compact matrix:
 
 Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
 
-`CHANGELOG.md` is always required before commits.
+The matching changelog source fragment is always required before commits. Root `CHANGELOG.md` is consolidated at operator-owned checkpoints, while changelog source fragments are required before commits.
 
 ## Commit messages
 
@@ -232,11 +256,11 @@ All commits made under the harness must use a planned or documented subject. Com
 
 Use `rule:naming.commit-messages` for the current subject grammar, action types, issue-key handling, elaboration snippets, and nonredundancy rules.
 
-The title or elaboration snippet is the phrase shared by the durable planning artifact, planned commit row, and `CHANGELOG.md` entry heading or bullet-level snippet. Implementation subjects should be more informative than planning approval subjects and should describe the concrete delivered change or phase output.
+The title or elaboration snippet is the phrase shared by the durable planning artifact, planned commit row, and the matching changelog source fragment heading or bullet-level snippet. Implementation subjects should be more informative than planning approval subjects and should describe the concrete delivered change or phase output.
 
 Commit subjects and changelog entry titles must stay synchronized:
 
-- The `CHANGELOG.md` entry heading for a commit must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the planned commit subject.
+- The changelog source fragment entry heading for a commit must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the planned commit subject.
 - When a commit subject changes during review or implementation, update the
   matching planned commit row and changelog heading before committing.
 - When one changelog entry covers multiple commits for the same work item, each
@@ -259,7 +283,7 @@ Create an immutable amendment in:
 <amendment-filename>
 ```
 
-and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, Specification Commitments, Verification Criteria, Plan Checks, or plan feasibility.
 
 ## Variance classes
 
@@ -268,12 +292,20 @@ and request operator approval before proceeding when post-freeze variance affect
 | Mechanical | File rename, equivalent helper extraction, import adjustment | Yes | Record only if non-obvious |
 | Local technical | Minor implementation shape differs but behavior, scope, and tests remain the same | Usually yes | Record rationale in the variance log |
 | Architectural/API/data/security | Endpoint change, schema change, auth impact, persistence change | No | Create amendment and request approval |
-| Scope change | New behavior, removed requirement, changed acceptance criteria | No | Create amendment and request approval |
+| Scope change | New behavior, removed Specification Commitment, or changed Verification Criterion | No | Create amendment and request approval |
 | Plan invalidation | Task no longer feasible as planned | No | Stop and produce replanning note or amendment |
 
 ## Changelog
 
-Maintain a living `CHANGELOG.md` at the repository root. Update it before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar.
+Maintain living changelog source fragments under:
+
+```text
+docs/work-items/<work-id>/changelog/*.md
+```
+
+Update the matching fragment before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`.
+
+Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog.
 
 Use a Keep a Changelog style:
 
@@ -283,17 +315,22 @@ Use a Keep a Changelog style:
   planned commit subjects for the same work.
 - Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - Keep descriptions concise and tied to specific phases, tasks, specs, or plan decisions.
+- Include exactly one `Release target`, `Package impact`, and `Release-note` metadata field in each fragment entry.
 
 Example:
 
 ```md
-## 2026-05-25 PROJ-123 docs: import-validation -- document duplicate profile checks
+### 2026-05-25 PROJ-123 docs: import-validation -- document duplicate profile checks
 
-### Added
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Added
 
 - Added validation tasks for duplicate profile identifiers in the phase plan.
 
-### Changed
+#### Changed
 
-- Clarified API acceptance criteria in the spec.
+- Clarified API Verification Criteria in the spec.
 ```
