@@ -53,22 +53,28 @@ flowchart TD
     G --> J{"Operator approves?"}:::house
     J -.->|"Feedback"| G
     J -->|"Yes"| K["Freeze anchor package<br/>commit, pause"]:::house
-    K --> L["Fresh instruction: draft phase plan"]:::house
-    L --> M{"Operator approves?"}:::house
-    M -.->|"Feedback"| L
-    M -->|"Yes"| N["Freeze phase-plan package<br/>commit, pause"]:::house
+    K --> L{"Next activity: phase-plan drafting<br/>Approved continuity?"}:::house
+    L -->|"Same task"| M["Fresh instruction: draft phase plan"]:::house
+    L -->|"New task"| N["Visible handoff; approve configured task creation"]:::house
+    N --> M
+    M --> O{"Operator approves?"}:::house
+    O -.->|"Feedback"| M
+    O -->|"Yes"| P["Freeze phase-plan package<br/>commit, pause"]:::house
 
-    I --> O{"Approved continuity?"}:::house
-    N --> O
-    O -->|"Same task"| P["Fresh start authorization"]:::house
-    O -->|"New task"| Q["Visible handoff; approve configured task creation"]:::house
-    P --> R["Implement approved plan"]:::house
-    Q --> R
-    R --> S{"High-impact variance?"}:::house
-    S -->|"No"| T["Validate, update docs and changelog source"]:::house
-    T --> U["Commit implementation"]:::house
-    S -->|"Yes"| V["Plan amendment and approval"]:::house
-    V -.-> O
+    I --> Q{"Next activity: implementation<br/>Approved continuity?"}:::house
+    P --> Q
+    Q -->|"Same task"| R["Fresh start authorization"]:::house
+    Q -->|"New task"| S["Visible handoff; approve configured task creation"]:::house
+    R --> T["Implement approved plan"]:::house
+    S --> T
+    T --> U{"High-impact variance?"}:::house
+    U -->|"No"| V["Validate, update docs and changelog source"]:::house
+    V --> W["Commit implementation"]:::house
+    U -->|"Yes"| X["Draft plan amendment"]:::house
+    X --> Y{"Operator approves?"}:::house
+    Y -.->|"Feedback"| X
+    Y -->|"Yes"| Z["Freeze amendment package<br/>commit, pause"]:::house
+    Z -.-> Q
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
