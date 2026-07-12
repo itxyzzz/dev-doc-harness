@@ -145,7 +145,7 @@ Combined anchor-spec and phase-plan drafting is allowed only when the operator e
 
 For large or phased work items, `<spec-filename>` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `<spec-filename>` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
 
-`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing requirements or decisions that were discussed earlier. Include goals, scope, non-scope, assumptions, constraints, risks, acceptance criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
+`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing Specification Commitments or Architecture Decisions. Include goals, scope, non-scope, assumptions, constraints, risks, Verification Criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
 
 Phase plans must derive from `<spec-filename>`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
 
@@ -270,7 +270,7 @@ Create an immutable amendment in:
 <amendment-filename>
 ```
 
-and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, acceptance criteria, or plan feasibility.
+and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, Specification Commitments, Verification Criteria, Plan Checks, or plan feasibility.
 
 ## Variance classes
 
@@ -279,7 +279,7 @@ and request operator approval before proceeding when post-freeze variance affect
 | Mechanical | File rename, equivalent helper extraction, import adjustment | Yes | Record only if non-obvious |
 | Local technical | Minor implementation shape differs but behavior, scope, and tests remain the same | Usually yes | Record rationale in the variance log |
 | Architectural/API/data/security | Endpoint change, schema change, auth impact, persistence change | No | Create amendment and request approval |
-| Scope change | New behavior, removed requirement, changed acceptance criteria | No | Create amendment and request approval |
+| Scope change | New behavior, removed Specification Commitment, or changed Verification Criterion | No | Create amendment and request approval |
 | Plan invalidation | Task no longer feasible as planned | No | Stop and produce replanning note or amendment |
 
 ## Changelog
@@ -319,5 +319,5 @@ Release-note: `source-only`
 
 #### Changed
 
-- Clarified API acceptance criteria in the spec.
+- Clarified API Verification Criteria in the spec.
 ```

@@ -8,7 +8,7 @@ Phase `01`: `<phase name>`
 2. Scope: `<covered areas or decisions>`.
 3. Depends on: `<None, prior phase, external event, or approved amendment>`.
 4. Future phase-plan output: `<phase-plan-filename>`.
-5. Acceptance focus: `<AC ids or phase-specific review signal>`.
+5. Conformance focus: `<VER ids, owning phase, or phase-specific evidence signal>`.
 
 Phase `02`: `<phase name>`
 
@@ -16,7 +16,7 @@ Phase `02`: `<phase name>`
 2. Scope: `<covered areas or decisions>`.
 3. Depends on: `<phase ids, artifacts, or external events>`.
 4. Future phase-plan output: `<phase-plan-filename>`.
-5. Acceptance focus: `<AC ids or phase-specific review signal>`.
+5. Conformance focus: `<VER ids, owning phase, or phase-specific evidence signal>`.
 
 Phase decomposition prompts:
 

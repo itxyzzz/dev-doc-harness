@@ -3,7 +3,7 @@
   "blocks": [
     "blocks/spec.010.small.header.md",
     "blocks/spec.020.common.intent-scope-context.md",
-    "blocks/spec.030.common.requirements-acceptance.md",
+    "blocks/spec.030.common.commitments-verification.md",
     "blocks/spec.035.common.architecture-decisions.md",
     "blocks/spec.040.common.interfaces-risks.md",
     "blocks/spec.070.small.planned-commits.md",

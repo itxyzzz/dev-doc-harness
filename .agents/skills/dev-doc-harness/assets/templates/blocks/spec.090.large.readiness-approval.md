@@ -2,8 +2,8 @@
 
 - [ ] Source input and desired outcome are captured.
 - [ ] Scope, non-scope, assumptions, open questions, and known unknowns are explicit.
-- [ ] Requirements are specific, relevant, bounded, and linked to acceptance criteria.
-- [ ] Acceptance criteria are observable, testable, and tied to requirements or scope items.
+- [ ] Specification Commitments are atomic, classified, bounded, and contain every implementation obligation in their Statements.
+- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and explicit cross-phase ownership.
 - [ ] Repository evidence and compatibility constraints are recorded.
 - [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.

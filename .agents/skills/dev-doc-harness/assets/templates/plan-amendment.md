@@ -11,7 +11,7 @@ Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `r
 
 - Amendment ID: `AMD-001`
 - File: `<plan, phase plan, spec, or snapshot path>`
-- Section or task: `<heading, task ID, requirement ID, or decision ID>`
+- Section or task: `<heading, TASK ID, SPEC ID, VER ID, CHECK ID, or DEC ID>`
 - Original instruction: `<approved text or concise summary>`
 
 ## Discovered issue
@@ -31,7 +31,7 @@ State why the implementation cannot proceed under the approved plan.
 | Area | Impact |
 |---|---|
 | Scope | |
-| Acceptance criteria | |
+| Verification Criteria and Plan Checks | |
 | API/interface | |
 | Data model/migration | |
 | Security/privacy/compliance | |

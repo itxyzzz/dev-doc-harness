@@ -1,18 +1,25 @@
-## Spec Traceability
+## Commitment-Disposition Mapping
 
-Map the approved spec to execution without restating the spec. Use one compact review matrix for requirement and acceptance coverage. Keep cells short by citing IDs plus a short title only when useful.
+Map every in-scope Specification Commitment to Implementation Tasks, verification-only treatment, or an exact frozen-spec reference that already authorizes a later phase. A Plan cannot create a deferral. Preservation-only and constraint commitments may be verification-only rather than receiving artificial tasks.
 
-| Requirement or acceptance criterion | Primary tasks | Validation |
+| Specification Commitment | Disposition | Implementation Tasks |
 |---|---|---|
-| `REQ-001` `<short title>` | `T-001`, `T-002` | `V-001`, `V-002` |
-| `AC-001` `<short title>` | `T-002`, `T-003` | `V-003` |
+| `SPEC-001` `<short title>` | `<implement | verification-only | frozen later-phase reference>` | `TASK-001`, `TASK-002`, or `None with reason` |
 
-Include one row for each `REQ` and `AC` that must be implemented, validated, or marked not applicable with a reason. Do not include risk rows in the default matrix; cover risks through task `Notes`, implementation boundaries, validation entries, or a separate plan-specific risk section only when needed.
+## Verification-Execution Mapping
+
+Map every applicable Verification Criterion to one or more Plan Checks and the stage where evidence is expected. Every Plan Check covers at least one criterion.
+
+| Verification Criterion | Plan Checks | Expected evidence stage |
+|---|---|---|
+| `VER-001` `<short title>` | `CHECK-001` | `<pre-edit | implementation | review | pre-commit | named environment>` |
+
+Both mappings are required and coordinate through task/check dependencies and stages. Completing either mapping alone is insufficient Plan coverage.
 
 Architecture coverage:
 
 1. Architecture input: `<spec section, snapshots/architecture.snapshot.md, amendment, or None with reason>`.
-2. Plan usage: `<how tasks consume architecture decisions for sequencing, boundaries, validation, rollout, or review>`.
+2. Plan usage: `<how tasks consume Architecture Decisions under mapped Specification Commitments for sequencing, boundaries, checks, rollout, or review>`.
 3. Drift path: `<draft spec/snapshot update before freeze, or variance/amendment after freeze>`.
 4. Reinterpretation guard: plans reference approved architecture decisions and do not reinterpret missing or frozen architecture silently.
 

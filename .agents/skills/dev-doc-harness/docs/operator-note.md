@@ -44,6 +44,10 @@ Small or medium work usually gets a spec and plan. Large or phased work gets an
 anchor spec first. Phase plans come later from the approved anchor spec unless
 you explicitly ask for combined planning.
 
+The Specification Package keeps meaning separate from procedure: Goal and Scope frame `SPEC-NNN` Specification Commitments, mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments, and `VER-NNN` Verification Criteria state conformance. The integrated Plan derives `TASK-NNN` Implementation Tasks from commitments plus applicable decisions and derives `CHECK-NNN` Plan Checks from criteria. It coordinates both paths through stages and dependencies; Architecture Decisions are not a linear layer between commitments and criteria.
+
+Execution closes a separate loop: a Plan Check produces evidence, evidence determines Verification Criterion status, and applicable criterion statuses support judging Specification Commitment conformance. Task completion alone is not conformance, and planning approval/freeze remains a separate lifecycle decision.
+
 Work-item architecture decisions live in the spec and, when useful, in
 `snapshots/architecture.snapshot.md`. The snapshot is work-item-bound: it
 preserves drivers, constraints, selected approach, affected boundaries, and
@@ -94,7 +98,7 @@ platform supports it.
 Frozen planning artifacts should not be silently rewritten to make later
 implementation look cleaner. Nontrivial drift is recorded as variance. Drift
 that changes architecture, public APIs, data, security, privacy, compliance,
-scope, acceptance criteria, or feasibility requires an amendment and approval.
+scope, Specification Commitments, Verification Criteria, Plan Checks, or feasibility requires an amendment and approval.
 
 Before ordinary commits, agents update `docs/work-items/<work-id>/changelog/*.md`
 rather than the root changelog. Root `CHANGELOG.md` remains the consolidated

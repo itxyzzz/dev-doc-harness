@@ -23,21 +23,28 @@ Read these before finalizing implementation planning:
 
 If architecture is missing, ambiguous, or changed before freeze, update the draft spec or architecture snapshot before finalizing this plan. If architecture changes after freeze, use variance handling and an amendment when `rule:lifecycle.variance-policy` requires approval. Do not reinterpret architecture decisions in the plan.
 
-## Spec Traceability
+## Commitment-Disposition Mapping
 
-Map the approved spec to execution without restating the spec. Use one compact review matrix for requirement and acceptance coverage. Keep cells short by citing IDs plus a short title only when useful.
+Map every in-scope Specification Commitment to Implementation Tasks, verification-only treatment, or an exact frozen-spec reference that already authorizes a later phase. A Plan cannot create a deferral. Preservation-only and constraint commitments may be verification-only rather than receiving artificial tasks.
 
-| Requirement or acceptance criterion | Primary tasks | Validation |
+| Specification Commitment | Disposition | Implementation Tasks |
 |---|---|---|
-| `REQ-001` `<short title>` | `T-001`, `T-002` | `V-001`, `V-002` |
-| `AC-001` `<short title>` | `T-002`, `T-003` | `V-003` |
+| `SPEC-001` `<short title>` | `<implement | verification-only | frozen later-phase reference>` | `TASK-001`, `TASK-002`, or `None with reason` |
 
-Include one row for each `REQ` and `AC` that must be implemented, validated, or marked not applicable with a reason. Do not include risk rows in the default matrix; cover risks through task `Notes`, implementation boundaries, validation entries, or a separate plan-specific risk section only when needed.
+## Verification-Execution Mapping
+
+Map every applicable Verification Criterion to one or more Plan Checks and the stage where evidence is expected. Every Plan Check covers at least one criterion.
+
+| Verification Criterion | Plan Checks | Expected evidence stage |
+|---|---|---|
+| `VER-001` `<short title>` | `CHECK-001` | `<pre-edit | implementation | review | pre-commit | named environment>` |
+
+Both mappings are required and coordinate through task/check dependencies and stages. Completing either mapping alone is insufficient Plan coverage.
 
 Architecture coverage:
 
 1. Architecture input: `<spec section, snapshots/architecture.snapshot.md, amendment, or None with reason>`.
-2. Plan usage: `<how tasks consume architecture decisions for sequencing, boundaries, validation, rollout, or review>`.
+2. Plan usage: `<how tasks consume Architecture Decisions under mapped Specification Commitments for sequencing, boundaries, checks, rollout, or review>`.
 3. Drift path: `<draft spec/snapshot update before freeze, or variance/amendment after freeze>`.
 4. Reinterpretation guard: plans reference approved architecture decisions and do not reinterpret missing or frozen architecture silently.
 
@@ -116,21 +123,21 @@ Sub-agent `<role or task id>`:
 12. Parallel execution: `<Yes/No and dependency>`.
 13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
 
-## Task Plan
+## Implementation Tasks
 
 Write one section per implementation, test, validation, documentation, or handoff task. Tasks should be SMART:
 
 1. Specific enough that a fresh implementation agent or delegated sub-agent knows which files, behavior, tests, docs, or decisions are in scope.
-2. Measurable through a linked acceptance criterion, validation command, review finding, or explicit artifact update.
+2. Measurable through a linked Specification Commitment, Verification Criterion, Plan Check, review finding, or explicit artifact update.
 3. Achievable within the approved scope and one orchestration thread with bounded delegation.
-4. Relevant to the approved spec, phase objective, acceptance criterion, risk, interface, documentation need, or commit boundary.
+4. Relevant to the approved Specification Commitments, mapped Architecture Decisions, Verification Criteria, risk, interface, documentation need, or Plan Check enablement.
 5. Time-bounded by lifecycle checkpoint, such as before editing, before validation, before commit, or during final review.
 
-Order tasks by implementation dependency and reviewability. Use a stable task ID in each `###` heading. Each task must include `Dependencies`, `Implementation`, and `Exit criteria`. Add `Notes` only when the task needs boundaries, gotchas, risk-specific guidance, or optional per-task traceability that is not already clear from the `Spec Traceability` matrix.
+Order tasks by implementation dependency and reviewability. Use a stable task ID in each full-name heading. Each task must include `Dependencies`, `Implementation`, and `Exit criteria`. Add `Notes` only when boundaries, risks, or traceability are not already clear from the two Plan mappings.
 
 Do not force vertical slices when shared setup, tests, refactors, or interface updates need to happen first.
 
-### `T-001` `<short imperative task title>`
+### `TASK-001` Implementation Task — `<short imperative title>`
 
 Dependencies:
 
@@ -149,11 +156,11 @@ Notes:
 
 1. `<optional boundary, gotcha, risk-specific guidance, or per-task trace IDs when useful>`.
 
-### `T-002` `<short imperative task title>`
+### `TASK-002` Implementation Task — `<short imperative title>`
 
 Dependencies:
 
-1. `<T-001 or None>`.
+1. `<TASK-001 or None>`.
 
 Implementation:
 
@@ -162,6 +169,36 @@ Implementation:
 Exit criteria:
 
 1. `<observable completion signal, validation result, review finding, or artifact update>`.
+
+## Plan Checks
+
+Write one block per frozen evidence-producing procedure. One check may cover multiple Verification Criteria without merging their meanings. Multiple checks for one criterion are conjunctive by default; equivalent alternatives use an explicit `Any one of` group with an equivalence rationale.
+
+### `CHECK-001` Plan Check — `<short procedure title>`
+
+Covers:
+
+1. `VER-001`.
+
+Procedure:
+
+1. `<exact command, test, inspection, analysis, demonstration, or review procedure>`.
+
+Expected result:
+
+1. `<observable pass signal>`.
+
+Evidence record:
+
+1. `<where the execution instance, actual result, evidence, and pass/fail/blocker status will be recorded>`.
+
+Stage or environment:
+
+1. `<pre-edit, implementation, review, pre-commit, phase, or named environment>`.
+
+Task/check coordination:
+
+1. `<TASK-NNN dependency that enables this check, or check result that gates a task or stage>`.
 
 ## Planned commits
 
@@ -179,17 +216,15 @@ Implementation commit:
 2. Changelog title or snippet: `<changelog-heading>`.
 3. Notes: `<add one block per expected implementation, validation, release, or maintenance commit>`.
 
-## Validation Plan
+## Check execution and completion records
 
-| Command | Expected result |
-|---|---|
-| `<exact command, manual check, review finding, or operator acceptance path>` | `<expected signal and linked AC/risk/phase coverage>` |
+For every Plan Check execution, record the `CHECK` ID, a unique execution instance, stage or environment, actual result, evidence location or inline evidence, and `pass`, `fail`, or `blocker` status. Repeated executions of an unchanged procedure produce distinct records. A material procedure change follows approved variance or amendment rather than silently reusing the ID.
 
-Every validation entry must state the expected signal before implementation starts. Add command exit behavior, important output text, manual observation, review criterion, or operator acceptance condition as applicable.
+Completion reports cite executed Plan Checks, resulting Verification Criterion status, remaining task or disposition status, variance, and residual risk. Task completion alone does not establish conformance.
 
 ## Plan variance handling
 
-Use `rule:lifecycle.variance-policy`. Before freeze, edit this draft directly for operator feedback. After freeze, record nontrivial implementation variance in `implementation-notes/variance-log.md`; use a plan amendment for high-impact architecture, API, data, security, privacy, compliance, scope, acceptance-criteria, or feasibility changes.
+Use `rule:lifecycle.variance-policy`. Before freeze, edit this draft directly for operator feedback. After freeze, record nontrivial implementation variance in `implementation-notes/variance-log.md`; use a plan amendment for high-impact architecture, API, data, security, privacy, compliance, scope, Verification Criterion, Plan Check, or feasibility changes.
 
 ## Planning artifact freeze gate
 
@@ -214,10 +249,10 @@ When execution continuity selects a new task or a different model/profile, inclu
 ## Plan readiness checklist
 
 - [ ] Input artifacts and relevant repository context have been read and listed.
-- [ ] Every spec requirement and acceptance criterion has at least one task and one validation path.
+- [ ] Every in-scope Specification Commitment has an authorized disposition and every applicable Verification Criterion has Plan Check coverage.
 - [ ] Risks, scope boundaries, interfaces, and documentation decisions are either covered by tasks or explicitly marked as no-op with a reason.
 - [ ] Task detail is sufficient for a fresh implementation agent or delegated sub-agent to execute its assigned part without inventing task order, file scope, validation, or documentation steps.
-- [ ] Validation entries have exact commands, manual checks, review findings, or operator acceptance paths with expected signals.
+- [ ] Plan Checks have complete procedure, result, evidence-record, and stage/environment fields.
 - [ ] Planned commits and changelog title snippets are synchronized.
 - [ ] Variance handling is clear for likely implementation drift.
 - [ ] The work still fits one orchestration thread with a bounded sub-agent strategy. If it does not, split, re-scope, or escalate to large/phased handling before freeze.
@@ -226,7 +261,7 @@ When execution continuity selects a new task or a different model/profile, inclu
 
 ## Completion criteria
 
-- Acceptance criteria in `<spec-filename>` are met.
+- Applicable Verification Criteria in `<spec-filename>` have evidence-backed status, and required Implementation Tasks or dispositions are complete.
 - Required validation commands have been run and recorded.
 - Required documentation artifacts have been created or updated.
 - The frozen plan had enough detail for each assigned execution part or delegated sub-agent to proceed safely.

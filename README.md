@@ -79,6 +79,17 @@ the spec, plan, required documentation updates, and any implementation variance.
 The operator gets a stable place to review what is about to happen before the
 agent starts changing the product.
 
+The specification package separates five readable entities. Goal and Scope frame `SPEC-NNN` Specification Commitments; mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments; and `VER-NNN` Verification Criteria define conformance without procedures. The integrated Plan then derives `TASK-NNN` Implementation Tasks from commitments and decisions, and `CHECK-NNN` Plan Checks from criteria. Architecture Decisions do not form a linear layer between commitments and criteria.
+
+```text
+Specification Package: Goal/Scope -> SPEC -> VER
+                                 DEC -.realizes or constrains.-> SPEC
+Integrated Plan:        SPEC + DEC -> TASK    VER -> CHECK
+Conformance:            CHECK -> evidence -> VER status -> SPEC conformance
+```
+
+Task completion does not establish conformance without check evidence, and passing checks does not complete delivery while required tasks or authorized dispositions remain unresolved. Plan approval and freeze remain separate lifecycle decisions.
+
 The practical small/medium boundary is whether one orchestration thread can
 safely coordinate the work with bounded delegation. That coordinating thread
 must be able to hold the scope, decisions, validation, variance, final
@@ -97,7 +108,7 @@ lives in `references/naming-conventions.md`.
 
 For large or phased work, expect a more deliberate handoff. The agent first
 writes an anchor `<spec-filename>` that preserves goals, boundaries, decisions,
-risks, tests, acceptance criteria, and phase objectives. Use this path when the
+risks, tests, Verification Criteria, and phase objectives. Use this path when the
 whole effort would saturate one orchestration thread, when bounded delegation is
 not enough to keep integration and review clear, or when staged review
 materially reduces risk. The normal first planning package is anchor-spec-only;
@@ -152,7 +163,7 @@ beginning at the named activity without repeating discovery.
 During implementation, the agent should not quietly rewrite frozen plans to make
 reality look tidier. If the work deviates in a meaningful way, the variance is
 recorded. If the post-freeze deviation affects architecture, APIs, data,
-security, scope, acceptance criteria, or feasibility, the agent must stop for an
+security, scope, Specification Commitments, Verification Criteria, Plan Checks, or feasibility, the agent must stop for an
 amendment and operator approval.
 
 Before commits, the agent updates a work-item-local changelog source fragment
@@ -185,7 +196,7 @@ The harness is designed to produce these outcomes:
 - De-facto reporting of orchestration mode, runtime permission and availability, fallback use, continuity, sub-agent roles or waves, and observed model details when available.
 - A visible record of plan variance instead of silent drift.
 - Documentation updates that are tied to the work instead of remembered later.
-- A compact audit trail for decisions, tests, acceptance criteria, and risks.
+- A compact audit trail for Architecture Decisions, Plan Checks, Verification Criteria, and risks.
 
 ## How to use it
 
@@ -347,10 +358,11 @@ The internal machinery is intentionally small:
 - `references/planning-freeze-gates.md` defines the approval-first planning
   workflow.
 - `references/durable-planning-quality.md` defines the quality bar for durable
-  specs and phase plans.
-- `references/artifact-style.md` defines final artifact content, scannable
-  structure, placeholder control, traceability density, and template prompt
-  style for large or hard-to-scan artifacts.
+  specs and phase plans plus Specification Commitments, Verification Criteria,
+  Plan Checks, asymmetric Plan coverage, and conformance status.
+- `references/artifact-style.md` defines final artifact content, full-name entity
+  headings, Verification Criterion placement, asymmetric traceability, scannable
+  structure, placeholder control, traceability density, and template prompt style.
 - `references/subagent-model-policy.md` defines the available sub-agent and
   model policies. The active repository policy is selected in `AGENTS.md`.
 - `assets/templates/` contains the reusable spec, plan, amendment, and variance

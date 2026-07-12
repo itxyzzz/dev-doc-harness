@@ -194,7 +194,7 @@ Recommended change: `<none or concrete model/reasoning change with reason>`
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 01 | Repository or API discovery | curated prompt | Relevant files, docs, specs, and decisions | Discovery notes | active repository policy | not exposed | fast/economy | not exposed | medium | Bounded exploration | Yes | Low plus consequence |
 | 02 | Data model design review | curated artifacts | Spec decisions, schemas, migrations, and API contracts | Review memo | active repository policy | latest available | flagship | not exposed | high | High blast radius | Yes/No | High plus consequence |
-| 03 | Test plan generation | curated artifacts | Requirements, acceptance criteria, and known risks | Test cases | active repository policy | not exposed | balanced | not exposed | medium | Clear inputs | Yes | Medium plus consequence |
+| 03 | Test plan generation | curated artifacts | Specification Commitments, Verification Criteria, and known risks | Test cases | active repository policy | not exposed | balanced | not exposed | medium | Clear inputs | Yes | Medium plus consequence |
 | 04 | Final implementation review | curated prompt | Completed changes, validation evidence, and variance log | Review findings | active repository policy | latest available | flagship | not exposed | high | Subtle integration risk | No | High plus consequence |
 ```
 
