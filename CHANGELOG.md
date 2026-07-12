@@ -4,11 +4,118 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
-## Unreleased
+## Release 0.6
+
+### 2026-07-12_user-facing-narrative -- streamline operator guidance
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Restructured the README around operator problems, lifecycle, ordinary conversational use, adoption, and maintainer detail while preserving the main lifecycle diagram.
+- Corrected the large/phased diagram route so anchor-spec freeze leads to phase-plan drafting and phase-plan freeze before implementation.
+- Completed freeze-boundary routing in the diagram so anchor and amendment packages visibly select their documented next activity and approved continuity before work resumes.
+- Added a standalone rationale and a maintainer-only tooling boundary to the package-local operator note.
+- Corrected root agent instructions to name protected post-release PR synchronization and remote verification.
+
+### 2026-07-12_user-facing-narrative -- approve concise operator story
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added the approved combined small/medium specification and implementation plan for restructuring the harness's user-facing narrative.
+
+#### Changed
+
+- Planned a corrected retained lifecycle diagram, early problem framing, ordinary conversational usage guidance, a standalone package-local rationale, and accurate protected post-release synchronization wording.
+
+### 2026-07-12_new-task-handoff-visibility -- create configured continuity tasks
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Defined combined and explicitly staged planning shapes with transition targets selected from the actual frozen package.
+- Added visible approval-gated configured task creation, exact-setting checks, and the manual copy-ready handoff fallback.
+- Split handoff template prompts by artifact shape, regenerated current templates, and aligned operator guidance and validation.
+
+### 2026-07-12_new-task-handoff-visibility -- clarify transition targets
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added the approved combined small/medium specification package for explicit planning shape, actual handoff target, visible transition handoff, and approval-gated configured task creation.
+
+#### Changed
+
+- Recorded the default combined small/medium flow, explicit staged exception, large-anchor continuation, manual fallback, and focused validation plan.
+
+### 2026-07-12_new-task-handoff-visibility -- align handoff block names
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Renamed handoff source blocks to the standard spec/plan order-scope grammar and aligned manifests plus validation without changing generated template behavior.
+
+### 2026-07-12 spec: commitment-verification-model -- define readable conformance layers
+
+Release target: `0.6.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Added
+
+- Approved the canonical Specification Commitment, Architecture Decision, Verification Criterion, Implementation Task, and Plan Check semantic model.
+- Added the work-item architecture snapshot and the Superpowers pointer to the canonical planning package.
+
+### Changed
+
+- Defined the Specification Package to Plan information flow and the separate evidence-to-conformance loop that later implementation planning must preserve.
+
+### 2026-07-11_model-selection-dimensions -- separate model tier and optimize execution handoff
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Separated model generation, vendor-neutral capability tier, reasoning effort, resolved profile, and availability/fallback across canonical policy and planning templates.
+- Classified `ultra` as platform multi-agent orchestration and clarified recommendation, harness authorization, runtime permission, platform availability, and approved fallback boundaries.
+- Added artifact-grounded fresh-task startup and same-task model-switch rehydration guidance without inferring unexposed context or compaction thresholds.
+- Added a reusable next-task handoff block to all four primary template assemblies and regenerated their outputs.
+- Added focused validation for selection dimensions, orchestration semantics, execution continuity, handoff parity, and the shared handoff assembly contract.
+
+### 2026-07-11_commitment-verification-model -- separate commitments, criteria, and checks
+
+Release target: `0.6.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Established canonical Specification Commitment, Verification Criterion, Plan Check, asymmetric traceability, and conformance-status rules with exact full-name entity grammar.
+- Replaced current reusable specification and plan schemas with atomic commitments, correctly placed criteria, separate disposition/execution mappings, complete tasks/checks, and reproducible execution records.
+- Regenerated the primary templates from authoritative source blocks and aligned architecture, amendment, variance, readiness, lifecycle, operator, and package guidance consumers.
+- Added deterministic positive and negative structural fixtures, real frozen historical compatibility coverage, and current-surface legacy-vocabulary checks.
+- Preserved fresh-context RED/GREEN/REFACTOR behavior transcripts and completed a blocking-finding-free semantic re-review.
 
 ### 2026-07-12_superpowers-stub-continuity -- prohibit bootstrapping compatibility pointers
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -23,7 +130,7 @@ Release-note: `include`
 
 ### 2026-07-12_superpowers-stub-continuity -- require historical packages before pointers
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -37,7 +144,7 @@ Release-note: `source-only`
 
 ### 2026-07-11_commitment-verification-model -- map commitments to checks
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -53,7 +160,7 @@ Release-note: `source-only`
 
 ### 2026-07-11_post-release-pr-flow plan: approve protected post-release synchronization
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -63,7 +170,7 @@ Release-note: `source-only`
 
 ### 2026-07-11_post-release-pr-flow docs: require protected post-release synchronization
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `repository-only`
 Release-note: `source-only`
 
@@ -73,7 +180,7 @@ Release-note: `source-only`
 
 ### 2026-07-11_model-selection-dimensions -- define tier, orchestration, and handoff axes
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -88,7 +195,7 @@ Release-note: `include`
 
 ### 2026-07-09_changelog-fragment-consolidation -- add work-item changelog sources
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -104,7 +211,7 @@ Release-note: `include`
 
 ### 2026-07-09_changelog-fragment-consolidation -- plan merge-friendly changelog sources
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -114,7 +221,7 @@ Release-note: `source-only`
 
 ### 2026-07-09_plan-task-block-format -- replace checklist task rows
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -125,7 +232,7 @@ Release-note: `include`
 
 ### 2026-07-09_plan-task-block-format -- plan sectioned task blocks
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -135,7 +242,7 @@ Release-note: `source-only`
 
 ### 2026-07-07_superpowers-compat-guidance -- document adapter flow and fix release baseline
 
-Release target: `0.5+`
+Release target: `0.6.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -151,7 +258,7 @@ Release-note: `include`
 
 ### 2026-07-07_superpowers-compat-guidance -- approve adapter guidance plan
 
-Release target: `unreleased`
+Release target: `0.6.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
