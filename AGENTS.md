@@ -14,7 +14,7 @@ When the operator asks an agent in chat to create the next release branch, follo
 
 `docs/release-branch-process.md`
 
-That process defines the agent-executed release flow, including the `master` preflight, remote release-branch version derivation, package-local release notes under `.agents/skills/dev-doc-harness/docs/releases/`, the release branch push, and the post-release `master` reset.
+That process defines the agent-executed release flow, including the `master` preflight, remote release-branch version derivation, package-local release notes under `.agents/skills/dev-doc-harness/docs/releases/`, the release branch push, and protected post-release PR synchronization with remote verification before later development branches.
 
 ## Active sub-agent model policy
 

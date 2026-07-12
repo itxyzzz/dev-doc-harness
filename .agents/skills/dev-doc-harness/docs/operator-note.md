@@ -5,6 +5,16 @@ summary for operators and adopters; canonical policy still lives in
 `AGENTS.md`, `SKILL.md`, and the routed references under
 `.agents/skills/dev-doc-harness/references/`.
 
+The harness keeps important development decisions out of disappearing chat
+history. It creates reviewable plans before substantial edits, separates
+delivery commitments from evidence, preserves handoffs for fresh threads,
+records meaningful drift, and avoids routine root-changelog conflicts across
+parallel work.
+
+Normal use remains simple: ask for the work you want and refine it through the
+conversation. The agent applies the harness when needed; explicit prompts are
+useful only when you want a special stop point or review checkpoint.
+
 ## What To Copy
 
 The distributable package is:
@@ -24,7 +34,7 @@ a normal revert of that dedicated update.
 ## How Operators Use It
 
 Ask for the work normally. For repository development work beyond a very small
-mechanical edit, the agent should load:
+mechanical edit, the agent loads:
 
 ```text
 .agents/skills/dev-doc-harness/SKILL.md
@@ -58,16 +68,6 @@ rejected alternatives for later implementation or phase planning. Plans consume
 that architecture input instead of making hidden architecture decisions.
 Repository-level durable documents such as `ARCHITECTURE.md` are future work for
 a separate harness extension.
-
-Artifact readability has its own routed owner. Routine artifacts use the short
-baseline guidance in `references/durable-planning-quality.md` and the templates.
-Large anchor specs, and any artifact that becomes large or hard to scan, load
-`references/artifact-style.md` for final artifact content, scannable structure,
-placeholder control, traceability density, and template prompt style.
-
-Current naming grammar lives in `references/naming-conventions.md`. For example,
-`2026-05-31_artifact-root` uses `spec_artifact-root.md` and
-`plan_artifact-root.md`.
 
 ## Using Superpowers
 
@@ -125,31 +125,24 @@ project process needs root changelog completeness. The harness owns this
 fragment and consolidation contract; downstream applications, packages, and
 agentic systems keep their own release processes.
 
-## Useful Prompts
+## Useful Explicit Requests
+
+Use ordinary work requests by default. These requests are useful when you need
+to make a special boundary unambiguous:
 
 ```text
 Plan this as a large work item and stop after the freeze gate.
 ```
 
 ```text
-Stage the planning package for approval before committing it.
-```
-
-```text
-Use the harness, but treat this as a small mechanical edit if it qualifies.
-```
-
-```text
-Preserve this handoff for a future thread before implementation.
-```
-
-```text
 Create a plan-only PR checkpoint before code changes.
 ```
 
-## Validation
+## For Harness Maintainers
 
-For harness maintenance work, run the package validation command when practical:
+The following is for people changing the copied harness itself, not ordinary
+operators using it for product work. Run the package validation command when
+practical:
 
 ```bash
 python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
