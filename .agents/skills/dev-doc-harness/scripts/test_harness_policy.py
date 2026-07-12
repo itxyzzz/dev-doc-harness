@@ -1620,9 +1620,12 @@ def run_checks() -> None:
     assert_scenario_evidence(
         "scenario:compat.superpowers",
         [
-            {"path": "AGENTS.md", "pattern": "Superpowers", "label": "root compatibility"},
-            {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "router compatibility"},
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "rule:lifecycle.superpowers-compatibility", "label": "lifecycle compatibility"},
+            {"path": "AGENTS.md", "pattern": "already exists and contains previous documentation packages", "label": "root continuity gate"},
+            {"path": "README.md", "pattern": r"already exists and\s+contains previous documentation packages", "label": "README continuity gate"},
+            {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "already exists and contains previous documentation packages", "label": "router continuity gate"},
+            {"path": ".agents/skills/dev-doc-harness/docs/operator-note.md", "pattern": "already exists and contains previous documentation packages", "label": "operator-note continuity gate"},
+            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Do not create or seed", "label": "canonical anti-bootstrap rule"},
+            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "minimal pointer stubs", "label": "canonical pointer-only rule"},
         ],
     )
     assert_scenario_evidence(

@@ -170,7 +170,9 @@ The full durable package must live under `<work-item-path>` before the harness f
 
 Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers execution flow begins.
 
-If Superpowers creates or expects files under `docs/superpowers`, those files may exist only as minimal pointer stubs. A valid stub contains:
+Add documents under `docs/superpowers` only when that directory already exists and contains previous documentation packages from before the current work. This exception exists solely for backward compatibility and continuity. Do not create or seed the directory, an empty placeholder, or package content during the current work to satisfy this condition.
+
+When that condition is satisfied, new files under `docs/superpowers` may exist only as minimal pointer stubs. A valid stub contains:
 
 - A title.
 - A status.

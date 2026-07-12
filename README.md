@@ -244,10 +244,12 @@ changelog trail still live in the harness work item package.
 
 The user-visible checkpoint is unchanged. Before implementation starts, expect
 one canonical planning package under `docs/work-items/<work-id>/`, followed by
-the normal harness approval freeze and a fresh instruction to proceed. If a
-Superpowers workflow also refers to `docs/superpowers`, those files should be
-short pointers to the harness package rather than a second copy of the spec or
-plan.
+the normal harness approval freeze and a fresh instruction to proceed. Add
+`docs/superpowers` documents only when the directory already exists and
+contains previous documentation packages from before the current work; never
+create or seed it to satisfy that compatibility condition. When continuity
+permits a new file there, it must be a short pointer stub to the harness package
+rather than a second copy of the spec or plan.
 
 For harness maintenance, agents can run this lightweight local validation check
 before commits that change current harness entrypoints, canonical references,
@@ -321,7 +323,7 @@ Before editing implementation-target files for substantial work, complete the ha
 
 Treat `dev-doc-harness` as the canonical source for repository artifact location and lifecycle. README summaries and templates do not override canonical harness references.
 
-When Superpowers is active, use Superpowers for its normal methodology and keep the harness as the artifact-location and lifecycle contract. Canonical specs, plans, snapshots, amendments, variance logs, changelog source fragments, and freeze gates remain in the harness work item package. Any `docs/superpowers` files should be pointer stubs only.
+When Superpowers is active, use Superpowers for its normal methodology and keep the harness as the artifact-location and lifecycle contract. Canonical specs, plans, snapshots, amendments, variance logs, changelog source fragments, and freeze gates remain in the harness work item package. Add `docs/superpowers` documents only when that directory already predates the current work and contains previous documentation packages; never create or seed it for compatibility. When allowed for continuity, new files must be pointer stubs only.
 
 When spec-kit is active, use the repository adapter if present, but keep the harness as the artifact-location and lifecycle contract.
 ```

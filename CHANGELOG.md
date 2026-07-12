@@ -6,6 +6,21 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-12_superpowers-stub-continuity -- prohibit bootstrapping compatibility pointers
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Required a pre-existing `docs/superpowers` directory containing previous documentation packages before new continuity pointers may be added, and prohibited creating or seeding that state during current work.
+- Retained the minimal pointer-stub schema and added golden traversal coverage across live compatibility surfaces.
+
+#### Removed
+
+- Removed the repository's six current Superpowers pointer stubs.
+
 ### 2026-07-12_superpowers-stub-continuity -- require historical packages before pointers
 
 Release target: `unreleased`

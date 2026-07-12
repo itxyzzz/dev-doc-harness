@@ -77,9 +77,11 @@ remains the visible repository record for specs, plans, snapshots, variance,
 changelog source fragments, and freeze gates.
 
 The reviewable package should still appear under the harness work item folder
-before implementation starts. If a Superpowers workflow also leaves files under
-`docs/superpowers`, expect those files to be short pointers to the harness
-package rather than duplicate specs or plans.
+before implementation starts. Add `docs/superpowers` documents only when the
+directory already exists and contains previous documentation packages from
+before the current work; never create or seed it to satisfy that compatibility
+condition. When continuity permits a new file there, it must be a short pointer
+stub to the harness package rather than a duplicate spec or plan.
 
 ## Review And Pause Points
 
