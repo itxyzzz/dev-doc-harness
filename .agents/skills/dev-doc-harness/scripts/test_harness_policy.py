@@ -42,8 +42,8 @@ class ChangelogSection:
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FAILURES: list[Failure] = []
-CURRENT_DEVELOPMENT_MARKER = "0.5+"
-RELEASE_NOTE_VERSIONS = ["0.4.0", "0.5.0"]
+CURRENT_DEVELOPMENT_MARKER = "0.6+"
+RELEASE_NOTE_VERSIONS = ["0.4.0", "0.5.0", "0.6.0"]
 LATEST_RELEASE_NOTE_VERSION = RELEASE_NOTE_VERSIONS[-1]
 
 CHECK_IDS = [
@@ -742,9 +742,9 @@ def assert_release_package_boundary() -> None:
 
     assert_text_contains(check_id, release_policy, r"distributable harness package is root `AGENTS\.md` plus `\.agents/`", "release policy package boundary")
     assert_text_contains(check_id, release_notes, r"distributable package is root `AGENTS\.md` plus `\.agents/`", "release notes package boundary")
-    assert_text_contains(check_id, "README.md", r"copyable distributable package is\s+the root `AGENTS\.md` file plus the `\.agents/` folder", "README package boundary")
+    assert_text_contains(check_id, "README.md", r"copyable distributable package is\s+the root `AGENTS\.md` file plus the\s+`\.agents/` folder", "README package boundary")
     assert_text_contains(check_id, release_policy, r"Do not copy this repository's `docs/work-items/`", "release policy work-item exclusion")
-    assert_text_contains(check_id, "README.md", r"Do not copy this repository's `docs/work-items/` folder", "README work-item exclusion")
+    assert_text_contains(check_id, "README.md", r"(?i)do not copy this repository's\s+`docs/work-items/` folder", "README work-item exclusion")
     assert_text_contains(check_id, release_policy, r"(?i)rollback.+revert", "release policy rollback")
     assert_text_contains(check_id, release_notes, r"(?i)revert.+dedicated harness update", "release notes rollback")
     assert_text_contains(check_id, "README.md", r"(?i)roll back by reverting", "README rollback")
