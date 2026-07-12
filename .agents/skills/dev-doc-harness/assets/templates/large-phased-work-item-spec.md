@@ -334,17 +334,20 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 
 ## Next-task handoff
 
-Use `rule:models.execution-continuity` and `rule:execution-quality.execution-thread-start`. Keep the handoff minimal and refer to authoritative artifacts instead of summarizing their requirements.
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
-1. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-2. Context visibility: `<exposed signal or not exposed>`.
-3. Artifact rehydration required: `<Yes/No plus reason>`.
-4. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-5. Approved strategy and fallback: `<section or artifact reference>`.
-6. First activity: `<named task, phase-planning step, or review action>`.
-7. Variance stop condition: `<approval-required variance or other explicit stop>`.
+1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
+2. Frozen package: `<approved anchor spec plus required snapshots, amendments, evidence, and other anchor-named inputs>`.
+3. Next activity: `phase-plan drafting` for `<named phase or first phase-planning activity>`.
+4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+5. Context visibility: `<exposed signal or not exposed>`.
+6. Artifact rehydration required: `<Yes/No plus reason>`.
+7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
+8. Approved strategy and fallback: `<section or artifact reference>`.
+9. First activity: `<named phase-planning task or review action>`.
+10. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
-When execution continuity selects a new task or a different model/profile, include a copy-ready prompt that names the exact artifacts above, requires applicable `AGENTS.md` and harness rules, cites `rule:execution-quality.execution-thread-start`, refers to the approved strategy and fallback, starts at the first activity, and stops for approval-required variance. Do not duplicate the frozen requirements in the prompt.
+After the anchor actually freezes, a new-task route displays a conditional copy-ready prompt for the documented phase-plan drafting activity. It names the exact artifacts above, applicable `AGENTS.md` and harness rules, `rule:execution-quality.execution-thread-start`, the approved strategy and fallback, and the variance stop condition without duplicating frozen requirements. Follow `rule:freeze.approval-freeze` for any configured task-creation offer or manual fallback.
 
 ## Spec readiness checklist
 

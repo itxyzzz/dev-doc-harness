@@ -49,8 +49,11 @@ flowchart TD
     R -.->|Resubmit| H
 
     J --> O["Optional plan-only PR"]:::house
-    O --> P["Confirm settings and start"]:::house
-    P --> Q["Implement approved plan"]:::house
+    O --> P{"Approved continuity?"}:::house
+    P -->|Same task| S["Confirm settings and start"]:::house
+    P -->|New task| T["Show handoff; approve configured task creation"]:::house
+    S --> Q["Implement approved plan"]:::house
+    T --> Q
     Q --> K{"High-impact variance?"}:::house
 
     K -->|No| L["Validate, update docs and changelog"]:::house
@@ -78,6 +81,12 @@ refactors, migrations, and documentation/process changes. That folder captures
 the spec, plan, required documentation updates, and any implementation variance.
 The operator gets a stable place to review what is about to happen before the
 agent starts changing the product.
+
+Small/medium planning combines the spec and plan in one package by default, and
+the plan owns the post-freeze implementation transition. A spec-only freeze is
+an explicit staged exception: it records why planning is split and names plan
+drafting as its next activity. Large/phased anchors keep their separate default
+route to later phase-plan drafting.
 
 The specification package separates five readable entities. Goal and Scope frame `SPEC-NNN` Specification Commitments; mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments; and `VER-NNN` Verification Criteria define conformance without procedures. The integrated Plan then derives `TASK-NNN` Implementation Tasks from commitments and decisions, and `CHECK-NNN` Plan Checks from criteria. Architecture Decisions do not form a linear layer between commitments and criteria.
 
@@ -136,10 +145,13 @@ prompt style.
 When durable planning artifacts are ready for review, the agent stages the draft
 planning package without committing it and asks the operator for approval or
 feedback. Explicit approval runs the freeze gate: changelog source fragment,
-approval commit, reported artifact paths, and a pause before implementation. The
-next operator response can confirm execution settings and authorize
-implementation in one step, giving the operator a clean plan-only review point
-before product changes.
+approval commit, reported artifact paths, and a pause before the documented next
+activity. The post-freeze result names the planning shape, frozen package, and
+next activity, then follows the approved execution continuity. A same-task route
+asks for fresh start authorization; a new-task route shows the copy-ready
+handoff and proposed configuration, then asks approval to create that task when
+the platform supports the exact recorded settings. If creation or those settings
+are unavailable, the same visible handoff remains the manual fallback.
 
 Model strategy records Model generation, Capability tier, Reasoning effort,
 Orchestration mode, resolved profile, and availability/fallback independently.
@@ -156,7 +168,9 @@ a reason for using none, then reports de-facto execution at completion. The
 strategy also records execution continuity, context visibility, and artifact
 rehydration. Prefer a fresh task with a minimal curated-artifact handoff when
 the main model/profile changes; runtime permission and availability decide
-whether the approved strategy or fallback runs. The new task starts through
+whether the approved strategy or fallback runs. Task creation is never automatic:
+the visible transition requires explicit creation approval and exact supported
+recorded settings, with no silent substitution. The new task starts through
 `rule:execution-quality.execution-thread-start`, loading the frozen package and
 beginning at the named activity without repeating discovery.
 

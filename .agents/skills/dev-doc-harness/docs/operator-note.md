@@ -40,9 +40,12 @@ For substantial work, expect a work item package under:
 <work-item-path>
 ```
 
-Small or medium work usually gets a spec and plan. Large or phased work gets an
-anchor spec first. Phase plans come later from the approved anchor spec unless
-you explicitly ask for combined planning.
+Small or medium work gets a spec and plan as one combined planning package by
+default, and its plan owns the implementation transition. A spec-only freeze is
+an explicit staged exception that records its reason and names plan drafting as
+the next activity. Large or phased work gets an anchor spec first; phase plans
+come later from the approved anchor unless you explicitly ask for combined
+planning.
 
 The Specification Package keeps meaning separate from procedure: Goal and Scope frame `SPEC-NNN` Specification Commitments, mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments, and `VER-NNN` Verification Criteria state conformance. The integrated Plan derives `TASK-NNN` Implementation Tasks from commitments plus applicable decisions and derives `CHECK-NNN` Plan Checks from criteria. It coordinates both paths through stages and dependencies; Architecture Decisions are not a linear layer between commitments and criteria.
 
@@ -87,11 +90,21 @@ The normal substantial-work flow is:
 3. Operator feedback edits the drafts directly.
 4. Operator approval triggers the freeze gate: changelog source fragment,
    approved artifacts, approval commit, and a pause.
-5. The next operator response may confirm execution settings and authorize
-   implementation.
+5. The agent names the planning shape, exact frozen package, and documented next
+   activity, then follows the approved continuity route.
+6. A same-task route requires fresh start authorization. A new-task route shows
+   the copy-ready handoff and proposed configuration, then asks approval to
+   create a task only when the platform supports the exact recorded settings.
+
+When configured task creation is unavailable or cannot honor the recorded model
+or reasoning settings, the visible copy-ready handoff remains the manual
+fallback. The agent reports the limitation and does not silently substitute a
+different configuration. An operator may explicitly request continuation in the
+current task, but the new-task route does not present that override as its
+recommended question.
 
 For large or phased work, the anchor-spec freeze also pauses before phase-plan
-drafting. Later phase-plan drafting can happen in the main thread, or through
+drafting and names that as the next activity. Later phase-plan drafting can happen in the main thread, or through
 curated-context sub-agents when the phases are independent enough and the
 platform supports it.
 

@@ -11,6 +11,7 @@ Owned rule IDs:
 | `rule:lifecycle.work-item-folders` | `## Work item folders` |
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
+| `rule:lifecycle.planning-shape` | `## Small/medium planning shape` |
 | `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
 | `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
@@ -58,6 +59,16 @@ Small/medium examples include one bounded feature, bug fix with nontrivial inves
 Large or phased work needs an anchor spec and later phase plans when one orchestration thread cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
 
 `module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
+
+## Small/medium planning shape
+
+`rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
+
+A small/medium spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. Before review and freeze, the spec must record the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide any handoff required for that activity. A generic template heading or continuity preference cannot create this exception.
+
+Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
+
+At every freeze boundary, record the planning shape, exact frozen package, and documented next activity before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
 ## Small/medium layout
 

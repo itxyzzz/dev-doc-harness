@@ -23,8 +23,8 @@ This reference owns `module:architecture`. It does not replace detailed rule own
 |---|---|---|---|
 | `module:architecture` | `references/policy-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, and router inputs. |
 | `module:naming` | `references/naming-conventions.md` | Normative policy | Work ID fields, derived naming patterns, normalization, work-item paths, artifact filenames, commit-message grammar, changelog-entry grammar, collision handling, and redundancy deduplication. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
-| `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, multi-gate flow, and freeze-gate compatibility. |
+| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, combined or explicitly staged planning shape, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
+| `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, continuity-selected post-freeze routing, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Model selection dimensions, orchestration mode, execution continuity, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Durable spec and phase-plan quality, Specification Commitments, Verification Criteria, Plan Checks, asymmetric plan coverage, evidence-to-conformance status, and handoff preservation. |
 | `module:artifact-style` | `references/artifact-style.md` | Normative policy | Final artifact content, full-name entity headings, Verification Criterion placement, asymmetric traceability, scannable structure, placeholder and example control, traceability density, and template prompt style. |
@@ -81,7 +81,7 @@ Future router work should load by operation rather than eagerly loading every re
 | Draft or review routine small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:naming` for work IDs or planned subjects, and add `module:artifact-style` when readability risk is material |
 | Draft or review large anchor specs | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style` |
 | Draft or review phase plans | `module:lifecycle`, `module:quality`, `module:models`; add `module:artifact-style` for large or hard-to-scan phase artifacts |
-| Freeze planning packages | `module:freeze-gate`, `module:lifecycle` |
+| Freeze planning packages | `module:freeze-gate`, `module:lifecycle`; determine planning shape, frozen package, and next activity before continuity routing |
 | Execute approved work and record variance | `module:lifecycle`, `module:execution-quality`; use `rule:execution-quality.execution-thread-start` for fresh-task or same-task model-transition handoff |
 | Use or review sub-agent strategy | `module:models`, optionally `module:role-examples` |
 | Handle evidence-heavy review or reports | `module:evidence` |

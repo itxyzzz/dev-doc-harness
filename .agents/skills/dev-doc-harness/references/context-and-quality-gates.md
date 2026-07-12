@@ -35,8 +35,8 @@ Use this protocol when a frozen planning package hands work to a fresh task or w
 1. Load system and runtime constraints, then applicable instructions and the exact frozen artifacts named by the handoff.
 2. Verify branch, worktree, approval state, amendments, variance logs, and the expected validation baseline before editing.
 3. Treat the frozen package as authoritative; avoid repository rediscovery and do not reopen settled decisions without conflicting evidence.
-4. Restate only the immediate work, approved execution strategy and fallback, named task or first activity, and stop condition.
-5. Begin at that named task. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
+4. Restate only the immediate work, approved execution strategy and fallback, the documented next activity expressed as a named task or first activity, and stop condition.
+5. Begin at that documented next activity. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 

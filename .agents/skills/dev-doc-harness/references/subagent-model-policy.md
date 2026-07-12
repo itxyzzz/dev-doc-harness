@@ -65,7 +65,7 @@ Prefer `new task with curated-artifact handoff` when the main model generation, 
 
 A same-task model switch must re-read the frozen package and reconcile scope before edits, regardless of operator-requested or runtime-managed compaction. When exact remaining context is not exposed, do not claim a precise remaining context value or prescribe compaction from an inferred threshold; runtime-managed compaction remains a platform responsibility.
 
-Keep transition handoffs minimal. Name the authoritative frozen artifacts, approved strategy and fallback, startup rule, first activity, and variance stop condition without restating the full requirements.
+Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next activity, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
 ## Common rules
 

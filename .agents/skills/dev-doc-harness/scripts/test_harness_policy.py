@@ -71,6 +71,7 @@ CHECK_IDS = [
     "artifact-style.guidance",
     "models.selection-dimensions",
     "execution.thread-start",
+    "lifecycle.transition-targets",
     "quality.commitment-verification",
     "templates.commitment-verification",
     "compat.current-historical",
@@ -1097,6 +1098,7 @@ def assert_execution_thread_start() -> None:
 
     for path in PRIMARY_TEMPLATE_FILES:
         assert_text_contains(check_id, path, r"## Next-task handoff", "next-task handoff section")
+        assert_text_contains(check_id, path, r"Exact authoritative artifacts:.+approved spec, plan or phase plan", "actual frozen boundary inputs")
         for label in [
             "Execution continuity",
             "Context visibility",
@@ -1111,6 +1113,43 @@ def assert_execution_thread_start() -> None:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
     assert_text_contains(check_id, router, r"execution-thread-start", "router discoverability")
+
+
+def assert_lifecycle_transition_targets() -> None:
+    check_id = "lifecycle.transition-targets"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+
+    assert_text_contains(check_id, lifecycle, re.escape("rule" + ":lifecycle.planning-shape"), "planning-shape rule owner")
+    assert_text_contains(check_id, lifecycle, r"## Small/medium planning shape", "planning-shape owner heading")
+    assert_text_contains(check_id, lifecycle, r"small/medium.+spec and plan.+(?:together|combined)", "combined small/medium default")
+    assert_text_contains(check_id, lifecycle, r"spec-only freeze.+explicit.+(?:reason|exception)", "staged small/medium exception")
+    assert_text_contains(check_id, lifecycle, r"large/phased.+phase-plan drafting", "large-anchor phase-plan route")
+
+    for label in ["Planning shape", "Frozen package", "Next activity"]:
+        assert_text_contains(check_id, freeze, re.escape(label), f"freeze field '{label}'")
+    assert_text_contains(check_id, freeze, r"explicit.+approval.+creat.+task|approval.+specifically.+creat.+task", "task-creation approval")
+    assert_text_contains(check_id, freeze, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", "exact supported configuration")
+    assert_text_contains(check_id, freeze, r"manual.+copy-ready handoff|copy-ready handoff.+manual", "visible manual fallback")
+    assert_text_contains(check_id, freeze, r"(?:do not|without).+silently substitut", "no configuration substitution")
+    assert_text_contains(check_id, freeze, r"same task.+(?:separate|current-task|current task)", "separate same-task route")
+    assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
+    assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
+
+    for path in PRIMARY_TEMPLATE_FILES:
+        for label in ["Planning shape", "Frozen package", "Next activity"]:
+            assert_text_contains(check_id, path, re.escape(label), f"{path} field '{label}'")
+
+    small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
+    large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
+    for path in PLAN_TEMPLATE_FILES:
+        assert_text_contains(check_id, path, r"approval.+creat.+task|creat.+task.+approval", f"{path} creation approval")
+        assert_text_contains(check_id, path, r"manual.+copy-ready handoff|copy-ready handoff.+manual", f"{path} manual fallback")
+        assert_text_contains(check_id, path, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", f"{path} exact configuration")
+    assert_text_contains(check_id, small_spec, r"combined small/medium", "small spec combined planning shape")
+    assert_text_contains(check_id, small_spec, r"does not.+(?:independent|plan-drafting).+handoff|no independent.+handoff", "small spec no independent plan handoff")
+    assert_text_contains(check_id, large_spec, r"phase-plan drafting", "large anchor next activity")
 
 
 CURRENT_SPEC_SCHEMA_PATHS = [
@@ -1613,6 +1652,9 @@ def run_checks() -> None:
 
     assert_execution_thread_start()
     write_check_result("execution.thread-start")
+
+    assert_lifecycle_transition_targets()
+    write_check_result("lifecycle.transition-targets")
 
     assert_commitment_verification_quality()
     write_check_result("quality.commitment-verification")
