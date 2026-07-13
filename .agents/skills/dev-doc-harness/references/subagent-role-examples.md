@@ -65,4 +65,8 @@ Each sub-agent report must include:
 The orchestration thread owns decomposition, integration, conflict resolution,
 final validation, and the user-facing summary.
 
+## Independent reviewer pattern
+
+Use an independent reviewer as a separate task or thread with curated artifacts, the changed diff, validation evidence, and a short role prompt. Give it one named lens, such as requirements traceability, regression risk, test adequacy, or adversarial counterexamples. Each finding is evidence-backed and records severity plus a reproduction or validation path. The reviewer advises; the orchestration thread retains final integration ownership.
+
 For a fresh-task reviewer or model transition, use curated artifacts and `rule:execution-quality.execution-thread-start`; name the first activity and stop for approval-required variance.

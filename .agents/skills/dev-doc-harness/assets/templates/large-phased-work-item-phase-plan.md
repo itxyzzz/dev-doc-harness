@@ -110,7 +110,7 @@ Fit assessment:
 
 Recommended selection change:
 
-1. `<None, or concrete generation/tier/effort/orchestration/continuity change with reason>`.
+1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
 
 Sub-agents:
 

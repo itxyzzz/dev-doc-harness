@@ -1137,7 +1137,34 @@ def assert_model_selection_dimensions() -> None:
     assert_text_contains(check_id, models, r"[Uu]ltra.+platform[- ]managed.+multi-agent|platform[- ]managed.+multi-agent.+[Uu]ltra", "ultra orchestration classification")
     assert_text_contains(check_id, models, r"does not (?:automatically )?provide.+task partitioning", "platform orchestration limitation")
     assert_text_contains(check_id, models, r"enterprise-default.+(?:assess|consider).+(?:platform multi-agent|ultra)", "enterprise platform-orchestration assessment")
-    assert_text_contains(check_id, models, r"economy-default.+(?:fast/economy|balanced).+(?:escalat|trigger)", "economy tier start and escalation")
+    assert_text_contains(check_id, models, r"economy-default.+Terra medium.+suggested baseline", "economy baseline policy")
+
+    assert_text_contains(
+        check_id,
+        models,
+        r"Terra medium.+suggested baseline.+substantial bounded work.+explicit outputs and validation",
+        "calibrated Terra-medium bounded-work baseline",
+    )
+    assert_text_contains(check_id, models, r"Terra high.+effort escalation", "effort escalation classification")
+    assert_text_contains(check_id, models, r"Sol medium.+tier escalation", "tier escalation classification")
+    assert_text_contains(check_id, models, r"Sol high.+exceptional.+written reason", "exceptional Sol-high escalation")
+    assert_text_contains(check_id, models, r"residual uncertainty|new variance", "late escalation justification")
+    assert_text_contains(check_id, models, r"de-escalat.+bounded", "bounded-work de-escalation")
+    assert_text_contains(
+        check_id,
+        models,
+        r"missing product input.+undecided requirement.+plan contradiction.+(?:variance|approval)",
+        "missing-decision approval boundary",
+    )
+
+    for path in [models, role_examples]:
+        assert_text_contains(check_id, path, r"separate task or thread", "independent reviewer separation")
+        assert_text_contains(check_id, path, r"curated artifacts", "independent reviewer context")
+        assert_text_contains(check_id, path, r"(?:one|single) named lens", "independent reviewer lens")
+        assert_text_contains(check_id, path, r"evidence-backed", "evidence-backed finding requirement")
+        assert_text_contains(check_id, path, r"severity", "evidence-backed finding severity")
+        assert_text_contains(check_id, path, r"reproduction or validation path", "finding validation path")
+        assert_text_contains(check_id, path, r"orchestration thread.+(?:owns|retains).+integration", "orchestration-owned integration")
 
     for layer in ["recommendation", "harness authorization", "runtime permission", "platform availability"]:
         assert_text_contains(check_id, models, re.escape(layer), f"authorization layer '{layer}'")
@@ -1154,6 +1181,16 @@ def assert_model_selection_dimensions() -> None:
         for label in ["Model generation", "Capability tier", "Reasoning effort", "Orchestration mode", "Resolved profile", "Availability/fallback"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
         assert_text_not_contains(check_id, path, r"Model class/profile:", "conflated per-role model class/profile field")
+
+    strategy_source_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
+    ]
+    for path in strategy_source_blocks:
+        assert_text_contains(check_id, path, r"suggested baseline", "strategy prompt baseline cue")
+        assert_text_contains(check_id, path, r"effort.*tier|tier.*effort", "strategy prompt effort-tier cue")
+        assert_text_contains(check_id, path, r"residual uncertainty or variance", "strategy prompt late-escalation cue")
+        assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
     assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
 

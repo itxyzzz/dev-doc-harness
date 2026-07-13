@@ -161,15 +161,21 @@ Do not fall back to older or cheaper models solely to save cost.
 
 Cost and usage limits are active optimization factors.
 
-Under `economy-default`, normally start with a `fast/economy` or `balanced` tier and escalate only when risk, uncertainty, failure, or total cost/latency triggers justify `flagship`, `max`, or platform multi-agent execution.
+Under `economy-default`, Terra medium is the suggested baseline for substantial bounded work with explicit outputs and validation. This is a current mapping to the `balanced` tier, not a permanent tier definition or a mandate; the operator retains override authority.
 
-Default to next-to-latest or smaller faster model classes for bounded tasks when risk is low and the task has clear inputs and outputs.
+Use Terra high as an effort escalation when the task model remains suitable but needs fuller dependency or edge-case traversal. Use Sol medium as a tier escalation when ambiguity handling, competing interpretations, an unclear causal chain, or difficult judgment remains limiting. Reserve Sol high for an exceptional escalation with a written reason after Sol medium leaves a high-impact unresolved conflict or evidence gap.
 
-Escalate to the latest strongest available model class for unclear requirements, architecture decisions, subtle debugging, high-risk reviews, security, privacy, compliance, migrations, public APIs, persistence changes, and failures after one cheaper attempt.
+For later-stage escalation, name the residual uncertainty or new variance that remains after the frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a spending trigger.
 
-Use cheaper or smaller model classes for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
+Use fast/economy allocations for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
 
 A cheaper sub-agent must not be the final authority for high-blast-radius decisions.
+
+## Independent review
+
+Use an independent reviewer as a separate task or thread with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples.
+
+Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it; this is a suggested quality-control allocation, not a mandatory gate. The orchestration thread retains final integration ownership.
 
 ## Required notation
 

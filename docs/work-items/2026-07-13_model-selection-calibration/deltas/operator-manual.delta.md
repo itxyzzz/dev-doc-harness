@@ -18,3 +18,7 @@ Keep this guidance just-enough: canonical policy defines the allocation rules; e
 ## Integration target
 
 1. Apply authoritative wording to `references/subagent-model-policy.md` and concise illustrations to `references/subagent-role-examples.md`; add README wording only through approved scope expansion.
+
+## Implementation result
+
+1. The canonical policy, advisory independent-review pattern, compact source prompts, and their assembled template outputs now carry this guidance; `README.md` remains unchanged.

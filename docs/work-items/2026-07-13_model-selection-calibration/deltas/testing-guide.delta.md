@@ -20,3 +20,7 @@ The assembly check must report `All assembled templates are current.`. The polic
 ## Integration target
 
 1. Keep this as work-item implementation evidence unless a later operator-owned testing-guide surface needs the command set; do not create a repository-wide testing guide solely for this delta.
+
+## Implementation result
+
+1. The assembly check reported `All assembled templates are current.`, the policy validator passed, and `git diff --check` passed after the approved policy, reviewer-example, prompt, generated-output, and regression-check changes.

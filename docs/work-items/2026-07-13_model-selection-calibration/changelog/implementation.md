@@ -7,3 +7,4 @@ Release-note: `include`
 #### Changed
 
 - Calibrated the canonical `economy-default` model-selection guidance and aligned supporting reviewer examples, model-strategy prompts, generated templates, and policy validation.
+- Added focused regression protection for allocation, lifecycle/approval, reviewer-evidence, and canonical-owner boundaries.
