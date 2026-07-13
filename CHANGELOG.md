@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-13_model-selection-calibration -- approve calibrated economy guidance
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved combined specification, implementation plan, architecture snapshot, test-case snapshot, and documentation deltas for calibrated `economy-default` model-selection guidance.
+
+#### Changed
+
+- Planned a Terra-medium bounded-work baseline, distinct effort and tier escalation, lifecycle-aware de-escalation, just-enough supporting surfaces, and efficient independent review while preserving operator authority.
+
 ## Release 0.6
 
 ### 2026-07-12_user-facing-narrative -- streamline operator guidance
