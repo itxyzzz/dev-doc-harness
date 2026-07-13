@@ -116,14 +116,17 @@ that changes architecture, public APIs, data, security, privacy, compliance,
 scope, Specification Commitments, Verification Criteria, Plan Checks, or feasibility requires an amendment and approval.
 
 Before ordinary commits, agents update `docs/work-items/<work-id>/changelog/*.md`
-rather than the root changelog. Root `CHANGELOG.md` remains the consolidated
-publication view. Run
-`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
-at a project-owned checkpoint such as after merging work branches, before
-preparing release notes, before product/application release, or whenever the
-project process needs root changelog completeness. The harness owns this
-fragment and consolidation contract; downstream applications, packages, and
-agentic systems keep their own release processes.
+rather than the root changelog and run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`.
+Stable fragments may contain multiple newest-first entries; each entry has its
+own required metadata and change body. Root `CHANGELOG.md` remains the
+consolidated publication view. At a project-owned checkpoint such as after
+merging work branches, before preparing release notes, before product/application
+release, or whenever the project process needs root changelog completeness, run
+lint followed by `--check`; use default mode only for explicit write
+consolidation. This includes before a product/application release. The harness
+owns this fragment and consolidation contract; downstream applications,
+packages, and agentic systems keep their own release processes.
 
 ## Useful Explicit Requests
 

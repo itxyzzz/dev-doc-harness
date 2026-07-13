@@ -10,6 +10,7 @@ import sys
 @dataclass(frozen=True)
 class FragmentEntry:
     path: Path
+    ordinal: int
     heading: str
     release_target: str
     package_impact: str
@@ -40,63 +41,67 @@ def normalize_newlines(text: str) -> str:
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
-def parse_fragment(path: Path, repo_root: Path) -> tuple[FragmentEntry | None, list[str]]:
+def parse_fragment(path: Path, repo_root: Path) -> tuple[list[FragmentEntry], list[str]]:
     errors: list[str] = []
+    entries: list[FragmentEntry] = []
     display_path = repo_display_path(path, repo_root)
     text = normalize_newlines(path.read_text(encoding="utf-8")).strip()
     headings = list(re.finditer(rf"^(#{{2,3}})\s+({CHANGELOG_HEADING})\s*$", text, flags=re.MULTILINE))
-    if len(headings) != 1:
-        errors.append(f"{display_path}: expected exactly one changelog entry heading, found {len(headings)}")
-        return None, errors
+    if not headings:
+        errors.append(f"{display_path}: expected at least one changelog entry heading, found 0")
+        return entries, errors
 
-    values: dict[str, str] = {}
-    for field, pattern in METADATA_PATTERNS.items():
-        matches = list(pattern.finditer(text))
-        if len(matches) != 1:
-            errors.append(f"{display_path}: expected exactly one {field} field, found {len(matches)}")
-        else:
-            values[field] = matches[0].group(1)
+    for index, heading_match in enumerate(headings, start=1):
+        next_start = headings[index].start() if index < len(headings) else len(text)
+        entry_text = text[heading_match.start() : next_start].strip()
+        heading = heading_match.group(2).strip()
+        context = f"{display_path}: entry {index} `{heading}`"
+        values: dict[str, str] = {}
+        entry_errors: list[str] = []
+        for field, pattern in METADATA_PATTERNS.items():
+            matches = list(pattern.finditer(entry_text))
+            if len(matches) != 1:
+                entry_errors.append(f"{context}: expected exactly one {field} field, found {len(matches)}")
+            else:
+                values[field] = matches[0].group(1)
 
-    if errors:
-        return None, errors
+        if not entry_errors:
+            release_target = values["Release target"]
+            package_impact = values["Package impact"]
+            release_note = values["Release-note"]
+            if not release_target.strip():
+                entry_errors.append(f"{context}: Release target must not be blank")
+            if package_impact not in VALID_PACKAGE_IMPACT:
+                entry_errors.append(f"{context}: invalid Package impact value `{package_impact}`")
+            if release_note not in VALID_RELEASE_NOTE:
+                entry_errors.append(f"{context}: invalid Release-note value `{release_note}`")
 
-    release_target = values["Release target"]
-    package_impact = values["Package impact"]
-    release_note = values["Release-note"]
+        if entry_errors:
+            errors.extend(entry_errors)
+            continue
 
-    if not release_target.strip():
-        errors.append(f"{display_path}: Release target must not be blank")
-    if package_impact not in VALID_PACKAGE_IMPACT:
-        errors.append(f"{display_path}: invalid Package impact value `{package_impact}`")
-    if release_note not in VALID_RELEASE_NOTE:
-        errors.append(f"{display_path}: invalid Release-note value `{release_note}`")
-    if errors:
-        return None, errors
-
-    heading = headings[0].group(2).strip()
-    body_without_heading = text[headings[0].end() :].strip()
-    entry_body = f"### {heading}\n\n{body_without_heading}\n"
-    return (
-        FragmentEntry(
-            path=path,
-            heading=heading,
-            release_target=release_target,
-            package_impact=package_impact,
-            release_note=release_note,
-            body=entry_body,
-        ),
-        [],
-    )
+        body_without_heading = entry_text[heading_match.end() - heading_match.start() :].strip()
+        entries.append(
+            FragmentEntry(
+                path=path,
+                ordinal=index,
+                heading=heading,
+                release_target=release_target,
+                package_impact=package_impact,
+                release_note=release_note,
+                body=f"### {heading}\n\n{body_without_heading}\n",
+            )
+        )
+    return entries, errors
 
 
 def discover_fragments(repo_root: Path) -> tuple[list[FragmentEntry], list[str]]:
     entries: list[FragmentEntry] = []
     errors: list[str] = []
     for path in sorted(repo_root.glob(FRAGMENT_GLOB)):
-        entry, entry_errors = parse_fragment(path, repo_root)
+        fragment_entries, entry_errors = parse_fragment(path, repo_root)
         errors.extend(entry_errors)
-        if entry is not None:
-            entries.append(entry)
+        entries.extend(fragment_entries)
     return entries, errors
 
 
@@ -109,7 +114,10 @@ def duplicate_heading_errors(entries: list[FragmentEntry], repo_root: Path) -> l
     for heading, duplicates in sorted(by_heading.items()):
         if len(duplicates) <= 1:
             continue
-        paths = ", ".join(repo_display_path(entry.path, repo_root) for entry in duplicates)
+        paths = ", ".join(
+            f"{repo_display_path(entry.path, repo_root)} (entry {entry.ordinal}: `{entry.heading}`)"
+            for entry in duplicates
+        )
         errors.append(f"Duplicate changelog fragment heading `{heading}` in: {paths}")
     return errors
 
@@ -144,12 +152,7 @@ def build_updated_changelog(changelog_text: str, missing_entries: list[FragmentE
     return updated, []
 
 
-def consolidate(repo_root: Path, check: bool) -> int:
-    changelog_path = repo_root / "CHANGELOG.md"
-    if not changelog_path.exists():
-        print("CHANGELOG.md: missing root changelog", file=sys.stderr)
-        return 1
-
+def consolidate(repo_root: Path, check: bool, lint: bool) -> int:
     entries, errors = discover_fragments(repo_root)
     if errors:
         for error in errors:
@@ -159,6 +162,13 @@ def consolidate(repo_root: Path, check: bool) -> int:
     if duplicate_errors:
         for error in duplicate_errors:
             print(error, file=sys.stderr)
+        return 1
+    if lint:
+        return 0
+
+    changelog_path = repo_root / "CHANGELOG.md"
+    if not changelog_path.exists():
+        print("CHANGELOG.md: missing root changelog", file=sys.stderr)
         return 1
 
     changelog_text = normalize_newlines(changelog_path.read_text(encoding="utf-8"))
@@ -194,7 +204,9 @@ def consolidate(repo_root: Path, check: bool) -> int:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate and consolidate work-item changelog fragments.")
-    parser.add_argument("--check", action="store_true", help="Validate without modifying CHANGELOG.md.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check", action="store_true", help="Validate root changelog completeness without modifying it.")
+    mode.add_argument("--lint", action="store_true", help="Validate fragment grammar and duplicate headings only.")
     parser.add_argument(
         "--repo-root",
         type=Path,
@@ -206,7 +218,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    return consolidate(args.repo_root.resolve(), args.check)
+    return consolidate(args.repo_root.resolve(), args.check, args.lint)
 
 
 if __name__ == "__main__":

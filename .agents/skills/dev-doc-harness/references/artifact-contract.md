@@ -303,9 +303,9 @@ Maintain living changelog source fragments under:
 docs/work-items/<work-id>/changelog/*.md
 ```
 
-Update the matching fragment before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`.
+Update the matching fragment before every commit. Stable fragment files may contain multiple independently valid, newest-first entries; every entry has its own heading, exactly one metadata set, and change body. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`. Before an ordinary commit, run `python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint` to validate fragment grammar and duplicate headings.
 
-Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog.
+Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog. At those checkpoints, run `--lint` followed by `--check`; default mode is the explicit write consolidation.
 
 Use a Keep a Changelog style:
 

@@ -121,6 +121,13 @@ compact downstream guide travel under `.agents/skills/dev-doc-harness/docs/`.
 The root README, `CHANGELOG.md`, and repository work-item history are not part
 of that distribution.
 
+For ordinary work-item commits, update the matching fragment and run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`.
+Fragments may contain multiple newest-first entries, each with its own required
+metadata and change body. Root consolidation remains a project-owned checkpoint:
+release preparation runs lint followed by `--check`, then uses the default mode
+only for an explicit write consolidation.
+
 You can also install the skill globally by copying
 `.agents/skills/dev-doc-harness/` into
 `$HOME/.agents/skills/dev-doc-harness/`. A compact global `AGENTS.md`

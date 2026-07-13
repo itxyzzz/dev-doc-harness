@@ -230,6 +230,15 @@ def assert_text_contains(check_id: str, path: str, pattern: str, label: str | No
         add_failure(check_id, f"Missing {label or pattern} in {path}")
 
 
+def normalize_prose(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def assert_normalized_text_contains(check_id: str, path: str, phrase: str, label: str | None = None) -> None:
+    if normalize_prose(phrase) not in normalize_prose(read_repo_text(path)):
+        add_failure(check_id, f"Missing {label or phrase} in {path}")
+
+
 def assert_text_not_contains(check_id: str, path: str, pattern: str, label: str | None = None) -> None:
     text = read_repo_text(path)
     if re.search(pattern, text):
@@ -786,6 +795,7 @@ def assert_changelog_fragment_contract() -> None:
     release_policy = ".agents/skills/dev-doc-harness/references/release-policy.md"
     release_process = "docs/release-branch-process.md"
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
+    hook = ".githooks/pre-commit"
 
     assert_text_contains(check_id, lifecycle, r"docs/work-items/<work-id>/changelog/\*\.md", "lifecycle fragment location")
     assert_text_contains(check_id, lifecycle, r"root `CHANGELOG\.md` remains the consolidated publication view", "root changelog publication view")
@@ -794,7 +804,20 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
     assert_text_contains(check_id, release_policy, r"after fragment consolidation", "root source after consolidation")
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
+    assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --lint", "release process lint")
     assert_text_contains(check_id, release_process, r"before renaming `## Unreleased`", "release process ordering")
+    assert_text_contains(check_id, lifecycle, r"multiple independently valid, newest-first entries", "lifecycle multi-entry grammar")
+    assert_text_contains(check_id, naming, r"multiple independently valid, newest-first entries", "naming multi-entry grammar")
+    assert_text_contains(check_id, hook, r"set -eu", "hook strict shell mode")
+    assert_text_contains(check_id, hook, r"consolidate_changelog_fragments\.py --lint", "hook lint gate")
+    assert_text_not_contains(check_id, hook, r"consolidate_changelog_fragments\.py --check", "hook root completeness gate")
+
+    for phrase, label in [
+        ("The copyable distributable package is the root `AGENTS.md` file plus the `.agents/` folder.", "README package boundary"),
+        ("Do not copy this repository's `docs/work-items/` folder.", "README work-item exclusion"),
+        ("you can roll back by reverting that dedicated update.", "README rollback guidance"),
+    ]:
+        assert_normalized_text_contains(check_id, "README.md", phrase, label)
 
     for path in operator_docs:
         assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
@@ -817,6 +840,12 @@ def assert_changelog_fragment_contract() -> None:
         )
         valid_fragment = repo_root / "docs/work-items/2027-01-02_example/changelog/implementation.md"
         valid_entry = (
+            "### 2027-01-02_example -- add newer fixture entry\n\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Added\n\n"
+            "- Added a newer fixture entry.\n\n"
             "### 2027-01-02_example -- add fixture entry\n\n"
             "Release target: `unreleased`\n"
             "Package impact: `repository-only`\n"
@@ -826,11 +855,21 @@ def assert_changelog_fragment_contract() -> None:
         )
         write_fixture_file(valid_fragment, valid_entry)
 
+        lint_result = run_consolidation_fixture(["--lint"], repo_root)
+        if lint_result.returncode != 0:
+            add_failure(check_id, f"--lint should accept valid entries before consolidation: {(lint_result.stdout + lint_result.stderr).strip()}")
+
         missing_check = run_consolidation_fixture(["--check"], repo_root)
         if missing_check.returncode == 0:
             add_failure(check_id, "--check should fail when a valid fragment is missing from CHANGELOG.md")
-        elif "2027-01-02_example -- add fixture entry" not in (missing_check.stdout + missing_check.stderr):
-            add_failure(check_id, "--check failure should name the missing fragment heading")
+        elif any(
+            heading not in (missing_check.stdout + missing_check.stderr)
+            for heading in [
+                "2027-01-02_example -- add newer fixture entry",
+                "2027-01-02_example -- add fixture entry",
+            ]
+        ):
+            add_failure(check_id, "--check failure should name each missing fragment heading")
         if "add fixture entry" in changelog.read_text(encoding="utf-8"):
             add_failure(check_id, "--check modified CHANGELOG.md")
 
@@ -838,8 +877,12 @@ def assert_changelog_fragment_contract() -> None:
         if write_result.returncode != 0:
             add_failure(check_id, f"write consolidation failed: {(write_result.stdout + write_result.stderr).strip()}")
         consolidated = changelog.read_text(encoding="utf-8")
-        if consolidated.count("### 2027-01-02_example -- add fixture entry") != 1:
-            add_failure(check_id, "write consolidation should insert the valid fragment exactly once")
+        for heading in [
+            "### 2027-01-02_example -- add newer fixture entry",
+            "### 2027-01-02_example -- add fixture entry",
+        ]:
+            if consolidated.count(heading) != 1:
+                add_failure(check_id, "write consolidation should insert each valid fragment exactly once")
         if "## 0.5.0 - 2026-06-01" not in consolidated:
             add_failure(check_id, "write consolidation should preserve historical release sections")
 
@@ -847,8 +890,12 @@ def assert_changelog_fragment_contract() -> None:
         if duplicate_result.returncode != 0:
             add_failure(check_id, f"duplicate consolidation failed: {(duplicate_result.stdout + duplicate_result.stderr).strip()}")
         duplicate_text = changelog.read_text(encoding="utf-8")
-        if duplicate_text.count("### 2027-01-02_example -- add fixture entry") != 1:
-            add_failure(check_id, "rerunning consolidation should not duplicate an existing heading")
+        for heading in [
+            "### 2027-01-02_example -- add newer fixture entry",
+            "### 2027-01-02_example -- add fixture entry",
+        ]:
+            if duplicate_text.count(heading) != 1:
+                add_failure(check_id, "rerunning consolidation should not duplicate an existing heading")
 
         final_check = run_consolidation_fixture(["--check"], repo_root)
         if final_check.returncode != 0:
@@ -860,39 +907,50 @@ def assert_changelog_fragment_contract() -> None:
         invalid_fragment = repo_root / "docs/work-items/2026-07-09_bad/changelog/implementation.md"
         write_fixture_file(
             invalid_fragment,
-            "### 2026-07-09_bad -- malformed fragment\n\n"
+            "### 2026-07-09_bad -- valid first entry\n\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Changed\n\n"
+            "- Valid first entry.\n\n"
+            "### 2026-07-09_bad -- malformed second entry\n\n"
             "Release target: `unreleased`\n"
             "Release target: `unreleased`\n"
             "Package impact: `repository-only`\n\n"
             "#### Changed\n\n"
             "- Missing release note metadata.\n",
         )
-        invalid_result = run_consolidation_fixture(["--check"], repo_root)
+        invalid_result = run_consolidation_fixture(["--lint"], repo_root)
         invalid_output = invalid_result.stdout + invalid_result.stderr
         if invalid_result.returncode == 0:
             add_failure(check_id, "malformed fragment should make --check fail")
-        for expected in ["docs/work-items/2026-07-09_bad/changelog/implementation.md", "Release target", "Release-note"]:
+        for expected in ["docs/work-items/2026-07-09_bad/changelog/implementation.md", "malformed second entry", "Release target", "Release-note"]:
             if expected not in invalid_output:
                 add_failure(check_id, f"malformed fragment output should mention {expected}")
 
     with tempfile.TemporaryDirectory() as temp_dir:
         repo_root = Path(temp_dir)
         write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
-        for filename in ["first.md", "second.md"]:
-            write_fixture_file(
-                repo_root / f"docs/work-items/2026-07-09_duplicate/changelog/{filename}",
-                "### 2026-07-09_duplicate -- shared heading\n\n"
+        write_fixture_file(
+            repo_root / "docs/work-items/2026-07-09_duplicate/changelog/implementation.md",
+            "### 2026-07-09_duplicate -- shared heading\n\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Changed\n\n"
+            "- First duplicate fixture.\n\n"
+            "### 2026-07-09_duplicate -- shared heading\n\n"
                 "Release target: `unreleased`\n"
                 "Package impact: `repository-only`\n"
                 "Release-note: `source-only`\n\n"
                 "#### Changed\n\n"
-                f"- Duplicate fixture from {filename}.\n",
-            )
-        duplicate_result = run_consolidation_fixture(["--check"], repo_root)
+                "- Second duplicate fixture.\n",
+        )
+        duplicate_result = run_consolidation_fixture(["--lint"], repo_root)
         duplicate_output = duplicate_result.stdout + duplicate_result.stderr
         if duplicate_result.returncode == 0:
             add_failure(check_id, "duplicate fragment headings should make --check fail")
-        for expected in ["Duplicate changelog fragment heading", "first.md", "second.md"]:
+        for expected in ["Duplicate changelog fragment heading", "implementation.md", "entry 1", "entry 2", "shared heading"]:
             if expected not in duplicate_output:
                 add_failure(check_id, f"duplicate fragment output should mention {expected}")
 
@@ -914,6 +972,21 @@ def assert_changelog_fragment_contract() -> None:
                 check_id,
                 f"non-harness release target values should validate: {(downstream_result.stdout + downstream_result.stderr).strip()}",
             )
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(
+            repo_root / "docs/work-items/2026-07-09_lint-only/changelog/implementation.md",
+            "### 2026-07-09_lint-only -- accept without root changelog\n\n"
+            "Release target: `unreleased`\n"
+            "Package impact: `repository-only`\n"
+            "Release-note: `source-only`\n\n"
+            "#### Changed\n\n"
+            "- Lint does not require root completeness.\n",
+        )
+        lint_result = run_consolidation_fixture(["--lint"], repo_root)
+        if lint_result.returncode != 0:
+            add_failure(check_id, f"--lint should not require CHANGELOG.md: {(lint_result.stdout + lint_result.stderr).strip()}")
 
 
 def assert_work_item_architecture_decisions() -> None:
