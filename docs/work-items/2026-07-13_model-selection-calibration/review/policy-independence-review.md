@@ -31,3 +31,9 @@ No unresolved blocking finding remains. The reviewer confirmed that canonical po
 - Assumption: the staged TASK-001 red-phase record is intentional execution evidence.
 - Residual risk: low; concrete runtime mappings may change later, but the permanent tier vocabulary and operator authority remain preserved.
 - Recommended next step: stage the complete approved implementation scope, rerun final checks, and commit with the planned implementation subject.
+
+## Amendment addendum
+
+`AMD-001` supersedes the review-orchestration assumption recorded above. Independent sub-agent review is the default. Separate task/thread review is an operator-managed fallback until inter-task reporting in the required modality is proven. The curated-artifact, named-lens, evidence-backed-finding, and orchestration-owned-integration requirements remain unchanged.
+
+The independent reviewer rechecked this amended boundary and found no blocking issue.

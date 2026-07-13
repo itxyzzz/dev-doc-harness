@@ -1158,8 +1158,9 @@ def assert_model_selection_dimensions() -> None:
     )
 
     for path in [models, role_examples]:
-        assert_text_contains(check_id, path, r"separate task or thread", "independent reviewer separation")
+        assert_text_contains(check_id, path, r"independent sub-agent reviewer.+default", "independent sub-agent reviewer default")
         assert_text_contains(check_id, path, r"curated artifacts", "independent reviewer context")
+        assert_text_contains(check_id, path, r"separate task or thread.+operator-managed fallback", "manual review-isolation fallback")
         assert_text_contains(check_id, path, r"(?:one|single) named lens", "independent reviewer lens")
         assert_text_contains(check_id, path, r"evidence-backed", "evidence-backed finding requirement")
         assert_text_contains(check_id, path, r"severity", "evidence-backed finding severity")

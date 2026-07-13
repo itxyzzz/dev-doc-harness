@@ -11,7 +11,7 @@ Under the active `economy-default` policy, use Terra medium as the suggested sta
 
 A completed spec or plan is evidence that unknowns should be lower. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make remaining work bounded. Do not use a stronger allocation to resolve missing product input, an undecided requirement, or a plan contradiction; stop for the established variance or approval path instead.
 
-For high-value independent review, use a separate task with curated approved artifacts, a single named review lens, and evidence-backed findings that include severity and a reproduction or validation path. The reviewer may use more effort or a stronger allocation than the clear-plan executor when justified, but the orchestration thread still owns final integration.
+For high-value independent review, use an independent sub-agent by default with curated approved artifacts, a single named review lens, and evidence-backed findings that include severity and a reproduction or validation path. A separate task or thread is an operator-managed fallback until inter-task reporting in the required modality is proven. The reviewer may use more effort or a stronger allocation than the clear-plan executor when justified, but the orchestration thread still owns final integration.
 
 Keep this guidance just-enough: canonical policy defines the allocation rules; examples illustrate a bounded role; templates ask for the decision; validation checks concrete regressions. Do not add another model-selection surface unless it provides a distinct benefit that an existing surface cannot provide.
 

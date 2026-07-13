@@ -173,7 +173,7 @@ A cheaper sub-agent must not be the final authority for high-blast-radius decisi
 
 ## Independent review
 
-Use an independent reviewer as a separate task or thread with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples.
+Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
 
 Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it; this is a suggested quality-control allocation, not a mandatory gate. The orchestration thread retains final integration ownership.
 

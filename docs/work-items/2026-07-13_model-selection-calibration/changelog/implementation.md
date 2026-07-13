@@ -1,3 +1,13 @@
+### 2026-07-13_model-selection-calibration -- retain subagent review default
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Retained independent sub-agent review as the default and made separate task/thread review an operator-managed fallback pending proven inter-task reporting.
+
 ### 2026-07-13_model-selection-calibration -- calibrate economy model guidance
 
 Release target: `unreleased`
