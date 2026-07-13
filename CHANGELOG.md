@@ -6,6 +6,20 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-14_plain-language-artifacts -- approve readable authoring policy
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved combined specification, implementation plan, architecture snapshot, and test-case snapshot for plain-language artifact authoring.
+
+#### Changed
+
+- Planned a canonical style rule, required drafting route, concise template prompt, and scoped validator protection while preserving frozen work items and `LICENSE`.
+
 ### 2026-07-13_model-selection-calibration -- approve calibrated economy guidance
 
 Release target: `unreleased`
