@@ -22,6 +22,8 @@ Criterion: `<what proves the commitment>`.
 
 Expected evidence: `<test, inspection, review, or other proof>`.
 
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.
+
 ### `SPEC-002` `<second title when needed>`
 
 Statement:
@@ -39,3 +41,5 @@ Covers: `SPEC-001`, `SPEC-002`.
 Criterion: `<shared proof without new delivery scope>`.
 
 Expected evidence: `<shared evidence>`.
+
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.

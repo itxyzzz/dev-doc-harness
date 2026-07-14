@@ -111,6 +111,9 @@ Exit criteria: `<observable completion signal>`.
 
 Use stable check IDs. Describe the evidence purpose, method, and expected
 result; do not turn an equivalent command into a separate approval gate.
+When multiple checks cover one criterion, state whether all are required or
+whether they are equivalent alternatives; for alternatives, explain why either
+proves the same evidence purpose.
 
 ### `CHECK-001` `<short title>`
 

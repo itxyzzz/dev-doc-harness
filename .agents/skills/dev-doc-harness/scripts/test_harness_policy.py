@@ -1643,11 +1643,35 @@ def variance_fixture_route(text: str) -> str:
     return "invalid"
 
 
+def verification_criterion_fixture_errors(text: str) -> list[str]:
+    if "Applicability: `Cross-phase`" in text and "Owning phase:" not in text:
+        return ["cross-phase criterion has no owning phase"]
+    return []
+
+
+def multi_check_fixture_mode(text: str) -> str:
+    if "All required: `Yes`" in text:
+        return "all-required"
+    if "Equivalent alternatives: `Yes`" in text and "Equivalence reason:" in text:
+        return "equivalent-alternatives"
+    return "invalid"
+
+
 def assert_harness_simplification_scenarios() -> None:
     check_id = "scenarios.harness-simplification"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
     execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+    readiness_source_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md",
+    ]
+    readiness_templates = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]
+    verification_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md"
+    plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
 
     assert_text_contains(check_id, quality, r"Mappings are optional", "optional mapping guidance")
     assert_text_contains(check_id, execution, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
@@ -1664,6 +1688,37 @@ def assert_harness_simplification_scenarios() -> None:
         r"repository-local harness owns ordinary freeze and changelog details",
         "README bootstrap defers ordinary lifecycle details",
     )
+    assert_text_contains(check_id, "README.md", r"same evidence purpose", "canonical equivalent-evidence variance route")
+    assert_text_not_contains(
+        check_id,
+        "README.md",
+        r"(?s)Changes to architecture.*?Plan\s+Checks.*?require an amendment and approval",
+        "unconditional Plan Check amendment list",
+    )
+
+    for path in [*readiness_source_blocks, *readiness_templates]:
+        assert_text_not_contains(
+            check_id,
+            path,
+            r"Specification Commitments are atomic,\s*classified,\s*bounded",
+            "mandatory commitment classification",
+        )
+
+    for path in [verification_source_block, *CURRENT_SPEC_SCHEMA_PATHS[1:]]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"Applicability.*owning phase.*optional",
+            "optional Verification Criterion applicability/owner cue",
+        )
+    for path in [plan_check_source_block, *CURRENT_PLAN_SCHEMA_PATHS]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"whether[\s\S]*all[\s\S]*required[\s\S]*equivalent[\s\S]*alternatives[\s\S]*why",
+            "multi-check required-versus-equivalent cue",
+        )
+
     variance_template = ".agents/skills/dev-doc-harness/assets/templates/variance-log.md"
     assert_text_contains(
         check_id,
@@ -1696,6 +1751,26 @@ def assert_harness_simplification_scenarios() -> None:
         add_failure(check_id, "material outcome fixture did not route to amendment")
     if variance_fixture_route("invalidates evidence") != "amendment":
         add_failure(check_id, "invalidated evidence fixture did not route to amendment")
+
+    cross_phase_criterion = "Applicability: `Cross-phase`\nOwning phase: `Phase 02`"
+    missing_owner_criterion = "Applicability: `Cross-phase`"
+    if verification_criterion_fixture_errors(cross_phase_criterion):
+        add_failure(check_id, "cross-phase criterion with an owning phase failed")
+    if not verification_criterion_fixture_errors(missing_owner_criterion):
+        add_failure(check_id, "cross-phase criterion without an owning phase passed")
+
+    all_required_checks = "Plan checks: `CHECK-001`, `CHECK-002`\nAll required: `Yes`"
+    equivalent_alternatives = (
+        "Plan checks: `CHECK-001`, `CHECK-002`\n"
+        "Equivalent alternatives: `Yes`\n"
+        "Equivalence reason: either check proves the same evidence purpose"
+    )
+    if multi_check_fixture_mode(all_required_checks) != "all-required":
+        add_failure(check_id, "all-required two-check fixture did not preserve required evidence")
+    if multi_check_fixture_mode(equivalent_alternatives) != "equivalent-alternatives":
+        add_failure(check_id, "equivalent-alternative fixture with an explicit reason was not recognized")
+    if multi_check_fixture_mode(all_required_checks) == multi_check_fixture_mode(equivalent_alternatives):
+        add_failure(check_id, "all-required and equivalent-alternative fixtures were conflated")
 
 
 def run_checks() -> None:

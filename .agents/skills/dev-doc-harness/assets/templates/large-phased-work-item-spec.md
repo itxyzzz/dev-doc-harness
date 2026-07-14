@@ -92,6 +92,8 @@ Criterion: `<what proves the commitment>`.
 
 Expected evidence: `<test, inspection, review, or other proof>`.
 
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.
+
 ### `SPEC-002` `<second title when needed>`
 
 Statement:
@@ -109,6 +111,8 @@ Covers: `SPEC-001`, `SPEC-002`.
 Criterion: `<shared proof without new delivery scope>`.
 
 Expected evidence: `<shared evidence>`.
+
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.
 
 ## Architecture Decisions
 
@@ -318,7 +322,7 @@ After the anchor actually freezes, a new-task route displays a conditional copy-
 
 - [ ] Source input and desired outcome are captured.
 - [ ] Scope, non-scope, assumptions, open questions, and known unknowns are explicit.
-- [ ] Specification Commitments are atomic, classified, bounded, and contain every implementation obligation in their Statements.
+- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
 - [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and explicit cross-phase ownership.
 - [ ] Repository evidence and compatibility constraints are recorded.
 - [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.

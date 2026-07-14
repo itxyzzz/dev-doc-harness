@@ -109,9 +109,9 @@ Stage the planning package for approval before committing it.
 Create a draft plan-only PR checkpoint before code changes.
 ```
 
-The copyable distributable package is the root `AGENTS.md` file plus the 
+The copyable distributable package is the root `AGENTS.md` file plus the
 `.agents/` folder. Merge its instructions with an existing destination
-`AGENTS.md`; do not replace local policy. Do not copy this repository's 
+`AGENTS.md`; do not replace local policy. Do not copy this repository's
 `docs/work-items/` folder. Keep the adoption in a dedicated commit or PR so
 you can roll back by reverting that dedicated update.
 
@@ -224,10 +224,13 @@ and completion-report ownership.
 
 ### Drift, commits, and changelogs
 
-Frozen plans are not rewritten to make implementation look tidier. Nontrivial
-drift is recorded. Changes to architecture, APIs, data, security, privacy,
-compliance, scope, Specification Commitments, Verification Criteria, Plan
-Checks, or plan feasibility require an amendment and approval.
+Frozen plans are not rewritten to make implementation look tidier. An
+equivalent implementation or validation adjustment may proceed when it
+preserves the approved scope, outcome, and the same evidence purpose. An
+amendment and approval are required only when a change materially affects the
+outcome, architecture, API, data, security, privacy, compliance, scope, or the
+validity of required evidence; using a different command alone is not material
+when it proves the same thing.
 
 Before each commit, agents update a work-item-local changelog source fragment
 under `docs/work-items/<work-id>/changelog/`. Root `CHANGELOG.md` remains the
