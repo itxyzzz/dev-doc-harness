@@ -16,28 +16,16 @@ Policy references: `module:lifecycle`, `module:naming`, `module:freeze-gate`, `r
 
 ## Discovered issue
 
-State the issue that makes the approved plan insufficient or unsafe to follow as written.
+State the material change: outcome, architecture, API, data, security, privacy,
+compliance, scope, or invalidated evidence.
 
 ## Proposed change
 
 State the replacement instruction or scope adjustment.
 
-## Reason this change is necessary
-
-State why the implementation cannot proceed under the approved plan.
-
 ## Impact assessment
 
-| Area | Impact |
-|---|---|
-| Scope | |
-| Verification Criteria and Plan Checks | |
-| API/interface | |
-| Data model/migration | |
-| Security/privacy/compliance | |
-| Tests | |
-| Documentation | |
-| Rollout/operations | |
+State the affected outcome, proof, interfaces, data, risk, and documentation.
 
 ## Approval
 
@@ -48,7 +36,8 @@ State why the implementation cannot proceed under the approved plan.
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during amendment approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`; keep the matching changelog fragment
+in sync.
 
 | Stage | Planned subject | Changelog title or snippet | Notes |
 |---|---|---|---|

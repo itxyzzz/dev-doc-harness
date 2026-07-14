@@ -66,39 +66,45 @@ Each `<phase-plan-filename>` must be executable by a fresh agent or thread. Incl
 
 ## Specification Commitments
 
-A Specification Commitment is an implementation-neutral normative statement whose authority follows the artifact lifecycle. It is proposed while its artifact is Draft, binds implementation after an approval commit plus normal start authorization, and is authoritative from a handoff snapshot only for that handoff's named planning or review purpose.
+A Specification Commitment states an approved outcome, behavior, quality bar,
+constraint, or deliverable. Use a stable `SPEC-NNN` ID and a short title.
+Put the delivery obligation in its Statement; rationale and examples do not add
+scope.
 
-Use the exact heading ``### `SPEC-NNN` Specification Commitment — <short title>``. Every commitment records one `Kind`, one `Intent`, optional concise `Concerns`, a normative `Statement`, and optional non-normative rationale. Every implementation obligation belongs in a Statement; rationale, examples, notes, Architecture Decisions, and Verification Criteria must not invent delivery scope.
-
-Keep commitments atomic: clauses that can be implemented, deferred, waived, amended, or verified separately are separate commitments. Behavior-defining scenarios stay in the Statement. Architecture Decisions realize or constrain mapped commitment scope through `Source spec sections`; every selected clause must be supported by a mapped Statement.
-
-`Kind` is one of `Outcome`, `Behavior`, `Quality`, `Constraint`, or `Deliverable`. Choose by precedence: named output, measurable degree, conditional response, restriction/prohibition, otherwise implementation-controlled end state. `Intent` is one of `Establish`, `Change`, `Preserve`, `Maintain`, or `Prevent`. Choose by precedence: prohibition, named regression baseline, ongoing invariant, alteration, otherwise creation. Preservation names its baseline, quality names its threshold or tolerance, and maintenance names its states or time horizon.
+Keep commitments separate when they can be implemented, changed, or verified
+separately. Classification is optional. When it helps, show it compactly, for
+example `Constraint · Preserve`; do not require separate `Kind:` and `Intent:`
+fields.
 
 ## Verification Criteria
 
-A Verification Criterion is a pass/fail conformance proposition, not a procedure or completed result. Use the exact full-name `VER-NNN` heading and require `Covers`, `Criterion`, and `Expected evidence`. Omitted `Applicability` means final completion of the scope or phase delivering all covered commitments. A criterion covers one or more Specification Commitments, never an Architecture Decision directly, and cannot add scope absent from their Statements.
-
-All applicable criteria covering a commitment and all numbered Expected evidence items are conjunctive by default. Alternatives use an explicit `Any one of` group with an equivalence basis. Commands belong in Plan Checks unless a command is itself a stable contractual interface.
-
-Define a single-commitment criterion immediately beneath its commitment with a level-four heading. Define a criterion covering two or more commitments exactly once under `## Cross-cutting Verification Criteria` with a level-three heading. Cross-phase criteria name one owning phase in Applicability; the phase delivering the final prerequisite owns the decision unless the frozen spec says otherwise. Earlier phases preserve partial evidence but cannot report the criterion passed.
+A Verification Criterion says what evidence proves a commitment; it is not a
+procedure or a result. Use a stable `VER-NNN` ID, link it to the commitments it
+covers, and state the criterion and expected evidence. Keep a local criterion
+near its commitment; put genuinely cross-cutting criteria in one shared
+section. Commands belong in Plan Checks unless the command itself is a stable
+interface.
 
 ## Plan Checks
 
-A Plan Check is the concrete command, test, inspection, analysis, demonstration, or review procedure used to obtain evidence for one or more Verification Criteria. Use ``### `CHECK-NNN` Plan Check — <short title>`` and require `Covers`, `Procedure`, `Expected result`, `Evidence record`, and `Stage or environment`.
-
-Multiple checks mapped to one criterion are conjunctive by default. Equivalent alternatives use an explicit `Any one of` group and equivalence rationale. A `CHECK` ID identifies the frozen procedure contract, not an execution event. A material procedure change follows approved variance or amendment rather than silently changing the meaning of the ID.
+A Plan Check is a command, test, inspection, analysis, demonstration, or review
+that obtains evidence. Use a stable `CHECK-NNN` ID, name the criterion it
+supports, and describe the evidence purpose, method, and expected result. The
+method may change through the variance process when it still proves the same
+thing; only a material change needs an amendment.
 
 ## Asymmetric plan coverage
 
-Plans and phase plans keep two complete mappings. The commitment-disposition mapping assigns every in-scope Specification Commitment to one or more Implementation Tasks, verification-only treatment, or an exact frozen-spec reference authorizing a later phase. Plans cannot create deferrals. Architecture Decisions are consumed only under mapped commitments.
-
-The verification-execution mapping assigns every applicable Verification Criterion to one or more Plan Checks and expected evidence stages. Every Plan Check covers a criterion. Every Implementation Task traces to a commitment, incorporated decision, risk mitigation, lifecycle operation, or explicit Plan Check enablement need. Coordinate both mappings through task/check dependencies and stages; neither mapping is a complete Plan alone.
+Mappings are optional. Use local links between commitments, tasks, criteria, and
+checks when that is enough to follow the work. Add a complete mapping only when
+it prevents a coverage gap, supports a fresh handoff, or feeds deterministic
+validation; state that benefit beside the mapping.
 
 ## Conformance status
 
-Executing a Plan Check creates a distinct record containing the `CHECK` ID, execution-instance identity, stage or environment, actual result, evidence location or inline evidence, and pass/fail/blocker status. Repeated executions retain separate records. Check evidence determines Verification Criterion status; applicable criterion statuses contribute to Specification Commitment conformance.
-
-Task completion alone does not establish conformance, and passing checks alone does not complete delivery while required tasks or authorized dispositions remain unresolved. Planning approval and freeze remain lifecycle decisions; optional outcome validation or delivery acceptance is named separately when it exists.
+Record check evidence in the form that helps a later reader reproduce or trust
+the result. Tasks and checks both matter: completing one does not automatically
+complete the other. Planning approval and freeze remain lifecycle decisions.
 
 Phase plans derive from the approved spec, approved amendments, and any approved architecture snapshot. They may reference architectural decisions as implementation inputs, but they must not silently reinterpret frozen architecture or introduce new high-impact architecture decisions. Missing architecture before freeze is a draft spec or draft snapshot quality issue. Architecture drift discovered after freeze follows the variance and amendment process from `artifact-contract.md`.
 

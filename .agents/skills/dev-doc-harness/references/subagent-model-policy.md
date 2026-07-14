@@ -106,22 +106,14 @@ Prefer stronger reasoning for planning, architecture, integration design, unclea
 
 Prefer lower or medium reasoning for bounded exploration, mechanical edits, local refactors, test enumeration from clear requirements, documentation cleanup, and summarization.
 
-If an approved frozen spec, plan, phase plan, or amendment includes a sub-agent strategy, that strategy is authorized after the normal post-freeze operator authorization to begin implementation. Do not ask for another sub-agent-specific confirmation solely because the start instruction does not repeat the word `sub-agent`.
+An approved sub-agent strategy starts with the plan's normal post-freeze
+instruction. Do not ask again merely because that instruction does not repeat
+`sub-agent`.
 
-Keep these four layers distinct:
-
-1. Recommendation: the planning agent's preferred model and orchestration strategy.
-2. Harness authorization: approval of the frozen strategy plus the fresh instruction to begin implementation.
-3. Runtime permission: higher-priority platform or session rules that may require explicit operator wording or prohibit an action.
-4. Platform availability: whether the runtime exposes the selected tier, effort, orchestration mode, and resolved profile.
-
-At execution preflight, use the selected combination only when runtime permission and platform availability allow it. Otherwise use the approved fallback; stop for fresh confirmation if neither the preferred strategy nor its fallback is permitted and available.
-
-Fresh confirmation is required before applying choices not covered by the approved strategy, including unplanned sub-agents, more concurrent sub-agents than approved, a stronger model class or reasoning effort that was not recorded, write-capable work where only read-only work was approved, or more than 3 concurrent sub-agents.
-
-Any unplanned `ultra` or platform multi-agent escalation requires fresh confirmation, as does an unplanned capability-tier escalation, reasoning-effort escalation, broader write authority, or concurrency expansion.
-
-If platform or runtime policy restricts sub-agent spawning or model/reasoning overrides, still document the intended strategy and ask for explicit operator confirmation before applying any restricted action.
+Use the approved strategy or its recorded fallback when runtime permission and
+availability allow it. Ask only before a choice outside that strategy: an
+unplanned sub-agent, stronger tier or effort, broader write authority, or more
+concurrency. Platform rules may still require their own confirmation.
 
 Use sub-agents for isolation, review quality, or parallelism: independent investigation, read-heavy exploration, test-risk review, spec review, code-quality review, or bounded implementation with disjoint file ownership. Avoid sub-agents for small tasks, tightly coupled work, same-file edits by multiple agents, immediate main-thread blockers, or cases where coordination overhead exceeds the value.
 

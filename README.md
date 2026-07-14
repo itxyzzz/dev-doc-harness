@@ -130,11 +130,17 @@ only for an explicit write consolidation.
 
 You can also install the skill globally by copying
 `.agents/skills/dev-doc-harness/` into
-`$HOME/.agents/skills/dev-doc-harness/`. A compact global `AGENTS.md`
-bootstrap should say that repository-local harness instructions take precedence,
-substantial work uses the selected router, and implementation begins only after
-the planning freeze and a fresh explicit instruction. Keep the copied package
-and any product work in separate commits.
+`$HOME/.agents/skills/dev-doc-harness/`. Use this compact global `AGENTS.md`
+bootstrap; copy it only if it fits your own global guidance:
+
+```md
+Repository-local harness instructions take precedence. For substantial work, use
+the repository's selected harness router. The repository-local harness owns ordinary freeze and changelog details. After its planning freeze and a fresh start
+instruction, complete the approved plan; ask before external, destructive,
+costly, or material scope-expanding actions.
+```
+
+Keep the copied package and product work in separate commits.
 
 ## What operators can rely on
 

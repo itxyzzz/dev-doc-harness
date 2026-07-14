@@ -38,6 +38,10 @@ Use this protocol when a frozen planning package hands work to a fresh task or w
 4. Restate only the immediate work, approved execution strategy and fallback, the documented next activity expressed as a named task or first activity, and stop condition.
 5. Begin at that documented next activity. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
+After a fresh implementation instruction, complete the approved plan without
+pausing between planned tasks. Ask only for an external, destructive, costly,
+or material scope-expanding action.
+
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 
 ## Task preflight

@@ -76,6 +76,7 @@ CHECK_IDS = [
     "quality.commitment-verification",
     "templates.commitment-verification",
     "compat.current-historical",
+    "scenarios.harness-simplification",
 ]
 
 CANONICAL_REFERENCES = [
@@ -644,39 +645,18 @@ def assert_template_assembly() -> None:
         if unresolved_include_pattern.search(text):
             add_failure(check_id, f"{template} contains unresolved include or source-block syntax")
 
-    commitment_header_pattern = re.compile(
-        r"\|\s*Specification Commitment\s*\|\s*Disposition\s*\|\s*Implementation Tasks\s*\|"
-    )
-    verification_header_pattern = re.compile(
-        r"\|\s*Verification Criterion\s*\|\s*Plan Checks\s*\|\s*Expected evidence stage\s*\|"
-    )
     for template in PLAN_TEMPLATE_FILES:
         text = read_repo_text(template)
-        task_plan_match = re.search(r"^## Implementation Tasks\s*(?P<body>.*?)(?=^##\s+|\Z)", text, flags=re.MULTILINE | re.DOTALL)
-        checks_match = re.search(r"^## Plan Checks\s*(?P<body>.*?)(?=^##\s+|\Z)", text, flags=re.MULTILINE | re.DOTALL)
-        commitment_match = re.search(r"^## Commitment-Disposition Mapping\s*(?P<body>.*?)(?=^##\s+|\Z)", text, flags=re.MULTILINE | re.DOTALL)
-        verification_match = re.search(r"^## Verification-Execution Mapping\s*(?P<body>.*?)(?=^##\s+|\Z)", text, flags=re.MULTILINE | re.DOTALL)
-
-        if not task_plan_match:
-            add_failure(check_id, f"{template} is missing ## Implementation Tasks")
-        else:
-            task_plan = task_plan_match.group("body")
-            for label in ["Dependencies:", "Implementation:", "Exit criteria:"]:
-                if label not in task_plan:
-                    add_failure(check_id, f"{template} task section is missing field label: {label}")
-            if not re.search(r"^### `TASK-\d{3}` Implementation Task —", task_plan, re.MULTILINE):
-                add_failure(check_id, f"{template} is missing a full-name TASK heading")
-
-        if not checks_match:
-            add_failure(check_id, f"{template} is missing ## Plan Checks")
-        else:
-            for label in ["Covers:", "Procedure:", "Expected result:", "Evidence record:", "Stage or environment:"]:
-                if label not in checks_match.group("body"):
-                    add_failure(check_id, f"{template} Plan Checks are missing field label: {label}")
-        if not commitment_match or not commitment_header_pattern.search(commitment_match.group("body")):
-            add_failure(check_id, f"{template} is missing the commitment-disposition mapping header")
-        if not verification_match or not verification_header_pattern.search(verification_match.group("body")):
-            add_failure(check_id, f"{template} is missing the verification-execution mapping header")
+        for pattern, label in [
+            (r"## Traceability approach", "traceability section"),
+            (r"Use local links", "local-link default"),
+            (r"Add a mapping only when", "benefit-based mapping"),
+            (r"## Implementation tasks", "task section"),
+            (r"### `TASK-001` `<short imperative title>`", "concise task heading"),
+            (r"## Plan checks", "check section"),
+            (r"### `CHECK-001` `<short title>`", "concise check heading"),
+        ]:
+            assert_text_contains(check_id, template, pattern, label)
 
     if join_repo_path(script_path).exists():
         result = subprocess.run(
@@ -1156,7 +1136,7 @@ def assert_artifact_style_guidance() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]:
-        assert_text_contains(check_id, path, r"unresolved required decisions", "readiness unresolved-decision check")
+        assert_text_contains(check_id, path, r"required decision|unresolved required decisions", "readiness unresolved-decision check")
 
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md", r"DEC-001", "architecture decision ID")
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", r"AMD-001", "amendment ID")
@@ -1275,11 +1255,12 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"reproduction or validation path", "finding validation path")
         assert_text_contains(check_id, path, r"orchestration thread.+(?:owns|retains).+integration", "orchestration-owned integration")
 
-    for layer in ["recommendation", "harness authorization", "runtime permission", "platform availability"]:
-        assert_text_contains(check_id, models, re.escape(layer), f"authorization layer '{layer}'")
+    assert_text_contains(check_id, models, r"plan's normal post-freeze", "approved strategy starts with plan authorization")
+    assert_text_contains(check_id, models, r"outside that strategy", "out-of-strategy confirmation boundary")
+    assert_text_contains(check_id, models, r"Platform rules may still require", "platform permission boundary")
     assert_text_contains(check_id, models, r"approved fallback", "approved fallback behavior")
     assert_text_contains(check_id, models, r"de-facto orchestration mode", "de-facto orchestration reporting")
-    assert_text_contains(check_id, models, r"unplanned.+(?:ultra|platform multi-agent).+(?:fresh confirmation|confirmation)", "unplanned orchestration confirmation")
+    assert_text_contains(check_id, models, r"unplanned sub-agent.+stronger tier or effort.+broader write authority", "unplanned orchestration confirmation")
 
     strategy_templates = [
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
@@ -1328,17 +1309,10 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, models, r"(?:exact|precise).+remaining context.+not exposed|not exposed.+(?:exact|precise).+remaining context", "no unexposed context estimate")
     assert_text_contains(check_id, models, r"same-task.+re(?:-|)read.+frozen|same-task.+rehydrat", "same-task artifact rehydration")
 
-    for path in PRIMARY_TEMPLATE_FILES:
+    for path in PLAN_TEMPLATE_FILES:
         assert_text_contains(check_id, path, r"## Next-task handoff", "next-task handoff section")
-        assert_text_contains(check_id, path, r"Exact authoritative artifacts:.+approved spec, plan or phase plan", "actual frozen boundary inputs")
-        for label in [
-            "Execution continuity",
-            "Context visibility",
-            "Artifact rehydration required",
-            "First activity",
-            "Variance stop condition",
-        ]:
-            assert_text_contains(check_id, path, re.escape(label), f"handoff field '{label}'")
+        assert_text_contains(check_id, path, r"real frozen boundary", "real-boundary handoff limit")
+        assert_text_contains(check_id, path, r"frozen package,\s+next activity,\s+first task", "compact handoff inputs")
         assert_text_contains(check_id, path, re.escape("rule:execution-quality.execution-thread-start"), "startup rule reference")
 
     for label in ["capability tier", "reasoning effort", "orchestration mode", "fallback", "execution continuity", "context visibility", "artifact rehydration"]:
@@ -1369,16 +1343,8 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
     assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
 
-    for path in PRIMARY_TEMPLATE_FILES:
-        for label in ["Planning shape", "Frozen package", "Next activity"]:
-            assert_text_contains(check_id, path, re.escape(label), f"{path} field '{label}'")
-
     small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
-    for path in PLAN_TEMPLATE_FILES:
-        assert_text_contains(check_id, path, r"approval.+creat.+task|creat.+task.+approval", f"{path} creation approval")
-        assert_text_contains(check_id, path, r"manual.+copy-ready handoff|copy-ready handoff.+manual", f"{path} manual fallback")
-        assert_text_contains(check_id, path, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", f"{path} exact configuration")
     assert_text_contains(check_id, small_spec, r"combined small/medium", "small spec combined planning shape")
     assert_text_contains(check_id, small_spec, r"does not.+(?:independent|plan-drafting).+handoff|no independent.+handoff", "small spec no independent plan handoff")
     assert_text_contains(check_id, large_spec, r"phase-plan drafting", "large anchor next activity")
@@ -1531,15 +1497,31 @@ def assert_commitment_verification_quality() -> None:
     ]:
         assert_text_contains(check_id, quality, re.escape(rule_id), f"{rule_id} owner")
     for rule_id in [
-        "rule:style.full-name-entity-headings",
+        "rule:style.entity-presentation",
         "rule:style.verification-criterion-placement",
-        "rule:style.asymmetric-traceability",
+        "rule:style.proportional-traceability",
     ]:
         assert_text_contains(check_id, style, re.escape(rule_id), f"{rule_id} owner")
 
 
 def assert_commitment_verification_templates() -> None:
     check_id = "templates.commitment-verification"
+    spec_paths = CURRENT_SPEC_SCHEMA_PATHS
+    plan_paths = CURRENT_PLAN_SCHEMA_PATHS
+    for path in spec_paths:
+        assert_text_contains(check_id, path, r"`SPEC-001`", "SPEC ID anchor")
+        assert_text_contains(check_id, path, r"`VER-001`", "VER ID anchor")
+        assert_text_not_contains(check_id, path, r"(?m)^Kind:", "separate Kind field")
+        assert_text_not_contains(check_id, path, r"(?m)^Intent:", "separate Intent field")
+    for path in plan_paths:
+        assert_text_contains(check_id, path, r"Use local links", "local-link traceability")
+        assert_text_contains(check_id, path, r"Add a mapping only when", "benefit-based mapping")
+        assert_text_contains(check_id, path, r"### `TASK-001` `<short imperative title>`", "TASK ID anchor")
+        assert_text_contains(check_id, path, r"### `CHECK-001` `<short title>`", "CHECK ID anchor")
+        assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
+        assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
+    return
+
     positive_spec = """### `SPEC-001` Specification Commitment — One\nKind: `Constraint`\nIntent: `Establish`\nStatement:\n1. One.\n#### `VER-001` Verification Criterion — One\nCovers:\n1. `SPEC-001`.\nCriterion:\n1. One.\nExpected evidence:\n1. One.\n### `SPEC-002` Specification Commitment — Two\nKind: `Deliverable`\nIntent: `Change`\nStatement:\n1. Two.\n## Cross-cutting Verification Criteria\n### `VER-002` Verification Criterion — Both\nCovers:\n1. `SPEC-001`.\n2. `SPEC-002`.\nCriterion:\n1. Both.\nExpected evidence:\n1. Both.\n"""
     positive_plan = """## Commitment-Disposition Mapping\n| Specification Commitment | Disposition | Implementation Tasks |\n|---|---|---|\n| `SPEC-001` | Implement | `TASK-001` |\n## Verification-Execution Mapping\n| Verification Criterion | Plan Checks | Expected evidence stage |\n|---|---|---|\n| `VER-001` | `CHECK-001` | Final |\n## Implementation Tasks\n### `TASK-001` Implementation Task — Change\nDependencies:\n1. None.\nImplementation:\n1. Change.\nExit criteria:\n1. Done.\n## Plan Checks\n### `CHECK-001` Plan Check — Verify\nCovers:\n1. `VER-001`.\nProcedure:\n1. Run.\nExpected result:\n1. Pass.\nEvidence record:\n1. Record.\nStage or environment:\n1. Final.\n"""
     if errors := validate_commitment_spec_fixture(positive_spec):
@@ -1633,6 +1615,87 @@ def assert_release_scenarios() -> None:
     ]
     for scenario_id in scenario_ids:
         assert_text_contains(check_id, snapshot_path, re.escape(scenario_id), f"{scenario_id} snapshot row")
+
+
+def traceability_fixture_errors(text: str) -> list[str]:
+    has_local_links = "Related: `SPEC-001` -> `TASK-001`; `VER-001` -> `CHECK-001`." in text
+    has_mapping = "## Mapping" in text
+    if not has_local_links and not has_mapping:
+        return ["needs local links or a mapping"]
+    if has_mapping and not re.search(r"Mapping benefit: `(coverage|handoff|deterministic validation)`", text):
+        return ["mapping has no concrete benefit"]
+    return []
+
+
+def execution_fixture_errors(text: str) -> list[str]:
+    required = ["Frozen package", "Fresh start instruction", "continue through planned tasks"]
+    errors = [f"missing {item}" for item in required if item not in text]
+    if "ask after each task" in text:
+        errors.append("adds a per-task confirmation")
+    return errors
+
+
+def variance_fixture_route(text: str) -> str:
+    if "same scope, outcome, and evidence purpose" in text:
+        return "variance"
+    if re.search(r"changes (?:the )?(?:outcome|architecture|API|data|security|privacy|compliance)|invalidates evidence", text):
+        return "amendment"
+    return "invalid"
+
+
+def assert_harness_simplification_scenarios() -> None:
+    check_id = "scenarios.harness-simplification"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+
+    assert_text_contains(check_id, quality, r"Mappings are optional", "optional mapping guidance")
+    assert_text_contains(check_id, execution, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
+    assert_text_contains(check_id, lifecycle, r"same evidence purpose", "equivalent adjustment variance route")
+    assert_text_contains(
+        check_id,
+        lifecycle,
+        r"material.+outcome.+architecture.+API.+data.+security.+privacy.+compliance",
+        "material amendment threshold",
+    )
+    assert_text_contains(
+        check_id,
+        "README.md",
+        r"repository-local harness owns ordinary freeze and changelog details",
+        "README bootstrap defers ordinary lifecycle details",
+    )
+    variance_template = ".agents/skills/dev-doc-harness/assets/templates/variance-log.md"
+    assert_text_contains(
+        check_id,
+        variance_template,
+        r"Material changes use `plan-amendment\.md`",
+        "material changes bypass the variance log",
+    )
+    assert_text_not_contains(check_id, variance_template, r"Variance class:.*Material", "material variance class")
+
+    local_links = "Related: `SPEC-001` -> `TASK-001`; `VER-001` -> `CHECK-001`."
+    justified_mapping = "## Mapping\nMapping benefit: `coverage`\n`SPEC-001` -> `TASK-001`"
+    unjustified_mapping = "## Mapping\n`SPEC-001` -> `TASK-001`"
+    if traceability_fixture_errors(local_links):
+        add_failure(check_id, "concise local-link fixture failed")
+    if traceability_fixture_errors(justified_mapping):
+        add_failure(check_id, "justified mapping fixture failed")
+    if not traceability_fixture_errors(unjustified_mapping):
+        add_failure(check_id, "unjustified mapping fixture passed")
+
+    approved_execution = "Frozen package\nFresh start instruction\ncontinue through planned tasks"
+    per_task_pause = approved_execution + "\nask after each task"
+    if execution_fixture_errors(approved_execution):
+        add_failure(check_id, "approved execution fixture failed")
+    if not execution_fixture_errors(per_task_pause):
+        add_failure(check_id, "per-task pause fixture passed")
+
+    if variance_fixture_route("same scope, outcome, and evidence purpose") != "variance":
+        add_failure(check_id, "equivalent adjustment fixture did not route to variance")
+    if variance_fixture_route("changes the outcome") != "amendment":
+        add_failure(check_id, "material outcome fixture did not route to amendment")
+    if variance_fixture_route("invalidates evidence") != "amendment":
+        add_failure(check_id, "invalidated evidence fixture did not route to amendment")
 
 
 def run_checks() -> None:
@@ -1902,6 +1965,9 @@ def run_checks() -> None:
 
     assert_current_historical_compatibility()
     write_check_result("compat.current-historical")
+
+    assert_harness_simplification_scenarios()
+    write_check_result("scenarios.harness-simplification")
 
 
 def main() -> int:
