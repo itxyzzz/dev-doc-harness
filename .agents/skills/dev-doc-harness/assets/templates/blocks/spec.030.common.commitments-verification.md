@@ -6,6 +6,8 @@ Choose one `Kind`: `Outcome`, `Behavior`, `Quality`, `Constraint`, or `Deliverab
 
 Choose one `Intent`: `Establish`, `Change`, `Preserve`, `Maintain`, or `Prevent`. Precedence is prohibition, named regression baseline, ongoing invariant, alteration, otherwise creation. `Concerns` are optional non-normative tags.
 
+Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+
 ### `SPEC-001` Specification Commitment — `<short descriptive title>`
 
 Kind: `<Outcome | Behavior | Quality | Constraint | Deliverable>`

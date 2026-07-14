@@ -7,9 +7,9 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:artifact-style`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
-Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the artifact becomes large or hard to scan.
+Artifact style: small/medium specifications must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
 
 ## Goal
 
@@ -75,6 +75,8 @@ A Specification Commitment defines normative delivery scope. Keep every implemen
 Choose one `Kind`: `Outcome`, `Behavior`, `Quality`, `Constraint`, or `Deliverable`. Precedence is named output, measurable degree, conditional response, restriction/prohibition, otherwise implementation-controlled end state.
 
 Choose one `Intent`: `Establish`, `Change`, `Preserve`, `Maintain`, or `Prevent`. Precedence is prohibition, named regression baseline, ongoing invariant, alteration, otherwise creation. `Concerns` are optional non-normative tags.
+
+Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
 
 ### `SPEC-001` Specification Commitment — `<short descriptive title>`
 

@@ -15,6 +15,7 @@ Owned rule IDs:
 | `rule:style.placeholder-control` | `## Placeholder control` |
 | `rule:style.trace-density` | `## Traceability density` |
 | `rule:style.template-prompts` | `## Template prompts` |
+| `rule:style.plain-language` | `## Plain language` |
 | `rule:style.full-name-entity-headings` | `## Full-name entity headings` |
 | `rule:style.verification-criterion-placement` | `## Verification Criterion placement` |
 | `rule:style.asymmetric-traceability` | `## Asymmetric traceability` |
@@ -34,6 +35,16 @@ readability risk is material.
 This module owns artifact style. It does not own work sizing, artifact
 lifecycle, immutable snapshots, variance, naming, model strategy, evidence
 preservation, release policy, or durable completeness.
+
+## Plain language
+
+Use `must` for binding obligations and `should` for guidance.
+
+Do not use `shall` in author-facing current guidance or newly created durable artifacts.
+
+The sentence naming the prohibited modal is a definition-only exception.
+Validator fixtures may identify that modal to test enforcement, but they must
+not present it as authoring language.
 
 ## Final artifact content
 

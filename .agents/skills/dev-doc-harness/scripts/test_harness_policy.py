@@ -69,6 +69,7 @@ CHECK_IDS = [
     "changelog.fragments",
     "architecture.decisions",
     "artifact-style.guidance",
+    "plain-language.policy",
     "models.selection-dimensions",
     "execution.thread-start",
     "lifecycle.transition-targets",
@@ -136,6 +137,22 @@ CURRENT_SURFACE_FILES = [
     "docs/work-items/2026-06-07-followup-hardening/deltas/operator-manual.delta.md",
     "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md",
 ] + CANONICAL_REFERENCES + TEMPLATE_FILES
+
+PLAIN_LANGUAGE_RULE_ID = "rule" + ":style.plain-language"
+PLAIN_LANGUAGE_PROMPT = (
+    "Use `must` for binding Statements and `should` for advisory prose; "
+    f"see `{PLAIN_LANGUAGE_RULE_ID}`."
+)
+PLAIN_LANGUAGE_CANONICAL_EXCEPTION = (
+    "Do not use `shall` in author-facing current guidance or newly created durable artifacts."
+)
+PLAIN_LANGUAGE_FIXTURE_PATH = ".agents/skills/dev-doc-harness/scripts/fixtures/plain-language.md"
+PLAIN_LANGUAGE_ACTIVE_MARKDOWN_PATHS = [
+    "AGENTS.md",
+    ".agents/skills/dev-doc-harness/SKILL.md",
+    *CANONICAL_REFERENCES,
+    *TEMPLATE_FILES,
+]
 
 REQUIRED_FILES = [
     "AGENTS.md",
@@ -243,6 +260,31 @@ def assert_text_not_contains(check_id: str, path: str, pattern: str, label: str 
     text = read_repo_text(path)
     if re.search(pattern, text):
         add_failure(check_id, f"Unexpected {label or pattern} in {path}")
+
+
+def get_plain_language_active_markdown_paths() -> list[str]:
+    paths = set(PLAIN_LANGUAGE_ACTIVE_MARKDOWN_PATHS)
+    blocks_root = join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks")
+    if blocks_root.exists():
+        paths.update(to_repo_relative_path(path) for path in blocks_root.glob("*.md"))
+    return sorted(paths)
+
+
+def find_unapproved_plain_language_modals(path: str, text: str) -> list[str]:
+    if path not in get_plain_language_active_markdown_paths():
+        return []
+
+    failures: list[str] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if not re.search(r"(?i)\bshall\b", line):
+            continue
+        if (
+            path == ".agents/skills/dev-doc-harness/references/artifact-style.md"
+            and line.strip() == PLAIN_LANGUAGE_CANONICAL_EXCEPTION
+        ):
+            continue
+        failures.append(f"{path}:{line_number}: prohibited modal outside the canonical definition")
+    return failures
 
 
 def get_concrete_ids(text: str) -> list[str]:
@@ -380,11 +422,25 @@ def assert_route_contains(operation: str, required_patterns: list[str], check_id
             add_failure(check_id, f"Route '{operation}' is missing target pattern: {pattern}")
 
 
+def assert_route_requires(operation: str, required_patterns: list[str], check_id: str) -> None:
+    path = ".agents/skills/dev-doc-harness/SKILL.md"
+    text = read_repo_text(path)
+    route_line = next((line for line in re.split(r"\r?\n", text) if re.search(rf"^\|\s*{re.escape(operation)}\s*\|", line)), "")
+    if not route_line:
+        add_failure(check_id, f"Missing operation route: {operation}")
+        return
+    cells = [cell.strip() for cell in route_line.split("|")[1:-1]]
+    required_cell = cells[1] if len(cells) > 1 else ""
+    for pattern in required_patterns:
+        if not re.search(pattern, required_cell):
+            add_failure(check_id, f"Route '{operation}' is missing required target pattern: {pattern}")
+
+
 def assert_route_budgets() -> None:
     text = read_repo_text(".agents/skills/dev-doc-harness/SKILL.md")
     budgets = {
         "Classify work size": 1,
-        "Draft or review small/medium specs and plans": 3,
+        "Draft or review small/medium specs and plans": 4,
         "Draft or review large anchor specs": 4,
         "Draft or review phase plans": 3,
         "Freeze planning packages": 4,
@@ -1084,7 +1140,11 @@ def assert_artifact_style_guidance() -> None:
     assert_text_contains(check_id, quality, r"Baseline artifact readability", "baseline readability section")
     assert_text_contains(check_id, quality, "rule" + r":evidence[.]preservation", "quality evidence cross-reference")
     assert_text_contains(check_id, router, r"Draft or review large anchor specs.+module:artifact-style", "large route style requirement")
-    assert_text_contains(check_id, router, r"artifact readability risk", "small route conditional style")
+    assert_route_requires(
+        "Draft or review small/medium specs and plans",
+        ["module:artifact-style"],
+        check_id,
+    )
     assert_text_not_contains(check_id, role_examples, r"standard-review", "non-canonical model policy")
 
     for path in template_paths:
@@ -1101,6 +1161,54 @@ def assert_artifact_style_guidance() -> None:
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md", r"DEC-001", "architecture decision ID")
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", r"AMD-001", "amendment ID")
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/variance-log.md", r"VAR-001", "variance ID")
+
+
+def assert_plain_language_policy() -> None:
+    check_id = "plain-language.policy"
+    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    prompt_paths = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]
+    small_medium_source_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.small.header.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
+    ]
+
+    assert_text_contains(check_id, style, re.escape(PLAIN_LANGUAGE_RULE_ID), "plain-language rule owner")
+    assert_text_contains(check_id, style, r"must.+binding.+should.+guidance", "canonical must/should rule")
+    if read_repo_text(style).count(PLAIN_LANGUAGE_CANONICAL_EXCEPTION) != 1:
+        add_failure(check_id, "canonical definition-only exception must appear exactly once")
+    assert_route_requires(
+        "Draft or review small/medium specs and plans",
+        ["module:artifact-style"],
+        check_id,
+    )
+    for path in prompt_paths:
+        assert_text_contains(check_id, path, re.escape(PLAIN_LANGUAGE_PROMPT), "plain-language prompt")
+    for path in small_medium_source_blocks:
+        assert_text_contains(check_id, path, r"module:artifact-style", "required small/medium style module")
+        assert_text_contains(check_id, path, r"must load `module:artifact-style`", "mandatory small/medium style cue")
+
+    if not find_unapproved_plain_language_modals("AGENTS.md", "A current authoring rule shall fail."):
+        add_failure(check_id, "synthetic active-surface occurrence did not fail")
+    for path, text in [
+        (style, PLAIN_LANGUAGE_CANONICAL_EXCEPTION),
+        ("docs/work-items/frozen/spec_example.md", "Historical text shall remain unchanged."),
+        ("LICENSE", "Legal text shall remain unchanged."),
+        (PLAIN_LANGUAGE_FIXTURE_PATH, "Validator fixture shall remain outside the Markdown scan."),
+    ]:
+        if find_unapproved_plain_language_modals(path, text):
+            add_failure(check_id, f"controlled exclusion was scanned: {path}")
+
+    if PLAIN_LANGUAGE_FIXTURE_PATH in get_plain_language_active_markdown_paths():
+        add_failure(check_id, "plain-language fixture path is inside the active Markdown scan")
+
+    for path in get_plain_language_active_markdown_paths():
+        for failure in find_unapproved_plain_language_modals(path, read_repo_text(path)):
+            add_failure(check_id, failure)
 
 
 def assert_model_selection_dimensions() -> None:
@@ -1773,6 +1881,9 @@ def run_checks() -> None:
 
     assert_artifact_style_guidance()
     write_check_result("artifact-style.guidance")
+
+    assert_plain_language_policy()
+    write_check_result("plain-language.policy")
 
     assert_model_selection_dimensions()
     write_check_result("models.selection-dimensions")
