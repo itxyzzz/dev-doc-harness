@@ -109,9 +109,9 @@ Stage the planning package for approval before committing it.
 Create a draft plan-only PR checkpoint before code changes.
 ```
 
-The copyable distributable package is the root `AGENTS.md` file plus the 
+The copyable distributable package is the root `AGENTS.md` file plus the
 `.agents/` folder. Merge its instructions with an existing destination
-`AGENTS.md`; do not replace local policy. Do not copy this repository's 
+`AGENTS.md`; do not replace local policy. Do not copy this repository's
 `docs/work-items/` folder. Keep the adoption in a dedicated commit or PR so
 you can roll back by reverting that dedicated update.
 
@@ -121,13 +121,26 @@ compact downstream guide travel under `.agents/skills/dev-doc-harness/docs/`.
 The root README, `CHANGELOG.md`, and repository work-item history are not part
 of that distribution.
 
+For ordinary work-item commits, update the matching fragment and run
+`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`.
+Fragments may contain multiple newest-first entries, each with its own required
+metadata and change body. Root consolidation remains a project-owned checkpoint:
+release preparation runs lint followed by `--check`, then uses the default mode
+only for an explicit write consolidation.
+
 You can also install the skill globally by copying
 `.agents/skills/dev-doc-harness/` into
-`$HOME/.agents/skills/dev-doc-harness/`. A compact global `AGENTS.md`
-bootstrap should say that repository-local harness instructions take precedence,
-substantial work uses the selected router, and implementation begins only after
-the planning freeze and a fresh explicit instruction. Keep the copied package
-and any product work in separate commits.
+`$HOME/.agents/skills/dev-doc-harness/`. Use this compact global `AGENTS.md`
+bootstrap; copy it only if it fits your own global guidance:
+
+```md
+Repository-local harness instructions take precedence. For substantial work, use
+the repository's selected harness router. The repository-local harness owns ordinary freeze and changelog details. After its planning freeze and a fresh start
+instruction, complete the approved plan; ask before external, destructive,
+costly, or material scope-expanding actions.
+```
+
+Keep the copied package and product work in separate commits.
 
 ## What operators can rely on
 
@@ -211,10 +224,13 @@ and completion-report ownership.
 
 ### Drift, commits, and changelogs
 
-Frozen plans are not rewritten to make implementation look tidier. Nontrivial
-drift is recorded. Changes to architecture, APIs, data, security, privacy,
-compliance, scope, Specification Commitments, Verification Criteria, Plan
-Checks, or plan feasibility require an amendment and approval.
+Frozen plans are not rewritten to make implementation look tidier. An
+equivalent implementation or validation adjustment may proceed when it
+preserves the approved scope, outcome, and the same evidence purpose. An
+amendment and approval are required only when a change materially affects the
+outcome, architecture, API, data, security, privacy, compliance, scope, or the
+validity of required evidence; using a different command alone is not material
+when it proves the same thing.
 
 Before each commit, agents update a work-item-local changelog source fragment
 under `docs/work-items/<work-id>/changelog/`. Root `CHANGELOG.md` remains the

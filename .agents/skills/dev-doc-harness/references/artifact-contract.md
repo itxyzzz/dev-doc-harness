@@ -269,31 +269,35 @@ Commit subjects and changelog entry titles must stay synchronized:
 
 ## Variance policy
 
-Frozen specs and plans are immutable snapshots. Implementation agents must not rewrite frozen artifacts to conceal deviation.
+Frozen specs and plans stay unchanged. Do not rewrite them to hide a deviation.
 
-Record nontrivial variance in:
+Record a noteworthy allowed variance in:
 
 ```text
 <variance-log-path>
 ```
 
-Create an immutable amendment in:
+An equivalent local implementation or validation adjustment may proceed when it
+preserves the approved scope, outcome, and the same evidence purpose. Record it
+only when it would help a later reader understand the work.
+
+Create an amendment in:
 
 ```text
 <amendment-filename>
 ```
 
-and request operator approval before proceeding when post-freeze variance affects architecture, public APIs, data models, security, privacy, compliance, scope, Specification Commitments, Verification Criteria, Plan Checks, or plan feasibility.
+and ask the operator before proceeding when a change materially affects the
+outcome, architecture, API, data, security, privacy, compliance, scope, or the
+validity of required evidence. A different command alone is not material when
+it proves the same thing.
 
 ## Variance classes
 
 | Class | Example | Agent may proceed? | Required documentation |
 |---|---|---:|---|
-| Mechanical | File rename, equivalent helper extraction, import adjustment | Yes | Record only if non-obvious |
-| Local technical | Minor implementation shape differs but behavior, scope, and tests remain the same | Usually yes | Record rationale in the variance log |
-| Architectural/API/data/security | Endpoint change, schema change, auth impact, persistence change | No | Create amendment and request approval |
-| Scope change | New behavior, removed Specification Commitment, or changed Verification Criterion | No | Create amendment and request approval |
-| Plan invalidation | Task no longer feasible as planned | No | Stop and produce replanning note or amendment |
+| Routine | Rename, equivalent helper, or equivalent validation | Yes | Note it only when useful |
+| Material | Outcome, architecture, API, data, security, privacy, compliance, scope, or evidence no longer proves the outcome | No | Amend and ask for approval |
 
 ## Changelog
 
@@ -303,9 +307,9 @@ Maintain living changelog source fragments under:
 docs/work-items/<work-id>/changelog/*.md
 ```
 
-Update the matching fragment before every commit. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`.
+Update the matching fragment before every commit. Stable fragment files may contain multiple independently valid, newest-first entries; every entry has its own heading, exactly one metadata set, and change body. Use `rule:naming.changelog-entries` for entry-heading grammar. Fragment filenames should be stable and descriptive, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, or `validation.md`. Before an ordinary commit, run `python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint` to validate fragment grammar and duplicate headings.
 
-Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog.
+Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independent work-item commits do not edit the root changelog directly unless the work item is intentionally running consolidation or release preparation. Operators consolidate fragments into root `CHANGELOG.md` at project-owned checkpoints such as after merging work branches, before preparing release notes, before a product/application release, or whenever the repository's process needs a complete root changelog. At those checkpoints, run `--lint` followed by `--check`; default mode is the explicit write consolidation.
 
 Use a Keep a Changelog style:
 

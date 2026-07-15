@@ -2,7 +2,7 @@
 
 - [ ] Source input and desired outcome are captured.
 - [ ] Scope, non-scope, assumptions, and open questions are explicit.
-- [ ] Specification Commitments are atomic, classified, bounded, and contain every implementation obligation in their Statements.
+- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
 - [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and no hidden procedure or scope.
 - [ ] Repository evidence and compatibility constraints are recorded.
 - [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.

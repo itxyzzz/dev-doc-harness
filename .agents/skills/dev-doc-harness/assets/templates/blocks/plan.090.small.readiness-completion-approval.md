@@ -1,28 +1,12 @@
-## Plan readiness checklist
+## Readiness
 
-- [ ] Input artifacts and relevant repository context have been read and listed.
-- [ ] Every in-scope Specification Commitment has an authorized disposition and every applicable Verification Criterion has Plan Check coverage.
-- [ ] Risks, scope boundaries, interfaces, and documentation decisions are either covered by tasks or explicitly marked as no-op with a reason.
-- [ ] Task detail is sufficient for a fresh implementation agent or delegated sub-agent to execute its assigned part without inventing task order, file scope, validation, or documentation steps.
-- [ ] Plan Checks have complete procedure, result, evidence-record, and stage/environment fields.
-- [ ] Planned commits and changelog title snippets are synchronized.
-- [ ] Variance handling is clear for likely implementation drift.
-- [ ] The work still fits one orchestration thread with a bounded sub-agent strategy. If it does not, split, re-scope, or escalate to large/phased handling before freeze.
-- [ ] Sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Inputs, scope, tasks, checks, documentation, and changelog entry are clear.
+- [ ] No required decision or ownerless deferral remains.
 
-## Completion criteria
+## Completion
 
-- Applicable Verification Criteria in `<spec-filename>` have evidence-backed status, and required Implementation Tasks or dispositions are complete.
-- Required validation commands have been run and recorded.
-- Required documentation artifacts have been created or updated.
-- The frozen plan had enough detail for each assigned execution part or delegated sub-agent to proceed safely.
-- Execution remained within one orchestration thread with a bounded sub-agent strategy; otherwise the work was split, re-scoped, or escalated before implementation.
-- The matching `docs/work-items/<work-id>/changelog/*.md` fragment has a newest-first entry for the work before each commit.
-- Commit subjects match the approved planned subjects or recorded variance, and changelog title snippets are synchronized.
-- Planned implementation changes are committed, or the completion report names the exact blocker or explicit no-commit instruction plus current worktree status.
-- Variance log is present and current.
-- De-facto sub-agent use is reported when applicable, including count, roles/scopes, concurrency or waves, context strategy, observed inheritance behavior, and de-facto model/model class/profile when known.
+- Required work and evidence are complete; any noteworthy variance is recorded.
+- Planned changes are committed, or the blocker is stated.
 
 ## Approval
 

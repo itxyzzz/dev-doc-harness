@@ -15,9 +15,10 @@ Owned rule IDs:
 | `rule:style.placeholder-control` | `## Placeholder control` |
 | `rule:style.trace-density` | `## Traceability density` |
 | `rule:style.template-prompts` | `## Template prompts` |
-| `rule:style.full-name-entity-headings` | `## Full-name entity headings` |
+| `rule:style.plain-language` | `## Plain language` |
+| `rule:style.entity-presentation` | `## Entity presentation` |
 | `rule:style.verification-criterion-placement` | `## Verification Criterion placement` |
-| `rule:style.asymmetric-traceability` | `## Asymmetric traceability` |
+| `rule:style.proportional-traceability` | `## Proportional traceability` |
 
 ## When it applies
 
@@ -34,6 +35,18 @@ readability risk is material.
 This module owns artifact style. It does not own work sizing, artifact
 lifecycle, immutable snapshots, variance, naming, model strategy, evidence
 preservation, release policy, or durable completeness.
+
+## Plain language
+
+Use `must` for binding obligations and `should` for guidance.
+
+Use short, everyday words. Say what to do and why only when the reason helps
+the reader act. Avoid legalistic authority language, inflated status labels,
+and process narration that does not change a decision.
+
+Do not use `shall` in author-facing current guidance or newly created durable artifacts.
+The sentence naming it is a definition-only exception; validator fixtures may
+identify it to test enforcement.
 
 ## Final artifact content
 
@@ -62,17 +75,23 @@ quickly.
   harder to read than a list.
 - Keep trace IDs stable and searchable when later work depends on them.
 
-## Full-name entity headings
+## Entity presentation
 
-Current entity headings always pair the stable ID with the full entity name and a short title: `SPEC-NNN` Specification Commitment, `DEC-NNN` Architecture Decision, `VER-NNN` Verification Criterion, `TASK-NNN` Implementation Task, and `CHECK-NNN` Plan Check. Use full entity names in canonical prose. Bare prefixes are reserved for concrete IDs, ID-family patterns, and compact diagrams or tables whose surrounding text supplies the names.
+Use stable IDs with short titles wherever an entity list appears. Define an
+entity family once when a reader needs the name; after that, compact forms such
+as ``### `SPEC-001` Preserve logins`` are preferred. Use full names where they
+improve first-read clarity, not as a repeated heading requirement.
 
 ## Verification Criterion placement
 
 Keep the ordinary review path local: place a single-commitment Verification Criterion immediately below its Specification Commitment. Put a genuinely cross-cutting criterion exactly once in `## Cross-cutting Verification Criteria`. Explicit `Covers` metadata preserves navigation and stable IDs preserve references if Draft refinement moves a criterion.
 
-## Asymmetric traceability
+## Proportional traceability
 
-Present commitment dispositions and verification execution as separate compact mappings. Do not force readers to decode one symmetric entity-to-task-and-validation matrix. Keep tasks and checks in distinct sections, then show their coordination through dependencies and stages so delivery and conformance remain visibly integrated.
+Use local links by default. Add a mapping only when it helps a reader or tool
+check coverage, continue a handoff, or validate deterministically. Keep tasks
+and checks in distinct sections; do not create a large table merely because IDs
+exist.
 
 Extra blank lines are useful around major sections, tables, and dense lists.
 Avoid spacing that makes one related unit look like several unrelated blocks.

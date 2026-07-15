@@ -77,6 +77,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 4. Consolidate changelog fragments before editing the release group.
 
    ```powershell
+   python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint
    python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --check
    ```
 
@@ -87,7 +88,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    git diff -- CHANGELOG.md
    ```
 
-   Do this before renaming `## Unreleased` so package-local Dev Doc Harness release notes are curated from the consolidated root changelog. Stop if consolidation reports malformed fragments or ambiguous entries.
+   Do this before renaming `## Unreleased` so package-local Dev Doc Harness release notes are curated from the consolidated root changelog. Stop if lint reports malformed fragments or duplicate entries, or if the completeness check reports missing root entries.
 
 5. Update `CHANGELOG.md`.
 

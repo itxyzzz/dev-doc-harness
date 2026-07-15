@@ -7,17 +7,15 @@ Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance
 
 ## Entries
 
+Use this log only for a noteworthy allowed adjustment that preserves approved
+scope, outcome, and evidence purpose. Material changes use `plan-amendment.md`;
+do not record them as variance entries.
+
 ### `VAR-001` <date> - <short-title>
 
-- Variance class: `<Mechanical / Local technical / Architectural/API/data/security / Scope change / Plan invalidation>`
+- Variance class: `Routine equivalent adjustment`
 - Original plan reference: `<file and section, TASK, SPEC, VER, CHECK, or DEC ID>`
 - What changed: `<final description>`
 - Why it changed: `<reason>`
-- Impact on scope: `<None or concrete impact>`
-- Impact on tests: `<None or concrete impact>`
-- Impact on documentation: `<None or concrete impact>`
-- Risk: `<Low/Medium/High plus consequence>`
-- Approval required: `<Yes or No>`
-- Approval status: `<Not required / Proposed amendment / Approved amendment / Blocked>`
-- Approval evidence: `<operator approval message, amendment path, commit hash, or None>`
+- Evidence and scope stay equivalent: `Yes`
 - Superseded by: None

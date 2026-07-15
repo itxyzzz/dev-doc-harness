@@ -6,6 +6,75 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-14_harness-simplification -- approve leaner agent workflow
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the combined specification, implementation plan, architecture
+  snapshot, behavior scenarios, and fixed active-authoring baseline for harness
+  simplification.
+
+#### Changed
+
+- Planned proportional mappings, compact optional classification metadata,
+  uninterrupted approved execution, variance-first routine drift handling,
+  focused reviewer gates, and a measured reduction in current authoring prose.
+- Preserved the canonical freeze-gate module and README workflow diagram; the
+  planned README change is limited to the copy-ready global guidance bootstrap.
+
+### 2026-07-14_plain-language-artifacts -- require ordinary modal wording
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Added the canonical plain-language rule and made its style module mandatory for small/medium planning.
+- Added the concise commitment prompt, updated the small/medium source-block route cues, regenerated every affected template, and protected current authoring paths with focused validation.
+
+### 2026-07-14_plain-language-artifacts -- approve template and validation scope
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved amendment 001 to expand current template coverage and the focused authoring-policy validation boundary while preserving source-block-only template assembly.
+
+### 2026-07-14_plain-language-artifacts -- approve readable authoring policy
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved combined specification, implementation plan, architecture snapshot, and test-case snapshot for plain-language artifact authoring.
+
+#### Changed
+
+- Planned a canonical style rule, required drafting route, concise template prompt, and scoped validator protection while preserving frozen work items and `LICENSE`.
+
+### 2026-07-13_model-selection-calibration -- approve calibrated economy guidance
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved combined specification, implementation plan, architecture snapshot, test-case snapshot, and documentation deltas for calibrated `economy-default` model-selection guidance.
+
+#### Changed
+
+- Planned a Terra-medium bounded-work baseline, distinct effort and tier escalation, lifecycle-aware de-escalation, just-enough supporting surfaces, and efficient independent review while preserving operator authority.
+
 ## Release 0.6
 
 ### 2026-07-12_user-facing-narrative -- streamline operator guidance

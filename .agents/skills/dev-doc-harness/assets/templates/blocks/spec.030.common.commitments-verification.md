@@ -1,76 +1,45 @@
-## Specification Commitments and Local Verification Criteria
+## Commitments and verification
 
-A Specification Commitment defines normative delivery scope. Keep every implementation obligation in its `Statement`; Architecture Decisions may realize or constrain mapped scope but cannot create an independent obligation.
+Keep stable IDs and short titles. Put delivery scope in each Statement;
+rationale and examples do not add scope. Classification is optional; when it
+helps, use one compact line such as `Constraint · Preserve`.
 
-Choose one `Kind`: `Outcome`, `Behavior`, `Quality`, `Constraint`, or `Deliverable`. Precedence is named output, measurable degree, conditional response, restriction/prohibition, otherwise implementation-controlled end state.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
 
-Choose one `Intent`: `Establish`, `Change`, `Preserve`, `Maintain`, or `Prevent`. Precedence is prohibition, named regression baseline, ongoing invariant, alteration, otherwise creation. `Concerns` are optional non-normative tags.
+### `SPEC-001` `<short title>`
 
-### `SPEC-001` Specification Commitment — `<short descriptive title>`
-
-Kind: `<Outcome | Behavior | Quality | Constraint | Deliverable>`
-
-Intent: `<Establish | Change | Preserve | Maintain | Prevent>`
-
-Concerns: `<optional concise tags or None>`
+`Constraint · Preserve`
 
 Statement:
 
-1. `<implementation-neutral normative obligation>`.
+1. `<approved outcome, behavior, quality bar, constraint, or deliverable>`.
 
-Rationale:
+#### `VER-001` `<short title>`
 
-1. `<non-normative reason; do not add scope here>`.
+Covers: `SPEC-001`.
 
-#### `VER-001` Verification Criterion — `<short descriptive title>`
+Criterion: `<what proves the commitment>`.
 
-Covers:
+Expected evidence: `<test, inspection, review, or other proof>`.
 
-1. `SPEC-001`.
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.
 
-Criterion:
-
-1. `<pass/fail conformance proposition>`.
-
-Expected evidence:
-
-1. `<evidence needed to judge the proposition>`.
-
-Applicability:
-
-1. `<non-default timing, environment, phase, or condition; otherwise omit>`.
-
-Applicable criteria and numbered evidence items are conjunctive by default. Equivalent alternatives use an explicit `Any one of` group with an equivalence basis. Concrete procedures belong in Plan Checks.
-
-### `SPEC-002` Specification Commitment — `<second short title when needed>`
-
-Kind: `<Outcome | Behavior | Quality | Constraint | Deliverable>`
-
-Intent: `<Establish | Change | Preserve | Maintain | Prevent>`
+### `SPEC-002` `<second title when needed>`
 
 Statement:
 
-1. `<second normative obligation, or remove this example block when unused>`.
+1. `<second obligation, or remove this example>`.
 
-## Cross-cutting Verification Criteria
+## Cross-cutting verification
 
-Define a criterion covering two or more commitments exactly once here. Cross-phase criteria name one owning phase in Applicability.
+Use this section only when one criterion genuinely covers multiple commitments.
 
-### `VER-002` Verification Criterion — `<short cross-cutting title>`
+### `VER-002` `<short title>`
 
-Covers:
+Covers: `SPEC-001`, `SPEC-002`.
 
-1. `SPEC-001`.
-2. `SPEC-002`.
+Criterion: `<shared proof without new delivery scope>`.
 
-Criterion:
+Expected evidence: `<shared evidence>`.
 
-1. `<shared pass/fail conformance proposition without new delivery scope>`.
-
-Expected evidence:
-
-1. `<evidence needed across the covered commitments>`.
-
-Applicability:
-
-1. `<owning phase or other non-default condition>`.
+Applicability / owning phase (optional): `<where this applies or which phase owns the evidence, when useful>`.

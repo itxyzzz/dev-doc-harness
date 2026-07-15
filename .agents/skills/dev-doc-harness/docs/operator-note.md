@@ -50,24 +50,14 @@ For substantial work, expect a work item package under:
 <work-item-path>
 ```
 
-Small or medium work gets a spec and plan as one combined planning package by
-default, and its plan owns the implementation transition. A spec-only freeze is
-an explicit staged exception that records its reason and names plan drafting as
-the next activity. Large or phased work gets an anchor spec first; phase plans
-come later from the approved anchor unless you explicitly ask for combined
-planning.
+Small or medium work normally has one spec-and-plan package. Large work keeps
+its anchor and phase-plan boundaries. Stable `SPEC`, `VER`, `TASK`, `CHECK`, and
+`DEC` IDs help readers navigate, but a full mapping is optional unless it helps
+coverage, handoff, or deterministic validation.
 
-The Specification Package keeps meaning separate from procedure: Goal and Scope frame `SPEC-NNN` Specification Commitments, mapped `DEC-NNN` Architecture Decisions realize or constrain those commitments, and `VER-NNN` Verification Criteria state conformance. The integrated Plan derives `TASK-NNN` Implementation Tasks from commitments plus applicable decisions and derives `CHECK-NNN` Plan Checks from criteria. It coordinates both paths through stages and dependencies; Architecture Decisions are not a linear layer between commitments and criteria.
-
-Execution closes a separate loop: a Plan Check produces evidence, evidence determines Verification Criterion status, and applicable criterion statuses support judging Specification Commitment conformance. Task completion alone is not conformance, and planning approval/freeze remains a separate lifecycle decision.
-
-Work-item architecture decisions live in the spec and, when useful, in
-`snapshots/architecture.snapshot.md`. The snapshot is work-item-bound: it
-preserves drivers, constraints, selected approach, affected boundaries, and
-rejected alternatives for later implementation or phase planning. Plans consume
-that architecture input instead of making hidden architecture decisions.
-Repository-level durable documents such as `ARCHITECTURE.md` are future work for
-a separate harness extension.
+Use a short architecture snapshot only when a future executor needs a decision
+or tradeoff that does not fit clearly in the spec. It is work-item architecture;
+`ARCHITECTURE.md` is future work for a separate extension.
 
 ## Using Superpowers
 
@@ -85,45 +75,20 @@ stub to the harness package rather than a duplicate spec or plan.
 
 ## Review And Pause Points
 
-The normal substantial-work flow is:
+The normal flow is simple:
 
-1. The agent drafts the planning artifacts.
-2. The agent stages the draft planning package and asks for approval.
-3. Operator feedback edits the drafts directly.
-4. Operator approval triggers the freeze gate: changelog source fragment,
-   approved artifacts, approval commit, and a pause.
-5. The agent names the planning shape, exact frozen package, and documented next
-   activity, then follows the approved continuity route.
-6. A same-task route requires fresh start authorization. A new-task route shows
-   the copy-ready handoff and proposed configuration, then asks approval to
-   create a task only when the platform supports the exact recorded settings.
+1. Draft and approve the planning package.
+2. Freeze it once and start only after a fresh instruction.
+3. Complete planned safe work without pausing between tasks.
+4. Note noteworthy equivalent drift in the variance log; amend only material
+   outcome, architecture, API, data, security, privacy, compliance, scope, or
+   evidence changes.
+5. Use a focused, read-only reviewer when the plan calls for one.
 
-When configured task creation is unavailable or cannot honor the recorded model
-or reasoning settings, the visible copy-ready handoff remains the manual
-fallback. The agent reports the limitation and does not silently substitute a
-different configuration. An operator may explicitly request continuation in the
-current task, but the new-task route does not present that override as its
-recommended question.
-
-For large or phased work, the anchor-spec freeze also pauses before phase-plan
-drafting and names that as the next activity. Later phase-plan drafting can happen in the main thread, or through
-curated-context sub-agents when the phases are independent enough and the
-platform supports it.
-
-Frozen planning artifacts should not be silently rewritten to make later
-implementation look cleaner. Nontrivial drift is recorded as variance. Drift
-that changes architecture, public APIs, data, security, privacy, compliance,
-scope, Specification Commitments, Verification Criteria, Plan Checks, or feasibility requires an amendment and approval.
-
-Before ordinary commits, agents update `docs/work-items/<work-id>/changelog/*.md`
-rather than the root changelog. Root `CHANGELOG.md` remains the consolidated
-publication view. Run
-`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
-at a project-owned checkpoint such as after merging work branches, before
-preparing release notes, before product/application release, or whenever the
-project process needs root changelog completeness. The harness owns this
-fragment and consolidation contract; downstream applications, packages, and
-agentic systems keep their own release processes.
+Before ordinary commits, update the work-item changelog fragment and run its
+lint command. Root `CHANGELOG.md` is the later consolidated publication view at
+a project-owned checkpoint. A downstream product/application release keeps its
+own release process.
 
 ## Useful Explicit Requests
 
