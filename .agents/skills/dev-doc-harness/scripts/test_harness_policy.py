@@ -42,8 +42,8 @@ class ChangelogSection:
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FAILURES: list[Failure] = []
-CURRENT_DEVELOPMENT_MARKER = "0.6+"
-RELEASE_NOTE_VERSIONS = ["0.4.0", "0.5.0", "0.6.0"]
+CURRENT_DEVELOPMENT_MARKER = "0.7+"
+RELEASE_NOTE_VERSIONS = ["0.4.0", "0.5.0", "0.6.0", "0.7.0"]
 LATEST_RELEASE_NOTE_VERSION = RELEASE_NOTE_VERSIONS[-1]
 
 CHECK_IDS = [
