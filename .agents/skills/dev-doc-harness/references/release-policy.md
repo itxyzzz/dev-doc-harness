@@ -22,10 +22,10 @@ Owned rule IDs:
 
 The package-local release marker is `.agents/skills/dev-doc-harness/VERSION`.
 
-The `0.7.0` release branch uses this exact package version:
+After the `0.7.0` release branch is cut, current development branches use this marker:
 
 ```text
-0.7.0
+0.7+
 ```
 
 Use the harness release version as the compatibility unit for team adoption and rollback. The marker may include a trailing `+` on development branches to indicate changes after the latest release branch. Do not introduce per-rule semantic versions unless a later approved release expands scope.
