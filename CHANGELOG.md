@@ -4,11 +4,106 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
-## Unreleased
+## Release 0.7
+
+### 2026-07-15 docs: harness-simplification -- align policy and template cues
+
+Release target: `0.7.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Aligned current policy and retained concise template cues, then regenerated
+  the assembled templates and recorded amendment-owned validation evidence.
+
+### 2026-07-14_harness-simplification -- restore focused template cues
+
+Release target: `0.7.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Approved amendment 001 to align current guidance, restore two concise
+  template cues, and reconcile amendment-owned validation evidence without
+  rewriting frozen implementation records.
+
+### 2026-07-14_harness-simplification -- reduce policy and mapping overhead
+
+Release target: `0.7.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Simplified current harness policy, templates, and operator guidance while
+  keeping stable IDs, meaningful freeze boundaries, and material-change review.
+- Added deterministic scenarios for proportional mappings, uninterrupted
+  approved execution, variance routing, and the copy-ready README bootstrap.
+
+### 2026-07-14_harness-simplification -- ignore local implementation worktrees
+
+Release target: `0.7.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+### Changed
+
+- Added an ignore rule for local `.worktrees/` implementation isolation.
+
+### 2026-07-13_multi-changelog-fragments -- validate multiple fragment entries
+
+Release target: `0.7.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Added
+
+- Added entry-scoped changelog fragment parsing and the grammar-only `--lint` gate.
+
+#### Changed
+
+- Updated ordinary commit, release preparation, and operator guidance to preserve checkpoint-owned root consolidation.
+
+### 2026-07-13_multi-changelog-fragments -- approve entry-level lint and release gates
+
+Release target: `0.7.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the combined specification, implementation plan, architecture snapshot, test-case snapshot, and documentation deltas for multi-entry changelog fragments.
+
+#### Changed
+
+- Planned entry-scoped fragment validation, grammar-only ordinary-commit linting, release-preparation completeness checks, and narrow README prose assertion normalization.
+
+### 2026-07-13_model-selection-calibration -- retain subagent review default
+
+Release target: `0.7.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Retained independent sub-agent review as the default and made separate task/thread review an operator-managed fallback pending proven inter-task reporting.
+
+### 2026-07-13_model-selection-calibration -- calibrate economy model guidance
+
+Release target: `0.7.0`
+Package impact: `distributable`
+Release-note: `include`
+
+#### Changed
+
+- Calibrated the canonical `economy-default` model-selection guidance and aligned supporting reviewer examples, model-strategy prompts, generated templates, and policy validation.
+- Added focused regression protection for allocation, lifecycle/approval, reviewer-evidence, and canonical-owner boundaries.
 
 ### 2026-07-14_harness-simplification -- approve leaner agent workflow
 
-Release target: `unreleased`
+Release target: `0.7.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -28,7 +123,7 @@ Release-note: `source-only`
 
 ### 2026-07-14_plain-language-artifacts -- require ordinary modal wording
 
-Release target: `unreleased`
+Release target: `0.7.0`
 Package impact: `distributable`
 Release-note: `include`
 
@@ -39,7 +134,7 @@ Release-note: `include`
 
 ### 2026-07-14_plain-language-artifacts -- approve template and validation scope
 
-Release target: `unreleased`
+Release target: `0.7.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
@@ -49,7 +144,7 @@ Release-note: `source-only`
 
 ### 2026-07-14_plain-language-artifacts -- approve readable authoring policy
 
-Release target: `unreleased`
+Release target: `0.7.0`
 Package impact: `planning-only`
 Release-note: `source-only`
 
