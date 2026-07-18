@@ -46,25 +46,31 @@ flowchart TD
     D --> E{"Operator approves?"}:::house
     E -.->|"Feedback"| D
     E -->|"Yes"| F["Freeze combined package<br/>commit, pause"]:::house
-    F -->|"Same or new task (with handoff)"| G["Implement, validate, commit"]:::house
+    F --> G["Fresh start<br/>authorization"]:::house
+    G --> H["Implement, validate, commit"]:::house
 
-    H --> I{"Operator approves?"}:::house
-    I -->|"Yes"| J["Freeze anchor package<br/>commit, pause"]:::house
-    J --> K["Draft phase plan"]:::house
-    K --> L{"Operator approves?"}:::house
-    L -->|"Yes"| M["Freeze phase-plan package<br/>commit, pause"]:::house
-    M -->|"Same or new task (with handoff)"| N["Implement phase<br/>record actual outputs"]:::house
-    K <-.-|"Plan next phase"| N
+    I["Draft anchor spec"]:::house --> J{"Operator approves?"}:::house
+    J -.->|"Feedback"| I
+    J -->|"Yes"| K["Freeze anchor package<br/>commit, pause"]:::house
+    K --> L["Fresh instruction:<br/>draft phase plan"]:::house
+    L --> M["Draft phase plan"]:::house
+    M --> N{"Operator approves?"}:::house
+    N -.->|"Feedback"| M
+    N -->|"Yes"| O["Freeze phase-plan package<br/>commit, pause"]:::house
+    O --> P["Fresh start<br/>authorization"]:::house
+    P --> Q["Implement phase<br/>record actual outputs"]:::house
+    Q -.->|"Plan next phase"| L
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
 The frozen package determines the next activity. Small/medium work freezes its
-combined package and then proceeds to implementation. Large/phased work freezes
-its anchor, plans and implements one phase, records actual outputs, then plans
-the next phase. The single handoff-labelled arrow covers either same-task or
-new-task execution without changing the lifecycle shown here.
+combined package, then needs fresh start authorization before implementation.
+Large/phased work freezes its anchor, then needs a fresh instruction before
+phase-plan drafting. Each phase plan freezes before its implementation starts;
+actual phase outputs inform the next phase plan. Feedback always returns to the
+relevant draft rather than starting the next activity automatically.
 
 ## Adopt and use it
 
@@ -143,19 +149,16 @@ would otherwise need to reconstruct decisions from chat history. Durable
 filenames use a short suffix for clear chat references; the naming reference
 owns the exact grammar.
 
-The specification package separates promise, design, proof, and procedure:
+Plans state the agreed outcome and boundaries, then sequence the work needed to
+deliver them. Tasks perform that work, while checks produce the evidence used to
+verify it. Completing tasks alone does not establish conformance, and passing
+checks alone does not finish delivery while required tasks or authorized
+dispositions remain unresolved. Planning approval and implementation conformance
+are distinct decisions.
 
-```text
-Goal / Scope -> SPEC (Specification Commitment) -> VER (Verification Criterion)
-                    DEC (Architecture Decision) -realizes or constrains-> SPEC
-Integrated Plan: SPEC + DEC -> TASK (Implementation Task)
-                 VER -> CHECK (Plan Check) -> evidence -> VER status
-```
-
-Tasks deliver the approved scope; checks produce evidence. Completing tasks
-alone does not establish conformance, and passing checks alone does not finish
-delivery while required tasks or authorized dispositions remain unresolved.
-Planning approval and implementation conformance are distinct decisions.
+The exact IDs and mappings used to make that traceable are proportional to the
+work. They help planning and handoff when needed; operators do not need to learn
+them as a separate workflow.
 
 When a work item makes or depends on consequential tradeoffs, its spec records
 the work-item architecture and may include
@@ -176,9 +179,7 @@ An approved small/medium package normally contains a spec, an implementation
 plan, and changelog source fragments. It may also contain architecture and
 test-case snapshots, living documentation deltas, an implementation variance
 log, and evidence or handoff material. The spec preserves goals, boundaries,
-commitments, verification criteria, risks, and relevant decisions. The plan
-maps every in-scope commitment to delivery treatment and every applicable
-criterion to one or more Plan Checks. It also records task sequencing,
+requirements, risks, and relevant decisions. The plan records task sequencing,
 validation, documentation work, planned commit subjects, and the execution
 strategy. The exact package shape is intentionally proportional: create only
 the supporting artifacts the documentation matrix requires.
@@ -190,12 +191,13 @@ approval runs the freeze gate: update the matching work-item changelog source,
 commit the approved package, report its paths, and pause before the documented
 next activity. You may then push and open a draft plan-only PR.
 
-For substantial work, the plan records Model generation, Capability tier,
-Reasoning effort, Orchestration mode, resolved profile when exposed, and an
-availability fallback. Recommendation, harness authorization, runtime
-permission, and platform availability remain separate. A fresh task with a
-curated handoff is preferred when the main model or profile changes; a
-same-task switch rehydrates the frozen package before editing through
+For substantial work, the applicable planning artifact records Model generation,
+Capability tier, Reasoning effort, Orchestration mode, resolved profile when
+exposed, and an availability fallback before freeze. A large/phased anchor spec
+can carry that selection for later phase planning. Recommendation, harness
+authorization, runtime permission, and platform availability remain separate. A
+fresh task with a curated handoff is preferred when the main model or profile
+changes; a same-task switch rehydrates the frozen package before editing through
 `rule:execution-quality.execution-thread-start`.
 
 The strategy also records whether context usage is exposed, whether artifacts
