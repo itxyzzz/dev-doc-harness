@@ -1,5 +1,17 @@
 # Lifecycle Documentation Clarity Implementation Changelog Source
 
+## 2026-07-18_lifecycle-doc-clarity -- repair lifecycle diagram flow
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Fixed
+
+- Restored the large-path node identity and the existing same-task/new-task
+  handoff labels while retaining the approved fresh-transition nodes and
+  feedback loops.
+
 ## 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle gates and planning guidance
 
 Release target: `unreleased`

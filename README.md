@@ -46,20 +46,20 @@ flowchart TD
     D --> E{"Operator approves?"}:::house
     E -.->|"Feedback"| D
     E -->|"Yes"| F["Freeze combined package<br/>commit, pause"]:::house
-    F --> G["Fresh start<br/>authorization"]:::house
-    G --> H["Implement, validate, commit"]:::house
+    F -->|"Same or new task (with handoff)"| G["Fresh start<br/>authorization"]:::house
+    G --> S["Implement, validate, commit"]:::house
 
-    I["Draft anchor spec"]:::house --> J{"Operator approves?"}:::house
-    J -.->|"Feedback"| I
-    J -->|"Yes"| K["Freeze anchor package<br/>commit, pause"]:::house
-    K --> L["Fresh instruction:<br/>draft phase plan"]:::house
-    L --> M["Draft phase plan"]:::house
-    M --> N{"Operator approves?"}:::house
-    N -.->|"Feedback"| M
-    N -->|"Yes"| O["Freeze phase-plan package<br/>commit, pause"]:::house
-    O --> P["Fresh start<br/>authorization"]:::house
-    P --> Q["Implement phase<br/>record actual outputs"]:::house
-    Q -.->|"Plan next phase"| L
+    H --> I{"Operator approves?"}:::house
+    I -.->|"Feedback"| H
+    I -->|"Yes"| J["Freeze anchor package<br/>commit, pause"]:::house
+    J --> K["Fresh instruction:<br/>draft phase plan"]:::house
+    K --> L["Draft phase plan"]:::house
+    L --> M{"Operator approves?"}:::house
+    M -.->|"Feedback"| L
+    M -->|"Yes"| N["Freeze phase-plan package<br/>commit, pause"]:::house
+    N -->|"Same or new task (with handoff)"| O["Fresh start<br/>authorization"]:::house
+    O --> P["Implement phase<br/>record actual outputs"]:::house
+    P -.->|"Plan next phase"| K
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
