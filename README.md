@@ -14,13 +14,14 @@ verified, or why a design choice was made.
 The harness addresses those problems by providing:
 
 - reviewable planning packages and explicit pauses before execution;
-- a clear distinction between delivery commitments, conformance criteria,
-  evidence-producing checks, and actual results;
+- a clear distinction between Specification Commitments, Verification Criteria,
+  Plan Checks, and the evidence they produce;
 - durable handoffs for fresh agents and model transitions;
+- deliberate model and reasoning-effort recommendations for each upcoming stage;
 - recorded variance instead of silently rewriting a plan around reality;
 - work-item-local changelog sources that avoid routine root-changelog merge
   conflicts; and
-- one canonical package when used with Superpowers or spec-kit.
+- one canonical package when Superpowers is active.
 
 The result is control without constant process micromanagement: operators get a
 clear record of what will happen, why it changed, and what evidence supports
