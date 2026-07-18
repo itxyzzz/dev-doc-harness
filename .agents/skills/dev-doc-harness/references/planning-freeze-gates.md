@@ -51,7 +51,7 @@ After the operator explicitly approves the staged planning package, or explicitl
 6. Stop before implementation, task execution, or the next planning stage.
 7. Report the commit hash and approved artifact paths.
 8. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-9. Confirm that the frozen package records the capability tier, reasoning effort, orchestration mode, sub-agent policy, approved fallback, execution continuity, context visibility, and whether artifact rehydration is required.
+9. Confirm that the frozen package distinguishes planning-task observations from the approved execution selection. Verify the actionable target model/profile or policy-relative instruction, capability tier, reasoning effort, orchestration mode, fallback, continuity, and artifact-rehydration requirement separately from observed runtime state. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
 10. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
 
 Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
@@ -69,6 +69,7 @@ Before rendering a handoff or offering task creation, read these values from the
 1. Planning shape: combined small/medium, explicit staged small/medium, large/phased anchor, plan, phase plan, or amendment.
 2. Frozen package: the exact approved spec, applicable plan or phase plan, required snapshots, applicable amendments, required evidence, and any other current input named by the plan.
 3. Next activity: the documented planning, implementation, review, or replanning activity that follows this actual boundary.
+4. Transition owner: the plan for a combined small/medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
 
 Then apply the approved execution continuity and current capability:
 

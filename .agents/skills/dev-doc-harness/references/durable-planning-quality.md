@@ -72,9 +72,8 @@ Put the delivery obligation in its Statement; rationale and examples do not add
 scope.
 
 Keep commitments separate when they can be implemented, changed, or verified
-separately. Classification is optional. When it helps, show it compactly, for
-example `Constraint · Preserve`; do not require separate `Kind:` and `Intent:`
-fields.
+separately. Every commitment has a Statement and a local Verification Criterion
+unless a genuinely cross-cutting criterion explicitly links the shared evidence.
 
 ## Verification Criteria
 

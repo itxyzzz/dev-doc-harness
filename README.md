@@ -14,13 +14,14 @@ verified, or why a design choice was made.
 The harness addresses those problems by providing:
 
 - reviewable planning packages and explicit pauses before execution;
-- a clear distinction between delivery commitments, conformance criteria,
-  evidence-producing checks, and actual results;
+- a clear distinction between Specification Commitments, Verification Criteria,
+  Plan Checks, and the evidence they produce;
 - durable handoffs for fresh agents and model transitions;
+- deliberate model and reasoning-effort recommendations for each upcoming stage;
 - recorded variance instead of silently rewriting a plan around reality;
 - work-item-local changelog sources that avoid routine root-changelog merge
   conflicts; and
-- one canonical package when used with Superpowers or spec-kit.
+- one canonical package when Superpowers is active.
 
 The result is control without constant process micromanagement: operators get a
 clear record of what will happen, why it changed, and what evidence supports
@@ -38,54 +39,39 @@ completion.
 }}%%
 
 flowchart TD
-    A["Operator asks for work"]:::house --> B{"Task size?"}:::house
-    B -->|"Very small"| C["Direct edit, check, commit"]:::house
-    B -->|"Substantial"| D["Create work-item package"]:::house
+    A["Operator asks for work"]:::house --> B{"Work size"}:::house
+    B -->|"Very small"| C["Edit, check, commit"]:::house
+    B -->|"Small or medium"| D["Draft combined spec and plan"]:::house
+    B -->|"Large or phased"| H["Draft anchor spec"]:::house
 
-    D --> E{"Planning shape?"}:::house
-    E -->|"Small or medium"| F["Draft combined spec and plan"]:::house
-    E -->|"Large or phased"| G["Draft anchor spec"]:::house
+    D --> E{"Operator approves?"}:::house
+    E -.->|"Feedback"| D
+    E -->|"Yes"| F["Freeze combined package<br/>commit, pause"]:::house
+    F --> G{"Operator confirms<br/>implementation start?"}:::house
+    G -->|"Same or new task (with handoff)"| S["Implement, validate, commit"]:::house
 
-    F --> H{"Operator approves?"}:::house
-    H -.->|"Feedback"| F
-    H -->|"Yes"| I["Freeze combined package<br/>commit, pause"]:::house
-
-    G --> J{"Operator approves?"}:::house
-    J -.->|"Feedback"| G
-    J -->|"Yes"| K["Freeze anchor package<br/>commit, pause"]:::house
-    K --> L{"Next activity: phase-plan drafting<br/>Approved continuity?"}:::house
-    L -->|"Same task"| M["Fresh instruction: draft phase plan"]:::house
-    L -->|"New task"| N["Visible handoff; approve configured task creation"]:::house
-    N --> M
-    M --> O{"Operator approves?"}:::house
-    O -.->|"Feedback"| M
-    O -->|"Yes"| P["Freeze phase-plan package<br/>commit, pause"]:::house
-
-    I --> Q{"Next activity: implementation<br/>Approved continuity?"}:::house
-    P --> Q
-    Q -->|"Same task"| R["Fresh start authorization"]:::house
-    Q -->|"New task"| S["Visible handoff; approve configured task creation"]:::house
-    R --> T["Implement approved plan"]:::house
-    S --> T
-    T --> U{"High-impact variance?"}:::house
-    U -->|"No"| V["Validate, update docs and changelog source"]:::house
-    V --> W["Commit implementation"]:::house
-    U -->|"Yes"| X["Draft plan amendment"]:::house
-    X --> Y{"Operator approves?"}:::house
-    Y -.->|"Feedback"| X
-    Y -->|"Yes"| Z["Freeze amendment package<br/>commit, pause"]:::house
-    Z -.-> Q
+    H --> I{"Operator approves?"}:::house
+    I -.->|"Feedback"| H
+    I -->|"Yes"| J["Freeze anchor package<br/>commit, pause"]:::house
+    J --> K{"Operator confirms<br/>phase-plan drafting?"}:::house
+    K -->|"Same or new task (with handoff)"| L["Draft phase plan"]:::house
+    L --> M{"Operator approves?"}:::house
+    M -.->|"Feedback"| L
+    M -->|"Yes"| N["Freeze phase-plan package<br/>commit, pause"]:::house
+    N --> O{"Operator confirms<br/>phase implementation?"}:::house
+    O -->|"Same or new task (with handoff)"| P["Implement phase<br/>record actual outputs"]:::house
+    P -.->|"Plan next phase"| K
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package, not a generic diagram node, determines the next activity.
-A combined small/medium package hands implementation to its plan. A large
-anchor package hands later phase-plan drafting to a fresh instruction. A
-same-task route needs fresh start authorization; a new-task route displays a
-copy-ready handoff and asks separately before creating a task. Neither route
-starts implementation automatically.
+The frozen package determines the next activity. Small/medium work freezes its
+combined package, then needs fresh start authorization before implementation.
+Large/phased work freezes its anchor, then needs a fresh instruction before
+phase-plan drafting. Each phase plan freezes before its implementation starts;
+actual phase outputs inform the next phase plan. Feedback always returns to the
+relevant draft rather than starting the next activity automatically.
 
 ## Adopt and use it
 
@@ -138,6 +124,10 @@ Repository-local harness instructions take precedence. For substantial work, use
 the repository's selected harness router. The repository-local harness owns ordinary freeze and changelog details. After its planning freeze and a fresh start
 instruction, complete the approved plan; ask before external, destructive,
 costly, or material scope-expanding actions.
+
+For harness-managed work, this global guidance overrides Superpowers' default
+spec and plan locations. Keep durable artifacts under
+`docs/work-items/<work-id>/` in the destination repository.
 ```
 
 Keep the copied package and product work in separate commits.
@@ -160,19 +150,16 @@ would otherwise need to reconstruct decisions from chat history. Durable
 filenames use a short suffix for clear chat references; the naming reference
 owns the exact grammar.
 
-The specification package separates promise, design, proof, and procedure:
+Plans state the agreed outcome and boundaries, then sequence the work needed to
+deliver them. Tasks perform that work, while checks produce the evidence used to
+verify it. Completing tasks alone does not establish conformance, and passing
+checks alone does not finish delivery while required tasks or authorized
+dispositions remain unresolved. Planning approval and implementation conformance
+are distinct decisions.
 
-```text
-Goal / Scope -> SPEC (Specification Commitment) -> VER (Verification Criterion)
-                    DEC (Architecture Decision) -realizes or constrains-> SPEC
-Integrated Plan: SPEC + DEC -> TASK (Implementation Task)
-                 VER -> CHECK (Plan Check) -> evidence -> VER status
-```
-
-Tasks deliver the approved scope; checks produce evidence. Completing tasks
-alone does not establish conformance, and passing checks alone does not finish
-delivery while required tasks or authorized dispositions remain unresolved.
-Planning approval and implementation conformance are distinct decisions.
+The exact IDs and mappings used to make that traceable are proportional to the
+work. They help planning and handoff when needed; operators do not need to learn
+them as a separate workflow.
 
 When a work item makes or depends on consequential tradeoffs, its spec records
 the work-item architecture and may include
@@ -193,9 +180,7 @@ An approved small/medium package normally contains a spec, an implementation
 plan, and changelog source fragments. It may also contain architecture and
 test-case snapshots, living documentation deltas, an implementation variance
 log, and evidence or handoff material. The spec preserves goals, boundaries,
-commitments, verification criteria, risks, and relevant decisions. The plan
-maps every in-scope commitment to delivery treatment and every applicable
-criterion to one or more Plan Checks. It also records task sequencing,
+requirements, risks, and relevant decisions. The plan records task sequencing,
 validation, documentation work, planned commit subjects, and the execution
 strategy. The exact package shape is intentionally proportional: create only
 the supporting artifacts the documentation matrix requires.
@@ -207,12 +192,13 @@ approval runs the freeze gate: update the matching work-item changelog source,
 commit the approved package, report its paths, and pause before the documented
 next activity. You may then push and open a draft plan-only PR.
 
-For substantial work, the plan records Model generation, Capability tier,
-Reasoning effort, Orchestration mode, resolved profile when exposed, and an
-availability fallback. Recommendation, harness authorization, runtime
-permission, and platform availability remain separate. A fresh task with a
-curated handoff is preferred when the main model or profile changes; a
-same-task switch rehydrates the frozen package before editing through
+For substantial work, the applicable planning artifact records Model generation,
+Capability tier, Reasoning effort, Orchestration mode, resolved profile when
+exposed, and an availability fallback before freeze. A large/phased anchor spec
+can carry that selection for later phase planning. Recommendation, harness
+authorization, runtime permission, and platform availability remain separate. A
+fresh task with a curated handoff is preferred when the main model or profile
+changes; a same-task switch rehydrates the frozen package before editing through
 `rule:execution-quality.execution-thread-start`.
 
 The strategy also records whether context usage is exposed, whether artifacts
@@ -250,6 +236,8 @@ location and lifecycle.
 When Superpowers is active, its methodology may guide brainstorming, planning,
 testing, execution, review, and finishing. The canonical spec, plan, snapshots,
 variance records, and changelog sources still live in the harness work item.
+The applicable project-level or merged global `AGENTS.md` preference overrides
+Superpowers' default spec and plan locations for that work item.
 Add `docs/superpowers` documents only when that directory already exists and
 contains previous documentation packages from before the current work; never
 create or seed it to satisfy compatibility. When allowed, a new file there is
@@ -266,9 +254,14 @@ downstream repository's responsibility.
 The practical Superpowers adapter is straightforward: use its methodology to
 explore and execute, convert any governing planning content into the canonical
 work-item package, then run the harness draft-review and approval freeze before
-implementation. If a Superpowers workflow would continue directly after
-planning, the harness pause takes precedence. This preserves one reviewable
-source of truth and makes the same package available to future threads.
+implementation. If generic Superpowers defaults conflict, the approved harness
+plan governs its numbered tasks and meaningful commit boundaries. If a
+Superpowers workflow would continue directly after planning, the harness pause
+takes precedence. This preserves one reviewable source of truth and makes the
+same package available to future threads. After the approved route authorizes
+execution, Superpowers pre-flight and task aids may remain ephemeral; when it
+is unavailable, keep each task independently executable and verifiable with
+the recorded checks.
 
 ## For harness maintainers
 

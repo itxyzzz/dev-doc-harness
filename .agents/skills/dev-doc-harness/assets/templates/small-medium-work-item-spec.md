@@ -71,14 +71,13 @@ Success summary:
 ## Commitments and verification
 
 Keep stable IDs and short titles. Put delivery scope in each Statement;
-rationale and examples do not add scope. Classification is optional; when it
-helps, use one compact line such as `Constraint · Preserve`.
+rationale and examples do not add scope. Every additional `SPEC-*` uses the
+complete `SPEC-001` structure: Statement plus a local Verification Criterion,
+unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
 Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
 
 ### `SPEC-001` `<short title>`
-
-`Constraint · Preserve`
 
 Statement:
 
@@ -99,6 +98,14 @@ Applicability / owning phase (optional): `<where this applies or which phase own
 Statement:
 
 1. `<second obligation, or remove this example>`.
+
+#### `VER-002` `<second title when needed>`
+
+Covers: `SPEC-002`.
+
+Criterion: `<what proves this commitment>`.
+
+Expected evidence: `<test, inspection, review, or other proof>`.
 
 ## Cross-cutting verification
 
@@ -182,10 +189,13 @@ Risk prompts:
 
 Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
-| Stage | Planned subject | Changelog title or snippet | Notes |
-|---|---|---|---|
-| Planning approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this spec and related planning artifacts. |
-| Implementation | `<commit-subject>` | `<changelog-heading>` | Replace with the expected implementation commit subject, or defer to the plan with a reason. |
+| Stage | Planned subject |
+|---|---|
+| Planning approval | `<planning-commit-subject>` |
+| Implementation | `<commit-subject>` |
+
+Use one cohesive implementation commit by default. Record an essential deferral
+or independently reviewable split as concise prose under this table.
 
 ## Documentation artifact matrix
 
@@ -200,26 +210,19 @@ Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewab
 | Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
 | Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
 
-## Next-task handoff
+## Planning shape and transition ownership
 
 Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 Default combined package:
 
 1. Planning shape: `combined small/medium`.
-2. Frozen package: `<approved spec and plan plus required snapshots, amendments, evidence, and other plan-named inputs>`.
+2. Transition owner: `<plan-filename>` owns the implementation handoff after the combined package freezes.
 3. Next activity: `<implementation activity named by the approved plan>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named task or review action from the plan>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
-The combined small/medium spec does not emit an independent plan-drafting handoff or task-creation offer. Its plan owns the transition after the combined package freezes.
-
-If the operator explicitly approves a staged small/medium spec-only exception before freeze, replace the default values with the recorded reason, identify the spec-only frozen package, and set plan drafting as the Next activity. Only that actual frozen boundary may emit the conditional copy-ready prompt described by `rule:freeze.approval-freeze`.
+For an explicitly approved staged spec-only exception, record the staging reason,
+the spec-only frozen package, and `plan drafting` as the next activity. Do not
+duplicate the later plan's implementation handoff here.
 
 ## Spec readiness checklist
 
@@ -232,6 +235,8 @@ If the operator explicitly approves a staged small/medium spec-only exception be
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized.
+- [ ] The plan owns the combined package's implementation handoff; a staged spec-only exception records only plan drafting.
+- [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval

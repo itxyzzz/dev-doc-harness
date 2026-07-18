@@ -28,19 +28,24 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Selection dimensions:
+Planning-task observations:
 
 1. Model generation: `<generation or not exposed>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
+2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
+4. Context visibility: `<exposed signal or not exposed>`.
+
+Approved execution selection:
+
+1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
+2. Capability tier: `<flagship / balanced / fast/economy>`.
+3. Reasoning effort: `<runtime value>`.
 4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Resolved profile: `<concrete runtime profile or not exposed>`.
-6. Availability/fallback: `<availability result and approved fallback>`.
-7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-8. Context visibility: `<exposed signal or not exposed>`.
-9. Artifact rehydration required: `<Yes/No plus reason>`.
-10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-11. Override scope and expiry: `<work item, phase, final review, or None>`.
+5. Availability/fallback: `<availability result and approved fallback>`.
+6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+7. Artifact rehydration required: `<Yes/No plus reason>`.
+8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
+9. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -49,13 +54,15 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended selection change:
+The anchor records a default strategy envelope. Each later phase plan records its
+concrete approved execution selection from that envelope or an approved amendment.
 
-1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
+Upcoming-stage sub-agent assessment:
 
-Sub-agents:
-
-1. `<None with rationale, or bounded strategy below>`.
+1. Sub-agents: None, or `<bounded strategy below>`.
+2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
+3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
+4. If useful and unapproved, ask the operator to approve the recorded role, context, output, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
 Prefer curated-artifact sub-agent phase-plan drafting after anchor-spec freeze when phases are independently plannable and platform support is available. For each proposed role, record a short block:
 

@@ -73,17 +73,39 @@ before the current work; never create or seed it to satisfy that compatibility
 condition. When continuity permits a new file there, it must be a short pointer
 stub to the harness package rather than a duplicate spec or plan.
 
+The destination repository's project-level or merged global `AGENTS.md`
+preference overrides Superpowers' default spec and plan locations. Planning
+observations may be `not exposed`; before freeze, the applicable planning
+artifact records an approved execution selection with an actionable target,
+tier, reasoning effort, orchestration mode, fallback, continuity, and
+rehydration requirement. A large/phased anchor spec can record the selection
+for later phase planning. The harness plan retains numbered tasks and meaningful
+commit boundaries when generic Superpowers defaults conflict; task briefs and
+review aids remain ephemeral. If Superpowers is unavailable, keep the task
+independently executable and verifiable with its recorded checks.
+
 ## Review And Pause Points
 
 The normal flow is simple:
 
-1. Draft and approve the planning package.
-2. Freeze it once and start only after a fresh instruction.
+1. Draft, approve, and freeze the current planning package.
+2. Start its documented next activity only after a fresh instruction: phase-plan
+   drafting after an anchor freeze, or implementation after a combined or
+   phase-plan freeze.
 3. Complete planned safe work without pausing between tasks.
 4. Note noteworthy equivalent drift in the variance log; amend only material
    outcome, architecture, API, data, security, privacy, compliance, scope, or
    evidence changes.
 5. Use a focused, read-only reviewer when the plan calls for one.
+
+A combined small/medium plan owns its implementation handoff. Large/phased work
+normally freezes its anchor, then uses a fresh instruction to plan and freeze
+one phase before its implementation starts. Actual outputs then inform the next
+phase plan; batch planning needs an explicit stable-and-independent exception.
+Before each upcoming stage, the agent records `Sub-agents: None` with a fit
+reason or presents one bounded strategy and asks for operator approval. An
+already approved in-envelope strategy does not need another generic
+confirmation.
 
 Before ordinary commits, update the work-item changelog fragment and run its
 lint command. Root `CHANGELOG.md` is the later consolidated publication view at

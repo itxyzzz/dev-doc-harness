@@ -71,14 +71,13 @@ Success summary:
 ## Commitments and verification
 
 Keep stable IDs and short titles. Put delivery scope in each Statement;
-rationale and examples do not add scope. Classification is optional; when it
-helps, use one compact line such as `Constraint · Preserve`.
+rationale and examples do not add scope. Every additional `SPEC-*` uses the
+complete `SPEC-001` structure: Statement plus a local Verification Criterion,
+unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
 Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
 
 ### `SPEC-001` `<short title>`
-
-`Constraint · Preserve`
 
 Statement:
 
@@ -99,6 +98,14 @@ Applicability / owning phase (optional): `<where this applies or which phase own
 Statement:
 
 1. `<second obligation, or remove this example>`.
+
+#### `VER-002` `<second title when needed>`
+
+Covers: `SPEC-002`.
+
+Criterion: `<what proves this commitment>`.
+
+Expected evidence: `<test, inspection, review, or other proof>`.
 
 ## Cross-cutting verification
 
@@ -213,19 +220,24 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Selection dimensions:
+Planning-task observations:
 
 1. Model generation: `<generation or not exposed>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
+2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
+4. Context visibility: `<exposed signal or not exposed>`.
+
+Approved execution selection:
+
+1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
+2. Capability tier: `<flagship / balanced / fast/economy>`.
+3. Reasoning effort: `<runtime value>`.
 4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Resolved profile: `<concrete runtime profile or not exposed>`.
-6. Availability/fallback: `<availability result and approved fallback>`.
-7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-8. Context visibility: `<exposed signal or not exposed>`.
-9. Artifact rehydration required: `<Yes/No plus reason>`.
-10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-11. Override scope and expiry: `<work item, phase, final review, or None>`.
+5. Availability/fallback: `<availability result and approved fallback>`.
+6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+7. Artifact rehydration required: `<Yes/No plus reason>`.
+8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
+9. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Fit assessment:
 
@@ -234,13 +246,15 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended selection change:
+The anchor records a default strategy envelope. Each later phase plan records its
+concrete approved execution selection from that envelope or an approved amendment.
 
-1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
+Upcoming-stage sub-agent assessment:
 
-Sub-agents:
-
-1. `<None with rationale, or bounded strategy below>`.
+1. Sub-agents: None, or `<bounded strategy below>`.
+2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
+3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
+4. If useful and unapproved, ask the operator to approve the recorded role, context, output, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
 Prefer curated-artifact sub-agent phase-plan drafting after anchor-spec freeze when phases are independently plannable and platform support is available. For each proposed role, record a short block:
 
@@ -264,23 +278,15 @@ Sub-agent `<role or phase id>`:
 
 Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
-Anchor spec approval:
+| Stage | Planned subject |
+|---|---|
+| Anchor spec approval | `<planning-commit-subject>` |
+| Phase-plan approval pattern | `<planning-commit-subject>` |
+| Phase implementation pattern | `<commit-subject>` |
 
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Approval commit for this anchor spec.`
-
-Phase plan approval pattern:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace or refine in each concrete phase plan.`
-
-Implementation pattern:
-
-1. Planned subject: `<commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace with concrete rows in phase plans.`
+The normal large-work sequence is rolling: plan and implement one phase before
+planning the next. Record a batch-planning exception only when phases are
+stable and independently plannable.
 
 ## Planning artifact freeze gates
 
@@ -301,22 +307,15 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 | Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
 | Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
 
-## Next-task handoff
+## Anchor-to-phase transition
 
 Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
-2. Frozen package: `<approved anchor spec plus required snapshots, amendments, evidence, and other anchor-named inputs>`.
-3. Next activity: `phase-plan drafting` for `<named phase or first phase-planning activity>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named phase-planning task or review action>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
-
-After the anchor actually freezes, a new-task route displays a conditional copy-ready prompt for the documented phase-plan drafting activity. It names the exact artifacts above, applicable `AGENTS.md` and harness rules, `rule:execution-quality.execution-thread-start`, the approved strategy and fallback, and the variance stop condition without duplicating frozen requirements. Follow `rule:freeze.approval-freeze` for any configured task-creation offer or manual fallback.
+2. Next activity: `phase-plan drafting` for `<named first phase-planning activity>`.
+3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
+4. Batch planning is an explicit exception only for stable, independently plannable phases.
+5. The approved execution selection, artifacts, and variance stop condition are rendered at the actual phase-plan boundary under `rule:freeze.approval-freeze`.
 
 ## Spec readiness checklist
 
@@ -329,9 +328,9 @@ After the anchor actually freezes, a new-task route displays a conditional copy-
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
 - [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Model and sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
+- [ ] Planning-task observations and the actionable approved execution selection are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized.
+- [ ] Planned commit subjects and changelog title snippets are synchronized; any batch phase-planning exception is stable and independently plannable.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval

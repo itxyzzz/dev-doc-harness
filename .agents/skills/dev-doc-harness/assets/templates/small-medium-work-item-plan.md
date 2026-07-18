@@ -8,8 +8,13 @@ Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Execution method: `<approved method, or omit when not selected>`
 
 Artifact style: small/medium plans must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
+
+When Superpowers is the approved execution method, record it in the metadata
+above. The harness retains scope, model-policy bounds, variance handling,
+approved commit boundaries, and final integration; do not add a second route.
 
 ## Input Artifacts
 
@@ -31,6 +36,15 @@ fresh handoff, or feeds deterministic validation; name that benefit.
 
 Optional mapping benefit: `<coverage | handoff | deterministic validation>`.
 
+## Global Constraints (conditional)
+
+Render this section only when a concise shared constraint or reference is needed
+to make the plan or a task self-contained for a fresh executor. Do not repeat
+approved commitments, architecture decisions, task instructions, or Plan Checks
+only to fill this section.
+
+Self-containment reason: `<why the shared constraint or reference is needed>`.
+
 ## Change surfaces
 
 1. `<file or directory>`: `<change and boundary>`.
@@ -43,36 +57,41 @@ State only the sequencing, dependencies, and tradeoffs a fresh executor needs.
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
 
-Selection dimensions:
+Planning-task observations:
 
 1. Model generation: `<generation or not exposed>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
+2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
+4. Context visibility: `<exposed signal or not exposed>`.
+
+Approved execution selection:
+
+1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
+2. Capability tier: `<flagship / balanced / fast/economy>`.
+3. Reasoning effort: `<runtime value>`.
 4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Resolved profile: `<concrete runtime profile or not exposed>`.
-6. Availability/fallback: `<availability result and approved fallback>`.
-7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-8. Context visibility: `<exposed signal or not exposed>`.
-9. Artifact rehydration required: `<Yes/No plus reason>`.
-10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-11. Override scope and expiry: `<work item, phase, final review, or None>`.
+5. Availability/fallback: `<availability result and approved fallback>`.
+6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
+7. Artifact rehydration required: `<Yes/No plus reason>`.
+8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
+9. Override scope and expiry: `<work item, phase, final review, or None>`.
 
-Fit assessment:
+Upcoming-stage sub-agent assessment:
 
-1. Complexity: `<low/medium/high plus reason>`.
-2. Risk and blast radius: `<low/medium/high plus consequence>`.
-3. Ambiguity: `<low/medium/high plus reason>`.
-4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
+1. Sub-agents: None, or `<bounded strategy below>`.
+2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
+3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
+4. When useful and unapproved, ask the operator to approve the recorded roles,
+   context, outputs, model/effort envelope, write authority, concurrency, and
+   fallback before dispatch.
 
-Recommended selection change:
-
-1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
-
-Sub-agents:
-
-1. `<None with rationale, or bounded strategy below>`.
-
-Use sub-agents only when they improve isolation, review quality, parallel exploration, specialized execution, or risk reduction enough to justify the coordination cost. If the work needs many sub-agents, multiple waves, or additional planning hierarchy to stay understandable, split, re-scope, or escalate before freeze.
+Use sub-agents only when they improve isolation, review quality, parallel
+exploration, specialized execution, or risk reduction enough to justify the
+coordination cost. For each proposed sub-agent, record purpose, context
+strategy, input context, output artifact, model policy and allocation, write
+authority, concurrency, and blast radius. An approved in-envelope strategy does
+not need another generic confirmation; route an out-of-envelope dispatch through
+the existing operator-approval path.
 
 For each proposed sub-agent, record a short block:
 
@@ -101,9 +120,20 @@ scope. Order tasks by dependency.
 
 Dependencies: `<None, task IDs, artifacts, or event>`.
 
+Interfaces:
+
+1. Consumes: `<inputs from a prior task, approved artifact, interface, or None>`.
+2. Produces: `<outputs that a later task or fresh executor relies on, or None>`.
+
+Dependencies describe readiness or ordering. Interfaces describe task-boundary
+inputs and outputs; do not use one in place of the other.
+
 Implementation:
 
 1. `<specific change, test, documentation, or review step>`.
+
+Use numbered executable steps. Do not use checkbox task lists inside an
+implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
@@ -127,17 +157,13 @@ Expected result: `<observable pass signal>`.
 
 Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
-Planning approval commit:
+| Stage | Planned subject |
+|---|---|
+| Planning approval | `<planning-commit-subject>` |
+| Implementation | `<commit-subject>` |
 
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `<approval commit for this spec and plan, or replace with the artifact set being approved>`.
-
-Implementation commit:
-
-1. Planned subject: `<commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `<add one block per expected implementation, validation, release, or maintenance commit>`.
+One cohesive implementation commit is the default. Record an essential
+exception or independently reviewable split as concise prose below.
 
 ## Validation and variance
 
@@ -146,15 +172,26 @@ List the checks that produce the needed evidence. Use
 changes. Use `module:freeze-gate` for planning approval; do not repeat its
 procedure here.
 
-## Next-task handoff
+## Implementation handoff
 
-Render this section only at a real frozen boundary. Name the frozen package,
-next activity, first task, approved strategy, and variance stop condition. See
-`rule:execution-quality.execution-thread-start` for the handoff procedure.
+Render this section at the plan's real frozen boundary. The combined
+small/medium plan owns this handoff.
+
+1. Frozen package: `<approved spec, plan, snapshots, amendments, and required evidence>`.
+2. Next activity: `<named implementation activity>`.
+3. First task: `<TASK-NNN>`.
+4. Approved execution selection and fallback: `<selection section or concise values>`.
+5. Artifact rehydration: `<required artifacts and startup rule>`.
+6. Variance stop condition: `<approval-required variance or other explicit stop>`.
+7. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.
+
+Use `rule:execution-quality.execution-thread-start`; do not duplicate a
+spec-owned handoff or infer a different transition.
 
 ## Readiness
 
 - [ ] Inputs, scope, tasks, checks, documentation, and changelog entry are clear.
+- [ ] The approved execution selection, implementation handoff, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
 
 ## Completion
