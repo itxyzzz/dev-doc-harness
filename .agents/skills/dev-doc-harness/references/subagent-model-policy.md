@@ -117,6 +117,8 @@ concurrency. Platform rules may still require their own confirmation.
 
 Use sub-agents for isolation, review quality, or parallelism: independent investigation, read-heavy exploration, test-risk review, spec review, code-quality review, or bounded implementation with disjoint file ownership. Avoid sub-agents for small tasks, tightly coupled work, same-file edits by multiple agents, immediate main-thread blockers, or cases where coordination overhead exceeds the value.
 
+When Superpowers dispatches a task-specific executor or reviewer under an approved strategy, explicitly choose and record its capability tier and reasoning effort. Record model generation and resolved profile as `not exposed` unless the platform or operator exposes them; do not silently inherit an unknown session allocation. A dispatch outside the approved policy envelope, availability fallback, concurrency guardrail, write authority, or review boundary requires the existing approval path before it starts.
+
 Sub-agents are not a default cost-saving mechanism. Prefer read-only explorer or reviewer agents before write-capable workers.
 
 Default concurrent fan-out:

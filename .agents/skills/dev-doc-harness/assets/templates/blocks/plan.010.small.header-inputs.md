@@ -9,6 +9,14 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 
 Artifact style: small/medium plans must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
 
+## Superpowers execution meta-header (conditional)
+
+Render this compact meta-header only when the frozen plan records Superpowers as
+the approved execution method after the harness freeze and continuity route.
+State that the harness retains scope, model-policy bounds, variance handling,
+and final integration. Omit the meta-header when another approved method will
+execute the plan; it must not create a second approval route.
+
 ## Input Artifacts
 
 Read these before finalizing implementation planning:

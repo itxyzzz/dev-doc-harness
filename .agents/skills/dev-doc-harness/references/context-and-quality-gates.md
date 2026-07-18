@@ -44,6 +44,8 @@ or material scope-expanding action.
 
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 
+The approved harness route must complete before Superpowers pre-flight or execution begins. Do not ask a second generic Superpowers execution-mode question after freeze; use the approved strategy and fallback, or route an out-of-envelope choice through the existing approval path.
+
 ## Task preflight
 
 For non-mechanical work, confirm:
