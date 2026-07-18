@@ -38,60 +38,33 @@ completion.
 }}%%
 
 flowchart TD
-    A["Operator asks for work"]:::house --> B{"Task size?"}:::house
-    B -->|"Very small"| C["Direct edit, check, commit"]:::house
-    B -->|"Substantial"| D["Create work-item package"]:::house
+    A["Operator asks for work"]:::house --> B{"Work size"}:::house
+    B -->|"Very small"| C["Edit, check, commit"]:::house
+    B -->|"Small or medium"| D["Draft combined spec and plan"]:::house
+    B -->|"Large or phased"| H["Draft anchor spec"]:::house
 
-    D --> E{"Planning shape?"}:::house
-    E -->|"Small or medium"| F["Draft combined spec and plan"]:::house
-    E -->|"Large or phased"| G["Draft anchor spec"]:::house
+    D --> E{"Operator approves?"}:::house
+    E -.->|"Feedback"| D
+    E -->|"Yes"| F["Freeze combined package<br/>commit, pause"]:::house
+    F -->|"Same or new task (with handoff)"| G["Implement, validate, commit"]:::house
 
-    F --> H{"Operator approves?"}:::house
-    H -.->|"Feedback"| F
-    H -->|"Yes"| I["Freeze combined package<br/>commit, pause"]:::house
-
-    G --> J{"Operator approves?"}:::house
-    J -.->|"Feedback"| G
-    J -->|"Yes"| K["Freeze anchor package<br/>commit, pause"]:::house
-    K --> L{"Next activity: phase-plan drafting<br/>Approved continuity?"}:::house
-    L -->|"Same task"| M["Fresh instruction: draft phase plan"]:::house
-    L -->|"New task"| N["Visible handoff; approve configured task creation"]:::house
-    N --> M
-    M --> O{"Operator approves?"}:::house
-    O -.->|"Feedback"| M
-    O -->|"Yes"| P["Freeze phase-plan package<br/>commit, pause"]:::house
-
-    I --> Q{"Next activity: implementation<br/>Approved continuity?"}:::house
-    P --> Q
-    Q -->|"Same task"| R["Fresh start authorization"]:::house
-    Q -->|"New task"| S["Visible handoff; approve configured task creation"]:::house
-    R --> T["Implement approved plan"]:::house
-    S --> T
-    T --> U{"High-impact variance?"}:::house
-    U -->|"No"| V["Validate, record actual outputs, update docs and changelog source"]:::house
-    V --> W["Commit implementation"]:::house
-    W --> AA{"Another planned phase?"}:::house
-    AA -->|"Yes (large/phased)"| M
-    AA -->|"No"| AB["Report completion"]:::house
-    U -->|"Yes"| X["Draft plan amendment"]:::house
-    X --> Y{"Operator approves?"}:::house
-    Y -.->|"Feedback"| X
-    Y -->|"Yes"| Z["Freeze amendment package<br/>commit, pause"]:::house
-    Z -.-> Q
+    H --> I{"Operator approves?"}:::house
+    I -->|"Yes"| J["Freeze anchor package<br/>commit, pause"]:::house
+    J --> K["Draft phase plan"]:::house
+    K --> L{"Operator approves?"}:::house
+    L -->|"Yes"| M["Freeze phase-plan package<br/>commit, pause"]:::house
+    M -->|"Same or new task (with handoff)"| N["Implement phase<br/>record actual outputs"]:::house
+    K <-.-|"Plan next phase"| N
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package, not a generic diagram node, determines the next activity.
-A combined small/medium package hands implementation to its plan. A large
-anchor package hands phase-plan drafting to a fresh instruction; the normal
-large-work route plans and implements one phase, records its actual outputs,
-then plans the next phase. Batch planning is an explicit exception for stable,
-independently plannable phases. A same-task route needs fresh start
-authorization; a new-task route displays a copy-ready handoff and asks
-separately before creating a task. Neither route starts implementation
-automatically.
+The frozen package determines the next activity. Small/medium work freezes its
+combined package and then proceeds to implementation. Large/phased work freezes
+its anchor, plans and implements one phase, records actual outputs, then plans
+the next phase. The single handoff-labelled arrow covers either same-task or
+new-task execution without changing the lifecycle shown here.
 
 ## Adopt and use it
 
