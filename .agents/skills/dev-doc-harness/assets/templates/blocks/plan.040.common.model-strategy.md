@@ -27,6 +27,12 @@ Recommended selection change:
 
 1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
 
+Superpowers dispatches:
+
+1. When the approved strategy permits a Superpowers task dispatch, record a per-dispatch capability tier and reasoning effort rather than silently inheriting an unknown session allocation.
+2. Record model generation and resolved profile as `not exposed` unless the platform or operator exposes them.
+3. Route a dispatch outside the approved policy envelope, fallback, concurrency guardrail, write authority, or review boundary through the existing approval path.
+
 Sub-agents:
 
 1. `<None with rationale, or bounded strategy below>`.

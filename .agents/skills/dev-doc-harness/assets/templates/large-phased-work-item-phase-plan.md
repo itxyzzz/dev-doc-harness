@@ -11,6 +11,15 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
+## Superpowers execution meta-header (conditional)
+
+Render this compact meta-header only when the frozen phase plan records
+Superpowers as the approved execution method after the harness freeze and
+continuity route. State that the harness retains scope, model-policy bounds,
+variance handling, and final integration. Omit the meta-header when another
+approved method will execute the phase; it must not create a second approval
+route.
+
 ## Objective
 
 State the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
@@ -38,6 +47,15 @@ that is enough. Add a mapping only when it prevents a coverage gap, supports a
 fresh handoff, or feeds deterministic validation; name that benefit.
 
 Optional mapping benefit: `<coverage | handoff | deterministic validation>`.
+
+## Global Constraints (conditional)
+
+Render this section only when a concise shared constraint or reference is needed
+to make the plan or a task self-contained for a fresh executor. Do not repeat
+approved commitments, architecture decisions, task instructions, or Plan Checks
+only to fill this section.
+
+Self-containment reason: `<why the shared constraint or reference is needed>`.
 
 ## Change surfaces
 
@@ -81,6 +99,12 @@ Recommended selection change:
 
 1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
 
+Superpowers dispatches:
+
+1. When the approved strategy permits a Superpowers task dispatch, record a per-dispatch capability tier and reasoning effort rather than silently inheriting an unknown session allocation.
+2. Record model generation and resolved profile as `not exposed` unless the platform or operator exposes them.
+3. Route a dispatch outside the approved policy envelope, fallback, concurrency guardrail, write authority, or review boundary through the existing approval path.
+
 Sub-agents:
 
 1. `<None with rationale, or bounded strategy below>`.
@@ -114,9 +138,20 @@ scope. Order tasks by dependency.
 
 Dependencies: `<None, task IDs, artifacts, or event>`.
 
+Interfaces:
+
+1. Consumes: `<inputs from a prior task, approved artifact, interface, or None>`.
+2. Produces: `<outputs that a later task or fresh executor relies on, or None>`.
+
+Dependencies describe readiness or ordering. Interfaces describe task-boundary
+inputs and outputs; do not use one in place of the other.
+
 Implementation:
 
 1. `<specific change, test, documentation, or review step>`.
+
+Use numbered executable steps. Do not use checkbox task lists inside an
+implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 

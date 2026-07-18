@@ -73,6 +73,13 @@ before the current work; never create or seed it to satisfy that compatibility
 condition. When continuity permits a new file there, it must be a short pointer
 stub to the harness package rather than a duplicate spec or plan.
 
+The destination repository's project-level or merged global `AGENTS.md`
+preference overrides Superpowers' default spec and plan locations. Once the
+harness freeze and fresh instruction authorize execution, a conditional
+Superpowers execution meta-header may describe that method; task briefs and
+review aids remain ephemeral. If Superpowers is unavailable, keep the task
+independently executable and verifiable with its recorded checks.
+
 ## Review And Pause Points
 
 The normal flow is simple:

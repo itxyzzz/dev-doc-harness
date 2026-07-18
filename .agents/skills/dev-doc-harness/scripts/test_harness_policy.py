@@ -77,6 +77,7 @@ CHECK_IDS = [
     "templates.commitment-verification",
     "compat.current-historical",
     "scenarios.harness-simplification",
+    "compat.superpowers-adapter-contract",
 ]
 
 CANONICAL_REFERENCES = [
@@ -1657,6 +1658,41 @@ def multi_check_fixture_mode(text: str) -> str:
     return "invalid"
 
 
+def superpowers_task_fixture_errors(text: str) -> list[str]:
+    task_match = re.search(r"## Implementation tasks(?P<body>.*?)(?:\n## Plan checks|\Z)", text, flags=re.DOTALL)
+    if task_match is None:
+        return ["missing implementation-task section"]
+    task_body = task_match.group("body")
+    errors: list[str] = []
+    if "Dependencies:" not in task_body:
+        errors.append("missing dependencies")
+    if "Interfaces:" not in task_body:
+        errors.append("missing interfaces")
+    if "Consumes:" not in task_body or "Produces:" not in task_body:
+        errors.append("missing task input/output contract")
+    if re.search(r"(?m)^\s*- \[[ xX]\]", task_body):
+        errors.append("uses checkbox task steps")
+    if not re.search(r"(?m)^\s*1\.\s+", task_body):
+        errors.append("missing numbered task step")
+    return errors
+
+
+def superpowers_global_constraints_fixture_errors(text: str) -> list[str]:
+    if "## Global Constraints" not in text:
+        return []
+    if "Self-containment reason:" not in text:
+        return ["global constraints lack a self-containment reason"]
+    return []
+
+
+def superpowers_dispatch_fixture_route(text: str) -> str:
+    if all(field in text for field in ["Capability tier:", "Reasoning effort:", "Model generation: `not exposed`", "Resolved profile: `not exposed`"]):
+        return "in-envelope"
+    if "outside the approved envelope" in text and "approval" in text:
+        return "approval"
+    return "invalid"
+
+
 def assert_harness_simplification_scenarios() -> None:
     check_id = "scenarios.harness-simplification"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
@@ -1771,6 +1807,90 @@ def assert_harness_simplification_scenarios() -> None:
         add_failure(check_id, "equivalent-alternative fixture with an explicit reason was not recognized")
     if multi_check_fixture_mode(all_required_checks) == multi_check_fixture_mode(equivalent_alternatives):
         add_failure(check_id, "all-required and equivalent-alternative fixtures were conflated")
+
+
+def assert_superpowers_adapter_contract() -> None:
+    check_id = "compat.superpowers-adapter-contract"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    header_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
+    ]
+    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.common.traceability-approach-surfaces.md"
+    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
+
+    for path in ["AGENTS.md", "README.md"]:
+        assert_text_contains(check_id, path, r"overrid(?:e|es)[\s\S]+Superpowers[\s\S]+default[\s\S]+(?:spec|plan)[\s\S]+location", f"{path} path-preference override")
+        assert_text_contains(check_id, path, r"docs/work-items/<work-id>", f"{path} canonical work-item path")
+
+    assert_text_contains(check_id, lifecycle, r"conditional.+(?:convert|conversion).+Superpowers", "conditional plan conversion")
+    assert_text_contains(check_id, lifecycle, r"ephemeral", "ephemeral execution aids")
+    assert_text_contains(check_id, lifecycle, r"independently executable.+verifiable", "no-Superpowers fallback")
+    assert_text_contains(check_id, execution, r"before.+Superpowers.+(?:pre-flight|execution)", "authorized Superpowers entry")
+    assert_text_contains(check_id, execution, r"second generic.+(?:Superpowers|execution-mode)", "no second execution-mode choice")
+    assert_text_contains(check_id, models, r"explicit.+(?:capability tier|allocation).+reasoning effort", "explicit dispatch allocation")
+    assert_text_contains(check_id, models, r"silent(?:ly)? inherit", "silent-inheritance prohibition")
+    assert_text_contains(check_id, models, r"outside.+approved.+(?:envelope|policy).+approval", "out-of-envelope approval")
+
+    for path in header_blocks:
+        assert_text_contains(check_id, path, r"Superpowers execution meta-header", "conditional execution meta-header")
+        assert_text_contains(check_id, path, r"only when", "conditional meta-header boundary")
+    assert_text_contains(check_id, traceability_block, r"Global Constraints", "global-constraints prompt")
+    assert_text_contains(check_id, traceability_block, r"self-contained", "global-constraints self-containment test")
+    assert_text_contains(check_id, model_block, r"per-dispatch", "per-dispatch allocation prompt")
+    assert_text_contains(check_id, task_block, r"Interfaces", "task-interface prompt")
+    assert_text_contains(check_id, task_block, r"numbered", "numbered task-step prompt")
+
+    for path in PLAN_TEMPLATE_FILES:
+        assert_text_contains(check_id, path, r"Superpowers execution meta-header", "generated meta-header prompt")
+        assert_text_contains(check_id, path, r"Global Constraints", "generated global-constraints prompt")
+        assert_text_contains(check_id, path, r"Interfaces", "generated task-interface prompt")
+        assert_text_contains(check_id, path, r"per-dispatch", "generated dispatch-allocation prompt")
+        errors = superpowers_task_fixture_errors(read_repo_text(path))
+        if errors:
+            add_failure(check_id, f"{path} task shape: {', '.join(errors)}")
+
+    valid_task = (
+        "## Implementation tasks\n"
+        "### `TASK-001` Validate adapter\n\n"
+        "Dependencies: approved plan.\n\n"
+        "Interfaces:\n\n"
+        "1. Consumes: approved policy.\n"
+        "2. Produces: validation evidence.\n\n"
+        "Implementation:\n\n"
+        "1. Run the validator.\n\n"
+        "## Plan checks\n"
+    )
+    checkbox_task = valid_task.replace("1. Run the validator.", "- [ ] Run the validator.")
+    dependency_only_task = valid_task.replace("Interfaces:\n\n1. Consumes: approved policy.\n2. Produces: validation evidence.\n\n", "")
+    if superpowers_task_fixture_errors(valid_task):
+        add_failure(check_id, "numbered task fixture failed")
+    if "uses checkbox task steps" not in superpowers_task_fixture_errors(checkbox_task):
+        add_failure(check_id, "checkbox task fixture passed")
+    if "missing interfaces" not in superpowers_task_fixture_errors(dependency_only_task):
+        add_failure(check_id, "dependency-only task fixture passed")
+
+    justified_global_constraints = "## Global Constraints\nSelf-containment reason: a shared execution rule is otherwise absent."
+    duplicate_global_constraints = "## Global Constraints\nRepeat the approved spec."
+    if superpowers_global_constraints_fixture_errors(justified_global_constraints):
+        add_failure(check_id, "justified global-constraints fixture failed")
+    if not superpowers_global_constraints_fixture_errors(duplicate_global_constraints):
+        add_failure(check_id, "unjustified global-constraints fixture passed")
+
+    in_envelope_dispatch = (
+        "Capability tier: `fast/economy`\n"
+        "Reasoning effort: `medium`\n"
+        "Model generation: `not exposed`\n"
+        "Resolved profile: `not exposed`"
+    )
+    out_of_envelope_dispatch = "A dispatch outside the approved envelope requires approval."
+    if superpowers_dispatch_fixture_route(in_envelope_dispatch) != "in-envelope":
+        add_failure(check_id, "in-envelope dispatch fixture failed")
+    if superpowers_dispatch_fixture_route(out_of_envelope_dispatch) != "approval":
+        add_failure(check_id, "out-of-envelope dispatch fixture did not route to approval")
 
 
 def run_checks() -> None:
@@ -2043,6 +2163,9 @@ def run_checks() -> None:
 
     assert_harness_simplification_scenarios()
     write_check_result("scenarios.harness-simplification")
+
+    assert_superpowers_adapter_contract()
+    write_check_result("compat.superpowers-adapter-contract")
 
 
 def main() -> int:

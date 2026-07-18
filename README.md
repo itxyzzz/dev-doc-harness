@@ -138,6 +138,10 @@ Repository-local harness instructions take precedence. For substantial work, use
 the repository's selected harness router. The repository-local harness owns ordinary freeze and changelog details. After its planning freeze and a fresh start
 instruction, complete the approved plan; ask before external, destructive,
 costly, or material scope-expanding actions.
+
+For harness-managed work, this global guidance overrides Superpowers' default
+spec and plan locations. Keep durable artifacts under
+`docs/work-items/<work-id>/` in the destination repository.
 ```
 
 Keep the copied package and product work in separate commits.
@@ -250,6 +254,8 @@ location and lifecycle.
 When Superpowers is active, its methodology may guide brainstorming, planning,
 testing, execution, review, and finishing. The canonical spec, plan, snapshots,
 variance records, and changelog sources still live in the harness work item.
+The applicable project-level or merged global `AGENTS.md` preference overrides
+Superpowers' default spec and plan locations for that work item.
 Add `docs/superpowers` documents only when that directory already exists and
 contains previous documentation packages from before the current work; never
 create or seed it to satisfy compatibility. When allowed, a new file there is
@@ -268,7 +274,10 @@ explore and execute, convert any governing planning content into the canonical
 work-item package, then run the harness draft-review and approval freeze before
 implementation. If a Superpowers workflow would continue directly after
 planning, the harness pause takes precedence. This preserves one reviewable
-source of truth and makes the same package available to future threads.
+source of truth and makes the same package available to future threads. After
+the approved route authorizes execution, Superpowers pre-flight and task aids
+may remain ephemeral; when it is unavailable, keep each task independently
+executable and verifiable with the recorded checks.
 
 ## For harness maintainers
 

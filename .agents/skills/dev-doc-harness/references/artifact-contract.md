@@ -166,9 +166,11 @@ Follow `durable-planning-quality.md` for the full spec and phase-plan quality ba
 
 When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
 
-The full durable package must live under `<work-item-path>` before the harness freeze gate. If Superpowers produces specs or plans elsewhere, copy or convert the approved content into the harness work item folder before implementation begins.
+The full durable package must live under `<work-item-path>` before the harness freeze gate. Applicable project or global `AGENTS.md` guidance overrides Superpowers' default spec and plan locations for harness-managed work. Conditional conversion of Superpowers planning content into the canonical package is required whenever that content will govern the work; do not retain a second durable copy elsewhere.
 
-Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers execution flow begins.
+Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers pre-flight or execution flow begins. Its task briefs, review packages, progress ledgers, and similar execution aids remain ephemeral unless another harness evidence rule independently preserves them; they do not create a second approval route.
+
+When Superpowers is unavailable, keep each task independently executable and verifiable with its recorded checks. This fallback is a concise task-quality cue, not a second detailed task-sizing method.
 
 Add documents under `docs/superpowers` only when that directory already exists and contains previous documentation packages from before the current work. This exception exists solely for backward compatibility and continuity. Do not create or seed the directory, an empty placeholder, or package content during the current work to satisfy this condition.
 

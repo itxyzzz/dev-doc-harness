@@ -30,7 +30,7 @@ Do not switch to `enterprise-default` unless the operator explicitly changes thi
 
 ## Compatibility
 
-If Superpowers is installed and active, use Superpowers for its normal software-development methodology, but apply this repository harness as the required artifact-location and lifecycle contract.
+If Superpowers is installed and active, use Superpowers for its normal software-development methodology, but apply this repository harness as the required artifact-location and lifecycle contract. This project-level `AGENTS.md` preference overrides Superpowers' default spec and plan locations for harness-managed work.
 
 Canonical durable planning artifacts still live under `docs/work-items/<work-id>/` and pass the harness freeze gates before implementation. Add `docs/superpowers` documents only when the directory already exists and contains previous documentation packages from before the current work; never create or seed it to satisfy this compatibility condition. When allowed for continuity, every new file must be a minimal pointer stub to the canonical harness work item package rather than a duplicate spec or plan.
 

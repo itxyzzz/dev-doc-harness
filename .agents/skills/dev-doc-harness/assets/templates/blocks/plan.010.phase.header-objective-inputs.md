@@ -9,6 +9,15 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
+## Superpowers execution meta-header (conditional)
+
+Render this compact meta-header only when the frozen phase plan records
+Superpowers as the approved execution method after the harness freeze and
+continuity route. State that the harness retains scope, model-policy bounds,
+variance handling, and final integration. Omit the meta-header when another
+approved method will execute the phase; it must not create a second approval
+route.
+
 ## Objective
 
 State the phase outcome and how this phase advances the approved anchor spec without reinterpreting it.
