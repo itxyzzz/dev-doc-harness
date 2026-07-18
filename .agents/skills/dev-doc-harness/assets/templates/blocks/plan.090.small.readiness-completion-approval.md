@@ -1,6 +1,7 @@
 ## Readiness
 
 - [ ] Inputs, scope, tasks, checks, documentation, and changelog entry are clear.
+- [ ] The approved execution selection, implementation handoff, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
 
 ## Completion

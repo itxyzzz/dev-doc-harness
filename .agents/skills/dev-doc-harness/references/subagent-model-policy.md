@@ -23,14 +23,24 @@ Owned rule IDs:
 
 ## Selection dimensions
 
-Model selection for substantial work records independent dimensions rather than collapsing them into one model-class/profile label:
+Model selection for substantial work records planning-task observations separately from the approved execution selection. Observations describe the planning task and may be `not exposed`; the approved selection is an actionable future choice and must not use `not exposed` for its target model/profile, capability tier, reasoning effort, or continuity.
+
+Planning-task observations may record:
 
 - Model generation: the provider generation or `not exposed`.
 - Capability tier: the durable policy-relative tier.
 - Reasoning effort: the independently selected effort or `not exposed`.
 - Orchestration mode: the execution shape defined by `rule:models.orchestration-mode`.
 - Resolved profile: the concrete runtime model/profile when exposed; otherwise `not exposed`.
-- Availability/fallback: runtime availability plus the approved fallback if the preferred combination is unavailable or prohibited.
+- Context visibility: the exposed signal or `not exposed`.
+
+Approved execution selection records:
+
+- Target model/profile or policy-relative selection instruction.
+- Capability tier and reasoning effort.
+- Orchestration mode.
+- Availability/fallback.
+- Execution continuity and artifact-rehydration requirement.
 
 Permanent capability tiers are vendor-neutral:
 
@@ -61,7 +71,7 @@ Every substantial strategy records:
 - Context visibility: `exposed` with the available signal, or `not exposed`.
 - Artifact rehydration required: `Yes` or `No` with a reason.
 
-Prefer `new task with curated-artifact handoff` when the main model generation, capability tier, resolved profile, or platform multi-agent profile changes. Preserve same-task continuation when the current model/profile remains suitable or when an explicit continuity reason outweighs the transition benefit.
+Prefer `new task with curated-artifact handoff` for substantial work when the intended model generation, capability tier, resolved profile, or platform multi-agent profile changes, or when current model/profile/context suitability cannot be verified. Preserve same-task continuation when the current profile is known suitable or an explicit continuity reason outweighs the transition benefit.
 
 A same-task model switch must re-read the frozen package and reconcile scope before edits, regardless of operator-requested or runtime-managed compaction. When exact remaining context is not exposed, do not claim a precise remaining context value or prescribe compaction from an inferred threshold; runtime-managed compaction remains a platform responsibility.
 
@@ -69,7 +79,9 @@ Emit a transition handoff only at an actual frozen package boundary. Keep it min
 
 ## Common rules
 
-Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Do not treat lack of operator mention as a prohibition on sub-agent use. For substantial work, assess whether sub-agents are justified by isolation, review quality, parallel throughput, or risk reduction. Record either a bounded sub-agent strategy or `Sub-agents: None` with a brief fit reason.
+Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Before each upcoming-stage spec drafting, plan or phase-plan drafting, amendment or replanning, implementation, or consequential review stage, assess whether sub-agents are justified by isolation, review quality, parallel throughput, specialized execution, or risk reduction. Record either a bounded strategy or `Sub-agents: None` with a stage-specific fit reason.
+
+When useful delegation is not already authorized, record the roles, context, outputs, model and effort envelope, write authority, concurrency, and fallback, then explicitly ask the operator to approve that bounded strategy before dispatch. An approved in-envelope strategy does not need a repeated confirmation; approval does not override unavailable tooling, higher-priority platform limits, or an out-of-envelope role, model/effort, write scope, concurrency, or boundary.
 
 When `module:lifecycle` uses one orchestration thread with bounded delegation as a work-sizing boundary, this module owns the related context strategy, concurrency, model-selection, authorization, and final integration mechanics.
 

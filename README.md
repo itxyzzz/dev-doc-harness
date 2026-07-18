@@ -68,8 +68,11 @@ flowchart TD
     R --> T["Implement approved plan"]:::house
     S --> T
     T --> U{"High-impact variance?"}:::house
-    U -->|"No"| V["Validate, update docs and changelog source"]:::house
+    U -->|"No"| V["Validate, record actual outputs, update docs and changelog source"]:::house
     V --> W["Commit implementation"]:::house
+    W --> AA{"Another planned phase?"}:::house
+    AA -->|"Yes (large/phased)"| M
+    AA -->|"No"| AB["Report completion"]:::house
     U -->|"Yes"| X["Draft plan amendment"]:::house
     X --> Y{"Operator approves?"}:::house
     Y -.->|"Feedback"| X
@@ -82,10 +85,13 @@ flowchart TD
 
 The frozen package, not a generic diagram node, determines the next activity.
 A combined small/medium package hands implementation to its plan. A large
-anchor package hands later phase-plan drafting to a fresh instruction. A
-same-task route needs fresh start authorization; a new-task route displays a
-copy-ready handoff and asks separately before creating a task. Neither route
-starts implementation automatically.
+anchor package hands phase-plan drafting to a fresh instruction; the normal
+large-work route plans and implements one phase, records its actual outputs,
+then plans the next phase. Batch planning is an explicit exception for stable,
+independently plannable phases. A same-task route needs fresh start
+authorization; a new-task route displays a copy-ready handoff and asks
+separately before creating a task. Neither route starts implementation
+automatically.
 
 ## Adopt and use it
 
@@ -272,12 +278,14 @@ downstream repository's responsibility.
 The practical Superpowers adapter is straightforward: use its methodology to
 explore and execute, convert any governing planning content into the canonical
 work-item package, then run the harness draft-review and approval freeze before
-implementation. If a Superpowers workflow would continue directly after
-planning, the harness pause takes precedence. This preserves one reviewable
-source of truth and makes the same package available to future threads. After
-the approved route authorizes execution, Superpowers pre-flight and task aids
-may remain ephemeral; when it is unavailable, keep each task independently
-executable and verifiable with the recorded checks.
+implementation. If generic Superpowers defaults conflict, the approved harness
+plan governs its numbered tasks and meaningful commit boundaries. If a
+Superpowers workflow would continue directly after planning, the harness pause
+takes precedence. This preserves one reviewable source of truth and makes the
+same package available to future threads. After the approved route authorizes
+execution, Superpowers pre-flight and task aids may remain ephemeral; when it
+is unavailable, keep each task independently executable and verifiable with
+the recorded checks.
 
 ## For harness maintainers
 

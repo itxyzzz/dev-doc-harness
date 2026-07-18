@@ -9,6 +9,8 @@
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized.
+- [ ] The plan owns the combined package's implementation handoff; a staged spec-only exception records only plan drafting.
+- [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval

@@ -39,10 +39,15 @@ State the affected outcome, proof, interfaces, data, risk, and documentation.
 Use `rule:lifecycle.commit-message-format`; keep the matching changelog fragment
 in sync.
 
-| Stage | Planned subject | Changelog title or snippet | Notes |
-|---|---|---|---|
-| Amendment approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this amendment. |
-| Amended implementation | `<commit-subject>` | `<changelog-heading>` | Add or update rows for implementation commits affected by this amendment. |
+| Stage | Planned subject |
+|---|---|
+| Amendment approval | `<planning-commit-subject>` |
+| Amended implementation | `<commit-subject>` |
+
+Record an essential exception or independently reviewable split as concise prose
+below. Before amendment or replanning, record the upcoming-stage sub-agent
+assessment: `Sub-agents: None` with a fit reason, or the bounded strategy and
+its authorization state. Ask the operator before useful unapproved delegation.
 
 ## Planning artifact freeze gate
 

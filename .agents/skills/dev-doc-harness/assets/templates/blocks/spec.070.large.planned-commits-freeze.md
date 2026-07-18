@@ -2,23 +2,15 @@
 
 Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
 
-Anchor spec approval:
+| Stage | Planned subject |
+|---|---|
+| Anchor spec approval | `<planning-commit-subject>` |
+| Phase-plan approval pattern | `<planning-commit-subject>` |
+| Phase implementation pattern | `<commit-subject>` |
 
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Approval commit for this anchor spec.`
-
-Phase plan approval pattern:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace or refine in each concrete phase plan.`
-
-Implementation pattern:
-
-1. Planned subject: `<commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace with concrete rows in phase plans.`
+The normal large-work sequence is rolling: plan and implement one phase before
+planning the next. Record a batch-planning exception only when phases are
+stable and independently plannable.
 
 ## Planning artifact freeze gates
 

@@ -6,16 +6,13 @@ Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Execution method: `<approved method, or omit when not selected>`
 
 Artifact style: small/medium plans must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
 
-## Superpowers execution meta-header (conditional)
-
-Render this compact meta-header only when the frozen plan records Superpowers as
-the approved execution method after the harness freeze and continuity route.
-State that the harness retains scope, model-policy bounds, variance handling,
-and final integration. Omit the meta-header when another approved method will
-execute the plan; it must not create a second approval route.
+When Superpowers is the approved execution method, record it in the metadata
+above. The harness retains scope, model-policy bounds, variance handling,
+approved commit boundaries, and final integration; do not add a second route.
 
 ## Input Artifacts
 
