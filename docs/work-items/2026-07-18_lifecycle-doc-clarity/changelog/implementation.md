@@ -1,5 +1,16 @@
 # Lifecycle Documentation Clarity Implementation Changelog Source
 
+## 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle confirmation gates
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Fixed
+
+- Rendered the post-freeze operator confirmations as decision nodes and placed
+  the same-task/new-task handoff label on each outgoing transition.
+
 ## 2026-07-18_lifecycle-doc-clarity -- repair lifecycle diagram flow
 
 Release target: `unreleased`
