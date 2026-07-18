@@ -78,6 +78,7 @@ CHECK_IDS = [
     "compat.current-historical",
     "scenarios.harness-simplification",
     "compat.superpowers-adapter-contract",
+    "clarity.planning-template-contract",
 ]
 
 CANONICAL_REFERENCES = [
@@ -531,9 +532,8 @@ def assert_duplicate_blocks() -> None:
 
     shared_assembly_blocks = {
         paragraph
-        for _, paragraph in get_normalized_paragraphs(
-            ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.common.handoff.md"
-        )
+        for block_path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("plan.*.common.*.md")
+        for _, paragraph in get_normalized_paragraphs(to_repo_relative_path(block_path))
     }
     shared_generated_targets = set(PRIMARY_TEMPLATE_FILES)
     seen: dict[str, str] = {}
@@ -565,7 +565,8 @@ def assert_template_assembly() -> None:
     expected_handoff_blocks = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.small.handoff.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.handoff.md",
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.common.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
     ]
     for path in expected_handoff_blocks:
         assert_path_exists(check_id, path)
@@ -1278,9 +1279,9 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
     ]
     for path in strategy_source_blocks:
-        assert_text_contains(check_id, path, r"suggested baseline", "strategy prompt baseline cue")
-        assert_text_contains(check_id, path, r"effort.*tier|tier.*effort", "strategy prompt effort-tier cue")
-        assert_text_contains(check_id, path, r"residual uncertainty or variance", "strategy prompt late-escalation cue")
+        assert_text_contains(check_id, path, r"Planning-task observations", "planning observations prompt")
+        assert_text_contains(check_id, path, r"Approved execution selection", "approved execution selection prompt")
+        assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
     assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
@@ -1310,13 +1311,16 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, models, r"(?:exact|precise).+remaining context.+not exposed|not exposed.+(?:exact|precise).+remaining context", "no unexposed context estimate")
     assert_text_contains(check_id, models, r"same-task.+re(?:-|)read.+frozen|same-task.+rehydrat", "same-task artifact rehydration")
 
-    for path in PLAN_TEMPLATE_FILES:
-        assert_text_contains(check_id, path, r"## Next-task handoff", "next-task handoff section")
-        assert_text_contains(check_id, path, r"real frozen boundary", "real-boundary handoff limit")
-        assert_text_contains(check_id, path, r"frozen package,\s+next activity,\s+first task", "compact handoff inputs")
-        assert_text_contains(check_id, path, re.escape("rule:execution-quality.execution-thread-start"), "startup rule reference")
+    small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
+    phase_plan = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
+    assert_text_contains(check_id, small_plan, r"## Implementation handoff", "small-plan handoff section")
+    assert_text_contains(check_id, small_plan, r"Frozen package[\s\S]*Next activity[\s\S]*First task", "small-plan compact handoff inputs")
+    assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
+    assert_text_contains(check_id, phase_plan, r"## Phase transitions", "phase transition section")
+    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
+    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "post-phase transition handoff")
 
-    for label in ["capability tier", "reasoning effort", "orchestration mode", "fallback", "execution continuity", "context visibility", "artifact rehydration"]:
+    for label in ["capability tier", "reasoning effort", "orchestration mode", "fallback", "continuity", "context visibility", "artifact-rehydration"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
     assert_text_contains(check_id, router, r"execution-thread-start", "router discoverability")
@@ -1347,8 +1351,8 @@ def assert_lifecycle_transition_targets() -> None:
     small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
     assert_text_contains(check_id, small_spec, r"combined small/medium", "small spec combined planning shape")
-    assert_text_contains(check_id, small_spec, r"does not.+(?:independent|plan-drafting).+handoff|no independent.+handoff", "small spec no independent plan handoff")
-    assert_text_contains(check_id, large_spec, r"phase-plan drafting", "large anchor next activity")
+    assert_text_contains(check_id, small_spec, r"Transition owner.*plan", "small spec plan-owned transition")
+    assert_text_contains(check_id, large_spec, r"rolling", "large anchor rolling sequence")
 
 
 CURRENT_SPEC_SCHEMA_PATHS = [
@@ -1836,19 +1840,21 @@ def assert_superpowers_adapter_contract() -> None:
     assert_text_contains(check_id, models, r"outside.+approved.+(?:envelope|policy).+approval", "out-of-envelope approval")
 
     for path in header_blocks:
-        assert_text_contains(check_id, path, r"Superpowers execution meta-header", "conditional execution meta-header")
-        assert_text_contains(check_id, path, r"only when", "conditional meta-header boundary")
+        assert_text_contains(check_id, path, r"Execution method", "conditional execution metadata")
+        assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete execution meta-header")
     assert_text_contains(check_id, traceability_block, r"Global Constraints", "global-constraints prompt")
     assert_text_contains(check_id, traceability_block, r"self-contained", "global-constraints self-containment test")
-    assert_text_contains(check_id, model_block, r"per-dispatch", "per-dispatch allocation prompt")
+    assert_text_contains(check_id, model_block, r"Approved execution selection", "approved selection prompt")
+    assert_text_contains(check_id, model_block, r"Upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
     assert_text_contains(check_id, task_block, r"Interfaces", "task-interface prompt")
     assert_text_contains(check_id, task_block, r"numbered", "numbered task-step prompt")
 
     for path in PLAN_TEMPLATE_FILES:
-        assert_text_contains(check_id, path, r"Superpowers execution meta-header", "generated meta-header prompt")
+        assert_text_contains(check_id, path, r"Execution method", "generated execution metadata")
+        assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete generated meta-header")
         assert_text_contains(check_id, path, r"Global Constraints", "generated global-constraints prompt")
         assert_text_contains(check_id, path, r"Interfaces", "generated task-interface prompt")
-        assert_text_contains(check_id, path, r"per-dispatch", "generated dispatch-allocation prompt")
+        assert_text_contains(check_id, path, r"Approved execution selection", "generated approved selection prompt")
         errors = superpowers_task_fixture_errors(read_repo_text(path))
         if errors:
             add_failure(check_id, f"{path} task shape: {', '.join(errors)}")
@@ -1891,6 +1897,144 @@ def assert_superpowers_adapter_contract() -> None:
         add_failure(check_id, "in-envelope dispatch fixture failed")
     if superpowers_dispatch_fixture_route(out_of_envelope_dispatch) != "approval":
         add_failure(check_id, "out-of-envelope dispatch fixture did not route to approval")
+
+
+def planning_selection_fixture_errors(text: str) -> list[str]:
+    observations_match = re.search(r"Planning-task observations:(?P<body>.*?)(?:\n\nApproved execution selection:|\Z)", text, flags=re.DOTALL)
+    selection_match = re.search(r"Approved execution selection:(?P<body>.*)", text, flags=re.DOTALL)
+    if observations_match is None:
+        return ["missing planning-task observations"]
+    if selection_match is None:
+        return ["missing approved execution selection"]
+    selection = selection_match.group("body")
+    required = ["Target model/profile", "Capability tier", "Reasoning effort", "Orchestration mode", "Availability/fallback", "Execution continuity", "Artifact rehydration required"]
+    errors = [f"approved selection missing {field}" for field in required if field not in selection]
+    if re.search(r"(?:Target model/profile|Capability tier|Reasoning effort|Execution continuity):\s*`?not exposed`?", selection, flags=re.IGNORECASE):
+        errors.append("approved selection uses not exposed")
+    return errors
+
+
+def delegation_fixture_route(text: str) -> str:
+    if "Sub-agents: None" in text and "Fit reason:" in text:
+        return "none"
+    if "Authorization state: `Approved`" in text and "in-envelope" in text:
+        return "approved"
+    if "Authorization state: `Pending`" in text and "Ask the operator" in text:
+        return "pending"
+    if "unavailable" in text and "orchestration-thread fallback" in text:
+        return "fallback"
+    if "outside the approved envelope" in text and "Ask the operator" in text:
+        return "reapproval"
+    return "invalid"
+
+
+def assert_planning_template_clarity() -> None:
+    check_id = "clarity.planning-template-contract"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    skill_completion = read_repo_text(router).split("## Completion checklist", 1)[-1].split("## Planning Artifact Freeze Gate", 1)[0]
+    if not re.search(r"(?m)^- \[ \] ", skill_completion):
+        add_failure(check_id, "SKILL.md completion guidance is not a literal checkbox checklist")
+
+    commitment_paths = [
+        quality,
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]
+    for path in commitment_paths:
+        assert_text_not_contains(check_id, path, r"Classification is optional|Constraint · Preserve", "undefined commitment classification")
+    assert_text_contains(
+        check_id,
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        r"additional[\s\S]*SPEC[\s\S]*uses[\s\S]*Statement[\s\S]*local[\s\S]*Verification Criterion",
+        "complete repeated commitment structure",
+    )
+
+    planned_commit_paths = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.070.small.planned-commits.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.070.large.planned-commits-freeze.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.060.small.planned-commits.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.060.phase.planned-commits.md",
+        ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
+    ]
+    for path in planned_commit_paths:
+        assert_text_contains(check_id, path, r"Stage.*Planned subject", "concise planned-commit columns")
+        assert_text_not_contains(check_id, path, r"Changelog title or snippet|\| Notes \|", "duplicate planned-commit field")
+
+    header_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
+    ]
+    for path in [*header_blocks, *PLAN_TEMPLATE_FILES]:
+        assert_text_contains(check_id, path, r"Execution method", "execution method metadata")
+        assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete Superpowers meta-header section")
+
+    model_sources = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
+    ]
+    model_consumers = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+    for path in [models, *model_sources, *model_consumers]:
+        assert_text_contains(check_id, path, r"Planning-task observations", "planning observations group")
+        assert_text_contains(check_id, path, r"Approved execution selection", "approved selection group")
+
+    unknown_observations = (
+        "Planning-task observations:\nModel generation: `not exposed`\nContext visibility: `not exposed`\n\n"
+        "Approved execution selection:\nTarget model/profile: `Terra`\nCapability tier: `balanced`\n"
+        "Reasoning effort: `high`\nOrchestration mode: `single-agent`\nAvailability/fallback: `Terra medium`\n"
+        "Execution continuity: `new task with curated-artifact handoff`\nArtifact rehydration required: `Yes`"
+    )
+    unknown_target = unknown_observations.replace("Target model/profile: `Terra`", "Target model/profile: `not exposed`")
+    if planning_selection_fixture_errors(unknown_observations):
+        add_failure(check_id, "unknown-observations fixture was rejected")
+    if not planning_selection_fixture_errors(unknown_target):
+        add_failure(check_id, "unknown-target fixture was accepted")
+
+    small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
+    small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
+    phase_plan = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
+    assert_text_contains(check_id, small_spec, r"Transition owner.*plan", "small spec plan transition ownership")
+    assert_text_not_contains(check_id, small_spec, r"Implementation Handoff", "duplicate small-spec implementation handoff")
+    assert_text_contains(check_id, small_plan, r"Implementation handoff", "small plan implementation handoff")
+    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "phase implementation handoff")
+    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "phase post-transition handoff")
+
+    for path in [lifecycle, ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", phase_plan]:
+        assert_text_contains(check_id, path, r"rolling", "rolling phase loop")
+        assert_text_contains(check_id, path, r"stable[\s\S]*independent", "explicit batch-planning exception")
+
+    delegation_paths = [router, models, freeze, *model_sources, *model_consumers]
+    for path in delegation_paths:
+        assert_text_contains(check_id, path, r"upcoming-stage.*sub-agent|upcoming stage.*sub-agent", "upcoming-stage delegation assessment")
+        assert_text_contains(check_id, path, r"Sub-agents: None", "stage-specific no-use rationale")
+        assert_text_contains(check_id, path, r"operator.*(?:approve|authorization)|(?:approve|authorization).*operator", "delegation approval route")
+
+    router_text = read_repo_text(router)
+    for route in ["Draft or review large anchor specs", "Draft or review phase plans", "Freeze planning packages"]:
+        row_match = re.search(rf"(?m)^\| {re.escape(route)} \|(?P<row>.+)$", router_text)
+        if row_match is None:
+            add_failure(check_id, f"missing router row for {route}")
+        elif not re.search(r"upcoming-stage sub-agent assessment", row_match.group("row"), flags=re.IGNORECASE):
+            add_failure(check_id, f"router row for {route} omits the upcoming-stage sub-agent assessment")
+
+    fixtures = {
+        "pending": "Authorization state: `Pending`\nAsk the operator to approve the recorded role.",
+        "approved": "Authorization state: `Approved`\nUse the in-envelope strategy without another request.",
+        "none": "Sub-agents: None\nFit reason: tightly coupled policy ownership.",
+        "fallback": "Tooling unavailable; use the orchestration-thread fallback.",
+        "reapproval": "This role is outside the approved envelope. Ask the operator before dispatch.",
+    }
+    for expected, fixture in fixtures.items():
+        if delegation_fixture_route(fixture) != expected:
+            add_failure(check_id, f"{expected} delegation fixture did not route correctly")
 
 
 def run_checks() -> None:
@@ -2166,6 +2310,9 @@ def run_checks() -> None:
 
     assert_superpowers_adapter_contract()
     write_check_result("compat.superpowers-adapter-contract")
+
+    assert_planning_template_clarity()
+    write_check_result("clarity.planning-template-contract")
 
 
 def main() -> int:

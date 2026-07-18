@@ -64,9 +64,9 @@ Large or phased work needs an anchor spec and later phase plans when one orchest
 
 `rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
 
-A small/medium spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. Before review and freeze, the spec must record the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide any handoff required for that activity. A generic template heading or continuity preference cannot create this exception.
+A small/medium spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. Before review and freeze, the spec must record the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide only that plan-drafting handoff. A generic template heading or continuity preference cannot create this exception.
 
-Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
+Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the implementation handoff. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
 
 At every freeze boundary, record the planning shape, exact frozen package, and documented next activity before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
@@ -139,16 +139,17 @@ Phase plan names are planned future outputs until phase-plan drafting begins. Wh
 
 `rule:lifecycle.large-phase-orchestration` owns the large/phased planning state sequence. Other modules own their local mechanics: artifact layout stays in this lifecycle reference, approval checkpoint mechanics stay in `planning-freeze-gates.md`, model and sub-agent choices stay in `subagent-model-policy.md`, and durable quality stays in `durable-planning-quality.md`.
 
-The normal large/phased planning sequence is:
+The normal large/phased planning sequence is a rolling loop:
 
 1. Draft the anchor `<spec-filename>`.
 2. Stage the anchor-spec planning package for draft review.
 3. Freeze the anchor spec after explicit approval or create an explicit handoff snapshot.
 4. Stop before implementation and before phase-plan drafting.
-5. Resume post-anchor phase-plan drafting only after fresh operator instruction.
-6. Freeze one or more phase plans after explicit approval.
-7. Begin implementation only after the applicable frozen phase plan and fresh post-freeze operator authorization.
-8. Use an amendment gate for high-impact post-freeze changes.
+5. Resume phase-plan drafting only after fresh operator instruction, draft and freeze one phase plan, then begin that phase implementation after fresh post-freeze authorization.
+6. Record the actual phase outputs, validation, variance, and commit state as inputs to the next phase plan.
+7. Draft and freeze the next phase plan from the anchor, amendments, and actual prior-phase outputs; repeat until completion.
+8. Batch planning or freezing multiple phases before implementation is an explicit exception only for stable, independently plannable phases.
+9. Use an amendment gate for high-impact post-freeze changes.
 
 Combined anchor-spec and phase-plan drafting is allowed only when the operator explicitly requests combined planning and the artifact records that exception.
 
@@ -164,7 +165,7 @@ Follow `durable-planning-quality.md` for the full spec and phase-plan quality ba
 
 ## Superpowers compatibility
 
-When Superpowers is installed and active, use Superpowers for brainstorming, planning, TDD, execution, review, and finishing workflows. This harness only controls where approved artifacts live and what documentation lifecycle decisions must be recorded.
+When Superpowers is installed and active, use it for brainstorming, planning, TDD, execution, review, and finishing workflows. The harness resolves only known conflicts: canonical artifact location, approved plan form and numbered tasks, approved commit boundaries, freeze and variance routing, review, finishing, and final integration. Other Superpowers methodology remains external and usable inside that envelope.
 
 The full durable package must live under `<work-item-path>` before the harness freeze gate. Applicable project or global `AGENTS.md` guidance overrides Superpowers' default spec and plan locations for harness-managed work. Conditional conversion of Superpowers planning content into the canonical package is required whenever that content will govern the work; do not retain a second durable copy elsewhere.
 
@@ -254,7 +255,7 @@ The matching changelog source fragment is always required before commits. Root `
 
 ## Commit messages
 
-All commits made under the harness must use a planned or documented subject. Commit subjects are reviewable planning content: specs, plans, phase plans, and amendments must include the expected approval and implementation subjects that are known at that stage. Operators may request subject wording changes during normal artifact review.
+All commits made under the harness must use a planned or documented subject. Commit subjects are reviewable planning content: specs, plans, phase plans, and amendments must include the expected approval and implementation subjects that are known at that stage. Operators may request subject wording changes during normal artifact review. One cohesive implementation package is the default commit boundary. Split only at a stable, independently reviewable and revertible boundary with relevant checks passing; task count alone does not determine commit count.
 
 Use `rule:naming.commit-messages` for the current subject grammar, action types, issue-key handling, elaboration snippets, and nonredundancy rules.
 

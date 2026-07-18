@@ -74,11 +74,15 @@ condition. When continuity permits a new file there, it must be a short pointer
 stub to the harness package rather than a duplicate spec or plan.
 
 The destination repository's project-level or merged global `AGENTS.md`
-preference overrides Superpowers' default spec and plan locations. Once the
-harness freeze and fresh instruction authorize execution, a conditional
-Superpowers execution meta-header may describe that method; task briefs and
-review aids remain ephemeral. If Superpowers is unavailable, keep the task
-independently executable and verifiable with its recorded checks.
+preference overrides Superpowers' default spec and plan locations. Planning
+observations may be `not exposed`; the approved execution selection still names
+an actionable target, tier, reasoning effort, orchestration mode, fallback,
+continuity, and rehydration requirement. Once the harness freeze and fresh
+instruction authorize execution, the approved method appears in plan metadata.
+The harness plan retains numbered tasks and meaningful commit boundaries when
+generic Superpowers defaults conflict; task briefs and review aids remain
+ephemeral. If Superpowers is unavailable, keep the task independently
+executable and verifiable with its recorded checks.
 
 ## Review And Pause Points
 
@@ -91,6 +95,14 @@ The normal flow is simple:
    outcome, architecture, API, data, security, privacy, compliance, scope, or
    evidence changes.
 5. Use a focused, read-only reviewer when the plan calls for one.
+
+A combined small/medium plan owns its implementation handoff. Large/phased work
+normally plans and implements one phase at a time, then uses the actual outputs
+to plan the next phase; batch planning needs an explicit stable-and-independent
+exception. Before each upcoming stage, the agent records `Sub-agents: None`
+with a fit reason or presents one bounded strategy and asks for operator
+approval. An already approved in-envelope strategy does not need another
+generic confirmation.
 
 Before ordinary commits, update the work-item changelog fragment and run its
 lint command. Root `CHANGELOG.md` is the later consolidated publication view at
