@@ -1,5 +1,17 @@
 # Lifecycle Documentation Clarity Implementation Changelog Source
 
+## 2026-07-18_lifecycle-doc-clarity -- clarify README planning terminology
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Replaced generic preamble terminology with Specification Commitments,
+  Verification Criteria, and Plan Checks; added per-stage model and
+  reasoning-effort recommendations; and removed the premature spec-kit claim.
+
 ## 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle confirmation gates
 
 Release target: `unreleased`
