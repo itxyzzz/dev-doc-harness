@@ -6,6 +6,148 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+## Release 0.8
+
+### 2026-07-18_superpowers-adapter-contract -- define coexistence boundaries
+
+Release target: `0.8.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved Superpowers adapter-contract spec and architecture snapshot.
+
+#### Changed
+
+- Recorded the staged planning boundary: draft the implementation plan from the frozen package before any active policy, template, documentation, or validator change.
+
+### 2026-07-18_superpowers-adapter-contract -- approve implementation plan
+
+Release target: `0.8.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added the approved implementation plan and test-case snapshot for the Superpowers adapter contract.
+
+#### Changed
+
+- Recorded the implementation boundary for canonical guidance, plan-template sources and generated outputs, focused validator fixtures, explicit Superpowers dispatch allocations, and the no-Superpowers fallback.
+
+### 2026-07-18_superpowers-adapter-contract -- align durable planning and execution
+
+Release target: `0.8.0`
+Package impact: `distributable`
+Release-note: `source-only`
+
+#### Added
+
+- Added conditional Superpowers execution metadata, Global Constraints, task-interface, and explicit dispatch-allocation prompts to canonical plan templates.
+- Added focused structural validation and synthetic fixtures for adapter placement, lifecycle, task form, fallback, and model-envelope behavior.
+
+#### Changed
+
+- Aligned project, global-bootstrap, lifecycle, execution-quality, model-policy, router, README, and operator guidance around one durable harness route with ephemeral Superpowers execution aids.
+
+### 2026-07-18_planning-template-clarity -- clarify models handoffs and phases
+
+Release target: `0.8.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Added
+
+- Added focused structural validation for concise current planning-template contracts, including model selection, transition ownership, rolling phases, and delegation routing.
+
+#### Changed
+
+- Separated planning-task observations from approved execution selections across canonical policy and generated template prompts.
+- Made combined-plan and phase-transition ownership explicit, regenerated source-derived templates, and aligned operator guidance with rolling phase execution.
+- Simplified commitment and planned-commit prompts while preserving canonical validation, freeze, variance, and changelog rules.
+
+### 2026-07-18_planning-template-clarity -- approve clear planning transitions
+
+Release target: `0.8.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the combined planning-template clarity specification, implementation plan, architecture snapshot, test-case snapshot, and operator/testing deltas.
+
+#### Changed
+
+- Recorded the explicit planning-observation and execution-selection split, single transition ownership, rolling phase sequence, meaningful commit boundaries, and Superpowers compatibility clarifications.
+- Authorized the stage-by-stage sub-agent feasibility rule and the bounded read-only `REVIEW-001` implementation reviewer strategy.
+
+### 2026-07-18_lifecycle-doc-clarity -- repair lifecycle diagram flow
+
+Release target: `0.8.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Fixed
+
+- Restored the large-path node identity and the existing same-task/new-task
+  handoff labels while retaining the approved fresh-transition nodes and
+  feedback loops.
+
+### 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle gates and planning guidance
+
+Release target: `0.8.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Corrected the user-facing lifecycle graph so feedback returns to each draft
+  and fresh instructions or start authorization follow every freeze boundary.
+- Replaced the formal planning trace-ID graph with proportional, plain-language
+  guidance and aligned the operator note with pre-freeze execution selection
+  and phased approval boundaries.
+
+### 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle confirmation gates
+
+Release target: `0.8.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Fixed
+
+- Rendered the post-freeze operator confirmations as decision nodes and placed
+  the same-task/new-task handoff label on each outgoing transition.
+
+### 2026-07-18_lifecycle-doc-clarity -- clarify README planning terminology
+
+Release target: `0.8.0`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Replaced generic preamble terminology with Specification Commitments,
+  Verification Criteria, and Plan Checks; added per-stage model and
+  reasoning-effort recommendations; and removed the premature spec-kit claim.
+
+### 2026-07-18_lifecycle-doc-clarity -- approve user-facing documentation corrections
+
+Release target: `0.8.0`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Added
+
+- Approved the lifecycle-documentation clarity specification, implementation
+  plan, and operator-manual delta.
+
+#### Changed
+
+- Recorded the narrow diagram gate and feedback-loop corrections, concise
+  planning-and-verification explanation, and aligned execution-selection
+  wording for the user-facing documentation.
+
 ## Release 0.7
 
 ### 2026-07-15 docs: harness-simplification -- align policy and template cues
