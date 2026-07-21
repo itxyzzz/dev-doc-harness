@@ -36,7 +36,7 @@ The distributable harness package is root `AGENTS.md` plus `.agents/`.
 
 The package excludes root `README.md`, root `CHANGELOG.md`, root `TODO.md`, this repository's `docs/work-items/`, `.git/`, and local development files.
 
-Package-critical release policy, release notes, and release identity live under `.agents/skills/dev-doc-harness/` so they travel with the package.
+Package-critical release policy, release notes, release identity, and the release-branch runbook live under `.agents/skills/dev-doc-harness/` so they travel with the package. The package-local runbook applies only when maintaining or releasing the Dev Doc Harness distribution in its source repository; downstream adopters keep their own release workflows.
 
 ## Changelog As Release Source
 

@@ -13,11 +13,10 @@ verified, or why a design choice was made.
 
 The harness addresses those problems by providing:
 
-- reviewable planning packages and explicit pauses before execution;
-- a clear distinction between Specification Commitments, Verification Criteria,
-  Plan Checks, and the evidence they produce;
-- durable handoffs for fresh agents and model transitions;
+- reviewable durable planning packages and explicit pauses before execution;
 - deliberate model and reasoning-effort recommendations for each upcoming stage;
+- durable handoffs for fresh agents and model transitions;
+- clear distinction between specification documents (`spec-*`) with specification commitments and verification criterial, and execution plans (`plan-*`) with tasks and checks;
 - recorded variance instead of silently rewriting a plan around reality;
 - work-item-local changelog sources that avoid routine root-changelog merge
   conflicts; and
@@ -73,7 +72,7 @@ phase-plan drafting. Each phase plan freezes before its implementation starts;
 actual phase outputs inform the next phase plan. Feedback always returns to the
 relevant draft rather than starting the next activity automatically.
 
-## Adopt and use it
+## Using the documentation harness
 
 The normal operator experience is intentionally simple: ask for the work you
 want. Discuss it as needed. The agent sizes the task, loads the relevant
@@ -84,16 +83,20 @@ For example, an ordinary request such as “add import validation” is enough. 
 more explicit wording only when you want to set a non-default boundary:
 
 ```text
-Plan this as a large bug fix and stop after the freeze gate.
+Draft only the spec and stop for review.
 ```
 
 ```text
-Stage the planning package for approval before committing it.
+Treat this work as very small mechanical edit, do not create documentation package, but use harness instructions for changelog and commit message.
 ```
 
 ```text
-Create a draft plan-only PR checkpoint before code changes.
+Plan phases 01 and 02 are independent, draft them both in parallel new tasks and then stop for review before implementation.
 ```
+
+## Installation
+
+The harness can be installed either on the repository level or globally, as any other skill.
 
 The copyable distributable package is the root `AGENTS.md` file plus the
 `.agents/` folder. Merge its instructions with an existing destination
@@ -102,8 +105,9 @@ The copyable distributable package is the root `AGENTS.md` file plus the
 you can roll back by reverting that dedicated update.
 
 The copyable package records its version in
-`.agents/skills/dev-doc-harness/VERSION`. Package-local release notes and a
-compact downstream guide travel under `.agents/skills/dev-doc-harness/docs/`.
+`.agents/skills/dev-doc-harness/VERSION`. Package-local release notes, a
+compact downstream guide, and harness release process document travel under
+`.agents/skills/dev-doc-harness/docs/`.
 The root README, `CHANGELOG.md`, and repository work-item history are not part
 of that distribution.
 
@@ -114,23 +118,24 @@ metadata and change body. Root consolidation remains a project-owned checkpoint:
 release preparation runs lint followed by `--check`, then uses the default mode
 only for an explicit write consolidation.
 
-You can also install the skill globally by copying
-`.agents/skills/dev-doc-harness/` into
-`$HOME/.agents/skills/dev-doc-harness/`. Use this compact global `AGENTS.md`
-bootstrap; copy it only if it fits your own global guidance:
+When merging `AGENTS.md` instructions, copy the full section `## Using Dev Doc Harness`
+-- or parts of it, according to your preferences and the intended degree to which the harness
+should be enforced on the respective level, one repository or globally.
+
+An example of a minimalistic bootstrap in the global `AGENTS.md`:
 
 ```md
-Repository-local harness instructions take precedence. For substantial work, use
-the repository's selected harness router. The repository-local harness owns ordinary freeze and changelog details. After its planning freeze and a fresh start
-instruction, complete the approved plan; ask before external, destructive,
-costly, or material scope-expanding actions.
+For all development work use the harness router `.agents/skills/dev-doc-harness/SKILL.md`.
+Very small mechanical edits may proceed without durable artifacts only when the router's
+`module:lifecycle` sizing rules allow it, and they must still preserve existing behavior and relevant checks.
 
-For harness-managed work, this global guidance overrides Superpowers' default
-spec and plan locations. Keep durable artifacts under
-`docs/work-items/<work-id>/` in the destination repository.
+Use the `economy-default` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`.
+
+If Superpowers is installed and active, use Superpowers for its normal software-development methodology,
+but apply this harness as the artifact-location and lifecycle contract. For harness-managed work,
+this global guidance overrides Superpowers' default spec and plan locations. Keep durable artifacts
+under `docs/work-items/<work-id>/` in the destination repository.
 ```
-
-Keep the copied package and product work in separate commits.
 
 ## What operators can rely on
 
@@ -144,62 +149,45 @@ phase plans unless combined planning was explicitly requested.
 
 The practical boundary is whether one orchestration thread can safely retain
 scope, decisions, validation, variance, integration, and the user-facing result
-with bounded delegation. Use a large/phased package when the effort would exceed
+with bounded delegation. A large/phased package is used when the effort would exceed
 that boundary, when phase-specific review reduces risk, or when a fresh agent
 would otherwise need to reconstruct decisions from chat history. Durable
 filenames use a short suffix for clear chat references; the naming reference
 owns the exact grammar.
 
-Plans state the agreed outcome and boundaries, then sequence the work needed to
-deliver them. Tasks perform that work, while checks produce the evidence used to
-verify it. Completing tasks alone does not establish conformance, and passing
-checks alone does not finish delivery while required tasks or authorized
-dispositions remain unresolved. Planning approval and implementation conformance
-are distinct decisions.
-
-The exact IDs and mappings used to make that traceable are proportional to the
-work. They help planning and handoff when needed; operators do not need to learn
-them as a separate workflow.
+Specs `spec-*` state the agreed outcomes, boundaries, and verification criteria.
+It preserves goals, boundaries, requirements, risks, and relevant decisions.
+Plans `plan-*` turn the specs into actionable delivery recipes with tasks for step-by-step
+execution and checks to provide evidence that all verification criteria are covered.
+The plan records task sequencing, validation, documentation work, planned commit subjects,
+and the execution strategy.
 
 When a work item makes or depends on consequential tradeoffs, its spec records
 the work-item architecture and may include
 `snapshots/architecture.snapshot.md`. Plans consume that input; they do not
 silently invent architecture. Durable repository-level documents such as
-`ARCHITECTURE.md` are future work for a separate harness extension. Large or
-hard-to-scan artifacts also load the readability guidance in
-`module:artifact-style`.
+`ARCHITECTURE.md` are future work for a separate harness extension.
 
 The planning package also records which supporting documentation artifacts are
 needed. These can include test-case snapshots, operator, testing, API, or
-architecture deltas, and required evidence. A work item marks each artifact as
-required, not applicable, or deferred with an owner and resolving event. Frozen
-specs, plans, snapshots, and amendments remain historical records; later
-high-impact changes use a new amendment rather than a silent rewrite.
-
-An approved small/medium package normally contains a spec, an implementation
-plan, and changelog source fragments. It may also contain architecture and
-test-case snapshots, living documentation deltas, an implementation variance
-log, and evidence or handoff material. The spec preserves goals, boundaries,
-requirements, risks, and relevant decisions. The plan records task sequencing,
-validation, documentation work, planned commit subjects, and the execution
-strategy. The exact package shape is intentionally proportional: create only
-the supporting artifacts the documentation matrix requires.
+architecture deltas, and required evidence. Frozen specs, plans, snapshots,
+and amendments remain historical records; later high-impact changes use a new
+amendment rather than a silent rewrite.
 
 ### Review, execution, and handoff
 
 Draft planning artifacts are staged for feedback but not committed. Explicit
 approval runs the freeze gate: update the matching work-item changelog source,
 commit the approved package, report its paths, and pause before the documented
-next activity. You may then push and open a draft plan-only PR.
+next activity. This also allows the operator to push and open a draft plan-only PR,
+and to compact the current task or start a new one using the provided handoff.
 
-For substantial work, the applicable planning artifact records Model generation,
-Capability tier, Reasoning effort, Orchestration mode, resolved profile when
-exposed, and an availability fallback before freeze. A large/phased anchor spec
-can carry that selection for later phase planning. Recommendation, harness
-authorization, runtime permission, and platform availability remain separate. A
-fresh task with a curated handoff is preferred when the main model or profile
-changes; a same-task switch rehydrates the frozen package before editing through
-`rule:execution-quality.execution-thread-start`.
+For substantial work, the applicable planning artifact records the recommended
+model generation, capability tier, reasoning effort, orchestration mode,
+and an availability fallback for the next work stage before freeze. A large/phased
+anchor spec can carry that selection for later phase planning.  A fresh
+task with a curated handoff is preferred when the main model or profile
+changes; a same-task switch rehydrates the frozen package before editing.
 
 The strategy also records whether context usage is exposed, whether artifacts
 must be re-read, and the fallback when the chosen runtime combination is
@@ -221,7 +209,11 @@ when it proves the same thing.
 Before each commit, agents update a work-item-local changelog source fragment
 under `docs/work-items/<work-id>/changelog/`. Root `CHANGELOG.md` remains the
 curated publication view. Run
-`python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py`
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+```
+
 at a project-owned checkpoint, such as after merging work branches or before
 release-note preparation or a product/application release. The harness supplies
 this source-and-consolidation contract; downstream projects keep their own
@@ -238,14 +230,9 @@ testing, execution, review, and finishing. The canonical spec, plan, snapshots,
 variance records, and changelog sources still live in the harness work item.
 The applicable project-level or merged global `AGENTS.md` preference overrides
 Superpowers' default spec and plan locations for that work item.
-Add `docs/superpowers` documents only when that directory already exists and
-contains previous documentation packages from before the current work; never
-create or seed it to satisfy compatibility. When allowed, a new file there is
-only a minimal pointer stub to the canonical package.
-
-When spec-kit is active, use a repository adapter if present, but treat the
-harness router and its references as the source for artifact and documentation
-rules.
+The `docs/superpowers` documents are added only when that directory already exists and
+contains previous documentation packages from before the current work. When allowed,
+a new file there is only a minimal pointer stub to the canonical package.
 
 The harness distribution policy covers only its own artifacts and changelog
 contract. Application releases, deployment, and publication remain the
@@ -277,7 +264,7 @@ planning and conformance, `module:freeze-gate` for approval pauses,
 `module:models` for execution strategy, `module:release` for distribution,
 and `module:execution-quality` for execution preflight and fresh-task startup.
 
-Use the router rather than loading every reference. In particular, it routes
+The agents should use the router rather than load every reference. In particular, it routes
 evidence-heavy reviews to evidence preservation guidance, large work to the
 anchor-spec and phase-plan lifecycle, release work to the package-boundary and
 release-note policy, and template changes to the owning policy plus source

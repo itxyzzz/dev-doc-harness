@@ -831,7 +831,7 @@ def assert_changelog_fragment_contract() -> None:
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     naming = ".agents/skills/dev-doc-harness/references/naming-conventions.md"
     release_policy = ".agents/skills/dev-doc-harness/references/release-policy.md"
-    release_process = "docs/release-branch-process.md"
+    release_process = ".agents/skills/dev-doc-harness/docs/release-branch-process.md"
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
@@ -1290,7 +1290,9 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"Capability tier", "capability-tier guidance")
         assert_text_contains(check_id, path, r"Orchestration mode", "orchestration-mode guidance")
         assert_text_contains(check_id, path, r"ultra", "ultra guidance")
-        assert_text_contains(check_id, path, r"execution-thread-start", "execution startup route")
+
+    assert_text_contains(check_id, role_examples, r"execution-thread-start", "execution startup route")
+    assert_text_contains(check_id, readme, r"same-task switch rehydrates the frozen package before editing", "execution-continuity guidance")
 
 
 def assert_execution_thread_start() -> None:
@@ -1725,8 +1727,8 @@ def assert_harness_simplification_scenarios() -> None:
     assert_text_contains(
         check_id,
         "README.md",
-        r"repository-local harness owns ordinary freeze and changelog details",
-        "README bootstrap defers ordinary lifecycle details",
+        r"An example of a minimalistic bootstrap in the global `AGENTS\.md`",
+        "README global bootstrap",
     )
     assert_text_contains(check_id, "README.md", r"same evidence purpose", "canonical equivalent-evidence variance route")
     assert_text_not_contains(
@@ -1826,8 +1828,19 @@ def assert_superpowers_adapter_contract() -> None:
     model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
     task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
 
+    assert_text_contains(
+        check_id,
+        "AGENTS.md",
+        r"These instructions override Superpowers' defaults for work governed by this harness",
+        "AGENTS.md path-preference override",
+    )
+    assert_text_contains(
+        check_id,
+        "README.md",
+        r"overrid(?:e|es)[\s\S]+Superpowers[\s\S]+default[\s\S]+(?:spec|plan)[\s\S]+location",
+        "README.md path-preference override",
+    )
     for path in ["AGENTS.md", "README.md"]:
-        assert_text_contains(check_id, path, r"overrid(?:e|es)[\s\S]+Superpowers[\s\S]+default[\s\S]+(?:spec|plan)[\s\S]+location", f"{path} path-preference override")
         assert_text_contains(check_id, path, r"docs/work-items/<work-id>", f"{path} canonical work-item path")
 
     assert_text_contains(check_id, lifecycle, r"conditional.+(?:convert|conversion).+Superpowers", "conditional plan conversion")
@@ -2081,7 +2094,7 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Variance policy", "label": "variance and amendments"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": r"CHANGELOG.md.+before commits", "label": "changelog before commit"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
-        {"path": "AGENTS.md", "pattern": "single repository-local selection point", "label": "active repository model policy"},
+        {"path": "AGENTS.md", "pattern": "These instructions select the `economy-default` policy for work within their scope", "label": "active repository model policy"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
         {"path": ".agents/skills/dev-doc-harness/references/policy-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
     ]
