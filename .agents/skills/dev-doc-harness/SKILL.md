@@ -24,7 +24,7 @@ Load by operation. Include the current operator instruction, applicable `AGENTS.
 | Operation family | Required route | Optional or conditional route | Required outcomes |
 |---|---|---|---|
 | Classify work size | `references/artifact-contract.md` (`module:lifecycle`, `rule:lifecycle.work-sizing`) | None | Very small mechanical skip stays explicit and narrow; substantial work uses harness artifacts. |
-| Draft or review small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style`, small/medium templates in `assets/templates/` | `module:naming` for work IDs or planned subjects; `assets/templates/architecture-snapshot.md` when useful | Record the work item, stable IDs, useful local links or a justified mapping, checks, documentation, execution strategy, and the upcoming-stage sub-agent assessment. |
+| Draft or review small/medium specs and plans | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style`, small/medium templates in `assets/templates/` | `module:naming` for work IDs or planned subjects; `assets/templates/architecture-snapshot.md` when useful | Create and present both `<spec-filename>` and `<plan-filename>` in the same turn as the normal combined package; record the work item, stable IDs, useful local links or a justified mapping, checks, documentation, execution strategy, and the upcoming-stage sub-agent assessment. A spec-only package needs an operator-requested or operator-approved staged reason and hands off only to plan drafting. |
 | Draft or review large anchor specs | `module:lifecycle`, `module:quality`, `module:models`, `module:artifact-style`, `assets/templates/large-phased-work-item-spec.md` | `module:naming` for work IDs or planned subjects; prior approved amendments when present; `assets/templates/architecture-snapshot.md` when architecture decisions need a dedicated snapshot | Anchor spec preserves handoff decisions, work-item architecture snapshot status, phase decomposition, scannable large-document structure, and the upcoming-stage sub-agent assessment under `rule:lifecycle.large-anchor-spec`; `rule:lifecycle.large-phase-orchestration` makes the normal output an anchor-spec-only draft review state unless combined planning was explicitly requested. |
 | Draft or review phase plans | Approved spec, amendments, prior phase outputs, recorded model/context strategy, architecture snapshot when present, `module:quality`, `module:lifecycle`, `module:models`, `assets/templates/large-phased-work-item-phase-plan.md` | `module:artifact-style` when the phase artifact becomes large or hard to scan; `module:architecture` when phase scope changes router or ownership behavior | Phase plan is post-anchor under `rule:lifecycle.large-phase-orchestration`, fresh-thread executable under `rule:quality.phase-plan-fresh-thread`, consumes architecture decisions, records the upcoming-stage sub-agent assessment, and does not reinterpret frozen decisions. |
 | Freeze planning packages | `references/planning-freeze-gates.md` (`module:freeze-gate`), `module:lifecycle` | Current work-item artifacts | Use `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`, `rule:lifecycle.planning-shape`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.changelog-before-commit`, and `rule:lifecycle.immutable-snapshots`; identify the frozen package, transition owner, next activity, and upcoming-stage sub-agent assessment before continuity routing; stage changelog source fragments for ordinary plan-only freezes. |
@@ -48,10 +48,11 @@ Use these supplemental references when relevant:
 1. Classify the work as small/mechanical, small/medium work item, or large/phased work item through the router.
 2. Choose a work ID using `rule:naming.work-item-paths`.
 3. Create or update the work item folder at `<work-item-path>` from `rule:naming.derived-patterns`.
-4. Draft the required artifacts using `assets/templates/` and the routed canonical modules.
-5. Keep draft artifacts editable until explicit approval, approval commit, or explicit handoff.
-6. Run the Planning Artifact Freeze Gate before implementation or later planning continues.
-7. During implementation, use approved artifacts plus routed execution references, record justified variance, and update the matching `docs/work-items/<work-id>/changelog/*.md` source fragment before every commit.
+4. For small/medium work, draft both `<spec-filename>` and `<plan-filename>` in the same turn. Draft a lone spec only when the operator requested or approved staged planning, with its reason and `plan drafting` next activity recorded.
+5. Draft the required artifacts using `assets/templates/` and the routed canonical modules.
+6. Keep draft artifacts editable until explicit approval, approval commit, or explicit handoff.
+7. Run the Planning Artifact Freeze Gate before implementation or later planning continues.
+8. During implementation, use approved artifacts plus routed execution references, record justified variance, and update the matching `docs/work-items/<work-id>/changelog/*.md` source fragment before every commit.
 
 ## Planning Artifact Freeze Gate
 
@@ -72,6 +73,7 @@ If spec-kit is installed and active, prefer a project-local adapter that points 
 - [ ] The work item folder follows `<work-item-path>` from `rule:naming.derived-patterns`.
 - [ ] Top-level durable artifact filenames follow `rule:naming.derived-patterns`, including `<spec-filename>` and `<plan-filename>`.
 - [ ] Required small/medium or large/phased artifacts exist and meet `module:quality`.
+- [ ] A normal small/medium package contains both canonical files, `<spec-filename>` and `<plan-filename>`; a spec-only package records the operator-requested or operator-approved staged reason and `plan drafting` next activity.
 - [ ] Each approved or handed-off spec, plan, phase plan, or amendment has passed `module:freeze-gate`.
 - [ ] The documentation artifact matrix uses `rule:lifecycle.documentation-matrix`.
 - [ ] Commit subjects follow `rule:lifecycle.commit-message-format`, and the matching changelog source fragment is updated before commits under `rule:lifecycle.changelog-before-commit`.

@@ -32,10 +32,11 @@ Draft artifacts may be edited until the operator explicitly approves them and th
 Before committing any planning artifacts for approval:
 
 1. Draft or update the required planning artifacts.
-2. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
-3. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
-4. Ask the operator to approve the staged planning package or provide feedback.
-5. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
+2. Verify package completeness before draft review: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next activity. A large/phased anchor remains a valid anchor-spec-only package.
+3. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
+4. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
+5. Ask the operator to approve the staged planning package or provide feedback.
+6. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
 
 Do not create a plan amendment for feedback received before the planning package is frozen.
 
@@ -45,14 +46,15 @@ After the operator explicitly approves the staged planning package, or explicitl
 
 1. Update the matching changelog source fragment under `docs/work-items/<work-id>/changelog/*.md` with a newest-first entry for the approved artifact set.
 2. When the operator approved the package rather than requesting only a handoff snapshot, update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
-3. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
-4. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
-5. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
-6. Stop before implementation, task execution, or the next planning stage.
-7. Report the commit hash and approved artifact paths.
-8. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-9. Confirm that the frozen package distinguishes the Current planning Codex task from the **Approved next stage**. In chat, mirror its four groups in order: **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits**. Use Method, Run in, First Plan Task, Plan Task reviewers, Model, Reasoning, and only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
-10. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
+3. Verify package completeness before approval freeze: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is valid only with its operator-requested or operator-approved staged reason and `plan drafting` next activity; a large/phased anchor remains anchor-spec-only.
+4. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
+5. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
+6. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
+7. Stop before implementation, task execution, or the next planning stage.
+8. Report the commit hash and approved artifact paths.
+9. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
+10. Confirm that the frozen package distinguishes the Current planning Codex task from the **Approved next stage**. In chat, mirror its four groups in order: **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits**. Use Method, Run in, First Plan Task, Plan Task reviewers, Model, Reasoning, and only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
+11. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
 
 Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
 

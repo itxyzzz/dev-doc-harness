@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-27 feat: harness-execution-flow-clarity -- enforce combined planning
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Enforced complete combined small/medium packages at review and freeze, retained authorized staged and large-anchor exceptions, and added focused package-shape validation.
+
 ## 2026-07-27 fix: harness-execution-flow-clarity -- harden next-stage validation
 
 Release target: `unreleased`

@@ -58,13 +58,15 @@ Small/medium examples include one bounded feature, bug fix with nontrivial inves
 
 Large or phased work needs an anchor spec and later phase plans when one orchestration thread cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
 
+Keep uncertain work small/medium until the one-thread boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration thread can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
+
 `module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
 
 ## Small/medium planning shape
 
 `rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
 
-A small/medium spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. Before review and freeze, the spec must record the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide only that plan-drafting handoff. A generic template heading or continuity preference cannot create this exception.
+A spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. It is valid only when the operator requested or approved the staging. Before review and freeze, the spec must record that operator-requested or operator-approved staging, the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide only that plan-drafting handoff. A generic template heading or continuity preference cannot create this exception.
 
 Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the implementation handoff. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
 

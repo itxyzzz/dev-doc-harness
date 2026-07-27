@@ -52,8 +52,10 @@ For substantial work, expect a work item package under:
 <work-item-path>
 ```
 
-Small or medium work normally has one spec-and-plan package. Large work keeps
-its anchor and phase-plan boundaries. Stable `SPEC`, `VER`, `TASK`, `CHECK`, and
+Small or medium work normally has one combined small/medium spec-and-plan package. A
+spec-only package requires an operator-requested or operator-approved staged reason
+and hands off only to `plan drafting`. Large work keeps its anchor and phase-plan
+boundaries. Stable `SPEC`, `VER`, `TASK`, `CHECK`, and
 `DEC` IDs help readers navigate, but a full mapping is optional unless it helps
 coverage, handoff, or deterministic validation.
 

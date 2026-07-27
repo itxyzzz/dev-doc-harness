@@ -2033,6 +2033,66 @@ def delegation_fixture_route(text: str) -> str:
     return "invalid"
 
 
+def combined_package_fixture_route(text: str) -> str:
+    """Classify the planning package shape at the freeze boundary."""
+    if "Work size: large/phased" in text and "Frozen package: spec only" in text:
+        return "large-anchor-valid"
+    if "Work size: small/medium" not in text:
+        return "invalid"
+    if "Frozen package: spec and plan" in text:
+        return "combined-valid"
+    if "Frozen package: spec only" not in text:
+        return "invalid"
+    if not re.search(r"Staging authorization: operator-(?:requested|approved)", text):
+        return "invalid"
+    if not re.search(r"Staging reason: .+", text):
+        return "invalid"
+    if "Next activity: plan drafting" not in text:
+        return "invalid"
+    return "staged-valid"
+
+
+def assert_combined_package_default() -> None:
+    check_id = "lifecycle.combined-package-default"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
+    agents = "AGENTS.md"
+    readme = "README.md"
+    operator_note = ".agents/skills/dev-doc-harness/docs/operator-note.md"
+
+    fixtures = {
+        "combined-valid": "Work size: small/medium\nFrozen package: spec and plan",
+        "invalid": "Work size: small/medium\nFrozen package: spec only",
+        "staged-valid": (
+            "Work size: small/medium\nFrozen package: spec only\n"
+            "Staging authorization: operator-requested\n"
+            "Staging reason: Contract evidence must be gathered first\n"
+            "Next activity: plan drafting"
+        ),
+        "large-anchor-valid": "Work size: large/phased\nFrozen package: spec only",
+    }
+    for expected, fixture in fixtures.items():
+        if combined_package_fixture_route(fixture) != expected:
+            add_failure(check_id, f"{expected} package fixture did not route correctly")
+
+    if combined_package_fixture_route("Work size: small/medium\nComplexity: high but one-thread-manageable\nFrozen package: spec and plan") != "combined-valid":
+        add_failure(check_id, "one-thread-manageable work did not retain the small/medium combined package")
+
+    assert_text_contains(check_id, lifecycle, r"uncertain.*small/medium.*demonstrably", "uncertain sizing boundary")
+    assert_text_contains(check_id, lifecycle, r"spec-only.*operator-(?:requested|approved)", "authorized staged exception")
+    assert_text_contains(check_id, router, r"both.*<spec-filename>.*<plan-filename>.*same turn", "combined drafting instruction")
+    assert_text_contains(check_id, router, r"both canonical files", "combined checklist")
+    assert_text_contains(check_id, freeze, r"complete.*combined small/medium", "draft package completeness")
+    assert_text_contains(check_id, freeze, r"complete.*combined small/medium", "approval package completeness")
+    assert_text_contains(check_id, freeze, r"large/phased anchor", "large anchor retained")
+    assert_text_contains(check_id, small_spec, r"Companion plan", "small spec companion plan")
+    assert_text_contains(check_id, small_spec, r"operator-(?:requested|approved)", "small spec staged authorization")
+    for path in [agents, readme, operator_note]:
+        assert_text_contains(check_id, path, r"combined small/medium", "operator combined-planning guidance")
+
+
 def assert_planning_template_clarity() -> None:
     check_id = "clarity.planning-template-contract"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
@@ -2510,6 +2570,9 @@ def run_checks() -> None:
 
     assert_planning_template_clarity()
     write_check_result("clarity.planning-template-contract")
+
+    assert_combined_package_default()
+    write_check_result("lifecycle.combined-package-default")
 
     assert_next_stage_summary()
     write_check_result("presentation.next-stage-summary")

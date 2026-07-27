@@ -26,6 +26,8 @@ If Superpowers is installed and active, use Superpowers for its normal software-
 
 Canonical durable planning artifacts still live under `docs/work-items/<work-id>/` and pass the harness freeze gates before implementation. Add `docs/superpowers` documents only when the directory already exists and contains previous documentation packages from before the current work; never create or seed it to satisfy this compatibility condition. When allowed for continuity, every new file must be a minimal pointer stub to the canonical harness work item package rather than a duplicate spec or plan.
 
+For normal substantial small/medium work, draft and freeze the combined small/medium package: both canonical spec and plan files. A spec-only package is allowed only when the operator requested or approved staged planning, with the reason and `plan drafting` as the next activity.
+
 If spec-kit is installed and active, use the repository spec-kit adapter if present, but treat `.agents/skills/dev-doc-harness/SKILL.md` and its routed canonical modules as the source for artifact and documentation rules.
 
 ### Execution defaults

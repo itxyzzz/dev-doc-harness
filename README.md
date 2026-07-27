@@ -143,9 +143,10 @@ under `docs/work-items/<work-id>/` in the destination repository.
 ### Planning and conformance
 
 For substantial work, the agent creates a work item under
-`docs/work-items/<work-id>/`. Small/medium work normally drafts a spec and plan
-together; a spec-only freeze is an explicit exception that names plan drafting
-as its next activity. Large/phased work freezes an anchor spec before later
+`docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a
+combined small/medium spec-and-plan package together; a spec-only freeze is an
+explicit operator-requested or operator-approved staged exception that records
+its reason and names plan drafting as its next activity. Large/phased work freezes an anchor spec before later
 phase plans unless combined planning was explicitly requested.
 
 The practical boundary is whether one orchestration thread can safely retain

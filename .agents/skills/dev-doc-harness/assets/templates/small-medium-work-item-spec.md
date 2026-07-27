@@ -7,6 +7,7 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
+Companion plan: `<plan-filename>`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:artifact-style`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
 Artifact style: small/medium specifications must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
@@ -217,12 +218,13 @@ Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:f
 Default combined package:
 
 1. Planning shape: `combined small/medium`.
-2. Transition owner: `<plan-filename>` owns the implementation handoff after the combined package freezes.
-3. Next activity: `<implementation activity named by the approved plan>`.
+2. Companion plan: `<plan-filename>` is drafted and presented with this spec in the same planning turn.
+3. Transition owner: `<plan-filename>` owns the implementation handoff after the combined package freezes.
+4. Next activity: `<implementation activity named by the approved plan>`.
 
-For an explicitly approved staged spec-only exception, record the staging reason,
-the spec-only frozen package, and `plan drafting` as the next activity. Do not
-duplicate the later plan's implementation handoff here.
+For an explicit staged spec-only exception, record the operator-requested or
+operator-approved staging reason, the spec-only frozen package, and `plan drafting`
+as the next activity. Do not duplicate the later plan's implementation handoff here.
 
 ## Spec readiness checklist
 
@@ -235,7 +237,7 @@ duplicate the later plan's implementation handoff here.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] The plan owns the combined package's implementation handoff; a staged spec-only exception records only plan drafting.
+- [ ] The companion plan is present in the combined package and owns its implementation handoff; a staged spec-only exception records the operator-requested or operator-approved reason and only plan drafting.
 - [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
