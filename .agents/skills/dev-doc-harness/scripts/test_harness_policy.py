@@ -2150,6 +2150,9 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         for title in [required_title]
         if title not in text
     ]
+    forbidden_title = "Next-stage recommendation" if frozen else "Approved next stage"
+    if forbidden_title in text:
+        errors.append(f"contains incompatible {forbidden_title}")
     if "Current planning Codex task" not in text:
         errors.append("missing current planning Codex task")
     for group in ["Activity", "Orchestration", "Model", "Fallbacks and limits"]:
@@ -2161,6 +2164,13 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         errors.append("model fields are incomplete")
     if not re.search(r"Run in:\s*(?:same Codex task|new Codex task)(?=;|\n|$)", text):
         errors.append("Run in uses an unsupported value")
+    if "Run in: same Codex task" in text:
+        if not re.search(r"profile\s+`known suitable`", text, flags=re.IGNORECASE):
+            errors.append("same Codex task lacks a known-suitable profile")
+        if not re.search(r"Context risk:\s*`(?:suitable|immaterial)`", text, flags=re.IGNORECASE):
+            errors.append("same Codex task lacks suitable or immaterial context risk")
+        if not re.search(r"Continuity benefit:\s*`[^`\n]+`", text, flags=re.IGNORECASE):
+            errors.append("same Codex task lacks a concrete continuity benefit")
     if re.search(r"(?:\d+[% ]+context|remaining context|compaction prediction)", text, flags=re.IGNORECASE):
         errors.append("context speculation is present")
     return errors
@@ -2189,15 +2199,24 @@ def assert_next_stage_summary() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
 
-    draft_fixture = """Current planning Codex task: profile `not exposed`\n\nNext-stage recommendation\nActivity: First Plan Task: `TASK-001`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current planning Codex task: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nActivity: First Plan Task: `TASK-001`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same Codex task", "new Codex task")
     invalid_fixture = draft_fixture.replace("same Codex task", "same session")
+    unknown_same_task_fixture = draft_fixture.replace("profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`", "profile `not exposed`")
+    mixed_draft_fixture = draft_fixture + "\nApproved next stage"
+    mixed_frozen_fixture = frozen_fixture + "\nNext-stage recommendation"
     if next_stage_summary_fixture_errors(draft_fixture, frozen=False):
         add_failure(check_id, "valid draft summary fixture was rejected")
     if next_stage_summary_fixture_errors(frozen_fixture, frozen=True):
         add_failure(check_id, "valid frozen summary fixture was rejected")
     if not next_stage_summary_fixture_errors(invalid_fixture, frozen=False):
         add_failure(check_id, "invalid Run in fixture was accepted")
+    if not next_stage_summary_fixture_errors(unknown_same_task_fixture, frozen=False):
+        add_failure(check_id, "unknown-profile same-task fixture was accepted")
+    if not next_stage_summary_fixture_errors(mixed_draft_fixture, frozen=False):
+        add_failure(check_id, "mixed draft state-label fixture was accepted")
+    if not next_stage_summary_fixture_errors(mixed_frozen_fixture, frozen=True):
+        add_failure(check_id, "mixed frozen state-label fixture was accepted")
 
     for path in [models, *sources, *consumers]:
         assert_text_contains(check_id, path, r"Current planning Codex task", "current planning task separation")

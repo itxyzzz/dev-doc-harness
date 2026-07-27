@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-27 fix: harness-execution-flow-clarity -- harden next-stage validation
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Require known-suitable profile, suitable or immaterial context risk, and a concrete continuity benefit for same-Codex-task fixtures; reject mixed draft/frozen state labels.
+
 ## 2026-07-27 feat: harness-execution-flow-clarity -- simplify next-stage presentation
 
 Release target: `unreleased`
