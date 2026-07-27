@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-27 docs: harness-execution-flow-clarity -- clarify drift and changelog guidance
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Rewrote the README section as a concise user-facing explanation of implementation drift, work-item commit history, and root changelog consolidation.
+
 ## 2026-07-27 fix: harness-execution-flow-clarity -- clarify frozen handoff heading
 
 Release target: `unreleased`

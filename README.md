@@ -211,26 +211,31 @@ without a plan amendment solely for that selection.
 
 ### Drift, commits, and changelogs
 
-Frozen plans are not rewritten to make implementation look tidier. An
-equivalent implementation or validation adjustment may proceed when it
-preserves the approved scope, outcome, and the same evidence purpose. An
-amendment and approval are required only when a change materially affects the
-outcome, architecture, API, data, security, privacy, compliance, scope, or the
-validity of required evidence; using a different command alone is not material
-when it proves the same thing.
+Implementation does not always follow a frozen plan line for line. The harness
+keeps approved planning artifacts unchanged so reviewers can see what was
+planned and what was delivered. Small implementation or validation adjustments
+are normal when they preserve the approved scope and outcome. That includes
+changes that serve the same evidence purpose; using a different command to
+prove the same result is one example. A change that materially affects the
+outcome, architecture, API, data,
+security, privacy, compliance, scope, or required evidence goes through an
+amendment and approval.
 
-Before each commit, agents update a work-item-local changelog source fragment
-under `docs/work-items/<work-id>/changelog/`. Root `CHANGELOG.md` remains the
-curated publication view. Run
+Each work item keeps changelog source fragments under
+`docs/work-items/<work-id>/changelog/`. They record what its commits delivered
+and keep those entries aligned with the commit subjects. This gives reviewers a
+local history without turning the root `CHANGELOG.md` into a working log.
+
+The root changelog remains the curated publication view. Reviewed fragments can
+be consolidated at a project-owned checkpoint, such as after work branches
+merge or before release-note preparation or a product/application release:
 
 ```bash
 python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
 ```
 
-at a project-owned checkpoint, such as after merging work branches or before
-release-note preparation or a product/application release. The harness supplies
-this source-and-consolidation contract; downstream projects keep their own
-release processes.
+This separation gives the harness a consistent record while downstream projects
+keep their own release processes.
 
 ## Compatibility with other workflows
 
