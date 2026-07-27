@@ -1,5 +1,15 @@
 # Harness Execution Flow Clarity Approval Changelog Source
 
+## 2026-07-28 amendment 002: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved conservative bootstrap compaction, semantic validation, minimal skill UI metadata, inclusion of the current README changes, and a separately scoped formatting-only follow-up.
+
 ## 2026-07-27 amendment 001: harness-execution-flow-clarity -- allow operator-authorized no-review execution
 
 Release target: `unreleased`
