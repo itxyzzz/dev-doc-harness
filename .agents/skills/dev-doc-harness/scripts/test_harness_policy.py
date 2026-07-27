@@ -1915,6 +1915,13 @@ def assert_superpowers_adapter_contract() -> None:
 
 def execution_method_fixture_route(text: str) -> str:
     """Resolve the documented execution-method decision from a literal fixture."""
+    if (
+        "Fresh explicit operator override" in text
+        and "Selected model available" in text
+        and "Actual runtime selection: recorded" in text
+        and "Plan amendment: not required solely for this runtime choice" in text
+    ):
+        return "operator-model-override"
     if "Fresh explicit operator override" in text and "Selected method available" in text:
         return "operator-override"
     if "Superpowers: available" in text:
@@ -1961,6 +1968,7 @@ def assert_execution_method_fallbacks() -> None:
         "blocked": "Superpowers: unavailable\nReviewer sub-agent: unavailable",
         "invalid": "Superpowers: available\nNative Codex proposed as default",
         "operator-override": "Fresh explicit operator override\nSelected method available",
+        "operator-model-override": "Fresh explicit operator override\nSelected model available\nActual runtime selection: recorded\nPlan amendment: not required solely for this runtime choice",
     }
     for expected, fixture in method_fixtures.items():
         if execution_method_fixture_route(fixture) != expected:
@@ -1989,6 +1997,8 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
     assert_text_contains(check_id, models, r"current session.*execution controller", "Superpowers session interpretation")
     assert_text_contains(check_id, execution, r"fresh explicit operator.*method.*model", "execution-start override")
+    assert_text_contains(check_id, execution, r"record.*actual.*selection", "recorded runtime selection")
+    assert_text_contains(check_id, execution, r"without.*plan amendment.*solely", "no amendment for runtime selection")
     assert_text_contains(check_id, freeze, r"without.*second generic.*method question", "freeze start selection")
     assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
 
