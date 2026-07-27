@@ -1,5 +1,15 @@
 # Harness Execution Flow Clarity Approval Changelog Source
 
+## 2026-07-27 amendment 001: harness-execution-flow-clarity -- allow operator-authorized no-review execution
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved an operator-decision route for proceeding without independent review while preserving disclosure, authorization, validation, and completion-report requirements.
+
 ## 2026-07-27 plan: harness-execution-flow-clarity -- approve execution and planning defaults
 
 Release target: `unreleased`
