@@ -1931,9 +1931,13 @@ def execution_method_fixture_route(text: str) -> str:
         if "Native Codex proposed as default" in text:
             return "invalid"
         return "superpowers:executing-plans"
-    if "Reviewer sub-agent: available" in text:
+    if "Superpowers: unavailable" in text:
+        if "Reviewer sub-agent: unavailable" in text:
+            if "Operator authorization: proceed without independent review" in text:
+                return "native Codex authorized no-review"
+            return "native Codex awaiting operator decision"
         return "native Codex"
-    return "blocked"
+    return "invalid"
 
 
 def reviewer_fixture_route(text: str) -> str:
@@ -1945,12 +1949,38 @@ def reviewer_fixture_route(text: str) -> str:
         if "Preserve executing-plans checkpoints" in text and "Reviewer capability disclosure" in text:
             return "fallback-disclosed"
     if "Method: native Codex" in text:
-        if "Sub-agents: None" in text:
-            return "invalid"
         if "Independent reviewer sub-agent" in text and "curated artifacts" in text and "named lens" in text and "evidence-backed findings" in text and "execution Codex task owns final integration" in text:
             return "native-reviewed"
-        if "Reviewer sub-agent: unavailable" in text and "Stop and report the unavailable-review blocker" in text:
-            return "blocked"
+        no_review_record = (
+            "Independent review: not run" in text
+            and "Reason:" in text
+            and "Assurance gap:" in text
+            and "Focused self-review and validation:" in text
+            and "Completion report: state whether independent review ran" in text
+        )
+        if (
+            "Reviewer sub-agent: unavailable" in text
+            and no_review_record
+            and "Ask once whether to proceed without independent review" in text
+            and "Operator authorization: pending" in text
+        ):
+            return "awaiting-operator-decision"
+        if (
+            "Reviewer sub-agent: unavailable" in text
+            and no_review_record
+            and "Operator authorization: proceed without independent review" in text
+            and "Sub-agents: None" in text
+        ):
+            return "operator-authorized-no-review"
+        if (
+            "Operator declined independent review" in text
+            and no_review_record
+            and "Operator authorization: proceed without independent review" in text
+            and "Sub-agents: None" in text
+        ):
+            return "operator-declined-review-authorized"
+        if "Sub-agents: None" in text:
+            return "invalid"
     return "invalid"
 
 
@@ -1966,7 +1996,8 @@ def assert_execution_method_fallbacks() -> None:
         "superpowers:subagent-driven-development": "Superpowers: available\nSub-agent-driven conditions: true",
         "superpowers:executing-plans": "Superpowers: available\nSub-agent-driven conditions: unavailable or unsuitable",
         "native Codex": "Superpowers: unavailable\nReviewer sub-agent: available",
-        "blocked": "Superpowers: unavailable\nReviewer sub-agent: unavailable",
+        "native Codex awaiting operator decision": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nIndependent review decision: pending",
+        "native Codex authorized no-review": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nOperator authorization: proceed without independent review",
         "invalid": "Superpowers: available\nNative Codex proposed as default",
         "operator-override": "Fresh explicit operator override\nSelected method available",
         "operator-model-override": "Fresh explicit operator override\nSelected model available\nActual runtime selection: recorded\nPlan amendment: not required solely for this runtime choice",
@@ -1979,7 +2010,9 @@ def assert_execution_method_fallbacks() -> None:
         "preferred-reviewed": "Method: superpowers:subagent-driven-development\nIndependent reviewer after each Plan Task\nIndependent final whole-branch reviewer",
         "fallback-disclosed": "Method: superpowers:executing-plans\nPreserve executing-plans checkpoints\nReviewer capability disclosure",
         "native-reviewed": "Method: native Codex\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution Codex task owns final integration",
-        "blocked": "Method: native Codex\nReviewer sub-agent: unavailable\nStop and report the unavailable-review blocker",
+        "awaiting-operator-decision": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nAsk once whether to proceed without independent review\nOperator authorization: pending",
+        "operator-authorized-no-review": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
+        "operator-declined-review-authorized": "Method: native Codex\nOperator declined independent review\nIndependent review: not run\nReason: operator declined review\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
         "invalid": "Method: native Codex\nSub-agents: None",
     }
     for expected, fixture in reviewer_fixtures.items():
@@ -1989,12 +2022,17 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, lifecycle, r"superpowers:subagent-driven-development", "preferred execution method")
     assert_text_contains(check_id, lifecycle, r"superpowers:executing-plans", "Superpowers fallback method")
     assert_text_contains(check_id, lifecycle, r"Native Codex.*Superpowers.*unavailable", "native default boundary")
+    if "independent review can run" in read_repo_text(models).lower():
+        add_failure(check_id, "native method cascade retains obsolete review-availability blocker")
     assert_text_contains(check_id, models, r"Independent reviewer after each Plan Task", "preferred per-Plan-Task review")
     assert_text_contains(check_id, models, r"Independent final whole-branch reviewer", "preferred final review")
     assert_text_contains(check_id, models, r"Preserve executing-plans checkpoints", "fallback checkpoints")
     assert_text_contains(check_id, models, r"Reviewer capability disclosure", "fallback reviewer disclosure")
     assert_text_contains(check_id, models, r"Native Codex.*Independent reviewer sub-agent", "native independent review")
-    assert_text_contains(check_id, models, r"Sub-agents: None.*not.*native", "native no-review stop")
+    assert_text_contains(check_id, models, r"independent reviewer.*default", "native independent-review default")
+    assert_text_contains(check_id, models, r"ask once.*proceed without independent review", "one-time no-review decision")
+    assert_text_contains(check_id, models, r"Sub-agents: None.*operator authorization", "authorized native no-review route")
+    assert_text_contains(check_id, models, r"completion report.*independent review", "no-review completion evidence")
     assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
     assert_text_contains(check_id, models, r"external execution session.*execution controller", "Superpowers session interpretation")
     assert_text_contains(check_id, execution, r"fresh explicit operator.*method.*model", "execution-start override")

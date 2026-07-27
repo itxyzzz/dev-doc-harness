@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 fix: harness-execution-flow-clarity -- replace no-review blocker with operator decision
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Replaced the hard no-review execution blocker with disclosure, one-time operator decision, recorded authorization, focused validation, and completion-report evidence while retaining independent review as the default.
+
 ## 2026-07-27 docs: harness-execution-flow-clarity -- clarify drift and changelog guidance
 
 Release target: `unreleased`

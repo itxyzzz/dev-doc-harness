@@ -89,10 +89,13 @@ independently executable and verifiable with its recorded checks.
 After fresh authorization, the approved execution method starts without another
 generic choice. The normal order is `superpowers:subagent-driven-development`,
 then `superpowers:executing-plans` while Superpowers is available. Native Codex
-is the default only when Superpowers is unavailable and an independent reviewer
-sub-agent can run; otherwise the agent reports the blocker. An explicit operator
-start instruction may select another available method or runtime setting without
-an amendment solely for that selection.
+is the default only when Superpowers is unavailable. Independent review remains
+the default; if it cannot run or an operator declines it, the agent records the
+assurance gap and compensating validation, asks once when a decision is still
+needed, proceeds only with explicit authorization, and reports that limitation
+at completion. An explicit operator start instruction may select another
+available method or runtime setting without an amendment solely for that
+selection.
 
 ## Review And Pause Points
 

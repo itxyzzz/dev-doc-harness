@@ -44,6 +44,8 @@ or material scope-expanding action.
 
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 
+When a selected route lacks independent review, apply the disclosure, one-time operator-decision, recorded-authorization, and completion-report route in `module:models`; do not treat no review as a silent fallback.
+
 The approved harness route must complete before Superpowers pre-flight or execution begins. After fresh authorization, start the planned method without a second generic Superpowers execution-mode or method question. A fresh explicit operator instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual runtime selection and start without a plan amendment solely for that runtime selection. Report an availability or compatibility blocker, and use variance handling only for a material plan or safety boundary change.
 
 At draft review, freeze, and execution handoff, the chat projection repeats the matching Next-stage recommendation or Approved next stage groups; it does not introduce context estimates, predicted compaction, or a new decision.
