@@ -171,6 +171,14 @@ The full durable package must live under `<work-item-path>` before the harness f
 
 Superpowers may guide how the planning content is explored and refined, but the canonical approval package is the harness package. After the harness freeze gate, implementation requires the normal fresh post-freeze operator authorization before any Superpowers pre-flight or execution flow begins. Its task briefs, review packages, progress ledgers, and similar execution aids remain ephemeral unless another harness evidence rule independently preserves them; they do not create a second approval route.
 
+The ordered execution-method cascade is:
+
+1. Prefer `superpowers:subagent-driven-development` when Superpowers, usable sub-agents, and the written Plan Tasks fit its execution-controller model.
+2. When Superpowers is available but that preferred route is unavailable or unsuitable, use `superpowers:executing-plans`.
+3. Native Codex is the default only when Superpowers is unavailable and an independent reviewer sub-agent is available; otherwise stop and report the unavailable-review blocker.
+
+Native Codex is not a default while Superpowers is available. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity. Record that actual selection without a plan amendment solely for the runtime choice; use normal variance handling only when the instruction also changes a material scope, commitment, Plan Task, commit, review, or safety boundary. `module:models` owns the route-specific reviewer contract and `module:freeze-gate` owns the authorization transition.
+
 When Superpowers is unavailable, keep each task independently executable and verifiable with its recorded checks. This fallback is a concise task-quality cue, not a second detailed task-sizing method.
 
 Add documents under `docs/superpowers` only when that directory already exists and contains previous documentation packages from before the current work. This exception exists solely for backward compatibility and continuity. Do not create or seed the directory, an empty placeholder, or package content during the current work to satisfy this condition.

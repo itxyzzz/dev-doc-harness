@@ -78,6 +78,7 @@ CHECK_IDS = [
     "compat.current-historical",
     "scenarios.harness-simplification",
     "compat.superpowers-adapter-contract",
+    "execution.method-fallbacks",
     "clarity.planning-template-contract",
 ]
 
@@ -1912,6 +1913,86 @@ def assert_superpowers_adapter_contract() -> None:
         add_failure(check_id, "out-of-envelope dispatch fixture did not route to approval")
 
 
+def execution_method_fixture_route(text: str) -> str:
+    """Resolve the documented execution-method decision from a literal fixture."""
+    if "Fresh explicit operator override" in text and "Selected method available" in text:
+        return "operator-override"
+    if "Superpowers: available" in text:
+        if "Sub-agent-driven conditions: true" in text:
+            return "superpowers:subagent-driven-development"
+        if "Native Codex proposed as default" in text:
+            return "invalid"
+        return "superpowers:executing-plans"
+    if "Reviewer sub-agent: available" in text:
+        return "native Codex"
+    return "blocked"
+
+
+def reviewer_fixture_route(text: str) -> str:
+    """Check the route-specific review obligation without relying on a framework."""
+    if "Method: superpowers:subagent-driven-development" in text:
+        if "Independent reviewer after each Plan Task" in text and "Independent final whole-branch reviewer" in text:
+            return "preferred-reviewed"
+    if "Method: superpowers:executing-plans" in text:
+        if "Preserve executing-plans checkpoints" in text and "Reviewer capability disclosure" in text:
+            return "fallback-disclosed"
+    if "Method: native Codex" in text:
+        if "Sub-agents: None" in text:
+            return "invalid"
+        if "Independent reviewer sub-agent" in text and "curated artifacts" in text and "named lens" in text and "evidence-backed findings" in text and "execution Codex task owns final integration" in text:
+            return "native-reviewed"
+        if "Reviewer sub-agent: unavailable" in text and "Stop and report the unavailable-review blocker" in text:
+            return "blocked"
+    return "invalid"
+
+
+def assert_execution_method_fallbacks() -> None:
+    check_id = "execution.method-fallbacks"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+
+    method_fixtures = {
+        "superpowers:subagent-driven-development": "Superpowers: available\nSub-agent-driven conditions: true",
+        "superpowers:executing-plans": "Superpowers: available\nSub-agent-driven conditions: unavailable or unsuitable",
+        "native Codex": "Superpowers: unavailable\nReviewer sub-agent: available",
+        "blocked": "Superpowers: unavailable\nReviewer sub-agent: unavailable",
+        "invalid": "Superpowers: available\nNative Codex proposed as default",
+        "operator-override": "Fresh explicit operator override\nSelected method available",
+    }
+    for expected, fixture in method_fixtures.items():
+        if execution_method_fixture_route(fixture) != expected:
+            add_failure(check_id, f"{expected} method fixture did not route correctly")
+
+    reviewer_fixtures = {
+        "preferred-reviewed": "Method: superpowers:subagent-driven-development\nIndependent reviewer after each Plan Task\nIndependent final whole-branch reviewer",
+        "fallback-disclosed": "Method: superpowers:executing-plans\nPreserve executing-plans checkpoints\nReviewer capability disclosure",
+        "native-reviewed": "Method: native Codex\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution Codex task owns final integration",
+        "blocked": "Method: native Codex\nReviewer sub-agent: unavailable\nStop and report the unavailable-review blocker",
+        "invalid": "Method: native Codex\nSub-agents: None",
+    }
+    for expected, fixture in reviewer_fixtures.items():
+        if reviewer_fixture_route(fixture) != expected:
+            add_failure(check_id, f"{expected} reviewer fixture did not route correctly")
+
+    assert_text_contains(check_id, lifecycle, r"superpowers:subagent-driven-development", "preferred execution method")
+    assert_text_contains(check_id, lifecycle, r"superpowers:executing-plans", "Superpowers fallback method")
+    assert_text_contains(check_id, lifecycle, r"Native Codex.*Superpowers.*unavailable", "native default boundary")
+    assert_text_contains(check_id, models, r"Independent reviewer after each Plan Task", "preferred per-Plan-Task review")
+    assert_text_contains(check_id, models, r"Independent final whole-branch reviewer", "preferred final review")
+    assert_text_contains(check_id, models, r"Preserve executing-plans checkpoints", "fallback checkpoints")
+    assert_text_contains(check_id, models, r"Reviewer capability disclosure", "fallback reviewer disclosure")
+    assert_text_contains(check_id, models, r"Native Codex.*Independent reviewer sub-agent", "native independent review")
+    assert_text_contains(check_id, models, r"Sub-agents: None.*not.*native", "native no-review stop")
+    assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
+    assert_text_contains(check_id, models, r"current session.*execution controller", "Superpowers session interpretation")
+    assert_text_contains(check_id, execution, r"fresh explicit operator.*method.*model", "execution-start override")
+    assert_text_contains(check_id, freeze, r"without.*second generic.*method question", "freeze start selection")
+    assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
+
+
 def planning_selection_fixture_errors(text: str) -> list[str]:
     observations_match = re.search(r"Planning-task observations:(?P<body>.*?)(?:\n\nApproved execution selection:|\Z)", text, flags=re.DOTALL)
     selection_match = re.search(r"Approved execution selection:(?P<body>.*)", text, flags=re.DOTALL)
@@ -2323,6 +2404,9 @@ def run_checks() -> None:
 
     assert_superpowers_adapter_contract()
     write_check_result("compat.superpowers-adapter-contract")
+
+    assert_execution_method_fallbacks()
+    write_check_result("execution.method-fallbacks")
 
     assert_planning_template_clarity()
     write_check_result("clarity.planning-template-contract")

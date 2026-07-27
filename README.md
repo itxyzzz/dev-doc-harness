@@ -196,6 +196,14 @@ sub-agents are distinct: the latter have named roles, curated context, outputs,
 and review boundaries. The orchestration thread always retains final integration
 and completion-report ownership.
 
+After fresh start authorization, the harness uses the plan's method without a
+second generic choice: `superpowers:subagent-driven-development` when it fits,
+then `superpowers:executing-plans` while Superpowers is available. Native Codex
+is the default only when Superpowers is unavailable and an independent reviewer
+sub-agent can run; otherwise execution stops with the review blocker. An explicit
+operator start instruction may select another available method or runtime setting
+without a plan amendment solely for that selection.
+
 ### Drift, commits, and changelogs
 
 Frozen plans are not rewritten to make implementation look tidier. An

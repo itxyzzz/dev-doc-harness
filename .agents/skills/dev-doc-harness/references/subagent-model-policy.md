@@ -77,6 +77,18 @@ A same-task model switch must re-read the frozen package and reconcile scope bef
 
 Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next activity, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
+## Execution method and reviewer contract
+
+Choose the execution method independently from Codex-task continuity. The ordered method cascade is owned by `rule:lifecycle.superpowers-compatibility`: prefer `superpowers:subagent-driven-development`, then `superpowers:executing-plans` while Superpowers is available, then native Codex only when Superpowers is unavailable and independent review can run. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or continuity; record the actual selection without a plan amendment solely for that runtime choice.
+
+Route-specific review obligations are mandatory:
+
+- `superpowers:subagent-driven-development`: use an Independent reviewer after each Plan Task and an Independent final whole-branch reviewer. These reviews satisfy the harness review default without a duplicate workflow.
+- `superpowers:executing-plans`: Preserve executing-plans checkpoints. Provide Reviewer capability disclosure: name the independent reviewer when reviewer tooling is available; otherwise state the execution controller's self-review limitation and the fallback reason.
+- Native Codex: require an Independent reviewer sub-agent with curated artifacts, a named lens, and evidence-backed findings. The execution Codex task owns final integration. `Sub-agents: None` is not a successful native route; when the reviewer sub-agent is unavailable, stop and report the unavailable-review blocker.
+
+For Superpowers, `current session` means the execution controller's session, not necessarily the planning Codex task. A newly created execution Codex task may load the frozen package, invoke the selected method, and remain the controller for fresh Plan Task and reviewer sub-agent runs.
+
 ## Common rules
 
 Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Before each upcoming-stage spec drafting, plan or phase-plan drafting, amendment or replanning, implementation, or consequential review stage, assess whether sub-agents are justified by isolation, review quality, parallel throughput, specialized execution, or risk reduction. Record either a bounded strategy or `Sub-agents: None` with a stage-specific fit reason.
@@ -179,7 +191,7 @@ A cheaper sub-agent must not be the final authority for high-blast-radius decisi
 
 ## Independent review
 
-Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
+Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. Apply the route-specific mandatory obligations in `## Execution method and reviewer contract`; a separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
 
 Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it; this is a suggested quality-control allocation, not a mandatory gate. The orchestration thread retains final integration ownership.
 
@@ -257,4 +269,4 @@ Final review of high-blast-radius work must be done by the orchestration thread 
 
 ## Final integration ownership
 
-The orchestration thread owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
+The execution Codex task owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.

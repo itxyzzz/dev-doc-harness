@@ -44,7 +44,7 @@ or material scope-expanding action.
 
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 
-The approved harness route must complete before Superpowers pre-flight or execution begins. Do not ask a second generic Superpowers execution-mode question after freeze; use the approved strategy and fallback, or route an out-of-envelope choice through the existing approval path.
+The approved harness route must complete before Superpowers pre-flight or execution begins. After fresh authorization, start the planned method without a second generic Superpowers execution-mode or method question. A fresh explicit operator instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity; record it and start without a plan amendment solely for that runtime selection. Report an availability or compatibility blocker, and use variance handling only for a material plan or safety boundary change.
 
 ## Task preflight
 

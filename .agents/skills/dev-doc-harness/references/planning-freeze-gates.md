@@ -60,6 +60,8 @@ The planning package is frozen only after the approval commit or explicit handof
 
 Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may authorize the action offered by the selected continuity route when the response clearly approves that action.
 
+The planned execution method starts after that fresh authorization without a second generic method question. A fresh explicit operator start instruction may instead select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual selection and do not require or debate a plan amendment solely for that runtime choice. Report a concrete availability or compatibility blocker, and apply variance policy only when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
+
 For a `same task` route, a fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
 
 ## Post-freeze transition routing

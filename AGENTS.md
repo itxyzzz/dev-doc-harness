@@ -28,6 +28,10 @@ Canonical durable planning artifacts still live under `docs/work-items/<work-id>
 
 If spec-kit is installed and active, use the repository spec-kit adapter if present, but treat `.agents/skills/dev-doc-harness/SKILL.md` and its routed canonical modules as the source for artifact and documentation rules.
 
+### Execution defaults
+
+After a frozen package receives fresh start authorization, use its planned method without another generic method question: prefer `superpowers:subagent-driven-development`, then `superpowers:executing-plans` while Superpowers is available. Native Codex is the default only when Superpowers is unavailable and an independent reviewer sub-agent can run; otherwise stop and report the blocker. A fresh explicit operator start instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity without an amendment solely for that runtime choice.
+
 ## Dev Doc Harness distribution maintenance
 
 ### Use only for harness maintenance
