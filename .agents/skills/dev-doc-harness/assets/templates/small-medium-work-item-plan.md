@@ -211,13 +211,13 @@ small/medium plan owns this handoff.
 
 Keep observed model/profile, reasoning, and context facts separate from the frozen result.
 
-## Next-stage recommendation
-
-Before freeze, use the four groups: **Activity** (next activity and First Plan Task), **Orchestration** (Method, Run in: `<same Codex task / new Codex task>`, and Plan Task reviewers), **Model** (Model and Reasoning), and **Fallbacks and limits** (only applicable limits).
-
-## Approved next stage
-
-At the real frozen boundary, repeat the selected values in those same groups and mirror them in chat.
+Render exactly one state-dependent grouped-summary heading: before freeze, use
+`## Next-stage recommendation`; at the real frozen boundary, replace it with
+`## Approved next stage`. Do not render both headings together. Use the four
+groups: **Activity** (next activity and First Plan Task), **Orchestration**
+(Method, Run in: `<same Codex task / new Codex task>`, and Plan Task reviewers),
+**Model** (Model and Reasoning), and **Fallbacks and limits** (only applicable
+limits). Mirror the selected frozen values in chat.
 
 1. Frozen package: `<approved spec, plan, snapshots, amendments, and required evidence>`.
 2. Next activity: `<named implementation activity>`.

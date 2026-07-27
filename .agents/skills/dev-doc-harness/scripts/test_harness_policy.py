@@ -2290,6 +2290,20 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(check_id, style, r"grouping.*plain-label", "presentation-only grouping rule")
     assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
 
+    stateful_source_paths = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
+    ]
+    stateful_generated_paths = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+    state_heading_pattern = r"(?m)^#{2,3} (Next-stage recommendation|Approved next stage)$"
+    for path in [*stateful_source_paths, *stateful_generated_paths]:
+        headings = set(re.findall(state_heading_pattern, read_repo_text(path)))
+        if headings == {"Next-stage recommendation", "Approved next stage"}:
+            add_failure(check_id, f"{path} renders both draft and frozen next-stage headings")
+
 
 def run_checks() -> None:
     for path in REQUIRED_FILES:

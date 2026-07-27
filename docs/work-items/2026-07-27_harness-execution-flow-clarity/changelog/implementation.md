@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-27 fix: harness-execution-flow-clarity -- clarify frozen handoff heading
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Made plan-handoff source blocks select one draft or frozen next-stage heading and extended focused validation to reject simultaneous headings in source and generated plans.
+
 ## 2026-07-27 feat: harness-execution-flow-clarity -- enforce combined planning
 
 Release target: `unreleased`

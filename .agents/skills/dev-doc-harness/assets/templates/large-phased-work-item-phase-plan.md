@@ -251,13 +251,13 @@ independently plannable phases.
 
 Keep observed model/profile, reasoning, and context facts separate from the frozen result.
 
-## Next-stage recommendation
-
-Before freeze, use the four groups: **Activity** (next activity and First Plan Task), **Orchestration** (Method, Run in: `<same Codex task / new Codex task>`, and Plan Task reviewers), **Model** (Model and Reasoning), and **Fallbacks and limits** (only applicable limits).
-
-## Approved next stage
-
-At the real frozen boundary, repeat the selected values in those same groups and mirror them in chat.
+At this phase-plan boundary, render one state heading only: use
+`## Next-stage recommendation` while the phase plan is draft, then substitute
+`## Approved next stage` after freeze. Never emit both. Preserve **Activity**
+(next activity and First Plan Task), **Orchestration** (Method, Run in:
+`<same Codex task / new Codex task>`, and Plan Task reviewers), **Model**
+(Model and Reasoning), and **Fallbacks and limits** (only applicable limits);
+mirror the phase's frozen selection in chat.
 
 ### Current-phase implementation handoff
 
