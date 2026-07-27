@@ -35,7 +35,7 @@ Use this protocol when a frozen planning package hands work to a fresh task or w
 1. Load system and runtime constraints, then applicable instructions, the approved execution selection, and the exact frozen artifacts named by the handoff.
 2. Verify branch, worktree, approval state, amendments, variance logs, and the expected validation baseline before editing.
 3. Treat the frozen package as authoritative; avoid repository rediscovery and do not reopen settled decisions without conflicting evidence.
-4. Restate only the immediate work, approved execution strategy and fallback, the documented next activity expressed as a named task or first activity, actual prior-phase outputs when entering later phase planning, and stop condition. Record the upcoming-stage sub-agent assessment; request authorization only for useful unapproved delegation.
+4. In chat, restate the **Approved next stage** only as its four ordered groups: **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits**. Keep the Current planning Codex task facts separate. Include the immediate work, Method, Run in, First Plan Task, Plan Task reviewers, Model, Reasoning, actual prior-phase outputs when entering later phase planning, and applicable stop condition. Record the upcoming-stage sub-agent assessment; request authorization only for useful unapproved delegation.
 5. Begin at that documented next activity. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
 After a fresh implementation instruction, complete the approved plan without
@@ -45,6 +45,8 @@ or material scope-expanding action.
 If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
 
 The approved harness route must complete before Superpowers pre-flight or execution begins. After fresh authorization, start the planned method without a second generic Superpowers execution-mode or method question. A fresh explicit operator instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual runtime selection and start without a plan amendment solely for that runtime selection. Report an availability or compatibility blocker, and use variance handling only for a material plan or safety boundary change.
+
+At draft review, freeze, and execution handoff, the chat projection repeats the matching Next-stage recommendation or Approved next stage groups; it does not introduce context estimates, predicted compaction, or a new decision.
 
 ## Task preflight
 

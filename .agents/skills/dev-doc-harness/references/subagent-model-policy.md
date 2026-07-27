@@ -21,11 +21,21 @@ Owned rule IDs:
 | `rule:models.final-review` | `## Final review` |
 | `rule:models.final-integration-ownership` | `## Final integration ownership` |
 
+## Execution terminology
+
+Use these compact labels whenever `task` could mean more than one thing:
+
+- **Codex task:** this harness's local label for the top-level conversation or thread. In tools such as Claude Code or Google Antigravity, it means the corresponding top-level conversation or thread; an adapted distribution may use that platform's native label while preserving this distinction.
+- **Planning Codex task** and **execution Codex task:** the Codex task that drafts/freezes the package and the Codex task that performs its approved next activity. They may be the same or different.
+- **Plan Task:** a numbered task in an approved implementation plan.
+- **Sub-agent run** or **sub-agent assignment:** a bounded delegated run; it is not a Plan Task or a Codex task.
+- **External execution session:** an external workflow's controller session, such as Superpowers' execution session.
+
 ## Selection dimensions
 
-Model selection for substantial work records planning-task observations separately from the approved execution selection. Observations describe the planning task and may be `not exposed`; the approved selection is an actionable future choice and must not use `not exposed` for its target model/profile, capability tier, reasoning effort, or continuity.
+Model selection for substantial work keeps current facts separate from the next-stage recommendation. The **Current planning Codex task** may record `not exposed`; the recommendation is an actionable future choice and must not use `not exposed` for its target model/profile, capability tier, reasoning effort, or `Run in` value. A draft says **Next-stage recommendation**. Only a frozen package says **Approved next stage**.
 
-Planning-task observations may record:
+Current planning Codex task facts may record:
 
 - Model generation: the provider generation or `not exposed`.
 - Capability tier: the durable policy-relative tier.
@@ -34,13 +44,7 @@ Planning-task observations may record:
 - Resolved profile: the concrete runtime model/profile when exposed; otherwise `not exposed`.
 - Context visibility: the exposed signal or `not exposed`.
 
-Approved execution selection records:
-
-- Target model/profile or policy-relative selection instruction.
-- Capability tier and reasoning effort.
-- Orchestration mode.
-- Availability/fallback.
-- Execution continuity and artifact-rehydration requirement.
+The next-stage summary is ordered as **Activity**, **Orchestration**, **Model**, then **Fallbacks and limits**. Activity records the named next activity and First Plan Task when applicable. Orchestration records Method, `Run in`, and Plan Task reviewers, including the route's final reviewer. Model records the policy-relative model/profile and Reasoning. Fallbacks and limits record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
 
 Permanent capability tiers are vendor-neutral:
 
@@ -65,15 +69,9 @@ Platform multi-agent mode does not automatically provide harness-managed task pa
 
 ## Execution continuity
 
-Every substantial strategy records:
+Method does not determine Codex-task continuity. `Run in` accepts only `same Codex task` or `new Codex task`. Prefer `new Codex task` when the current profile or context suitability is `not exposed`, the approved profile cannot be reconciled with the current profile, or multiple Plan Tasks, validation cycles, reviewer/fix loops, or integration work make a clean context safer. Choose `same Codex task` only when the current profile is known suitable, context risk is known suitable or immaterial, and the artifact records a concrete continuity benefit.
 
-- Execution continuity: `same task`, `new task with curated-artifact handoff`, or another explicit justified choice.
-- Context visibility: `exposed` with the available signal, or `not exposed`.
-- Artifact rehydration required: `Yes` or `No` with a reason.
-
-Prefer `new task with curated-artifact handoff` for substantial work when the intended model generation, capability tier, resolved profile, or platform multi-agent profile changes, or when current model/profile/context suitability cannot be verified. Preserve same-task continuation when the current profile is known suitable or an explicit continuity reason outweighs the transition benefit.
-
-A same-task model switch must re-read the frozen package and reconcile scope before edits, regardless of operator-requested or runtime-managed compaction. When exact remaining context is not exposed, do not claim a precise remaining context value or prescribe compaction from an inferred threshold; runtime-managed compaction remains a platform responsibility.
+A new execution Codex task loads the applicable instructions, harness, exact frozen package, amendments and variance, approval/baseline, First Plan Task, and variance stop before edits. A same-task route rereads the frozen package after a model switch or recorded continuity risk. Do not use numeric context thresholds, invent remaining-context estimates, or predict compaction when the runtime does not expose those signals.
 
 Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next activity, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
@@ -87,7 +85,7 @@ Route-specific review obligations are mandatory:
 - `superpowers:executing-plans`: Preserve executing-plans checkpoints. Provide Reviewer capability disclosure: name the independent reviewer when reviewer tooling is available; otherwise state the execution controller's self-review limitation and the fallback reason.
 - Native Codex: require an Independent reviewer sub-agent with curated artifacts, a named lens, and evidence-backed findings. The execution Codex task owns final integration. `Sub-agents: None` is not a successful native route; when the reviewer sub-agent is unavailable, stop and report the unavailable-review blocker.
 
-For Superpowers, `current session` means the execution controller's session, not necessarily the planning Codex task. A newly created execution Codex task may load the frozen package, invoke the selected method, and remain the controller for fresh Plan Task and reviewer sub-agent runs.
+For Superpowers, the external execution session is the execution controller's session, not necessarily the planning Codex task. A new execution Codex task may load the frozen package, invoke the selected method, and remain the controller for Plan Task and reviewer sub-agent runs.
 
 ## Common rules
 
@@ -202,17 +200,36 @@ Substantial small/medium plans and large or phased work item specs or phase plan
 ```md
 ## Model and Sub-agent Strategy
 
+### Current planning Codex task
+
 Model generation: `<generation or not exposed>`
-Capability tier: `<flagship / balanced / fast/economy>`
-Reasoning effort: `<runtime value or not exposed>`
-Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`
 Resolved profile: `<concrete runtime profile or not exposed>`
-Availability/fallback: `<availability result and approved fallback>`
-Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`
+Reasoning: `<runtime value or not exposed>`
 Context visibility: `<exposed signal or not exposed>`
-Artifact rehydration required: `<Yes/No plus reason>`
-Fit assessment: `<complexity/risk/ambiguity/blast-radius/budget/latency judgment>`
-Recommended change: `<none or concrete model/reasoning change with reason>`
+
+### Next-stage recommendation (draft only)
+
+#### Activity
+
+Next activity: `<named activity>`
+First Plan Task: `<TASK-NNN or not applicable>`
+
+#### Orchestration
+
+Method: `<selected execution method>`
+Run in: `<same Codex task / new Codex task>`
+Plan Task reviewers: `<per-Plan-Task reviewers and final reviewer, or route-specific disclosure>`
+
+#### Model
+
+Model: `<policy-relative model/profile>`
+Reasoning: `<runtime value>`
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`
+
+At freeze, relabel this same block **Approved next stage**. Routine notation omits the model-policy source, override scope, expiry, and open-ended rehydration explanations.
 
 | Phase | Purpose | Context strategy | Input context | Output artifact | Model policy | Model generation | Capability tier | Resolved profile | Reasoning effort | Reason | Parallel? | Blast radius if wrong |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|

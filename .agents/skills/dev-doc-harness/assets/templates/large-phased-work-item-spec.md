@@ -220,24 +220,30 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Planning-task observations:
+### Current planning Codex task
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
 4. Context visibility: `<exposed signal or not exposed>`.
 
-Approved execution selection:
+### Next-stage recommendation
 
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
+#### Activity
+
+Next activity: `<phase-plan drafting>`; First Plan Task: `<not applicable until a phase plan>`.
+
+#### Orchestration
+
+Method: `<recommended method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<recommended route-specific arrangement and final reviewer>`.
+
+#### Model
+
+Model: `<policy-relative recommendation>`; Reasoning: `<recommended effort>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
 
 Fit assessment:
 
@@ -246,8 +252,7 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-The anchor records a default strategy envelope. Each later phase plan records its
-concrete approved execution selection from that envelope or an approved amendment.
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next stage from that envelope or an approved amendment.
 
 Upcoming-stage sub-agent assessment:
 
@@ -328,7 +333,7 @@ Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuit
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
 - [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Planning-task observations and the actionable approved execution selection are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
+- [ ] Current planning Codex task facts and the Next-stage recommendation are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized; any batch phase-planning exception is stable and independently plannable.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.

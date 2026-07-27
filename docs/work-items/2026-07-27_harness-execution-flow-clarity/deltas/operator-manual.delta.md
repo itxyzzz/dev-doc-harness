@@ -3,3 +3,5 @@
 Work ID: `2026-07-27_harness-execution-flow-clarity`
 
 After a frozen package receives fresh start authorization, the planned execution method begins without a second generic choice. The normal order is `superpowers:subagent-driven-development`, then `superpowers:executing-plans` while Superpowers is available; native Codex is available by default only when Superpowers is unavailable and independent review can run. An explicit operator start instruction may select another available method or runtime setting without an amendment solely for that selection.
+
+For every next stage, keep the Current planning Codex task facts separate from the **Next-stage recommendation** (draft) or **Approved next stage** (frozen). Present four groups in order: Activity; Orchestration (Method, Run in, Plan Task reviewers); Model (Model and Reasoning); and only applicable Fallbacks and limits. Chat repeats the same values at draft review, freeze, and execution handoff. See `module:models` for the compact terminology and continuity rule.

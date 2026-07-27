@@ -2,24 +2,32 @@
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
 
-Planning-task observations:
+### Current planning Codex task
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
 4. Context visibility: `<exposed signal or not exposed>`.
 
-Approved execution selection:
+### Next-stage recommendation
 
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
+#### Activity
+
+Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
+
+#### Orchestration
+
+Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<per-Plan-Task reviewers and final reviewer, or route-specific disclosure>`.
+
+#### Model
+
+Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
+At freeze, relabel this block **Approved next stage** without changing its values. Do not add routine model-policy source, override scope, expiry, or open-ended rehydration fields.
 
 Upcoming-stage sub-agent assessment:
 

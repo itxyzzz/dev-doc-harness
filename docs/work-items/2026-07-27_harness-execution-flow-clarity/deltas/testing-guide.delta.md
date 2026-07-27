@@ -2,4 +2,4 @@
 
 Work ID: `2026-07-27_harness-execution-flow-clarity`
 
-Validate execution routing with `python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py`. The validator protects the ordered method cascade, mandatory route-specific review, the native no-review stop, and acceptance of fresh explicit method-only and model-only operator overrides. Each accepted override records the actual runtime selection and needs no plan amendment solely for that runtime selection.
+Validate execution routing with `python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py`. The validator protects the ordered method cascade, mandatory route-specific review, the native no-review stop, fresh method-only and model-only overrides, and the grouped next-stage summary. The summary distinguishes current planning facts from the draft recommendation or frozen approval, validates Method/Run in/Plan Task reviewers and Model/Reasoning, rejects context speculation, and checks the matching draft-review, freeze, and handoff chat projection.

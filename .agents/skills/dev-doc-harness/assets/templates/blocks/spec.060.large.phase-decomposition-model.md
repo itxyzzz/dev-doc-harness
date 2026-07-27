@@ -28,24 +28,30 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Planning-task observations:
+### Current planning Codex task
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
 4. Context visibility: `<exposed signal or not exposed>`.
 
-Approved execution selection:
+### Next-stage recommendation
 
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
+#### Activity
+
+Next activity: `<phase-plan drafting>`; First Plan Task: `<not applicable until a phase plan>`.
+
+#### Orchestration
+
+Method: `<recommended method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<recommended route-specific arrangement and final reviewer>`.
+
+#### Model
+
+Model: `<policy-relative recommendation>`; Reasoning: `<recommended effort>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
 
 Fit assessment:
 
@@ -54,8 +60,7 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-The anchor records a default strategy envelope. Each later phase plan records its
-concrete approved execution selection from that envelope or an approved amendment.
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next stage from that envelope or an approved amendment.
 
 Upcoming-stage sub-agent assessment:
 

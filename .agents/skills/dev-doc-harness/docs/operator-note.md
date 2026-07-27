@@ -11,6 +11,8 @@ delivery commitments from evidence, preserves handoffs for fresh threads,
 records meaningful drift, and avoids routine root-changelog conflicts across
 parallel work.
 
+For each next stage, the artifact and matching chat message use one short grouped view: **Activity**, **Orchestration** (Method, Run in, Plan Task reviewers), **Model** (Model and Reasoning), and any applicable **Fallbacks and limits**. Current planning Codex task facts stay separate. Drafts say **Next-stage recommendation**; frozen packages say **Approved next stage**. `module:models` owns the compact Codex task, Plan Task, sub-agent run, and external execution session terminology.
+
 Normal use remains simple: ask for the work you want and refine it through the
 conversation. The agent applies the harness when needed; explicit prompts are
 useful only when you want a special stop point or review checkpoint.
@@ -74,12 +76,10 @@ condition. When continuity permits a new file there, it must be a short pointer
 stub to the harness package rather than a duplicate spec or plan.
 
 The destination repository's project-level or merged global `AGENTS.md`
-preference overrides Superpowers' default spec and plan locations. Planning
-observations may be `not exposed`; before freeze, the applicable planning
-artifact records an approved execution selection with an actionable target,
-tier, reasoning effort, orchestration mode, fallback, continuity, and
-rehydration requirement. A large/phased anchor spec can record the selection
-for later phase planning. The harness plan retains numbered tasks and meaningful
+preference overrides Superpowers' default spec and plan locations. Before freeze,
+the applicable planning artifact records the grouped next-stage recommendation;
+a large/phased anchor records only its recommendation/default envelope for later
+phase planning. The harness plan retains numbered Plan Tasks and meaningful
 commit boundaries when generic Superpowers defaults conflict; task briefs and
 review aids remain ephemeral. If Superpowers is unavailable, keep the task
 independently executable and verifiable with its recorded checks.

@@ -9,7 +9,7 @@
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
 - [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Planning-task observations and the actionable approved execution selection are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
+- [ ] Current planning Codex task facts and the Next-stage recommendation are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned commit subjects and changelog title snippets are synchronized; any batch phase-planning exception is stable and independently plannable.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.

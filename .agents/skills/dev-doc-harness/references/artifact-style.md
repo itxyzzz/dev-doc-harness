@@ -50,6 +50,8 @@ identify it to test enforcement.
 
 ## Final artifact content
 
+For a next-stage summary, presentation owns grouping and plain-label readability only: render **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits** in that order. Do not define method, model, reviewer, continuity, or lifecycle semantics here.
+
 Write durable artifacts as final repository documents, not as chat transcripts
 or drafting instructions.
 

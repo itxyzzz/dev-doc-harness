@@ -10,6 +10,28 @@ Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 Execution method: `<approved method, or omit when not selected>`
 
+## Current planning Codex task
+
+Model/profile, reasoning, and context visibility: `<current facts or not exposed>`.
+
+## Next-stage recommendation
+
+### Activity
+
+Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
+
+### Orchestration
+
+Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
+
+### Model
+
+Model: `<policy-relative model/profile>`; Reasoning: `<effort>`.
+
+### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
 When Superpowers is the approved execution method, record it in the metadata
@@ -70,24 +92,32 @@ Fresh-thread readiness:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
 
-Planning-task observations:
+### Current planning Codex task
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
 3. Reasoning effort: `<runtime value or not exposed>`.
 4. Context visibility: `<exposed signal or not exposed>`.
 
-Approved execution selection:
+### Next-stage recommendation
 
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
+#### Activity
+
+Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
+
+#### Orchestration
+
+Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<per-Plan-Task reviewers and final reviewer, or route-specific disclosure>`.
+
+#### Model
+
+Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
+At freeze, relabel this block **Approved next stage** without changing its values. Do not add routine model-policy source, override scope, expiry, or open-ended rehydration fields.
 
 Upcoming-stage sub-agent assessment:
 
@@ -217,12 +247,24 @@ The normal route is rolling: implement this phase, record actual outputs, then
 plan the next phase. Batch planning is an explicit exception only for stable,
 independently plannable phases.
 
+## Current planning Codex task
+
+Keep observed model/profile, reasoning, and context facts separate from the frozen result.
+
+## Next-stage recommendation
+
+Before freeze, use the four groups: **Activity** (next activity and First Plan Task), **Orchestration** (Method, Run in: `<same Codex task / new Codex task>`, and Plan Task reviewers), **Model** (Model and Reasoning), and **Fallbacks and limits** (only applicable limits).
+
+## Approved next stage
+
+At the real frozen boundary, repeat the selected values in those same groups and mirror them in chat.
+
 ### Current-phase implementation handoff
 
 1. Frozen package: `<approved anchor, phase plan, amendments, prior outputs, and required evidence>`.
 2. Next activity: `<named current-phase implementation>`.
-3. First task: `<TASK-NNN>`.
-4. Approved execution selection and fallback: `<selection section or concise values>`.
+3. First Plan Task: `<TASK-NNN>`.
+4. Method, Run in, Plan Task reviewers, Model, Reasoning, and applicable fallback: `<selected grouped values>`.
 5. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
 ### Post-phase transition
@@ -234,6 +276,7 @@ independently plannable phases.
 
 ## Readiness
 
+- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Activity, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
 - [ ] The phase preserves its approved anchor inputs and has clear tasks, checks, and changelog entry.
 - [ ] The approved execution selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
@@ -246,4 +289,5 @@ independently plannable phases.
 ## Approval
 
 - Status: Draft
+- At freeze, relabel the grouped recommendation **Approved next stage** and mirror it in chat.
 - Superseded by: None

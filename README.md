@@ -15,6 +15,7 @@ The harness addresses those problems by providing:
 
 - reviewable durable planning packages and explicit pauses before execution;
 - deliberate model and reasoning-effort recommendations for each upcoming stage;
+- a compact next-stage view that keeps current planning facts separate from the recommendation or approval;
 - durable handoffs for fresh agents and model transitions;
 - clear distinction between specification documents (`spec-*`) with specification commitments and verification criterial, and execution plans (`plan-*`) with tasks and checks;
 - recorded variance instead of silently rewriting a plan around reality;
@@ -182,12 +183,15 @@ commit the approved package, report its paths, and pause before the documented
 next activity. This also allows the operator to push and open a draft plan-only PR,
 and to compact the current task or start a new one using the provided handoff.
 
-For substantial work, the applicable planning artifact records the recommended
-model generation, capability tier, reasoning effort, orchestration mode,
-and an availability fallback for the next work stage before freeze. A large/phased
-anchor spec can carry that selection for later phase planning.  A fresh
-task with a curated handoff is preferred when the main model or profile
-changes; a same-task switch rehydrates the frozen package before editing.
+For substantial work, the applicable planning artifact and its matching chat
+message show the next stage in four plain groups: Activity; Orchestration
+(Method, Run in, Plan Task reviewers); Model (Model and Reasoning); and only
+applicable Fallbacks and limits. Current planning Codex task facts remain
+separate. Drafts show a Next-stage recommendation; frozen packages show an
+Approved next stage. `module:models` defines Codex task, Plan Task, sub-agent
+run, and external execution session. It also supplies the durable capability tier
+and orchestration mode guidance behind the short labels. A new Codex task loads
+the frozen package; a same-task switch rehydrates the frozen package before editing after a model switch or continuity risk.
 
 The strategy also records whether context usage is exposed, whether artifacts
 must be re-read, and the fallback when the chosen runtime combination is

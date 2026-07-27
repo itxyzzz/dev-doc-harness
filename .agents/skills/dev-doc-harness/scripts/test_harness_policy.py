@@ -80,6 +80,7 @@ CHECK_IDS = [
     "compat.superpowers-adapter-contract",
     "execution.method-fallbacks",
     "clarity.planning-template-contract",
+    "presentation.next-stage-summary",
 ]
 
 CANONICAL_REFERENCES = [
@@ -1216,7 +1217,7 @@ def assert_model_selection_dimensions() -> None:
         "Availability/fallback",
         "Execution continuity",
         "Context visibility",
-        "Artifact rehydration required",
+        "Run in",
     ]:
         assert_text_contains(check_id, models, re.escape(label), f"selection field '{label}'")
 
@@ -1261,7 +1262,7 @@ def assert_model_selection_dimensions() -> None:
     assert_text_contains(check_id, models, r"plan's normal post-freeze", "approved strategy starts with plan authorization")
     assert_text_contains(check_id, models, r"outside that strategy", "out-of-strategy confirmation boundary")
     assert_text_contains(check_id, models, r"Platform rules may still require", "platform permission boundary")
-    assert_text_contains(check_id, models, r"approved fallback", "approved fallback behavior")
+    assert_text_contains(check_id, models, r"availability fallback", "approved fallback behavior")
     assert_text_contains(check_id, models, r"de-facto orchestration mode", "de-facto orchestration reporting")
     assert_text_contains(check_id, models, r"unplanned sub-agent.+stronger tier or effort.+broader write authority", "unplanned orchestration confirmation")
 
@@ -1271,7 +1272,7 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
     for path in strategy_templates:
-        for label in ["Model generation", "Capability tier", "Reasoning effort", "Orchestration mode", "Resolved profile", "Availability/fallback"]:
+        for label in ["Current planning Codex task", "Next-stage recommendation", "Method", "Run in", "Plan Task reviewers", "Model", "Reasoning"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
         assert_text_not_contains(check_id, path, r"Model class/profile:", "conflated per-role model class/profile field")
 
@@ -1280,8 +1281,8 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
     ]
     for path in strategy_source_blocks:
-        assert_text_contains(check_id, path, r"Planning-task observations", "planning observations prompt")
-        assert_text_contains(check_id, path, r"Approved execution selection", "approved execution selection prompt")
+        assert_text_contains(check_id, path, r"Current planning Codex task", "planning observations prompt")
+        assert_text_contains(check_id, path, r"Next-stage recommendation", "approved execution selection prompt")
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
@@ -1307,23 +1308,23 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, execution, re.escape("rule:execution-quality.execution-thread-start"), "execution-thread-start owner")
     assert_text_contains(check_id, execution, r"applicable instructions.+frozen artifacts", "instruction and artifact load order")
     assert_text_contains(check_id, execution, r"avoid.+rediscover", "rediscovery avoidance")
-    assert_text_contains(check_id, execution, r"named task|first activity", "named starting activity")
+    assert_text_contains(check_id, execution, r"First Plan Task|next activity", "named starting activity")
     assert_text_contains(check_id, execution, r"variance", "variance stop route")
 
-    assert_text_contains(check_id, models, r"new task with curated-artifact handoff", "new-task transition preference")
-    assert_text_contains(check_id, models, r"(?:exact|precise).+remaining context.+not exposed|not exposed.+(?:exact|precise).+remaining context", "no unexposed context estimate")
-    assert_text_contains(check_id, models, r"same-task.+re(?:-|)read.+frozen|same-task.+rehydrat", "same-task artifact rehydration")
+    assert_text_contains(check_id, models, r"new Codex task", "new-task transition preference")
+    assert_text_contains(check_id, models, r"numeric context thresholds.+remaining-context estimates.+predict compaction", "no unexposed context estimate")
+    assert_text_contains(check_id, models, r"same-task route rereads the frozen package", "same-task artifact rehydration")
 
     small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
     phase_plan = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
     assert_text_contains(check_id, small_plan, r"## Implementation handoff", "small-plan handoff section")
-    assert_text_contains(check_id, small_plan, r"Frozen package[\s\S]*Next activity[\s\S]*First task", "small-plan compact handoff inputs")
+    assert_text_contains(check_id, small_plan, r"Frozen package[\s\S]*Next activity[\s\S]*First Plan Task", "small-plan compact handoff inputs")
     assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
     assert_text_contains(check_id, phase_plan, r"## Phase transitions", "phase transition section")
     assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
     assert_text_contains(check_id, phase_plan, r"Post-phase transition", "post-phase transition handoff")
 
-    for label in ["capability tier", "reasoning effort", "orchestration mode", "fallback", "continuity", "context visibility", "artifact-rehydration"]:
+    for label in ["Method", "Run in", "Plan Task reviewers", "Model", "Reasoning", "Fallbacks and limits"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
     assert_text_contains(check_id, router, r"execution-thread-start", "router discoverability")
@@ -1858,7 +1859,7 @@ def assert_superpowers_adapter_contract() -> None:
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete execution meta-header")
     assert_text_contains(check_id, traceability_block, r"Global Constraints", "global-constraints prompt")
     assert_text_contains(check_id, traceability_block, r"self-contained", "global-constraints self-containment test")
-    assert_text_contains(check_id, model_block, r"Approved execution selection", "approved selection prompt")
+    assert_text_contains(check_id, model_block, r"Next-stage recommendation", "approved selection prompt")
     assert_text_contains(check_id, model_block, r"Upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
     assert_text_contains(check_id, task_block, r"Interfaces", "task-interface prompt")
     assert_text_contains(check_id, task_block, r"numbered", "numbered task-step prompt")
@@ -1868,7 +1869,7 @@ def assert_superpowers_adapter_contract() -> None:
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete generated meta-header")
         assert_text_contains(check_id, path, r"Global Constraints", "generated global-constraints prompt")
         assert_text_contains(check_id, path, r"Interfaces", "generated task-interface prompt")
-        assert_text_contains(check_id, path, r"Approved execution selection", "generated approved selection prompt")
+        assert_text_contains(check_id, path, r"Next-stage recommendation", "generated approved selection prompt")
         errors = superpowers_task_fixture_errors(read_repo_text(path))
         if errors:
             add_failure(check_id, f"{path} task shape: {', '.join(errors)}")
@@ -1995,7 +1996,7 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, models, r"Native Codex.*Independent reviewer sub-agent", "native independent review")
     assert_text_contains(check_id, models, r"Sub-agents: None.*not.*native", "native no-review stop")
     assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
-    assert_text_contains(check_id, models, r"current session.*execution controller", "Superpowers session interpretation")
+    assert_text_contains(check_id, models, r"external execution session.*execution controller", "Superpowers session interpretation")
     assert_text_contains(check_id, execution, r"fresh explicit operator.*method.*model", "execution-start override")
     assert_text_contains(check_id, execution, r"record.*actual.*selection", "recorded runtime selection")
     assert_text_contains(check_id, execution, r"without.*plan amendment.*solely", "no amendment for runtime selection")
@@ -2087,8 +2088,8 @@ def assert_planning_template_clarity() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
     for path in [models, *model_sources, *model_consumers]:
-        assert_text_contains(check_id, path, r"Planning-task observations", "planning observations group")
-        assert_text_contains(check_id, path, r"Approved execution selection", "approved selection group")
+        assert_text_contains(check_id, path, r"Current planning Codex task", "planning observations group")
+        assert_text_contains(check_id, path, r"Next-stage recommendation", "approved selection group")
 
     unknown_observations = (
         "Planning-task observations:\nModel generation: `not exposed`\nContext visibility: `not exposed`\n\n"
@@ -2139,6 +2140,76 @@ def assert_planning_template_clarity() -> None:
     for expected, fixture in fixtures.items():
         if delegation_fixture_route(fixture) != expected:
             add_failure(check_id, f"{expected} delegation fixture did not route correctly")
+
+
+def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
+    """Validate the compact next-stage interface consumed by artifacts and chat."""
+    required_title = "Approved next stage" if frozen else "Next-stage recommendation"
+    errors = [
+        f"missing {required_title}"
+        for title in [required_title]
+        if title not in text
+    ]
+    if "Current planning Codex task" not in text:
+        errors.append("missing current planning Codex task")
+    for group in ["Activity", "Orchestration", "Model", "Fallbacks and limits"]:
+        if group not in text:
+            errors.append(f"missing {group} group")
+    if not re.search(r"Method:.*Run in:.*Plan Task reviewers", text, flags=re.DOTALL):
+        errors.append("orchestration fields are incomplete")
+    if not re.search(r"Model:.*Reasoning", text, flags=re.DOTALL):
+        errors.append("model fields are incomplete")
+    if not re.search(r"Run in:\s*(?:same Codex task|new Codex task)(?=;|\n|$)", text):
+        errors.append("Run in uses an unsupported value")
+    if re.search(r"(?:\d+[% ]+context|remaining context|compaction prediction)", text, flags=re.IGNORECASE):
+        errors.append("context speculation is present")
+    return errors
+
+
+def assert_next_stage_summary() -> None:
+    check_id = "presentation.next-stage-summary"
+    models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
+    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    sources = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.small.readiness-completion-approval.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion-approval.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
+    ]
+    consumers = [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+
+    draft_fixture = """Current planning Codex task: profile `not exposed`\n\nNext-stage recommendation\nActivity: First Plan Task: `TASK-001`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same Codex task", "new Codex task")
+    invalid_fixture = draft_fixture.replace("same Codex task", "same session")
+    if next_stage_summary_fixture_errors(draft_fixture, frozen=False):
+        add_failure(check_id, "valid draft summary fixture was rejected")
+    if next_stage_summary_fixture_errors(frozen_fixture, frozen=True):
+        add_failure(check_id, "valid frozen summary fixture was rejected")
+    if not next_stage_summary_fixture_errors(invalid_fixture, frozen=False):
+        add_failure(check_id, "invalid Run in fixture was accepted")
+
+    for path in [models, *sources, *consumers]:
+        assert_text_contains(check_id, path, r"Current planning Codex task", "current planning task separation")
+        assert_text_contains(check_id, path, r"Next-stage recommendation", "draft recommendation label")
+        assert_text_contains(check_id, path, r"Activity[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
+    for path in [freeze, execution]:
+        assert_text_contains(check_id, path, r"Approved next stage", "frozen next-stage label")
+        assert_text_contains(check_id, path, r"chat", "chat projection")
+    assert_text_contains(check_id, models, r"Run in.*same Codex task.*new Codex task", "Run in values")
+    assert_text_contains(check_id, models, r"First Plan Task.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
+    assert_text_contains(check_id, style, r"grouping.*plain-label", "presentation-only grouping rule")
+    assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
 
 
 def run_checks() -> None:
@@ -2420,6 +2491,9 @@ def run_checks() -> None:
 
     assert_planning_template_clarity()
     write_check_result("clarity.planning-template-contract")
+
+    assert_next_stage_summary()
+    write_check_result("presentation.next-stage-summary")
 
 
 def main() -> int:
