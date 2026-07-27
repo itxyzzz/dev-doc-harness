@@ -55,6 +55,7 @@ CHECK_IDS = [
     "router.route-budget",
     "release.route",
     "discoverability.safety",
+    "skill.openai-metadata",
     "phrases.duplicated-policy",
     "phrases.duplicate-blocks",
     "templates.assembly",
@@ -165,6 +166,7 @@ REQUIRED_FILES = [
     "CHANGELOG.md",
     ".agents/skills/dev-doc-harness/SKILL.md",
     ".agents/skills/dev-doc-harness/VERSION",
+    ".agents/skills/dev-doc-harness/agents/openai.yaml",
     ".agents/skills/dev-doc-harness/scripts/test_harness_policy.py",
     ".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py",
     ".agents/skills/dev-doc-harness/references/policy-architecture.md",
@@ -265,6 +267,78 @@ def assert_text_not_contains(check_id: str, path: str, pattern: str, label: str 
     text = read_repo_text(path)
     if re.search(pattern, text):
         add_failure(check_id, f"Unexpected {label or pattern} in {path}")
+
+
+def assert_agents_bootstrap_contract() -> None:
+    check_id = "discoverability.safety"
+    path = "AGENTS.md"
+    semantic_anchors = [
+        (r"repository development[\s\S]+very small mechanical edits[\s\S]+\.agents/skills/dev-doc-harness/SKILL\.md", "harness activation"),
+        (r"very small mechanical edits[\s\S]+(?:skip|without) durable artifacts[\s\S]+module:lifecycle", "very-small-mechanical exception"),
+        (r"selects?[\s\S]+`economy-default`", "active repository model policy"),
+        (r"Superpowers[\s\S]+methodology[\s\S]+(?:harness|Dev Doc Harness)[\s\S]+artifact(?:-| )location[\s\S]+lifecycle", "Superpowers/harness ownership"),
+        (r"docs/work-items/<work-id>", "canonical work-item location"),
+        (r"combined small/medium[\s\S]+spec[\s\S]+plan", "combined small/medium planning"),
+        (r"docs/superpowers[\s\S]+only when[\s\S]+already exists[\s\S]+previous documentation packages", "guarded legacy compatibility route"),
+        (r"fresh start authorization[\s\S]+planned method", "execution-start routing"),
+        (r"operator[\s\S]+(?:method|model)[\s\S]+reasoning[\s\S]+Codex-task continuity[\s\S]+without an amendment", "operator runtime overrides"),
+        (r"only when[\s\S]+maintain, package, or release[\s\S]+Dev Doc Harness distribution[\s\S]+source repository", "source-repository-only distribution maintenance"),
+        (r"Do not use[\s\S]+downstream[\s\S]+releases", "downstream release exclusion"),
+    ]
+    for pattern, label in semantic_anchors:
+        assert_text_contains(check_id, path, pattern, label)
+
+    word_count = len(read_repo_text(path).split())
+    if word_count > 360:
+        add_failure(check_id, f"AGENTS.md has {word_count} words; maximum is 360")
+
+
+def assert_skill_openai_metadata() -> None:
+    check_id = "skill.openai-metadata"
+    path = ".agents/skills/dev-doc-harness/agents/openai.yaml"
+    expected = {
+        "display_name": "Dev Doc Harness",
+        "short_description": "Plan and govern repository development work",
+        "default_prompt": "Use $dev-doc-harness to guide this repository development task through the appropriate planning, execution, and validation lifecycle.",
+    }
+
+    if not join_repo_path(path).exists():
+        add_failure(check_id, f"Missing path: {path}")
+        return
+
+    lines = read_repo_text(path).splitlines()
+    if not lines or lines[0] != "interface:":
+        add_failure(check_id, f"Missing top-level interface mapping in {path}")
+        return
+
+    actual: dict[str, str] = {}
+    for line in lines[1:]:
+        match = re.fullmatch(r'  ([a-z_]+): "([^"\r\n]*)"', line)
+        if not match:
+            add_failure(check_id, f"Unexpected metadata syntax or top-level field in {path}: {line!r}")
+            continue
+        key, value = match.groups()
+        if key in actual:
+            add_failure(check_id, f"Duplicate interface field in {path}: {key}")
+        actual[key] = value
+
+    if set(actual) != set(expected):
+        missing = sorted(set(expected) - set(actual))
+        extra = sorted(set(actual) - set(expected))
+        if missing:
+            add_failure(check_id, f"Missing interface fields in {path}: {', '.join(missing)}")
+        if extra:
+            add_failure(check_id, f"Unrequested interface fields in {path}: {', '.join(extra)}")
+
+    for key, value in expected.items():
+        if actual.get(key) != value:
+            add_failure(check_id, f"Unexpected {key} value in {path}")
+
+    short_description = actual.get("short_description", "")
+    if not 25 <= len(short_description) <= 64:
+        add_failure(check_id, "short_description must be 25-64 characters")
+    if "$dev-doc-harness" not in actual.get("default_prompt", ""):
+        add_failure(check_id, "default_prompt must reference $dev-doc-harness")
 
 
 def get_plain_language_active_markdown_paths() -> list[str]:
@@ -1288,13 +1362,31 @@ def assert_model_selection_dimensions() -> None:
 
     assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
 
-    for path in [role_examples, readme]:
+    for path in [role_examples]:
         assert_text_contains(check_id, path, r"Capability tier", "capability-tier guidance")
         assert_text_contains(check_id, path, r"Orchestration mode", "orchestration-mode guidance")
         assert_text_contains(check_id, path, r"ultra", "ultra guidance")
 
+    assert_normalized_text_contains(
+        check_id,
+        readme,
+        "Model (model and reasoning)",
+        "plain-language model guidance",
+    )
+    assert_normalized_text_contains(
+        check_id,
+        readme,
+        "Orchestration (run in same task or new one",
+        "plain-language orchestration guidance",
+    )
+    assert_text_contains(check_id, readme, r"ultra", "ultra guidance")
     assert_text_contains(check_id, role_examples, r"execution-thread-start", "execution startup route")
-    assert_text_contains(check_id, readme, r"same-task switch rehydrates the frozen package before editing", "execution-continuity guidance")
+    assert_normalized_text_contains(
+        check_id,
+        readme,
+        "same-task switch rehydrates the frozen package before editing",
+        "execution-continuity guidance",
+    )
 
 
 def assert_execution_thread_start() -> None:
@@ -1833,8 +1925,8 @@ def assert_superpowers_adapter_contract() -> None:
     assert_text_contains(
         check_id,
         "AGENTS.md",
-        r"These instructions override Superpowers' defaults for work governed by this harness",
-        "AGENTS.md path-preference override",
+        r"Superpowers[\s\S]+methodology[\s\S]+(?:harness|Dev Doc Harness)[\s\S]+artifact(?:-| )location[\s\S]+lifecycle",
+        "AGENTS.md Superpowers/harness ownership boundary",
     )
     assert_text_contains(
         check_id,
@@ -2387,13 +2479,16 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Variance policy", "label": "variance and amendments"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": r"CHANGELOG.md.+before commits", "label": "changelog before commit"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
-        {"path": "AGENTS.md", "pattern": "These instructions select the `economy-default` policy for work within their scope", "label": "active repository model policy"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
         {"path": ".agents/skills/dev-doc-harness/references/policy-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
     ]
     for topic in discoverability:
         assert_text_contains("discoverability.safety", topic["path"], topic["pattern"], topic["label"])
+    assert_agents_bootstrap_contract()
     write_check_result("discoverability.safety")
+
+    assert_skill_openai_metadata()
+    write_check_result("skill.openai-metadata")
 
     duplicate_phrase_targets = [
         "AGENTS.md",
@@ -2476,7 +2571,7 @@ def run_checks() -> None:
     assert_scenario_evidence(
         "scenario:work-size.very-small-skip",
         [
-            {"path": "AGENTS.md", "pattern": "Very small mechanical edits", "label": "root sizing summary"},
+            {"path": "AGENTS.md", "pattern": r"very small mechanical edits[\s\S]+(?:skip|without) durable artifacts", "label": "root sizing summary"},
             {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Classify work size", "label": "router sizing route"},
             {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Small mechanical work may skip", "label": "lifecycle sizing rule"},
         ],
@@ -2547,7 +2642,7 @@ def run_checks() -> None:
     assert_scenario_evidence(
         "scenario:compat.superpowers",
         [
-            {"path": "AGENTS.md", "pattern": "already exists and contains previous documentation packages", "label": "root continuity gate"},
+            {"path": "AGENTS.md", "pattern": r"docs/superpowers[\s\S]+only when[\s\S]+already exists[\s\S]+previous documentation packages", "label": "root continuity gate"},
             {"path": "README.md", "pattern": r"already exists and\s+contains previous documentation packages", "label": "README continuity gate"},
             {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "already exists and contains previous documentation packages", "label": "router continuity gate"},
             {"path": ".agents/skills/dev-doc-harness/docs/operator-note.md", "pattern": "already exists and contains previous documentation packages", "label": "operator-note continuity gate"},

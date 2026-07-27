@@ -13,15 +13,12 @@ verified, or why a design choice was made.
 
 The harness addresses those problems by providing:
 
-- reviewable durable planning packages and explicit pauses before execution;
-- deliberate model and reasoning-effort recommendations for each upcoming stage;
-- a compact next-stage view that keeps current planning facts separate from the recommendation or approval;
-- durable handoffs for fresh agents and model transitions;
-- clear distinction between specification documents (`spec-*`) with specification commitments and verification criterial, and execution plans (`plan-*`) with tasks and checks;
-- recorded variance instead of silently rewriting a plan around reality;
-- work-item-local changelog sources that avoid routine root-changelog merge
-  conflicts; and
-- one canonical package when Superpowers is active.
+- reviewable durable structured planning packages;
+- explicit adaptive workflow with pauses between stages;
+- deliberate model, reasoning-effort, and orchestration recommendations for each upcoming stage;
+- recorded variance or amendments to a plan depending on the extent of material updates;
+- work-item-local changelog sources that avoid routine root-changelog merge conflicts;
+- one canonical package working together with Superpowers or standalone.
 
 The result is control without constant process micromanagement: operators get a
 clear record of what will happen, why it changed, and what evidence supports
@@ -146,8 +143,8 @@ For substantial work, the agent creates a work item under
 `docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a
 combined small/medium spec-and-plan package together; a spec-only freeze is an
 explicit operator-requested or operator-approved staged exception that records
-its reason and names plan drafting as its next activity. Large/phased work freezes an anchor spec before later
-phase plans unless combined planning was explicitly requested.
+its reason and names plan drafting as its next activity. Large/phased work freezes
+an anchor spec before later phase plans unless combined planning was explicitly requested.
 
 The practical boundary is whether one orchestration thread can safely retain
 scope, decisions, validation, variance, integration, and the user-facing result
@@ -158,7 +155,7 @@ filenames use a short suffix for clear chat references; the naming reference
 owns the exact grammar.
 
 Specs `spec-*` state the agreed outcomes, boundaries, and verification criteria.
-It preserves goals, boundaries, requirements, risks, and relevant decisions.
+A spec preserves goals, boundaries, requirements, risks, and relevant decisions.
 Plans `plan-*` turn the specs into actionable delivery recipes with tasks for step-by-step
 execution and checks to provide evidence that all verification criteria are covered.
 The plan records task sequencing, validation, documentation work, planned commit subjects,
@@ -185,29 +182,27 @@ next activity. This also allows the operator to push and open a draft plan-only 
 and to compact the current task or start a new one using the provided handoff.
 
 For substantial work, the applicable planning artifact and its matching chat
-message show the next stage in four plain groups: Activity; Orchestration
-(Method, Run in, Plan Task reviewers); Model (Model and Reasoning); and only
-applicable Fallbacks and limits. Current planning Codex task facts remain
-separate. Drafts show a Next-stage recommendation; frozen packages show an
-Approved next stage. `module:models` defines Codex task, Plan Task, sub-agent
-run, and external execution session. It also supplies the durable capability tier
-and orchestration mode guidance behind the short labels. A new Codex task loads
-the frozen package; a same-task switch rehydrates the frozen package before editing after a model switch or continuity risk.
+message show the recommendation for the next stage and its execution mode:
+- Activity (the next suggested stage, e.g. frozen plan execution after approval);
+- Orchestration (run in same task or new one, using sub-agents, etc.);
+- Model (model and reasoning);
+- Fallbacks and limits (only those applicable).
 
-The strategy also records whether context usage is exposed, whether artifacts
-must be re-read, and the fallback when the chosen runtime combination is
-unavailable. Platform-managed multi-agent/`ultra` execution and controlled harness
-sub-agents are distinct: the latter have named roles, curated context, outputs,
-and review boundaries. The orchestration thread always retains final integration
-and completion-report ownership.
+A new Codex task loads the frozen package; a same-task switch rehydrates
+the frozen package before editing after a model switch or continuity risk.
 
-After fresh start authorization, the harness uses the plan's method without a
-second generic choice: `superpowers:subagent-driven-development` when it fits,
-then `superpowers:executing-plans` while Superpowers is available. Native Codex
-is the default only when Superpowers is unavailable and an independent reviewer
-sub-agent can run; otherwise execution stops with the review blocker. An explicit
-operator start instruction may select another available method or runtime setting
-without a plan amendment solely for that selection.
+Execution method defaults to `superpowers:subagent-driven-development`, with
+fallback to `superpowers:executing-plans` if sub-agents are not available or
+this method is unsiutable for other reasons, and final fallback to native
+agentic tool execution if Superpowers is not installed. The handoff also
+includes recommendations on review sub-agents and their roles, context
+management strategy for them, and the fallback when the chosen runtime
+combination is unavailable. Platform-managed multi-agent/`ultra` execution
+and controlled harness sub-agents are distinct: the latter have named
+roles, curated context, outputs, and review boundaries. The orchestration
+thread always retains final integration and completion-report ownership.
+
+The operator can override all these recommendations on start authorization.
 
 ### Drift, commits, and changelogs
 
@@ -217,9 +212,8 @@ planned and what was delivered. Small implementation or validation adjustments
 are normal when they preserve the approved scope and outcome. That includes
 changes that serve the same evidence purpose; using a different command to
 prove the same result is one example. A change that materially affects the
-outcome, architecture, API, data,
-security, privacy, compliance, scope, or required evidence goes through an
-amendment and approval.
+outcome, architecture, API, data, security, privacy, compliance, scope, or
+required evidence goes through an amendment and approval.
 
 Each work item keeps changelog source fragments under
 `docs/work-items/<work-id>/changelog/`. They record what its commits delivered

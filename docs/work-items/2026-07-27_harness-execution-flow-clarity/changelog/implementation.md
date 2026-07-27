@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 feat: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Compacted the repository bootstrap while preserving its semantic guards, added minimal generated skill UI metadata with focused validation, retained installation-neutral skill routing, and included the operator's README improvements.
+
 ## 2026-07-28 fix: harness-execution-flow-clarity -- replace no-review blocker with operator decision
 
 Release target: `unreleased`
@@ -14,7 +22,7 @@ Release target: `unreleased`
 Package impact: `distributable`
 Release-note: `source-only`
 
-- Rewrote the README section as a concise user-facing explanation of implementation drift, work-item commit history, and root changelog consolidation.
+- Reworked README as a user-facing harness overview and aligned its focused model-selection checks with the simpler prose and Markdown line wrapping.
 
 ## 2026-07-27 fix: harness-execution-flow-clarity -- clarify frozen handoff heading
 
