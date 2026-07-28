@@ -1,21 +1,12 @@
 # Dev Doc Harness Operator Note
 
-This note travels with the copyable harness package. It is a compact usage
-summary for operators and adopters; canonical policy still lives in
-`AGENTS.md`, `SKILL.md`, and the routed references under
-`.agents/skills/dev-doc-harness/references/`.
+This note travels with the copyable harness package. It is a compact usage summary for operators and adopters; canonical policy still lives in `AGENTS.md`, `SKILL.md`, and the routed references under `.agents/skills/dev-doc-harness/references/`.
 
-The harness keeps important development decisions out of disappearing chat
-history. It creates reviewable plans before substantial edits, separates
-delivery commitments from evidence, preserves handoffs for fresh threads,
-records meaningful drift, and avoids routine root-changelog conflicts across
-parallel work.
+The harness keeps important development decisions out of disappearing chat history. It creates reviewable plans before substantial edits, separates delivery commitments from evidence, preserves handoffs for fresh threads, records meaningful drift, and avoids routine root-changelog conflicts across parallel work.
 
 For each next stage, the artifact and matching chat message use one short grouped view: **Activity**, **Orchestration** (Method, Run in, Plan Task reviewers), **Model** (Model and Reasoning), and any applicable **Fallbacks and limits**. Current planning Codex task facts stay separate. Drafts say **Next-stage recommendation**; frozen packages say **Approved next stage**. `module:models` owns the compact Codex task, Plan Task, sub-agent run, and external execution session terminology.
 
-Normal use remains simple: ask for the work you want and refine it through the
-conversation. The agent applies the harness when needed; explicit prompts are
-useful only when you want a special stop point or review checkpoint.
+Normal use remains simple: ask for the work you want and refine it through the conversation. The agent applies the harness when needed; explicit prompts are useful only when you want a special stop point or review checkpoint.
 
 ## What To Copy
 
@@ -24,27 +15,19 @@ The distributable package is:
 - root `AGENTS.md`
 - `.agents/`
 
-Do not copy this repository's root `README.md`, `CHANGELOG.md`, `TODO.md`, or
-`docs/work-items/` into downstream projects. Downstream repositories keep their
-own work-item history.
+Do not copy this repository's root `README.md`, `CHANGELOG.md`, `TODO.md`, or `docs/work-items/` into downstream projects. Downstream repositories keep their own work-item history.
 
-If the destination repository already has an `AGENTS.md`, merge the harness
-instructions with the local repository instructions instead of replacing local
-policy. Commit the harness adoption separately from product work so rollback is
-a normal revert of that dedicated update.
+If the destination repository already has an `AGENTS.md`, merge the harness instructions with the local repository instructions instead of replacing local policy. Commit the harness adoption separately from product work so rollback is a normal revert of that dedicated update.
 
 ## How Operators Use It
 
-Ask for the work normally. For repository development work beyond a very small
-mechanical edit, the agent loads:
+Ask for the work normally. For repository development work beyond a very small mechanical edit, the agent loads:
 
 ```text
 .agents/skills/dev-doc-harness/SKILL.md
 ```
 
-The router sends the agent to the smallest useful set of canonical references
-for sizing, planning, freeze gates, implementation, variance, changelog source
-fragments, release context, naming conventions, and model or sub-agent policy.
+The router sends the agent to the smallest useful set of canonical references for sizing, planning, freeze gates, implementation, variance, changelog source fragments, release context, naming conventions, and model or sub-agent policy.
 
 For substantial work, expect a work item package under:
 
@@ -52,83 +35,37 @@ For substantial work, expect a work item package under:
 <work-item-path>
 ```
 
-Small or medium work normally has one combined small/medium spec-and-plan package. A
-spec-only package requires an operator-requested or operator-approved staged reason
-and hands off only to `plan drafting`. Large work keeps its anchor and phase-plan
-boundaries. Stable `SPEC`, `VER`, `TASK`, `CHECK`, and
-`DEC` IDs help readers navigate, but a full mapping is optional unless it helps
-coverage, handoff, or deterministic validation.
+Small or medium work normally has one combined small/medium spec-and-plan package. A spec-only package requires an operator-requested or operator-approved staged reason and hands off only to `plan drafting`. Large work keeps its anchor and phase-plan boundaries. Stable `SPEC`, `VER`, `TASK`, `CHECK`, and `DEC` IDs help readers navigate, but a full mapping is optional unless it helps coverage, handoff, or deterministic validation.
 
-Use a short architecture snapshot only when a future executor needs a decision
-or tradeoff that does not fit clearly in the spec. It is work-item architecture;
-`ARCHITECTURE.md` is future work for a separate extension.
+Use a short architecture snapshot only when a future executor needs a decision or tradeoff that does not fit clearly in the spec. It is work-item architecture; `ARCHITECTURE.md` is future work for a separate extension.
 
 ## Using Superpowers
 
-Operators do not need to choose between Superpowers and the harness. When both
-are active, Superpowers may shape the agent's working method, while the harness
-remains the visible repository record for specs, plans, snapshots, variance,
-changelog source fragments, and freeze gates.
+Operators do not need to choose between Superpowers and the harness. When both are active, Superpowers may shape the agent's working method, while the harness remains the visible repository record for specs, plans, snapshots, variance, changelog source fragments, and freeze gates.
 
-The reviewable package should still appear under the harness work item folder
-before implementation starts. Add `docs/superpowers` documents only when the
-directory already exists and contains previous documentation packages from
-before the current work; never create or seed it to satisfy that compatibility
-condition. When continuity permits a new file there, it must be a short pointer
-stub to the harness package rather than a duplicate spec or plan.
+The reviewable package should still appear under the harness work item folder before implementation starts. Add `docs/superpowers` documents only when the directory already exists and contains previous documentation packages from before the current work; never create or seed it to satisfy that compatibility condition. When continuity permits a new file there, it must be a short pointer stub to the harness package rather than a duplicate spec or plan.
 
-The destination repository's project-level or merged global `AGENTS.md`
-preference overrides Superpowers' default spec and plan locations. Before freeze,
-the applicable planning artifact records the grouped next-stage recommendation;
-a large/phased anchor records only its recommendation/default envelope for later
-phase planning. The harness plan retains numbered Plan Tasks and meaningful
-commit boundaries when generic Superpowers defaults conflict; task briefs and
-review aids remain ephemeral. If Superpowers is unavailable, keep the task
-independently executable and verifiable with its recorded checks.
+The destination repository's project-level or merged global `AGENTS.md` preference overrides Superpowers' default spec and plan locations. Before freeze, the applicable planning artifact records the grouped next-stage recommendation; a large/phased anchor records only its recommendation/default envelope for later phase planning. The harness plan retains numbered Plan Tasks and meaningful commit boundaries when generic Superpowers defaults conflict; task briefs and review aids remain ephemeral. If Superpowers is unavailable, keep the task independently executable and verifiable with its recorded checks.
 
-After fresh authorization, the approved execution method starts without another
-generic choice. The normal order is `superpowers:subagent-driven-development`,
-then `superpowers:executing-plans` while Superpowers is available. Native Codex
-is the default only when Superpowers is unavailable. Independent review remains
-the default; if it cannot run or an operator declines it, the agent records the
-assurance gap and compensating validation, asks once when a decision is still
-needed, proceeds only with explicit authorization, and reports that limitation
-at completion. An explicit operator start instruction may select another
-available method or runtime setting without an amendment solely for that
-selection.
+After fresh authorization, the approved execution method starts without another generic choice. The normal order is `superpowers:subagent-driven-development`, then `superpowers:executing-plans` while Superpowers is available. Native Codex is the default only when Superpowers is unavailable. Independent review remains the default; if it cannot run or an operator declines it, the agent records the assurance gap and compensating validation, asks once when a decision is still needed, proceeds only with explicit authorization, and reports that limitation at completion. An explicit operator start instruction may select another available method or runtime setting without an amendment solely for that selection.
 
 ## Review And Pause Points
 
 The normal flow is simple:
 
 1. Draft, approve, and freeze the current planning package.
-2. Start its documented next activity only after a fresh instruction: phase-plan
-   drafting after an anchor freeze, or implementation after a combined or
-   phase-plan freeze.
+2. Start its documented next activity only after a fresh instruction: phase-plan drafting after an anchor freeze, or implementation after a combined or phase-plan freeze.
 3. Complete planned safe work without pausing between tasks.
-4. Note noteworthy equivalent drift in the variance log; amend only material
-   outcome, architecture, API, data, security, privacy, compliance, scope, or
-   evidence changes.
+4. Note noteworthy equivalent drift in the variance log; amend only material outcome, architecture, API, data, security, privacy, compliance, scope, or evidence changes.
 5. Use a focused, read-only reviewer when the plan calls for one.
 
-A combined small/medium plan owns its implementation handoff. Large/phased work
-normally freezes its anchor, then uses a fresh instruction to plan and freeze
-one phase before its implementation starts. Actual outputs then inform the next
-phase plan; batch planning needs an explicit stable-and-independent exception.
-Before each upcoming stage, the agent records `Sub-agents: None` with a fit
-reason or presents one bounded strategy and asks for operator approval. An
-already approved in-envelope strategy does not need another generic
-confirmation.
+A combined small/medium plan owns its implementation handoff. Large/phased work normally freezes its anchor, then uses a fresh instruction to plan and freeze one phase before its implementation starts. Actual outputs then inform the next phase plan; batch planning needs an explicit stable-and-independent exception. Before each upcoming stage, the agent records `Sub-agents: None` with a fit reason or presents one bounded strategy and asks for operator approval. An already approved in-envelope strategy does not need another generic confirmation.
 
-Before ordinary commits, update the work-item changelog fragment and run its
-lint command. Root `CHANGELOG.md` is the later consolidated publication view at
-a project-owned checkpoint. A downstream product/application release keeps its
-own release process.
+Before ordinary commits, update the work-item changelog fragment and run its lint command. Root `CHANGELOG.md` is the later consolidated publication view at a project-owned checkpoint. A downstream product/application release keeps its own release process.
 
 ## Useful Explicit Requests
 
-Use ordinary work requests by default. These requests are useful when you need
-to make a special boundary unambiguous:
+Use ordinary work requests by default. These requests are useful when you need to make a special boundary unambiguous:
 
 ```text
 Plan this as a large work item and stop after the freeze gate.
@@ -140,16 +77,13 @@ Create a plan-only PR checkpoint before code changes.
 
 ## For Harness Maintainers
 
-The following is for people changing the copied harness itself, not ordinary
-operators using it for product work. Run the package validation command when
-practical:
+The following is for people changing the copied harness itself, not ordinary operators using it for product work. Run the package validation command when practical:
 
 ```bash
 python .agents/skills/dev-doc-harness/scripts/test_harness_policy.py
 ```
 
-The validator is a lightweight structural check. It supports review; it does
-not replace operator approval or engineering judgment.
+The validator is a lightweight structural check. It supports review; it does not replace operator approval or engineering judgment.
 
 Primary planning templates are maintained from ordered source files:
 
@@ -165,10 +99,6 @@ Edit blocks or manifests, then run:
 python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
 ```
 
-The command writes the flat templates, checks that they are current, and runs
-the full validator. Use `--list` to inspect the block order or `--check` for a
-non-mutating freshness check.
+The command writes the flat templates, checks that they are current, and runs the full validator. Use `--list` to inspect the block order or `--check` for a non-mutating freshness check.
 
-Optional root-local hook files under `.githooks/` are development aids for this
-repository only. They are outside the distributable package and are not copied
-to downstream adopters.
+Optional root-local hook files under `.githooks/` are development aids for this repository only. They are outside the distributable package and are not copied to downstream adopters.
