@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 docs: harness-execution-flow-clarity -- clarify operator guidance and Superpowers workspace
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Reworked the package-local operator note as a human-facing harness explanation, clarified the harness and Superpowers responsibilities, ignored the plan-specific Superpowers workspace, and corrected a README typo.
+
 ## 2026-07-28 feat: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
 
 Release target: `unreleased`
