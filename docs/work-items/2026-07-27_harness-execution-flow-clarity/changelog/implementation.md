@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 fix: harness-execution-flow-clarity -- consolidate post-freeze transition guidance
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Folded freeze mechanics into the approval checklist, moved continuation rules into structured post-freeze routing, and made execution handoffs apply explicit operator overrides to the frozen approved selection without rewriting the frozen artifact.
+
 ## 2026-07-28 fix: harness-execution-flow-clarity -- clarify freeze transition routing
 
 Release target: `unreleased`

@@ -50,30 +50,26 @@ After the operator explicitly approves the staged planning package, or explicitl
 3. Verify package completeness before approval freeze: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is valid only with its operator-requested or operator-approved staged reason and `plan drafting` next activity; a large/phased anchor remains anchor-spec-only.
 4. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 5. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
-6. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
-7. Stop before implementation, task execution, or the next planning stage.
-8. Report the commit hash and approved artifact paths.
-9. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-10. Confirm that the frozen package distinguishes the Current planning Codex task from the **Approved next stage**. In chat, relabel the four groups defined under `## Draft review checkpoint` as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state.
-11. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
+6. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint. Include root `CHANGELOG.md` only when the operator is intentionally consolidating fragments as part of the same approved package; otherwise consolidation remains a later operator-owned checkpoint.
+7. Treat the package as frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
+8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
+9. Report the commit hash and approved artifact paths.
+10. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
+11. Confirm that the frozen package distinguishes the Current planning Codex task from **Next-stage recommendation** defined under `## Draft review checkpoint`. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
 
-Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
+## Post-freeze transition routing
 
-The planning package is frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
+### Authorization and effective selection
 
-Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may authorize the action offered by the selected continuity route when the response clearly approves that action.
+A fresh operator response after the freeze may authorize the action offered by the selected continuity route when the response clearly approves that action. The planned execution method starts after that fresh authorization without a second generic method question.
 
-The planned execution method starts after that fresh authorization without a second generic method question. A fresh explicit operator start instruction may instead select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual runtime selection in the completion report and do not require or debate a plan amendment solely for that runtime choice. Use the variance log only when the override creates a noteworthy allowed variance under `rule:lifecycle.variance-policy`. Report a concrete availability or compatibility blocker, and apply variance policy when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
-
-The harness transition completes before Superpowers pre-flight or execution begins. After a fresh implementation instruction, complete the approved plan without pausing between planned tasks; ask only for an external, destructive, costly, or material scope-expanding action.
+A fresh explicit operator start instruction may instead override the approved method, model/profile, reasoning effort, or Codex-task continuity. At execution handoff, present the effective next-stage values: start with the frozen **Approved next stage** and apply any explicit operator override. Record the actual runtime selection in the completion report without rewriting the frozen artifact or requiring a plan amendment solely for that runtime choice. Use the variance log only when the override creates a noteworthy allowed variance under `rule:lifecycle.variance-policy`. Report a concrete availability or compatibility blocker, and apply variance policy when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
 
 If the selected route cannot use independent review or the operator declines it, apply `module:models` before execution: disclose the assurance gap, obtain or record the one operator decision, and preserve its completion-report evidence.
 
-At execution handoff, repeat the **Approved next stage** groups from the approval checkpoint rather than reinterpreting them. After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol: a new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop; a same-task route rereads the package after a model switch or recorded continuity risk.
+The harness transition completes before Superpowers pre-flight or execution begins. After a fresh implementation instruction, complete the approved plan without pausing between planned tasks; ask only for an external, destructive, costly, or material scope-expanding action.
 
-For a `same task` route, a fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
-
-## Post-freeze transition routing
+### Route inputs
 
 Before rendering a handoff or offering task creation, read these values from the approved package:
 
@@ -82,14 +78,18 @@ Before rendering a handoff or offering task creation, read these values from the
 3. Next activity: the documented planning, implementation, review, or replanning activity that follows this actual boundary.
 4. Transition owner: the plan for a combined small/medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
 
+### Continuity routes
+
 Then apply the approved execution continuity and current capability:
 
 - `new Codex task`: display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat. When compatible task creation is available, ask for explicit approval specifically to create the task; this is the default continuation for a new-task route. Only after that approval may the platform action create the task with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
-- `same task`: keep the current-task authorization route separate and use the fresh explicit start authorization described above.
+- `same Codex task`: keep the current-task authorization route separate and use the fresh explicit start authorization described above. A fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
 
 For a documented non-execution transition that has no `Run in` value, follow only the transition recorded in the approved package; do not infer task creation or same-task authorization.
 
 An operator may explicitly direct continuation in the current task despite a recorded new-task recommendation. Present this only as an opt-in override, not as a question or recommended alternative.
+
+After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol. A new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop; a same-Codex-task route rereads the package after a model switch or recorded continuity risk.
 
 ## Multiple gates for very large or phased work items
 

@@ -1453,17 +1453,35 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, freeze, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", "exact supported configuration")
     assert_text_contains(check_id, freeze, r"manual.+copy-ready handoff|copy-ready handoff.+manual", "visible manual fallback")
     assert_text_contains(check_id, freeze, r"(?:do not|without).+silently substitut", "no configuration substitution")
-    assert_text_contains(check_id, freeze, r"same task.+(?:separate|current-task|current task)", "separate same-task route")
+    assert_text_contains(check_id, freeze, r"same Codex task.+(?:separate|current-task|current task)", "separate same-task route")
+    assert_text_contains(check_id, models, r"Run in`? accepts only `same Codex task` or `new Codex task`", "exclusive Run in values")
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
     assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
 
+    approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
     post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
+    if not re.search(r"package[^\n]+frozen[\s\S]+same agent turn[\s\S]+Post-freeze transition routing", approval_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "approval-freeze checklist does not contain freeze, stop, and routing mechanics")
+    post_freeze_only = (
+        r"fresh (?:explicit )?operator|operator response|authoriz(?:e|es|ed|ation) (?:implementation|execution|the action)|"
+        r"runtime (?:selection|override)|operator override|independent review|Superpowers|execution-thread-start|"
+        r"complete the approved plan|bare `?Confirm`?|same-Codex-task route"
+    )
+    if re.search(post_freeze_only, approval_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "approval-freeze checkpoint contains post-freeze routing details")
+    if not re.search(r"fresh operator response[\s\S]+planned execution method[\s\S]+fresh explicit operator start", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "post-freeze routing does not own authorization and runtime override handling")
     if not re.search(r"new Codex task[\s\S]+default continuation[\s\S]+approval[\s\S]+create", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "new-Codex-task route does not make approved agent task creation the default")
     if not re.search(r"manual[\s\S]+(?:unavailable|incompatible|operator)", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "new-Codex-task route does not limit manual creation to fallback or operator request")
-    if re.search(r"(?m)^- Compatible task creation:|^- Justified alternative:", post_freeze):
-        add_failure(check_id, "post-freeze routing presents a third Run in value")
+    continuity_match = re.search(
+        r"(?ms)^### Continuity routes\s*$\n(?P<body>.*?)(?=^### |^## |\Z)",
+        post_freeze,
+    )
+    continuity_labels = re.findall(r"(?m)^- `([^`]+)`:", continuity_match.group("body") if continuity_match else "")
+    if continuity_labels != ["new Codex task", "same Codex task"]:
+        add_failure(check_id, f"post-freeze routing must contain exactly the two canonical Run in branches; found {continuity_labels}")
 
     multiple_gates = read_markdown_h2_section(freeze, "Multiple gates for very large or phased work items")
     if not re.search(r"(?:normally|by default)[\s\S]+multiple freeze gates", multiple_gates, flags=re.IGNORECASE):
@@ -2452,6 +2470,12 @@ def assert_next_stage_summary() -> None:
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")
     if re.search(r"Activity[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze repeats the full next-stage group definition")
+
+    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
+    if not re.search(r"effective next-stage values:\s*start with[^\n]+frozen[^\n]+Approved next stage[^\n]+apply[^\n]+explicit operator override", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "execution handoff does not derive effective values from the frozen selection and operator override")
+    if not re.search(r"(?:do not|without)[^\n]+rewrit[^\n]+frozen", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "runtime override guidance does not preserve the frozen artifact")
 
     stateful_source_paths = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md",
