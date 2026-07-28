@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 fix: harness-execution-flow-clarity -- clarify freeze transition routing
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Moved the four-group next-stage explanation to draft review, clarified runtime-override recording, made approved agent task creation the default new-task continuation with manual creation as fallback, and stated the normal multi-gate large/phased flow.
+
 ## 2026-07-28 refactor: harness-execution-flow-clarity -- separate transition flow from context loading
 
 Release target: `unreleased`

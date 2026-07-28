@@ -35,8 +35,9 @@ Before committing any planning artifacts for approval:
 2. Verify package completeness before draft review: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next activity. A large/phased anchor remains a valid anchor-spec-only package.
 3. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 4. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
-5. Ask the operator to approve the staged planning package or provide feedback.
-6. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
+5. Present the staged package in chat with a **Next-stage recommendation** that mirrors four groups from the draft artifact: **Activity** names the next activity and First Plan Task when applicable; **Orchestration** gives Method, Run in, and Plan Task reviewers; **Model** gives Model and Reasoning; **Fallbacks and limits** includes only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
+6. Ask the operator to approve the staged planning package or provide feedback.
+7. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
 
 Do not create a plan amendment for feedback received before the planning package is frozen.
 
@@ -53,7 +54,7 @@ After the operator explicitly approves the staged planning package, or explicitl
 7. Stop before implementation, task execution, or the next planning stage.
 8. Report the commit hash and approved artifact paths.
 9. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-10. Confirm that the frozen package distinguishes the Current planning Codex task from the **Approved next stage**. In chat, mirror its four groups in order: **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits**. Use Method, Run in, First Plan Task, Plan Task reviewers, Model, Reasoning, and only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
+10. Confirm that the frozen package distinguishes the Current planning Codex task from the **Approved next stage**. In chat, relabel the four groups defined under `## Draft review checkpoint` as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state.
 11. Select and present the post-freeze result through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
 
 Stage root `CHANGELOG.md` during this checkpoint only when the operator is intentionally consolidating fragments as part of the same approved package. In normal independent worktree planning, consolidation is a later operator-owned checkpoint.
@@ -62,13 +63,13 @@ The planning package is frozen only after the approval commit or explicit handof
 
 Implementation must not begin from a frozen durable plan in the same agent turn as the approval freeze checkpoint. A fresh operator response after this gate may authorize the action offered by the selected continuity route when the response clearly approves that action.
 
-The planned execution method starts after that fresh authorization without a second generic method question. A fresh explicit operator start instruction may instead select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual selection and do not require or debate a plan amendment solely for that runtime choice. Report a concrete availability or compatibility blocker, and apply variance policy only when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
+The planned execution method starts after that fresh authorization without a second generic method question. A fresh explicit operator start instruction may instead select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual runtime selection in the completion report and do not require or debate a plan amendment solely for that runtime choice. Use the variance log only when the override creates a noteworthy allowed variance under `rule:lifecycle.variance-policy`. Report a concrete availability or compatibility blocker, and apply variance policy when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
 
 The harness transition completes before Superpowers pre-flight or execution begins. After a fresh implementation instruction, complete the approved plan without pausing between planned tasks; ask only for an external, destructive, costly, or material scope-expanding action.
 
 If the selected route cannot use independent review or the operator declines it, apply `module:models` before execution: disclose the assurance gap, obtain or record the one operator decision, and preserve its completion-report evidence.
 
-At draft review, show a **Next-stage recommendation** in chat using those same four groups. At freeze, show the matching **Approved next stage**. At execution handoff, repeat the approved groups rather than reinterpreting them. After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol: a new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop; a same-task route rereads the package after a model switch or recorded continuity risk.
+At execution handoff, repeat the **Approved next stage** groups from the approval checkpoint rather than reinterpreting them. After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol: a new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop; a same-task route rereads the package after a model switch or recorded continuity risk.
 
 For a `same task` route, a fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
 
@@ -83,17 +84,16 @@ Before rendering a handoff or offering task creation, read these values from the
 
 Then apply the approved execution continuity and current capability:
 
-- `new Codex task`: display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the Approved next stage groups in chat.
-- Compatible task creation: ask for explicit approval specifically to create the task. Only after that approval may the platform action create it with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task.
-- Unavailable or incompatible task creation: state which action or recorded configuration is unavailable and display the same manual copy-ready handoff. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
+- `new Codex task`: display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat. When compatible task creation is available, ask for explicit approval specifically to create the task; this is the default continuation for a new-task route. Only after that approval may the platform action create the task with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
 - `same task`: keep the current-task authorization route separate and use the fresh explicit start authorization described above.
-- Justified alternative: follow only the explicit transition recorded in the approved package; do not infer task creation or same-task authorization.
+
+For a documented non-execution transition that has no `Run in` value, follow only the transition recorded in the approved package; do not infer task creation or same-task authorization.
 
 An operator may explicitly direct continuation in the current task despite a recorded new-task recommendation. Present this only as an opt-in override, not as a question or recommended alternative.
 
 ## Multiple gates for very large or phased work items
 
-Very large or phased work items may have multiple freeze gates:
+Large or phased work items normally pass through multiple freeze gates:
 
 - Anchor spec freeze: after `<spec-filename>` is approved or explicitly handed off for phase planning. This gate pauses before implementation and before later phase-plan drafting; phase-plan drafting resumes only after fresh operator instruction.
 - Phase-plan freeze: after one or more `<phase-plan-filename>` files are approved.

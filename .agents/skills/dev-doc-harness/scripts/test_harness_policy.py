@@ -269,6 +269,14 @@ def assert_text_not_contains(check_id: str, path: str, pattern: str, label: str 
         add_failure(check_id, f"Unexpected {label or pattern} in {path}")
 
 
+def read_markdown_h2_section(path: str, heading: str) -> str:
+    match = re.search(
+        rf"(?ms)^## {re.escape(heading)}\s*$\n(?P<body>.*?)(?=^## |\Z)",
+        read_repo_text(path),
+    )
+    return match.group("body") if match else ""
+
+
 def assert_agents_bootstrap_contract() -> None:
     check_id = "discoverability.safety"
     path = "AGENTS.md"
@@ -1449,6 +1457,18 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
     assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
 
+    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
+    if not re.search(r"new Codex task[\s\S]+default continuation[\s\S]+approval[\s\S]+create", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "new-Codex-task route does not make approved agent task creation the default")
+    if not re.search(r"manual[\s\S]+(?:unavailable|incompatible|operator)", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "new-Codex-task route does not limit manual creation to fallback or operator request")
+    if re.search(r"(?m)^- Compatible task creation:|^- Justified alternative:", post_freeze):
+        add_failure(check_id, "post-freeze routing presents a third Run in value")
+
+    multiple_gates = read_markdown_h2_section(freeze, "Multiple gates for very large or phased work items")
+    if not re.search(r"(?:normally|by default)[\s\S]+multiple freeze gates", multiple_gates, flags=re.IGNORECASE):
+        add_failure(check_id, "large/phased route does not present multiple freeze gates as the default")
+
     small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
     assert_text_contains(check_id, small_spec, r"combined small/medium", "small spec combined planning shape")
@@ -2134,6 +2154,8 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, freeze, r"fresh explicit operator.*method.*model", "execution-start override")
     assert_text_contains(check_id, freeze, r"record.*actual.*selection", "recorded runtime selection")
     assert_text_contains(check_id, freeze, r"without.*plan amendment.*solely", "no amendment for runtime selection")
+    assert_text_contains(check_id, freeze, r"runtime selection.*completion report", "override completion-report record")
+    assert_text_contains(check_id, freeze, r"variance log only when.*noteworthy allowed variance", "conditional variance-log record")
     assert_text_contains(check_id, freeze, r"without.*second generic.*method question", "freeze start selection")
     assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
 
@@ -2419,6 +2441,17 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(check_id, models, r"Run in.*same Codex task.*new Codex task", "Run in values")
     assert_text_contains(check_id, models, r"First Plan Task.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
     assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
+
+    draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
+    approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
+    if not re.search(r"Next-stage recommendation[\s\S]+Activity[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
+        add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
+    if not re.search(r"First Plan Task[\s\S]+Method[\s\S]+Run in[\s\S]+Plan Task reviewers[\s\S]+Model[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
+        add_failure(check_id, "draft-review group definition is incomplete")
+    if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "approval freeze does not reference the draft-review group definition")
+    if re.search(r"Activity[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "approval freeze repeats the full next-stage group definition")
 
     stateful_source_paths = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md",
