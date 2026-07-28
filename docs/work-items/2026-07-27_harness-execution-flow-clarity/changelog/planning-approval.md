@@ -1,5 +1,15 @@
 # Harness Execution Flow Clarity Approval Changelog Source
 
+## 2026-07-28 amendment 003: harness-execution-flow-clarity -- consolidate transition and context ownership
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved a single transition owner, canonical model-selection references, a context-focused execution-start protocol, aligned validator evidence, and preservation of the authorized presentation cleanup and line-unwrapping.
+
 ## 2026-07-28 amendment 002: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
 
 Release target: `unreleased`
