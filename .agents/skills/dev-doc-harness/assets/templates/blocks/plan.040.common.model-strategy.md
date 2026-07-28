@@ -2,33 +2,6 @@
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
 
-### Current planning Codex task
-
-1. Model generation: `<generation or not exposed>`.
-2. Resolved profile: `<concrete runtime profile or not exposed>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Context visibility: `<exposed signal or not exposed>`.
-
-### Next-stage recommendation
-
-#### Activity
-
-Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
-
-#### Orchestration
-
-Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<per-Plan-Task reviewers and final reviewer, or route-specific disclosure>`.
-
-#### Model
-
-Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
-
-#### Fallbacks and limits
-
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
-
-At freeze, relabel this block **Approved next stage** without changing its values. Do not add routine model-policy source, override scope, expiry, or open-ended rehydration fields.
-
 Upcoming-stage sub-agent assessment:
 
 1. Sub-agents: None, or `<bounded strategy below>`.

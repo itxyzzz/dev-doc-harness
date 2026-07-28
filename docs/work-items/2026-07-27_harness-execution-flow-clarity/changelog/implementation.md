@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-29 fix: harness-execution-flow-clarity -- deduplicate plan state and restore conditional style routing
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Placed plan-state fields at their single lifecycle boundaries, restored conditional artifact-style loading for routine small/medium artifacts, regenerated active templates, and added focused structural regression coverage.
+
 ## 2026-07-28 fix: harness-execution-flow-clarity -- consolidate post-freeze transition guidance
 
 Release target: `unreleased`

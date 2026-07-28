@@ -5,25 +5,31 @@ The normal route is rolling: implement this phase, record actual outputs, then
 plan the next phase. Batch planning is an explicit exception only for stable,
 independently plannable phases.
 
-## Current planning Codex task
+### Next-stage recommendation
 
-Keep observed model/profile, reasoning, and context facts separate from the frozen result.
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together. Mirror the phase's frozen selection in chat.
 
-At this phase-plan boundary, render one state heading only: use
-`## Next-stage recommendation` while the phase plan is draft, then substitute
-`## Approved next stage` after freeze. Never emit both. Preserve **Activity**
-(next activity and First Plan Task), **Orchestration** (Method, Run in:
-`<same Codex task / new Codex task>`, and Plan Task reviewers), **Model**
-(Model and Reasoning), and **Fallbacks and limits** (only applicable limits);
-mirror the phase's frozen selection in chat.
+#### Activity
+
+Next activity: `<named current-phase implementation>`; First Plan Task: `<TASK-NNN>`.
+
+#### Orchestration
+
+Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
+
+#### Model
+
+Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
 
 ### Current-phase implementation handoff
 
 1. Frozen package: `<approved anchor, phase plan, amendments, prior outputs, and required evidence>`.
-2. Next activity: `<named current-phase implementation>`.
-3. First Plan Task: `<TASK-NNN>`.
-4. Method, Run in, Plan Task reviewers, Model, Reasoning, and applicable fallback: `<selected grouped values>`.
-5. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
 ### Post-phase transition
 

@@ -197,17 +197,19 @@ Findings must be evidence-backed and include severity plus a reproduction or val
 
 Substantial small/medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Small/medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read; the table below is an example shape, not a required presentation.
 
+For plans and phase plans, put **Current planning Codex task** once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation.
+
 ```md
 ## Model and Sub-agent Strategy
 
-### Current planning Codex task
+### Current planning Codex task (large anchor spec)
 
 Model generation: `<generation or not exposed>`
 Resolved profile: `<concrete runtime profile or not exposed>`
 Reasoning: `<runtime value or not exposed>`
 Context visibility: `<exposed signal or not exposed>`
 
-### Next-stage recommendation (draft only)
+### Next-stage recommendation (draft only, large anchor spec)
 
 #### Activity
 

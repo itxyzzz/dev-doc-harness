@@ -9,28 +9,7 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
 Execution method: `<approved method, or omit when not selected>`
-
-## Current planning Codex task
-
-Model/profile, reasoning, and context visibility: `<current facts or not exposed>`.
-
-## Next-stage recommendation
-
-### Activity
-
-Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
-
-### Orchestration
-
-Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
-
-### Model
-
-Model: `<policy-relative model/profile>`; Reasoning: `<effort>`.
-
-### Fallbacks and limits
-
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+Current planning Codex task: Model/profile, reasoning, and context visibility: `<current facts or not exposed>`.
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
@@ -91,33 +70,6 @@ Fresh-thread readiness:
 ## Model and Sub-agent Strategy
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
-
-### Current planning Codex task
-
-1. Model generation: `<generation or not exposed>`.
-2. Resolved profile: `<concrete runtime profile or not exposed>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Context visibility: `<exposed signal or not exposed>`.
-
-### Next-stage recommendation
-
-#### Activity
-
-Next activity: `<named activity>`; First Plan Task: `<TASK-NNN or not applicable>`.
-
-#### Orchestration
-
-Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<per-Plan-Task reviewers and final reviewer, or route-specific disclosure>`.
-
-#### Model
-
-Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
-
-#### Fallbacks and limits
-
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
-
-At freeze, relabel this block **Approved next stage** without changing its values. Do not add routine model-policy source, override scope, expiry, or open-ended rehydration fields.
 
 Upcoming-stage sub-agent assessment:
 
@@ -247,25 +199,31 @@ The normal route is rolling: implement this phase, record actual outputs, then
 plan the next phase. Batch planning is an explicit exception only for stable,
 independently plannable phases.
 
-## Current planning Codex task
+### Next-stage recommendation
 
-Keep observed model/profile, reasoning, and context facts separate from the frozen result.
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together. Mirror the phase's frozen selection in chat.
 
-At this phase-plan boundary, render one state heading only: use
-`## Next-stage recommendation` while the phase plan is draft, then substitute
-`## Approved next stage` after freeze. Never emit both. Preserve **Activity**
-(next activity and First Plan Task), **Orchestration** (Method, Run in:
-`<same Codex task / new Codex task>`, and Plan Task reviewers), **Model**
-(Model and Reasoning), and **Fallbacks and limits** (only applicable limits);
-mirror the phase's frozen selection in chat.
+#### Activity
+
+Next activity: `<named current-phase implementation>`; First Plan Task: `<TASK-NNN>`.
+
+#### Orchestration
+
+Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
+
+#### Model
+
+Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
 
 ### Current-phase implementation handoff
 
 1. Frozen package: `<approved anchor, phase plan, amendments, prior outputs, and required evidence>`.
-2. Next activity: `<named current-phase implementation>`.
-3. First Plan Task: `<TASK-NNN>`.
-4. Method, Run in, Plan Task reviewers, Model, Reasoning, and applicable fallback: `<selected grouped values>`.
-5. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
 ### Post-phase transition
 
