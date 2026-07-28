@@ -1,5 +1,15 @@
 # Harness Execution Flow Clarity Approval Changelog Source
 
+## 2026-07-29 amendment 004: harness-execution-flow-clarity -- place plan state once and restore conditional style routing
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved one current-task header field, one state-dependent plan handoff summary, a focused shared sub-agent-strategy block, and conditional artifact-style loading across routine small/medium planning surfaces.
+
 ## 2026-07-28 amendment 003: harness-execution-flow-clarity -- consolidate transition and context ownership
 
 Release target: `unreleased`
