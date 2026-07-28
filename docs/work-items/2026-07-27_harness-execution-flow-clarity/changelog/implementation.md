@@ -7,6 +7,7 @@ Package impact: `distributable`
 Release-note: `source-only`
 
 - Placed plan-state fields at their single lifecycle boundaries, restored conditional artifact-style loading for routine small/medium artifacts, regenerated active templates, and added focused structural regression coverage.
+- **Consolidate reviewed changelog fragments:** Refreshed root `CHANGELOG.md` at the operator-owned post-integration checkpoint.
 
 ## 2026-07-28 fix: harness-execution-flow-clarity -- consolidate post-freeze transition guidance
 
