@@ -1,7 +1,6 @@
 # Context And Quality Gates
 
-Use this reference to keep routine harness work consistent across local, web,
-and reduced-tool environments.
+Use this reference to keep routine harness work consistent across local, web, and reduced-tool environments.
 
 Module: `module:execution-quality`
 
@@ -25,30 +24,19 @@ Before planning or implementation, build context in this order:
 4. The user's current prompt, including scope and stop conditions.
 5. Discovered working state from files, tests, logs, diffs, and branch status.
 
-If instructions conflict, preserve higher-priority system and user constraints,
-then apply the most specific repository or artifact rule.
+If instructions conflict, preserve higher-priority system and user constraints, then apply the most specific repository or artifact rule.
 
 ## Execution thread start
 
-Use this protocol when a frozen planning package hands work to a fresh task or when an approved same-task model switch requires rehydration:
+Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution Codex task or when an approved same-task model switch or recorded continuity risk requires rehydration:
 
-1. Load system and runtime constraints, then applicable instructions, the approved execution selection, and the exact frozen artifacts named by the handoff.
-2. Verify branch, worktree, approval state, amendments, variance logs, and the expected validation baseline before editing.
-3. Treat the frozen package as authoritative; avoid repository rediscovery and do not reopen settled decisions without conflicting evidence.
-4. In chat, restate the **Approved next stage** only as its four ordered groups: **Activity**, **Orchestration**, **Model**, and **Fallbacks and limits**. Keep the Current planning Codex task facts separate. Include the immediate work, Method, Run in, First Plan Task, Plan Task reviewers, Model, Reasoning, actual prior-phase outputs when entering later phase planning, and applicable stop condition. Record the upcoming-stage sub-agent assessment; request authorization only for useful unapproved delegation.
-5. Begin at that documented next activity. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
+1. Consume the approved runtime selection from `rule:models.selection-dimensions` and the same-task or new-task choice from `rule:models.execution-continuity`; do not reconstruct either decision here.
+2. Load system and runtime constraints, applicable instructions, and all frozen artifacts and execution inputs named by the approved handoff.
+3. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
+4. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
+5. Begin the documented next activity or First Plan Task. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
-After a fresh implementation instruction, complete the approved plan without
-pausing between planned tasks. Ask only for an external, destructive, costly,
-or material scope-expanding action.
-
-If runtime permission or platform availability prevents the approved strategy, use its approved fallback. Do not silently substitute a broader or more expensive model, effort, orchestration mode, write scope, or concurrency level.
-
-When a selected route lacks independent review, apply the disclosure, one-time operator-decision, recorded-authorization, and completion-report route in `module:models`; do not treat no review as a silent fallback.
-
-The approved harness route must complete before Superpowers pre-flight or execution begins. After fresh authorization, start the planned method without a second generic Superpowers execution-mode or method question. A fresh explicit operator instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity; record the actual runtime selection and start without a plan amendment solely for that runtime selection. Report an availability or compatibility blocker, and use variance handling only for a material plan or safety boundary change.
-
-At draft review, freeze, and execution handoff, the chat projection repeats the matching Next-stage recommendation or Approved next stage groups; it does not introduce context estimates, predicted compaction, or a new decision.
+If runtime or environment limitations affect this startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions; `module:freeze-gate` owns planning-transition and authorization behavior.
 
 ## Task preflight
 
@@ -83,14 +71,8 @@ Before a commit, PR-ready handoff, or completion report, check:
 - Relevant docs and changelog updated.
 - Diff reviewed for unrelated changes, placeholders, contradictions, and generated noise.
 
-After the final commit, PR-ready handoff, or completion report, report the
-commit outcome consistently: include the commit hash and subject when a commit
-was created, or state that no commit was created and why.
+After the final commit, PR-ready handoff, or completion report, report the commit outcome consistently: include the commit hash and subject when a commit was created, or state that no commit was created and why.
 
-Implementation completion with uncommitted implementation changes is not a
-normal completion state. Either create the planned implementation commit, or
-report the exact blocker or explicit no-commit instruction plus the current
-worktree status.
+Implementation completion with uncommitted implementation changes is not a normal completion state. Either create the planned implementation commit, or report the exact blocker or explicit no-commit instruction plus the current worktree status.
 
-Do not use this gate to bypass the Planning Artifact Freeze Gate. Finalized
-specs, plans, phase plans, and amendments still follow `planning-freeze-gates.md`.
+Do not use this gate to bypass the Planning Artifact Freeze Gate. Finalized specs, plans, phase plans, and amendments still follow `planning-freeze-gates.md`.

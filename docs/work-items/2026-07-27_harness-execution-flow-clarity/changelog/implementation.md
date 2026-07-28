@@ -1,5 +1,13 @@
 # Implementation Changelog
 
+## 2026-07-28 refactor: harness-execution-flow-clarity -- separate transition flow from context loading
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+- Consolidated planning transitions and chat projection in the freeze-gate owner, narrowed execution-quality to context loading and startup consumption, and aligned architecture and validator ownership checks without changing operator-visible behavior.
+
 ## 2026-07-28 docs: harness-execution-flow-clarity -- clarify operator guidance and Superpowers workspace
 
 Release target: `unreleased`

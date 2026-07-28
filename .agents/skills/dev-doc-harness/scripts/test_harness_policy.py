@@ -1398,7 +1398,11 @@ def assert_execution_thread_start() -> None:
     router = ".agents/skills/dev-doc-harness/SKILL.md"
 
     assert_text_contains(check_id, execution, re.escape("rule:execution-quality.execution-thread-start"), "execution-thread-start owner")
+    assert_text_contains(check_id, execution, re.escape("rule:freeze.stop-before-implementation"), "post-freeze authorization owner")
+    assert_text_contains(check_id, execution, re.escape("rule:models.selection-dimensions"), "runtime selection owner")
+    assert_text_contains(check_id, execution, re.escape("rule:models.execution-continuity"), "execution continuity owner")
     assert_text_contains(check_id, execution, r"applicable instructions.+frozen artifacts", "instruction and artifact load order")
+    assert_text_contains(check_id, execution, r"branch.+worktree.+approval state.+amendments.+variance.+(?:baseline|validation baseline)", "working-state and baseline verification")
     assert_text_contains(check_id, execution, r"avoid.+rediscover", "rediscovery avoidance")
     assert_text_contains(check_id, execution, r"First Plan Task|next activity", "named starting activity")
     assert_text_contains(check_id, execution, r"variance", "variance stop route")
@@ -1418,6 +1422,7 @@ def assert_execution_thread_start() -> None:
 
     for label in ["Method", "Run in", "Plan Task reviewers", "Model", "Reasoning", "Fallbacks and limits"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
+    assert_text_contains(check_id, freeze, re.escape("rule:execution-quality.execution-thread-start"), "consumer-side startup protocol")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
     assert_text_contains(check_id, router, r"execution-thread-start", "router discoverability")
 
@@ -1796,7 +1801,7 @@ def superpowers_dispatch_fixture_route(text: str) -> str:
 def assert_harness_simplification_scenarios() -> None:
     check_id = "scenarios.harness-simplification"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
-    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     readiness_source_blocks = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md",
@@ -1810,7 +1815,7 @@ def assert_harness_simplification_scenarios() -> None:
     plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
 
     assert_text_contains(check_id, quality, r"Mappings are optional", "optional mapping guidance")
-    assert_text_contains(check_id, execution, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
+    assert_text_contains(check_id, freeze, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
     assert_text_contains(check_id, lifecycle, r"same evidence purpose", "equivalent adjustment variance route")
     assert_text_contains(
         check_id,
@@ -1913,7 +1918,7 @@ def assert_superpowers_adapter_contract() -> None:
     check_id = "compat.superpowers-adapter-contract"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
-    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     header_blocks = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
@@ -1940,8 +1945,8 @@ def assert_superpowers_adapter_contract() -> None:
     assert_text_contains(check_id, lifecycle, r"conditional.+(?:convert|conversion).+Superpowers", "conditional plan conversion")
     assert_text_contains(check_id, lifecycle, r"ephemeral", "ephemeral execution aids")
     assert_text_contains(check_id, lifecycle, r"independently executable.+verifiable", "no-Superpowers fallback")
-    assert_text_contains(check_id, execution, r"before.+Superpowers.+(?:pre-flight|execution)", "authorized Superpowers entry")
-    assert_text_contains(check_id, execution, r"second generic.+(?:Superpowers|execution-mode)", "no second execution-mode choice")
+    assert_text_contains(check_id, freeze, r"before.+Superpowers.+(?:pre-flight|execution)", "authorized Superpowers entry")
+    assert_text_contains(check_id, freeze, r"without.+second generic.+method question", "no second execution-mode choice")
     assert_text_contains(check_id, models, r"explicit.+(?:capability tier|allocation).+reasoning effort", "explicit dispatch allocation")
     assert_text_contains(check_id, models, r"silent(?:ly)? inherit", "silent-inheritance prohibition")
     assert_text_contains(check_id, models, r"outside.+approved.+(?:envelope|policy).+approval", "out-of-envelope approval")
@@ -2080,7 +2085,6 @@ def assert_execution_method_fallbacks() -> None:
     check_id = "execution.method-fallbacks"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
-    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
 
@@ -2127,9 +2131,9 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, models, r"completion report.*independent review", "no-review completion evidence")
     assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
     assert_text_contains(check_id, models, r"external execution session.*execution controller", "Superpowers session interpretation")
-    assert_text_contains(check_id, execution, r"fresh explicit operator.*method.*model", "execution-start override")
-    assert_text_contains(check_id, execution, r"record.*actual.*selection", "recorded runtime selection")
-    assert_text_contains(check_id, execution, r"without.*plan amendment.*solely", "no amendment for runtime selection")
+    assert_text_contains(check_id, freeze, r"fresh explicit operator.*method.*model", "execution-start override")
+    assert_text_contains(check_id, freeze, r"record.*actual.*selection", "recorded runtime selection")
+    assert_text_contains(check_id, freeze, r"without.*plan amendment.*solely", "no amendment for runtime selection")
     assert_text_contains(check_id, freeze, r"without.*second generic.*method question", "freeze start selection")
     assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
 
@@ -2370,8 +2374,6 @@ def assert_next_stage_summary() -> None:
     check_id = "presentation.next-stage-summary"
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
-    execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
-    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
     architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
     sources = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
@@ -2412,12 +2414,10 @@ def assert_next_stage_summary() -> None:
         assert_text_contains(check_id, path, r"Current planning Codex task", "current planning task separation")
         assert_text_contains(check_id, path, r"Next-stage recommendation", "draft recommendation label")
         assert_text_contains(check_id, path, r"Activity[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
-    for path in [freeze, execution]:
-        assert_text_contains(check_id, path, r"Approved next stage", "frozen next-stage label")
-        assert_text_contains(check_id, path, r"chat", "chat projection")
+    assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
+    assert_text_contains(check_id, freeze, r"chat", "chat projection")
     assert_text_contains(check_id, models, r"Run in.*same Codex task.*new Codex task", "Run in values")
     assert_text_contains(check_id, models, r"First Plan Task.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
-    assert_text_contains(check_id, style, r"grouping.*plain-label", "presentation-only grouping rule")
     assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
 
     stateful_source_paths = [
