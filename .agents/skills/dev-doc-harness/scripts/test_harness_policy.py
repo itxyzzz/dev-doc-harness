@@ -923,6 +923,7 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, lifecycle, r"root `CHANGELOG\.md` remains the consolidated publication view", "root changelog publication view")
     assert_text_contains(check_id, freeze, r"approved planning artifacts.+changelog source fragment", "freeze stages fragment")
     assert_text_contains(check_id, naming, r"<changelog-fragment-path>", "fragment path derived pattern")
+    assert_text_contains(check_id, naming, r"## <date> <commit-subject>", "changelog heading grammar")
     assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
     assert_text_contains(check_id, release_policy, r"after fragment consolidation", "root source after consolidation")
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
@@ -2756,7 +2757,7 @@ def run_checks() -> None:
         "scenario:variance.high-impact-amendment",
         [
             {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "<amendment-filename>", "label": "amendment path"},
-            {"path": ".agents/skills/dev-doc-harness/references/naming-conventions.md", "pattern": "plan_amendment-NNN", "label": "amendment filename grammar"},
+            {"path": ".agents/skills/dev-doc-harness/references/naming-conventions.md", "pattern": "plan_amendment-NN", "label": "amendment filename grammar"},
             {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "Amendment freeze", "label": "amendment freeze"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", "pattern": "schema:plan.amendment", "label": "amendment schema"},
         ],

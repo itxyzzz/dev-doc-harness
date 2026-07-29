@@ -327,7 +327,7 @@ Root `CHANGELOG.md` remains the consolidated publication view. Ordinary independ
 Use a Keep a Changelog style:
 
 - Newest entries first.
-- Each entry heading follows the naming reference and contains the work ID or full commit message plus a useful title or elaboration snippet.
+- Each entry heading follows `<changelog-heading>` from `rule:naming.derived-patterns` and contains the commit subject plus a useful title or elaboration snippet.
 - Entry headings or bullet-level title snippets must stay synchronized with the
   planned commit subjects for the same work.
 - Group changes under these headings when applicable: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.

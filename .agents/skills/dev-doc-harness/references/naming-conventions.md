@@ -29,8 +29,8 @@ Use these field names consistently in current harness policy, templates, and exa
 | `<short-title>` | Short lower-kebab-case title. Prefer two to six words. |
 | `<phase-id>` | Phase number in `phase-NN` form, such as `phase-01`. |
 | `<phase-title>` | Lower-kebab-case phase title. |
-| `<artifact-type>` | Planning artifact type such as `spec`, `plan`, `phase N plan`, or `amendment NNN`. |
-| `<work-id>` | `<date>[_<issue-key>]_<short-title>`. |
+| `<artifact-type>` | Planning artifact type such as `spec`, `plan`, `phase-NN-plan`, or `amendment-NN`. |
+| `<work-id>` | `<date>_[<issue-key>_]<short-title>`. |
 | `<short-id>` | `[<issue-key>_]<short-title>`. |
 
 Include the issue key whenever available. Do not duplicate the issue key in the same name.
@@ -45,12 +45,12 @@ Use these derived pattern names from other current harness references and templa
 | `<spec-filename>` | `spec_<short-id>.md` |
 | `<plan-filename>` | `plan_<short-id>.md` |
 | `<phase-plan-filename>` | `plan_<phase-id>_<phase-title>_<short-id>.md` |
-| `<amendment-filename>` | `plan_amendment-NNN_<amendment-title>_<short-id>.md` |
+| `<amendment-filename>` | `plan_amendment-NN_<amendment-title>_<short-id>.md` |
 | `<variance-log-path>` | `implementation-notes/variance-log.md` |
 | `<changelog-fragment-path>` | `docs/work-items/<work-id>/changelog/*.md` |
 | `<commit-subject>` | `[<issue-key> ]<type>: <title>[ -- <plain-language-elaboration>]` |
 | `<planning-commit-subject>` | `[<issue-key> ]<artifact-type>: <title>[ -- <plain-language-elaboration>]` |
-| `<changelog-heading>` | One of the heading forms in `rule:naming.changelog-entries`. |
+| `<changelog-heading>` | `## <date> <commit-subject>`. |
 
 Use the explicit expansions in this file when creating actual paths, examples, validation fixtures, or migration notes. Use the derived names in lifecycle, quality, freeze-gate, router, and template guidance when the exact spelling is not the point being taught.
 
@@ -70,12 +70,6 @@ Each substantial work item uses one folder:
 
 ```text
 <work-item-path>
-```
-
-Use this work ID grammar:
-
-```text
-<work-id> = <date>[_<issue-key>]_<short-title>
 ```
 
 Examples:
@@ -104,7 +98,7 @@ Examples:
 spec_KEY-123_user-profile-import.md
 plan_KEY-123_user-profile-import.md
 plan_phase-01_discovery_KEY-123_user-profile-import.md
-plan_amendment-001_validation-scope_KEY-123_user-profile-import.md
+plan_amendment-01_validation-scope_KEY-123_user-profile-import.md
 ```
 
 Changelog source fragments live below the work item package:
@@ -125,7 +119,7 @@ Use this subject grammar:
 
 Allowed action types are `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `spike`, `release`, and `security`.
 
-Planning approval commits may use artifact types when they are more precise than action types, including `spec`, `plan`, `phase N plan`, and `amendment NNN`.
+Planning approval commits may use `<artifact-type>` when it is more precise than an action type.
 
 Examples:
 
@@ -138,15 +132,7 @@ release: version-0-3-0
 
 ## Changelog entries
 
-Use one of these heading grammars:
-
-```text
-## <date> <full commit message>
-```
-
-```text
-## <work-id>[ -- <plain-language-elaboration>]
-```
+Use `<changelog-heading>`.
 
 When repository changelogs are grouped by release, apply the same entry grammar beneath the release heading.
 
