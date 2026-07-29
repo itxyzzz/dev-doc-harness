@@ -78,12 +78,21 @@ Before rendering a handoff or offering task creation, read these values from the
 3. Next activity: the documented planning, implementation, review, or replanning activity that follows this actual boundary.
 4. Transition owner: the plan for a combined small/medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
 
-### Continuity routes
+### Continuity rules
 
 Then apply the approved execution continuity and current capability:
 
-- `new Codex task`: display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat. When compatible task creation is available, ask for explicit approval specifically to create the task; this is the default continuation for a new-task route. Only after that approval may the platform action create the task with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
-- `same Codex task`: keep the current-task authorization route separate and use the fresh explicit start authorization described above. A fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
+#### `new Codex task`
+
+1. Display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat.
+2. Before offering compatible task creation, select and report the Git starting state. Use a named branch or ref when it is the approved baseline. For a detached managed-worktree source, use `working-tree`; it copies the source checkout and its uncommitted changes. Disclose the copied uncommitted paths. When those files are unrelated or should not continue, require an explicit source branch or ref, or current-task continuation. Omitting the starting state uses the project default branch and is prohibited for this route.
+3. When compatible task creation is available, ask for explicit approval specifically to create the task; this is the default continuation for a new-task route. Only after that approval may the platform action create the task with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task.
+4. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff.
+5. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
+
+#### `same Codex task`
+
+Keep the current-task authorization route separate and use the fresh explicit start authorization described above. A fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
 
 For a documented non-execution transition that has no `Run in` value, follow only the transition recorded in the approved package; do not infer task creation or same-task authorization.
 

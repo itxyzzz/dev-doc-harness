@@ -1464,7 +1464,7 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, freeze, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", "exact supported configuration")
     assert_text_contains(check_id, freeze, r"manual.+copy-ready handoff|copy-ready handoff.+manual", "visible manual fallback")
     assert_text_contains(check_id, freeze, r"(?:do not|without).+silently substitut", "no configuration substitution")
-    assert_text_contains(check_id, freeze, r"same Codex task.+(?:separate|current-task|current task)", "separate same-task route")
+    assert_text_contains(check_id, freeze, r"`same Codex task`[\s\S]+current-task authorization route separate", "separate same-task route")
     assert_text_contains(check_id, models, r"Run in`? accepts only `same Codex task` or `new Codex task`", "exclusive Run in values")
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
     assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
@@ -1487,12 +1487,19 @@ def assert_lifecycle_transition_targets() -> None:
     if not re.search(r"manual[\s\S]+(?:unavailable|incompatible|operator)", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "new-Codex-task route does not limit manual creation to fallback or operator request")
     continuity_match = re.search(
-        r"(?ms)^### Continuity routes\s*$\n(?P<body>.*?)(?=^### |^## |\Z)",
+        r"(?ms)^### Continuity rules\s*$\n(?P<body>.*?)(?=^### |^## |\Z)",
         post_freeze,
     )
-    continuity_labels = re.findall(r"(?m)^- `([^`]+)`:", continuity_match.group("body") if continuity_match else "")
+    continuity_body = continuity_match.group("body") if continuity_match else ""
+    if not continuity_match:
+        add_failure(check_id, "post-freeze routing must contain a Continuity rules section")
+    continuity_labels = re.findall(r"(?m)^#### `([^`]+)`\s*$", continuity_body)
     if continuity_labels != ["new Codex task", "same Codex task"]:
         add_failure(check_id, f"post-freeze routing must contain exactly the two canonical Run in branches; found {continuity_labels}")
+    assert_text_contains(check_id, freeze, r"select and report.+(?:Git )?starting state", "explicit Git starting-state selection")
+    assert_text_contains(check_id, freeze, r"`working-tree`", "detached managed-worktree source baseline")
+    assert_text_contains(check_id, freeze, r"uncommitted (?:changes|paths)", "dirty working-tree disclosure")
+    assert_text_contains(check_id, freeze, r"default branch.+prohibited|prohibited.+default branch", "no default-branch fallback")
 
     multiple_gates = read_markdown_h2_section(freeze, "Multiple gates for very large or phased work items")
     if not re.search(r"(?:normally|by default)[\s\S]+multiple freeze gates", multiple_gates, flags=re.IGNORECASE):
