@@ -238,7 +238,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    - Head: `post-release/<major>.<minor>-start-development`
    - Base: `master`
 
-   Merge the pull request only after its required review and checks have passed. Do not commit or push the post-release reset directly to `master`.
+   The agent creates the pull request. The operator reviews and merges it after the required reviews and checks pass; the agent proceeds to step 10 only after the operator confirms that merge. Do not commit or push the post-release reset directly to `master`.
 
 10. After the pull request merges, fetch the remotes and verify that `master` contains the release baseline before creating any new development branch.
 

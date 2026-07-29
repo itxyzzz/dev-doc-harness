@@ -1139,7 +1139,12 @@ def assert_work_item_architecture_decisions() -> None:
 
     for path in operator_docs:
         assert_text_contains(check_id, path, r"work-item architecture", "operator work-item architecture guidance")
-        assert_text_contains(check_id, path, r"ARCHITECTURE\.md.+future work", "operator durable architecture boundary")
+        assert_text_contains(
+            check_id,
+            path,
+            r"ARCHITECTURE\.md.+(?:future work|not covered by (?:the )?harness)",
+            "operator durable architecture boundary",
+        )
 
     for path in spec_templates:
         assert_text_contains(check_id, path, r"## Architecture Decisions", "spec architecture section")

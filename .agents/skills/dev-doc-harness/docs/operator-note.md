@@ -25,7 +25,7 @@ Ask for the work normally. For repository development beyond a very small mechan
 
 For substantial work, expect a reviewable package under `docs/work-items/<work-id>/`. Small or medium work normally has a combined spec and plan. You can request or approve a staged spec-only package when you want planning to stop before the plan is drafted. Large work keeps separate anchor and phase-plan boundaries. Stable IDs provide reference points for review and handoff without requiring you to follow an internal traceability scheme.
 
-Some work items include a short architecture snapshot when an important decision or tradeoff needs to survive the handoff. This work-item architecture records decisions for that package; a repository-wide `ARCHITECTURE.md` remains future work for a separate extension.
+Some work items include a short architecture snapshot when an important decision or tradeoff needs to survive the handoff. This work-item architecture records decisions for that package; a repository-wide `ARCHITECTURE.md` or similar durable repository-wide documents are not covered by the harness.
 
 ## Review And Pause Points
 
@@ -37,7 +37,7 @@ The normal flow is simple:
 4. Small equivalent adjustments are recorded as drift. Material changes to outcomes, architecture, APIs, data, security, privacy, compliance, scope, or evidence return to you for an amendment and approval.
 5. When the plan includes an independent reviewer, its findings are resolved or reported before completion.
 
-A combined small/medium plan hands off directly to implementation. Large work normally freezes its anchor, then plans and freezes one phase at a time so actual results can inform the next phase. Before each stage, the planning package says whether sub-agents are recommended and why. An approved strategy is not presented for confirmation again unless circumstances change.
+A combined small/medium plan hands off directly to implementation. Large work normally freezes its anchor, then plans, freezes, and implements one phase at a time so actual results can inform the next phase. Before each stage, the planning package provides the full recommended orchestration and model selection strategy for this stage, including the use of sub-agents and what for. An approved strategy is not presented for confirmation again unless circumstances change.
 
 Independent review remains the default. If review cannot run or you decline it, the agent explains the assurance gap and compensating validation, then asks once whether to proceed when your decision is still needed. At execution start, you may choose another available method, model, reasoning effort, or task location without changing the plan solely for that runtime choice.
 
