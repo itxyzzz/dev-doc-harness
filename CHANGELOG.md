@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-29 plan: naming-convention-review-fixes -- approve naming cleanup
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved the naming-policy cleanup plan for two-digit amendments, kebab-case planning artifact types, one optional issue-key form, and de-duplicated canonical grammar.
+
 ### 2026-07-29 fix: harness-execution-flow-clarity -- deduplicate plan state and restore conditional style routing
 
 Release target: `unreleased`
