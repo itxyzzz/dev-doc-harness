@@ -1532,65 +1532,16 @@ CURRENT_COMMITMENT_VOCABULARY_PATHS = sorted(set(
 ))
 
 
-def validate_commitment_spec_fixture(text: str) -> list[str]:
-    errors: list[str] = []
-    spec_matches = list(re.finditer(r"^### `(?P<id>SPEC-\d{3})` Specification Commitment — .+$", text, re.MULTILINE))
-    ver_matches = list(re.finditer(r"^(?P<level>#{3,4}) `(?P<id>VER-\d{3})` Verification Criterion — .+$", text, re.MULTILINE))
-    spec_ids = [match.group("id") for match in spec_matches]
-    ver_defs = [match.group("id") for match in ver_matches]
-    if not spec_ids:
-        errors.append("missing exact Specification Commitment heading")
-    if len(spec_ids) != len(set(spec_ids)):
-        errors.append("duplicate Specification Commitment ID")
-    if len(ver_defs) != len(set(ver_defs)):
-        errors.append("duplicate Verification Criterion ID")
-    entity_matches = sorted([*spec_matches, *ver_matches], key=lambda match: match.start())
-    next_start = {match.start(): (entity_matches[index + 1].start() if index + 1 < len(entity_matches) else len(text)) for index, match in enumerate(entity_matches)}
-    for match in spec_matches:
-        block = text[match.end():next_start[match.start()]]
-        for field in ("Kind:", "Intent:", "Statement:"):
-            if field not in block:
-                errors.append(f"{match.group('id')} missing commitment field {field}")
-    cross_start = text.find("## Cross-cutting Verification Criteria")
-    for match in ver_matches:
-        block = text[match.end():next_start[match.start()]]
-        for field in ("Covers:", "Criterion:", "Expected evidence:"):
-            if field not in block:
-                errors.append(f"{match.group('id')} missing criterion field {field}")
-        covers = set(re.findall(r"`(SPEC-\d{3})`", block.partition("Criterion:")[0]))
-        if not covers:
-            errors.append(f"{match.group('id')} has empty Covers")
-        invalid_targets = sorted(covers - set(spec_ids))
-        if invalid_targets:
-            errors.append(f"{match.group('id')} invalid Covers target: {', '.join(invalid_targets)}")
-        is_cross = cross_start >= 0 and match.start() > cross_start
-        if is_cross and (match.group("level") != "###" or len(covers) < 2):
-            errors.append(f"cross-cutting {match.group('id')} must be level three and cover at least two commitments")
-        if not is_cross and (match.group("level") != "####" or len(covers) != 1):
-            errors.append(f"local {match.group('id')} must be level four and cover exactly one commitment")
-        if not is_cross:
-            preceding_specs = [spec for spec in spec_matches if spec.start() < match.start()]
-            adjacent_spec = preceding_specs[-1].group("id") if preceding_specs else None
-            if covers != {adjacent_spec}:
-                errors.append(f"local {match.group('id')} must be adjacent to its covered commitment")
-    return errors
-
-
 def validate_commitment_plan_fixture(text: str) -> list[str]:
     errors: list[str] = []
-    required_sections = [
-        "## Commitment-Disposition Mapping",
-        "## Verification-Execution Mapping",
-        "## Implementation Tasks",
-        "## Plan Checks",
-    ]
+    required_sections = ["## Implementation tasks", "## Plan checks"]
     for section in required_sections:
         if section not in text:
             errors.append(f"missing plan section {section}")
-    task_ids = re.findall(r"^### `(TASK-\d{3})` Implementation Task — .+$", text, re.MULTILINE)
-    check_ids = re.findall(r"^### `(CHECK-\d{3})` Plan Check — .+$", text, re.MULTILINE)
-    task_matches = list(re.finditer(r"^### `(TASK-\d{3})` Implementation Task — .+$", text, re.MULTILINE))
-    check_matches = list(re.finditer(r"^### `(CHECK-\d{3})` Plan Check — .+$", text, re.MULTILINE))
+    task_ids = re.findall(r"^### `(TASK-\d{3})` .+$", text, re.MULTILINE)
+    check_ids = re.findall(r"^### `(CHECK-\d{3})` .+$", text, re.MULTILINE)
+    task_matches = list(re.finditer(r"^### `(TASK-\d{3})` .+$", text, re.MULTILINE))
+    check_matches = list(re.finditer(r"^### `(CHECK-\d{3})` .+$", text, re.MULTILINE))
     if not task_ids:
         errors.append("missing exact Implementation Task heading")
     if not check_ids:
@@ -1608,36 +1559,11 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
                 errors.append(f"{match.group(1)} missing Implementation Task field {field}")
     for match in check_matches:
         block = text[match.end():next_start[match.start()]]
-        for field in ("Covers:", "Procedure:", "Expected result:", "Evidence record:", "Stage or environment:"):
+        for field in ("Covers:", "Method:", "Expected result:", "Evidence record:"):
             if field not in block:
                 errors.append(f"{match.group(1)} missing Plan Check field {field}")
-        if not re.search(r"`VER-\d{3}`", block.partition("Procedure:")[0]):
+        if not re.search(r"`VER-\d{3}`", block.partition("Method:")[0]):
             errors.append(f"{match.group(1)} has no Verification Criterion coverage")
-    if "| Specification Commitment | Disposition |" not in text:
-        errors.append("missing commitment-disposition table header")
-    if "| Verification Criterion | Plan Checks | Expected evidence stage |" not in text:
-        errors.append("missing verification-execution table header")
-    commitment_section = text.partition("## Commitment-Disposition Mapping")[2].partition("## Verification-Execution Mapping")[0]
-    verification_section = text.partition("## Verification-Execution Mapping")[2].partition("## Implementation Tasks")[0]
-    mapped_specs = set(re.findall(r"\|\s*`(SPEC-\d{3})`", commitment_section))
-    mapped_vers = set(re.findall(r"\|\s*`(VER-\d{3})`", verification_section))
-    mapped_checks = set(re.findall(r"`(CHECK-\d{3})`", verification_section))
-    if task_ids and not mapped_specs:
-        errors.append("commitment-disposition mapping has no rows")
-    if check_ids and not mapped_vers:
-        errors.append("verification-execution mapping has no rows")
-    invalid_mapped_checks = sorted(mapped_checks - set(check_ids))
-    if invalid_mapped_checks:
-        errors.append(f"verification mapping targets missing Plan Check: {', '.join(invalid_mapped_checks)}")
-    orphan_checks = sorted(set(check_ids) - mapped_checks)
-    if orphan_checks:
-        errors.append(f"orphan Plan Check: {', '.join(orphan_checks)}")
-    for match in check_matches:
-        block = text[match.end():next_start[match.start()]]
-        covered = set(re.findall(r"`(VER-\d{3})`", block.partition("Procedure:")[0]))
-        invalid_vers = sorted(covered - mapped_vers)
-        if invalid_vers:
-            errors.append(f"{match.group(1)} invalid Verification Criterion target: {', '.join(invalid_vers)}")
     return errors
 
 
@@ -1652,6 +1578,18 @@ def assert_commitment_verification_quality() -> None:
         "rule:quality.conformance-status",
     ]:
         assert_text_contains(check_id, quality, re.escape(rule_id), f"{rule_id} owner")
+    for pattern, label in [
+        (r"all harness-managed durable specs and plans", "general durable-artifact scope"),
+        (r"legalistic authority language and legalistic modal phrasing", "precise plain-language boundary"),
+        (r"question material to the artifact.?s documented next activity", "material open-question boundary"),
+        (r"`met`, `not met`, `pending`, (?:or|and) `blocked`", "criterion conformance states"),
+        (r"A commitment conforms only when", "commitment conformance rule"),
+        (r"operator-provided source materials", "durable source-preservation rule"),
+        (r"## Plan quality bar", "general plan-quality section"),
+        (r"## Additional phase-plan quality bar", "phase-only quality section"),
+        (r"one orchestration thread with its recorded bounded delegation", "phase execution-size boundary"),
+    ]:
+        assert_text_contains(check_id, quality, pattern, label)
 
 def assert_commitment_verification_templates() -> None:
     check_id = "templates.commitment-verification"
@@ -1660,6 +1598,7 @@ def assert_commitment_verification_templates() -> None:
     for path in spec_paths:
         assert_text_contains(check_id, path, r"`SPEC-001`", "SPEC ID anchor")
         assert_text_contains(check_id, path, r"`VER-001`", "VER ID anchor")
+        assert_text_contains(check_id, path, r"Expected evidence:", "Verification Criterion evidence prompt")
         assert_text_not_contains(check_id, path, r"(?m)^Kind:", "separate Kind field")
         assert_text_not_contains(check_id, path, r"(?m)^Intent:", "separate Intent field")
     for path in plan_paths:
@@ -1667,66 +1606,39 @@ def assert_commitment_verification_templates() -> None:
         assert_text_contains(check_id, path, r"Add a mapping only when", "benefit-based mapping")
         assert_text_contains(check_id, path, r"### `TASK-001` `<short imperative title>`", "TASK ID anchor")
         assert_text_contains(check_id, path, r"### `CHECK-001` `<short title>`", "CHECK ID anchor")
+        assert_text_contains(check_id, path, r"Evidence record:", "Plan Check evidence-record prompt")
         assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
         assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
-    return
 
-    positive_spec = """### `SPEC-001` Specification Commitment — One\nKind: `Constraint`\nIntent: `Establish`\nStatement:\n1. One.\n#### `VER-001` Verification Criterion — One\nCovers:\n1. `SPEC-001`.\nCriterion:\n1. One.\nExpected evidence:\n1. One.\n### `SPEC-002` Specification Commitment — Two\nKind: `Deliverable`\nIntent: `Change`\nStatement:\n1. Two.\n## Cross-cutting Verification Criteria\n### `VER-002` Verification Criterion — Both\nCovers:\n1. `SPEC-001`.\n2. `SPEC-002`.\nCriterion:\n1. Both.\nExpected evidence:\n1. Both.\n"""
-    positive_plan = """## Commitment-Disposition Mapping\n| Specification Commitment | Disposition | Implementation Tasks |\n|---|---|---|\n| `SPEC-001` | Implement | `TASK-001` |\n## Verification-Execution Mapping\n| Verification Criterion | Plan Checks | Expected evidence stage |\n|---|---|---|\n| `VER-001` | `CHECK-001` | Final |\n## Implementation Tasks\n### `TASK-001` Implementation Task — Change\nDependencies:\n1. None.\nImplementation:\n1. Change.\nExit criteria:\n1. Done.\n## Plan Checks\n### `CHECK-001` Plan Check — Verify\nCovers:\n1. `VER-001`.\nProcedure:\n1. Run.\nExpected result:\n1. Pass.\nEvidence record:\n1. Record.\nStage or environment:\n1. Final.\n"""
-    if errors := validate_commitment_spec_fixture(positive_spec):
-        add_failure(check_id, f"positive spec fixture failed: {errors}")
-    if errors := validate_commitment_plan_fixture(positive_plan):
-        add_failure(check_id, f"positive plan fixture failed: {errors}")
-    negative_specs = [
-        positive_spec.replace(" Specification Commitment", ""),
-        positive_spec.replace("Kind:", "Legacy kind:"),
-        positive_spec.replace("1. `SPEC-001`.", "1. `SPEC-999`.", 1),
-        positive_spec.replace("### `VER-002`", "#### `VER-002`"),
-        positive_spec.replace("SPEC-002", "SPEC-001", 1),
-        positive_spec.replace("1. `SPEC-001`.\nCriterion:", "1. `SPEC-002`.\nCriterion:", 1),
-    ]
-    if any(not validate_commitment_spec_fixture(fixture) for fixture in negative_specs):
-        add_failure(check_id, "a declared negative spec fixture passed")
-    negative_plans = [
-        positive_plan.replace("## Commitment-Disposition Mapping", "## Spec Traceability"),
-        positive_plan.replace("### `TASK-001` Implementation Task", "### `T-001`"),
-        positive_plan.replace("Evidence record:\n1. Record.\n", ""),
-        positive_plan.replace("| `SPEC-001` | Implement | `TASK-001` |\n", ""),
-        positive_plan.replace("| `VER-001` | `CHECK-001` | Final |\n", ""),
-        positive_plan.replace("`CHECK-001` | Final", "`CHECK-999` | Final"),
-        positive_plan.replace("| `VER-001` | `CHECK-001` | Final |", "| `VER-001` | None | Final |"),
-        positive_plan.replace("1. `VER-001`.\nProcedure:", "1. `VER-999`.\nProcedure:"),
-        positive_plan.replace(
-            "## Plan Checks",
-            "### `TASK-001` Implementation Task — Duplicate\nDependencies:\n1. None.\nImplementation:\n1. Duplicate.\nExit criteria:\n1. Done.\n## Plan Checks",
-        ),
-    ]
-    if any(not validate_commitment_plan_fixture(fixture) for fixture in negative_plans):
-        add_failure(check_id, "a declared negative plan fixture passed")
-    for path in CURRENT_SPEC_SCHEMA_PATHS:
-        assert_path_exists(check_id, path)
-        if join_repo_path(path).exists():
-            for error in validate_commitment_spec_fixture(read_repo_text(path)):
-                add_failure(check_id, f"{path}: {error}")
-    for path in CURRENT_PLAN_SCHEMA_PATHS:
-        assert_path_exists(check_id, path)
-        if join_repo_path(path).exists():
-            for error in validate_commitment_plan_fixture(read_repo_text(path)):
-                add_failure(check_id, f"{path}: {error}")
-    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.common.traceability-approach-surfaces.md"
-    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
-    for section in ["## Commitment-Disposition Mapping", "## Verification-Execution Mapping"]:
-        assert_text_contains(check_id, traceability_block, re.escape(section), f"traceability block section {section}")
-    for pattern, label in [
-        (r"## Implementation Tasks", "implementation tasks section"),
-        (r"### `TASK-001` Implementation Task", "full-name task heading"),
-        (r"## Plan Checks", "plan checks section"),
-        (r"### `CHECK-001` Plan Check", "full-name check heading"),
+    phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.fresh-thread-readiness.md"
+    phase_template = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
+    assert_text_contains(check_id, phase_source, r"one orchestration thread with bounded delegation", "phase source execution-size boundary")
+    assert_text_contains(check_id, phase_template, r"one orchestration thread with bounded delegation", "phase template execution-size boundary")
+    assert_text_not_contains(check_id, plan_paths[0], r"one orchestration thread with bounded delegation", "ordinary plan phase-only boundary")
+
+    local_link_plan = """## Implementation tasks
+### `TASK-001` Implement one change
+Dependencies:
+1. None.
+Implementation:
+1. Change one surface.
+Exit criteria: Done.
+## Plan checks
+### `CHECK-001` Verify one criterion
+Covers: `VER-001`.
+Method: Run the focused validator.
+Expected result: It passes.
+Evidence record: Completion report.
+"""
+    if errors := validate_commitment_plan_fixture(local_link_plan):
+        add_failure(check_id, f"local-link Plan Check fixture failed: {errors}")
+    for fixture, label in [
+        (local_link_plan.replace("Covers: `VER-001`.\n", ""), "missing criterion coverage"),
+        (local_link_plan.replace("Evidence record: Completion report.\n", ""), "missing evidence record"),
     ]:
-        assert_text_contains(check_id, task_block, pattern, label)
-    architecture_template = ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md"
-    assert_text_contains(check_id, architecture_template, r"### `DEC-001` Architecture Decision —", "full-name Architecture Decision heading")
-    assert_text_contains(check_id, architecture_template, r"Source spec sections:", "Architecture Decision source mapping")
+        if not validate_commitment_plan_fixture(fixture):
+            add_failure(check_id, f"local-link Plan Check fixture with {label} passed")
+    return
 
 
 def assert_current_historical_compatibility() -> None:
@@ -1747,7 +1659,7 @@ def assert_current_historical_compatibility() -> None:
     for entity_id in ["REQ-001", "AC-001", "T-001", "V-001"]:
         if entity_id not in historical_text:
             add_failure(check_id, f"historical fixture is missing {entity_id}")
-    if validate_commitment_spec_fixture(historical_text) == [] or validate_commitment_plan_fixture(historical_text) == []:
+    if validate_commitment_plan_fixture(historical_text) == []:
         add_failure(check_id, "historical fixture was incorrectly accepted as current schema")
 
 

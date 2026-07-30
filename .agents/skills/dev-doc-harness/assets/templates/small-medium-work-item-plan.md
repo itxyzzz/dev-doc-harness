@@ -135,6 +135,8 @@ Method: `<command, test, inspection, analysis, demonstration, or review>`.
 
 Expected result: `<observable pass signal>`.
 
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
+
 ## Planned commits
 
 Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.

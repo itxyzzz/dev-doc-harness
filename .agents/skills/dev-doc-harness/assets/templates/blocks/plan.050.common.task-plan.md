@@ -39,3 +39,5 @@ Covers: `VER-001`.
 Method: `<command, test, inspection, analysis, demonstration, or review>`.
 
 Expected result: `<observable pass signal>`.
+
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
