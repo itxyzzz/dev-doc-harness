@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-07-30 plan: artifact-style-ownership-cleanup -- approve policy consolidation
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved the baseline plain-language owner move, focused Artifact Style consolidation, template and validator alignment, and an independent reviewer sub-agent for the implementation package.
+
 ### 2026-07-29 docs: naming-convention-review-fixes -- reconcile review feedback
 
 Release target: `unreleased`
