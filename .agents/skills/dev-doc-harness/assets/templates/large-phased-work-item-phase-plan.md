@@ -132,6 +132,24 @@ implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
+Place a local `CHECK-NNN` directly after the task that runs it when that makes
+execution order clear. Every check names the Verification Criterion it supports
+with `Covers: VER-NNN`; a local check must identify `Related task(s)`. The task
+relation describes execution or required inputs, not conformance. Put
+cross-cutting or end-to-end checks in the shared Plan checks section below.
+
+### `CHECK-001` `<short title>`
+
+Covers: `VER-001`.
+
+Related task(s): `TASK-001`.
+
+Method: `<command, test, inspection, analysis, demonstration, or review>`.
+
+Expected result: `<observable pass signal>`.
+
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
+
 ## Plan checks
 
 Use stable check IDs. Describe the evidence purpose, method, and expected
@@ -140,7 +158,7 @@ When multiple checks cover one criterion, state whether all are required or
 whether they are equivalent alternatives; for alternatives, explain why either
 proves the same evidence purpose.
 
-### `CHECK-001` `<short title>`
+### `CHECK-002` `<short title>`
 
 Covers: `VER-001`.
 

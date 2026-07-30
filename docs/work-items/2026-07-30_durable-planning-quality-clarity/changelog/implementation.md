@@ -1,3 +1,19 @@
+## 2026-07-30 docs: task-check-conformance -- clarify execution evidence
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+#### Added
+
+- Defined `TASK` as a first-class durable-plan entity and clarified task-local versus cross-cutting Plan Check placement.
+- Added execution-quality ownership for implementation evidence and `VER` conformance statuses.
+
+#### Changed
+
+- Kept `CHECK` → `VER` as the conformance-evidence relationship and made task links operational only.
+- Regenerated plan templates and extended validator coverage for task/check placement, execution-time status recording, and the preserved readability reordering.
+
 ## 2026-07-30 docs: durable-planning-quality-clarity -- clarify plans and conformance
 
 Release target: `unreleased`

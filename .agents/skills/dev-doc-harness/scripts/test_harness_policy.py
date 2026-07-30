@@ -1534,7 +1534,7 @@ CURRENT_COMMITMENT_VOCABULARY_PATHS = sorted(set(
 
 def validate_commitment_plan_fixture(text: str) -> list[str]:
     errors: list[str] = []
-    required_sections = ["## Implementation tasks", "## Plan checks"]
+    required_sections = ["## Implementation tasks"]
     for section in required_sections:
         if section not in text:
             errors.append(f"missing plan section {section}")
@@ -1552,6 +1552,16 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
         errors.append("duplicate Plan Check ID")
     entity_matches = sorted([*task_matches, *check_matches], key=lambda match: match.start())
     next_start = {match.start(): (entity_matches[index + 1].start() if index + 1 < len(entity_matches) else len(text)) for index, match in enumerate(entity_matches)}
+    shared_checks = re.search(r"^## Plan checks$", text, re.MULTILINE)
+    shared_checks_start = shared_checks.start() if shared_checks else len(text)
+    task_local_check_ids: set[str] = set()
+    for index, match in enumerate(entity_matches):
+        if not match.group(1).startswith("CHECK-") or match.start() >= shared_checks_start:
+            continue
+        task_local_check_ids.add(match.group(1))
+        previous = entity_matches[index - 1] if index else None
+        if previous is None or not previous.group(1).startswith("TASK-"):
+            errors.append(f"{match.group(1)} is not directly after an Implementation Task")
     for match in task_matches:
         block = text[match.end():next_start[match.start()]]
         for field in ("Dependencies:", "Implementation:", "Exit criteria:"):
@@ -1564,15 +1574,19 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
                 errors.append(f"{match.group(1)} missing Plan Check field {field}")
         if not re.search(r"`VER-\d{3}`", block.partition("Method:")[0]):
             errors.append(f"{match.group(1)} has no Verification Criterion coverage")
+        if match.group(1) in task_local_check_ids and "Related task(s):" not in block:
+            errors.append(f"{match.group(1)} missing task-local Plan Check relation")
     return errors
 
 
 def assert_commitment_verification_quality() -> None:
     check_id = "quality.commitment-verification"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
+    execution_quality = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
     for rule_id in [
         "rule:quality.specification-commitments",
         "rule:quality.verification-criteria",
+        "rule:quality.plan-tasks",
         "rule:quality.plan-checks",
         "rule:quality.asymmetric-plan-coverage",
         "rule:quality.conformance-status",
@@ -1582,14 +1596,29 @@ def assert_commitment_verification_quality() -> None:
         (r"all harness-managed durable specs and plans", "general durable-artifact scope"),
         (r"legalistic authority language and legalistic modal phrasing", "precise plain-language boundary"),
         (r"question material to the artifact.?s documented next activity", "material open-question boundary"),
-        (r"`met`, `not met`, `pending`, (?:or|and) `blocked`", "criterion conformance states"),
+        (
+            r"Avoid legalistic authority language and legalistic modal phrasing.*?Say what to do and why only when the reason helps the reader act\. Prefer scannable sections, lists, and tables over dense prose\.\n\nEvery durable planning artifact should read as final artifact content",
+            "preserved readability reordering",
+        ),
         (r"A commitment conforms only when", "commitment conformance rule"),
         (r"operator-provided source materials", "durable source-preservation rule"),
         (r"## Plan quality bar", "general plan-quality section"),
         (r"## Additional phase-plan quality bar", "phase-only quality section"),
         (r"one orchestration thread with its recorded bounded delegation", "phase execution-size boundary"),
+        (r"## Plan Tasks", "Plan Task section"),
+        (r"A Plan Task is a bounded", "Plan Task definition"),
+        (r"task relation records execution or input production, not conformance", "task/check relationship boundary"),
     ]:
         assert_text_contains(check_id, quality, pattern, label)
+    assert_text_not_contains(check_id, quality, r"Record Plan Check evidence", "planning-time evidence record")
+    for pattern, label in [
+        (r"rule:execution-quality.conformance-evidence", "execution conformance-evidence owner"),
+        (r"## Conformance evidence", "execution conformance-evidence section"),
+        (r"During implementation, after a Plan Check runs", "implementation-time evidence timing"),
+        (r"`met`, `not met`, `pending`, (?:or|and) `blocked`", "criterion conformance states"),
+        (r"not a planning-time assertion", "planning/execution ownership boundary"),
+    ]:
+        assert_text_contains(check_id, execution_quality, pattern, label)
 
 def assert_commitment_verification_templates() -> None:
     check_id = "templates.commitment-verification"
@@ -1606,6 +1635,7 @@ def assert_commitment_verification_templates() -> None:
         assert_text_contains(check_id, path, r"Add a mapping only when", "benefit-based mapping")
         assert_text_contains(check_id, path, r"### `TASK-001` `<short imperative title>`", "TASK ID anchor")
         assert_text_contains(check_id, path, r"### `CHECK-001` `<short title>`", "CHECK ID anchor")
+        assert_text_contains(check_id, path, r"Related task\(s\):", "Plan Check task-placement prompt")
         assert_text_contains(check_id, path, r"Evidence record:", "Plan Check evidence-record prompt")
         assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
         assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
@@ -1632,9 +1662,26 @@ Evidence record: Completion report.
 """
     if errors := validate_commitment_plan_fixture(local_link_plan):
         add_failure(check_id, f"local-link Plan Check fixture failed: {errors}")
+    task_local_check_plan = local_link_plan.replace(
+        "Covers: `VER-001`.\n",
+        "Covers: `VER-001`.\nRelated task(s): `TASK-001`.\n",
+    ).replace("## Plan checks\n", "")
+    if errors := validate_commitment_plan_fixture(task_local_check_plan):
+        add_failure(check_id, f"task-local Plan Check fixture failed: {errors}")
+    mixed_check_plan = task_local_check_plan + """## Plan checks
+### `CHECK-002` Verify cross-cutting criterion
+Covers: `VER-002`.
+Method: Run the end-to-end validator.
+Expected result: It passes.
+Evidence record: Completion report.
+"""
+    if errors := validate_commitment_plan_fixture(mixed_check_plan):
+        add_failure(check_id, f"mixed local/shared Plan Check fixture failed: {errors}")
     for fixture, label in [
         (local_link_plan.replace("Covers: `VER-001`.\n", ""), "missing criterion coverage"),
         (local_link_plan.replace("Evidence record: Completion report.\n", ""), "missing evidence record"),
+        (task_local_check_plan.replace("Related task(s): `TASK-001`.\n", ""), "task-local check without a task relation"),
+        (mixed_check_plan.replace("Related task(s): `TASK-001`.\n", ""), "mixed local/shared check without a task relation"),
     ]:
         if not validate_commitment_plan_fixture(fixture):
             add_failure(check_id, f"local-link Plan Check fixture with {label} passed")

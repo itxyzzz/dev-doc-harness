@@ -12,6 +12,7 @@ Owned rule IDs:
 | `rule:execution-quality.execution-thread-start` | `## Execution thread start` |
 | `rule:execution-quality.task-preflight` | `## Task preflight` |
 | `rule:execution-quality.environment-compensation` | `## Environment compensation` |
+| `rule:execution-quality.conformance-evidence` | `## Conformance evidence` |
 | `rule:execution-quality.increment-quality-gate` | `## Increment quality gate` |
 
 ## Context load order
@@ -59,6 +60,12 @@ When local quality controls are unavailable, compensate explicitly.
 | Subagents unavailable | Keep role boundaries in the plan and have the orchestration thread own integration and review. |
 | Tests unavailable | Record the blocker, inspect the diff, and provide the best manual or static validation available. |
 | Browser or runtime tooling unavailable | Probe first, record the unavailable tool, and avoid claiming visual or runtime verification. |
+
+## Conformance evidence
+
+During implementation, after a Plan Check runs, retain its result and evidence in the form that helps a later reader reproduce or trust it. Record each affected Verification Criterion as `met`, `not met`, `pending`, or `blocked`: evidence that satisfies the criterion is met; contradictory evidence is not met; absent or insufficient evidence is pending; and an unavailable evidence path with its reason is blocked.
+
+This record is implementation evidence, not a planning-time assertion. Apply `module:quality`'s conformance definition when reporting completion: a commitment conforms only when all its applicable Verification Criteria are met. Report non-met, pending, or blocked criteria rather than treating a completed task as proof. `module:lifecycle` continues to own variance and amendment mechanics; `module:freeze-gate` owns approval, freeze, and authorization transitions.
 
 ## Increment quality gate
 

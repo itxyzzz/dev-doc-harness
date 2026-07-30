@@ -15,6 +15,7 @@ Owned rule IDs:
 | `rule:quality.plain-language` | `## Baseline artifact readability` |
 | `rule:quality.specification-commitments` | `## Specification Commitments` |
 | `rule:quality.verification-criteria` | `## Verification Criteria` |
+| `rule:quality.plan-tasks` | `## Plan Tasks` |
 | `rule:quality.plan-checks` | `## Plan Checks` |
 | `rule:quality.asymmetric-plan-coverage` | `## Asymmetric plan coverage` |
 | `rule:quality.conformance-status` | `## Conformance` |
@@ -27,11 +28,13 @@ Apply this quality bar to all harness-managed durable specs and plans.
 
 Use `must` for binding obligations and `should` for guidance.
 
-Use short, everyday words. Say what to do and why only when the reason helps the reader act. Avoid legalistic authority language and legalistic modal phrasing, inflated status labels, and process narration that does not change a decision.
+Use short, everyday words. Avoid legalistic authority language and legalistic modal phrasing, inflated status labels, and process narration that does not change a decision. Say what to do and why only when the reason helps the reader act. Prefer scannable sections, lists, and tables over dense prose.
 
-Every durable planning artifact should read as final artifact content. Before approval or handoff, remove authoring scaffolds and resolve every question material to the artifact's documented next activity. A known unknown may remain only when reasonable checking establishes that it does not affect that activity; record why, and record an owner or resolving event when it may affect a later stage. Prefer scannable sections, lists, and tables over dense prose.
+Every durable planning artifact should read as final artifact content. Before approval or handoff, remove authoring scaffolds and resolve every question material to the artifact's documented next activity. A known unknown may remain only when reasonable checking establishes that it does not affect that activity; record why, and record an owner or resolving event when it may affect a later stage.
 
-When a spec, plan, phase plan, snapshot, amendment, report, or handoff becomes large or hard to scan, load `module:artifact-style`. Large anchor specs always load that module. Mutable external evidence used by an artifact is preserved through `module:evidence` and `rule:evidence.preservation`.
+When a spec, plan, phase plan, snapshot, amendment, report, or handoff becomes large or hard to scan, load `module:artifact-style`. Large anchor specs always load that module.
+
+Mutable external evidence used by an artifact is preserved through `module:evidence` and `rule:evidence.preservation`.
 
 ## Spec quality bar
 
@@ -78,9 +81,15 @@ Keep commitments separate when they can be implemented, changed, or verified sep
 
 A Verification Criterion says what evidence proves a commitment; it is not a procedure or a result. Use a stable `VER-NNN` ID, link it to the commitments it covers, and state the criterion and expected evidence. Keep a local criterion near its commitment; put genuinely cross-cutting criteria in one shared section.
 
+## Plan Tasks
+
+A Plan Task is a bounded implementation, documentation, or review unit that advances one or more commitments. Use a stable `TASK-NNN` ID and short title. State its outcome and enough dependencies, interfaces, numbered implementation steps, and observable exit criteria for a fresh executor to act without inventing scope.
+
 ## Plan Checks
 
-A Plan Check is a command, test, inspection, analysis, demonstration, or review that obtains evidence. Use a stable `CHECK-NNN` ID, name the criterion it supports, and describe the evidence purpose, method, expected result, and evidence record. Commands that gather validation evidence belong here rather than in a Verification Criterion.
+A Plan Check is a command, test, inspection, analysis, demonstration, or review that obtains evidence. Use a stable `CHECK-NNN` ID, name the `VER-NNN` criterion it supports, and describe the evidence purpose, method, expected result, and evidence record. Commands that gather validation evidence belong here rather than in a Verification Criterion.
+
+When one task runs a check or produces an input it requires, place a local check directly after that task and identify its related task when it makes execution order clear; put cross-cutting or end-to-end checks in the shared Plan Checks section. In either location, `Covers` links the check to its Verification Criterion. A task relation records execution or input production, not conformance.
 
 The method may change through the variance process when it still proves the same thing; only a material change needs an amendment.
 
@@ -90,9 +99,7 @@ Mappings are optional. Use local links between commitments, tasks, criteria, and
 
 ## Conformance
 
-Record Plan Check evidence in the form that helps a later reader reproduce or trust the result. Record each Verification Criterion as `met`, `not met`, `pending`, or `blocked`: evidence that satisfies the criterion is met; contradictory evidence is not met; absent or insufficient evidence is pending; and an unavailable evidence path with its reason is blocked.
-
-A commitment conforms only when all its applicable Verification Criteria are met. Completing a task alone does not establish conformance. Planning approval and freeze remain lifecycle decisions.
+A Plan Check produces evidence for the Verification Criterion it covers. A commitment conforms only when all its applicable Verification Criteria are met. Completing a task alone does not establish conformance. `module:execution-quality` owns recording implementation evidence and criterion status; planning approval and freeze remain lifecycle decisions.
 
 ## Handoff preservation check
 
