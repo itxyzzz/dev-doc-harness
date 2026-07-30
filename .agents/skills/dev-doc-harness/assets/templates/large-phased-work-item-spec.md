@@ -75,7 +75,7 @@ rationale and examples do not add scope. Every additional `SPEC-*` uses the
 complete `SPEC-001` structure: Statement plus a local Verification Criterion,
 unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
-Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:quality.plain-language`.
 
 ### `SPEC-001` `<short title>`
 

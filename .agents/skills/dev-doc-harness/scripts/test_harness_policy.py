@@ -144,13 +144,10 @@ CURRENT_SURFACE_FILES = [
     "docs/work-items/2026-06-07-followup-hardening/deltas/architecture-summary.delta.md",
 ] + CANONICAL_REFERENCES + TEMPLATE_FILES
 
-PLAIN_LANGUAGE_RULE_ID = "rule" + ":style.plain-language"
+PLAIN_LANGUAGE_RULE_ID = "rule" + ":quality.plain-language"
 PLAIN_LANGUAGE_PROMPT = (
     "Use `must` for binding Statements and `should` for advisory prose; "
     f"see `{PLAIN_LANGUAGE_RULE_ID}`."
-)
-PLAIN_LANGUAGE_CANONICAL_EXCEPTION = (
-    "Do not use `shall` in author-facing current guidance or newly created durable artifacts."
 )
 PLAIN_LANGUAGE_FIXTURE_PATH = ".agents/skills/dev-doc-harness/scripts/fixtures/plain-language.md"
 PLAIN_LANGUAGE_ACTIVE_MARKDOWN_PATHS = [
@@ -364,11 +361,6 @@ def find_unapproved_plain_language_modals(path: str, text: str) -> list[str]:
     failures: list[str] = []
     for line_number, line in enumerate(text.splitlines(), start=1):
         if not re.search(r"(?i)\bshall\b", line):
-            continue
-        if (
-            path == ".agents/skills/dev-doc-harness/references/artifact-style.md"
-            and line.strip() == PLAIN_LANGUAGE_CANONICAL_EXCEPTION
-        ):
             continue
         failures.append(f"{path}:{line_number}: prohibited modal outside the canonical definition")
     return failures
@@ -1232,7 +1224,7 @@ def assert_artifact_style_guidance() -> None:
 
 def assert_plain_language_policy() -> None:
     check_id = "plain-language.policy"
-    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
+    quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
     prompt_paths = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
@@ -1244,10 +1236,8 @@ def assert_plain_language_policy() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
     ]
 
-    assert_text_contains(check_id, style, re.escape(PLAIN_LANGUAGE_RULE_ID), "plain-language rule owner")
-    assert_text_contains(check_id, style, r"must.+binding.+should.+guidance", "canonical must/should rule")
-    if read_repo_text(style).count(PLAIN_LANGUAGE_CANONICAL_EXCEPTION) != 1:
-        add_failure(check_id, "canonical definition-only exception must appear exactly once")
+    assert_text_contains(check_id, quality, re.escape(PLAIN_LANGUAGE_RULE_ID), "plain-language rule owner")
+    assert_text_contains(check_id, quality, r"must.+binding.+should.+guidance", "canonical must/should rule")
     route_line = next(
         (
             line
@@ -1275,7 +1265,6 @@ def assert_plain_language_policy() -> None:
     if not find_unapproved_plain_language_modals("AGENTS.md", "A current authoring rule shall fail."):
         add_failure(check_id, "synthetic active-surface occurrence did not fail")
     for path, text in [
-        (style, PLAIN_LANGUAGE_CANONICAL_EXCEPTION),
         ("docs/work-items/frozen/spec_example.md", "Historical text shall remain unchanged."),
         ("LICENSE", "Legal text shall remain unchanged."),
         (PLAIN_LANGUAGE_FIXTURE_PATH, "Validator fixture shall remain outside the Markdown scan."),
@@ -1655,7 +1644,6 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
 def assert_commitment_verification_quality() -> None:
     check_id = "quality.commitment-verification"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
-    style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
     for rule_id in [
         "rule:quality.specification-commitments",
         "rule:quality.verification-criteria",
@@ -1664,13 +1652,6 @@ def assert_commitment_verification_quality() -> None:
         "rule:quality.conformance-status",
     ]:
         assert_text_contains(check_id, quality, re.escape(rule_id), f"{rule_id} owner")
-    for rule_id in [
-        "rule:style.entity-presentation",
-        "rule:style.verification-criterion-placement",
-        "rule:style.proportional-traceability",
-    ]:
-        assert_text_contains(check_id, style, re.escape(rule_id), f"{rule_id} owner")
-
 
 def assert_commitment_verification_templates() -> None:
     check_id = "templates.commitment-verification"

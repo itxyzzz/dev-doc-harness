@@ -11,6 +11,7 @@ Owned rule IDs:
 | `rule:quality.spec-handoff` | `## Spec quality bar` |
 | `rule:quality.phase-plan-fresh-thread` | `## Phase plan quality bar` |
 | `rule:quality.handoff-preservation` | `## Handoff preservation check` |
+| `rule:quality.plain-language` | `## Baseline artifact readability` |
 | `rule:quality.specification-commitments` | `## Specification Commitments` |
 | `rule:quality.verification-criteria` | `## Verification Criteria` |
 | `rule:quality.plan-checks` | `## Plan Checks` |
@@ -24,6 +25,13 @@ Apply this quality bar to all harness-managed specs and plans except very small 
 Durable planning is especially important when the work mentions layered plans, future threads, phase plans, preserving a handoff, or work that must be more than a task list.
 
 ## Baseline artifact readability
+
+Use `must` for binding obligations and `should` for guidance.
+
+Use short, everyday words. Say what to do and why only when the reason helps
+the reader act. Avoid legalistic authority language, inflated status labels,
+process narration that does not change a decision. Avoid legalistic modal
+phrasing in author-facing current guidance and newly created durable artifacts.
 
 Every durable planning artifact should read as final artifact content. Remove
 authoring scaffolds before approval or handoff, resolve required decisions and
