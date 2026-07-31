@@ -56,7 +56,7 @@ flowchart TD
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package determines the next activity. Small/medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next activity automatically.
+The frozen package determines the next stage. Small/medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically.
 
 ## Using the documentation harness
 
@@ -91,23 +91,18 @@ When merging `AGENTS.md` instructions, copy the full section `## Using Dev Doc H
 An example of a minimalistic bootstrap in the global `AGENTS.md`:
 
 ```md
-For all development work use the harness router `.agents/skills/dev-doc-harness/SKILL.md`.
-Very small mechanical edits may proceed without durable artifacts only when the router's
-`module:lifecycle` sizing rules allow it, and they must still preserve existing behavior and relevant checks.
+For all development work use the harness router `.agents/skills/dev-doc-harness/SKILL.md`. Very small mechanical edits may proceed without durable artifacts only when the router's `module:lifecycle` sizing rules allow it, and they must still preserve existing behavior and relevant checks.
 
 Use the `economy-default` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`.
 
-If Superpowers is installed and active, use Superpowers for its normal software-development methodology,
-but apply this harness as the artifact-location and lifecycle contract. For harness-managed work,
-this global guidance overrides Superpowers' default spec and plan locations. Keep durable artifacts
-under `docs/work-items/<work-id>/` in the destination repository.
+If Superpowers is installed and active, use Superpowers for its normal software-development methodology, but apply this harness as the artifact-location and lifecycle contract. For harness-managed work, this global guidance overrides Superpowers' default spec and plan locations. Keep durable artifacts under `docs/work-items/<work-id>/` in the destination repository.
 ```
 
 ## What operators can rely on
 
 ### Planning and conformance
 
-For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a combined small/medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as its next activity. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
+For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a combined small/medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as the next lifecycle stage. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
 
 The practical boundary is whether one orchestration thread can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
 
@@ -119,10 +114,10 @@ The planning package also records which supporting documentation artifacts are n
 
 ### Review, execution, and handoff
 
-Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: update the matching work-item changelog source, commit the approved package, report its paths, and pause before the documented next activity. This also allows the operator to push and open a draft plan-only PR, and to compact the current task or start a new one using the provided handoff.
+Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: update the matching work-item changelog source, commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current task or start a new one using the provided handoff.
 
 For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
-- Activity (the next suggested stage, e.g. frozen plan execution after approval);
+- The next lifecycle stage (for example, plan execution after approval);
 - Orchestration (run in same task or new one, using sub-agents, etc.);
 - Model (model and reasoning);
 - Fallbacks and limits (only those applicable).

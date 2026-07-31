@@ -1,3 +1,13 @@
+## 2026-08-01 docs: lifecycle-stage-boundaries -- align README stage terminology
+
+Release target: `unreleased`
+Package impact: `repository-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Aligned the README lifecycle summary and next-stage recommendation list with the canonical `Next lifecycle stage` terminology, and normalized its long prose line wraps.
+
 ## 2026-07-31 docs: lifecycle-stage-boundaries -- clarify freeze lifecycle stages
 
 Release target: `unreleased`
