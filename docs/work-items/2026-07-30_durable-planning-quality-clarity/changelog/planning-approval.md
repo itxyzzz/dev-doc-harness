@@ -1,3 +1,13 @@
+## 2026-07-31 plan: entity-section-ownership -- approve hierarchy amendment
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved `AMD-003` to nest spec and plan entities under their respective quality bars and remove ambiguous verification-in-task wording.
+
 ## 2026-07-31 plan: task-bound-checks -- approve flat-task amendment
 
 Release target: `unreleased`
