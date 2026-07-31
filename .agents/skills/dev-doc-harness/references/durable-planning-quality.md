@@ -13,10 +13,10 @@ Owned rule IDs:
 | `rule:quality.phase-plan-fresh-thread` | `## Additional phase-plan quality bar` |
 | `rule:quality.handoff-preservation` | `## Handoff preservation check` |
 | `rule:quality.plain-language` | `## Baseline artifact readability` |
-| `rule:quality.specification-commitments` | `## Specification Commitments` |
-| `rule:quality.verification-criteria` | `## Verification Criteria` |
-| `rule:quality.plan-tasks` | `## Plan Tasks` |
-| `rule:quality.plan-checks` | `## Plan Checks` |
+| `rule:quality.specification-commitments` | `### Specification Commitments` |
+| `rule:quality.verification-criteria` | `### Verification Criteria` |
+| `rule:quality.plan-tasks` | `### Plan Tasks` |
+| `rule:quality.plan-checks` | `### Plan Checks` |
 | `rule:quality.asymmetric-plan-coverage` | `## Asymmetric plan coverage` |
 | `rule:quality.conformance-status` | `## Conformance` |
 
@@ -53,6 +53,16 @@ A durable `<spec-filename>` must preserve the handoff in repository terms. Inclu
 
 A chat summary, outline, or heading-only checklist is not a durable spec.
 
+### Specification Commitments
+
+A Specification Commitment states an approved outcome, behavior, quality bar, constraint, or deliverable. Use a stable `SPEC-NNN` ID and a short title. Put the delivery obligation in its Statement; rationale and examples do not add scope.
+
+Keep commitments separate when they can be implemented, changed, or verified separately. Every commitment has a Statement and a local Verification Criterion unless a genuinely cross-cutting criterion explicitly links the shared evidence.
+
+### Verification Criteria
+
+A Verification Criterion says what evidence proves a commitment; it is not a procedure or a result. Use a stable `VER-NNN` ID, link it to the commitments it covers, and state the criterion and expected evidence. Keep a local criterion near its commitment; put genuinely cross-cutting criteria in one shared section.
+
 ## Plan quality bar
 
 Each `<plan-filename>` and `<phase-plan-filename>` must be executable from its declared inputs by a fresh executor without inventing scope or reconstructing hidden chat context. Include:
@@ -61,37 +71,27 @@ Each `<plan-filename>` and `<phase-plan-filename>` must be executable from its d
 - Files, directories, modules, interfaces, schemas, APIs, config, or docs likely to change.
 - A flat list of self-contained tasks with clear ownership and boundaries; dependencies identify tasks that may run in parallel.
 - Test cases and validation commands with expected results.
-- Verification Criteria and their Plan Checks within the tasks that run them.
+- Plan Tasks with executable checks that link to relevant Verification Criteria.
 - Documentation tasks and required changelog update.
 - Handoff output expected from the implementing agent.
 
 Plans consume the approved spec, approved amendments, and any approved architecture snapshot. They may use architecture decisions as implementation inputs, but they must not silently reinterpret frozen architecture or introduce new high-impact architecture decisions. `artifact-contract.md` owns architecture-snapshot eligibility, post-freeze variance, and amendment mechanics.
 
-## Additional phase-plan quality bar
-
-Each `<phase-plan-filename>` must also be safely executable by one orchestration thread with its recorded bounded delegation. If it cannot meet that bar without hidden context, excessive coordination, or an oversized change boundary, split or rewrite it before implementation.
-
-## Specification Commitments
-
-A Specification Commitment states an approved outcome, behavior, quality bar, constraint, or deliverable. Use a stable `SPEC-NNN` ID and a short title. Put the delivery obligation in its Statement; rationale and examples do not add scope.
-
-Keep commitments separate when they can be implemented, changed, or verified separately. Every commitment has a Statement and a local Verification Criterion unless a genuinely cross-cutting criterion explicitly links the shared evidence.
-
-## Verification Criteria
-
-A Verification Criterion says what evidence proves a commitment; it is not a procedure or a result. Use a stable `VER-NNN` ID, link it to the commitments it covers, and state the criterion and expected evidence. Keep a local criterion near its commitment; put genuinely cross-cutting criteria in one shared section.
-
-## Plan Tasks
+### Plan Tasks
 
 A Plan Task is a bounded implementation, documentation, or review unit that advances one or more commitments. The executable body is a flat list of self-contained tasks. Use a stable `TASK-NNN` ID and short title. State its outcome and enough dependencies, interfaces, numbered implementation steps, observable exit criteria, and checks for a fresh executor to act without inventing scope.
 
-## Plan Checks
+### Plan Checks
 
 A Plan Check is a command, test, inspection, analysis, demonstration, or review that obtains evidence. It is nested in exactly one Plan Task. Use a stable `CHECK-NNN` ID, name the `VER-NNN` criterion it supports, and describe the evidence purpose, method, expected result, and evidence record. Commands that gather validation evidence belong here rather than in a Verification Criterion.
 
 `Covers` links the check to its Verification Criterion. End-to-end or multi-area verification belongs in an explicit integration or verification task with its own checks; a standalone or shared check is invalid.
 
 The method may change through the variance process when it still proves the same thing; only a material change needs an amendment.
+
+## Additional phase-plan quality bar
+
+Each `<phase-plan-filename>` must also be safely executable by one orchestration thread with its recorded bounded delegation. If it cannot meet that bar without hidden context, excessive coordination, or an oversized change boundary, split or rewrite it before implementation.
 
 ## Asymmetric plan coverage
 

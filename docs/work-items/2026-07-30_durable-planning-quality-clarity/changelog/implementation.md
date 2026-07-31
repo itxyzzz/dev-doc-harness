@@ -1,3 +1,13 @@
+## 2026-07-31 docs: entity-section-ownership -- clarify spec-plan hierarchy
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+#### Changed
+
+- Nested `SPEC`/`VER` under spec quality and `TASK`/`CHECK` under plan quality, with a concise task-to-check-to-criterion cue.
+
 ## 2026-07-31 docs: task-bound-checks -- make checks task-bound
 
 Release target: `unreleased`

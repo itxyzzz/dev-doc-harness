@@ -1613,13 +1613,15 @@ def assert_commitment_verification_quality() -> None:
         (r"## Plan quality bar", "general plan-quality section"),
         (r"## Additional phase-plan quality bar", "phase-only quality section"),
         (r"one orchestration thread with its recorded bounded delegation", "phase execution-size boundary"),
-        (r"## Plan Tasks", "Plan Task section"),
+        (r"## Spec quality bar[\s\S]*?### Specification Commitments[\s\S]*?### Verification Criteria[\s\S]*?## Plan quality bar", "spec entity hierarchy"),
+        (r"## Plan quality bar[\s\S]*?### Plan Tasks[\s\S]*?### Plan Checks[\s\S]*?## Additional phase-plan quality bar", "plan entity hierarchy"),
         (r"A Plan Task is a bounded", "Plan Task definition"),
         (r"flat list of self-contained tasks", "flat task-body rule"),
         (r"nested in exactly one Plan Task", "task-bound check rule"),
         (r"explicit integration or verification task", "end-to-end parent-task rule"),
     ]:
         assert_text_contains(check_id, quality, pattern, label)
+    assert_text_not_contains(check_id, quality, r"Verification Criteria and their Plan Checks within the tasks that run them", "ambiguous verification-in-task wording")
     assert_text_not_contains(check_id, quality, r"Record Plan Check evidence", "planning-time evidence record")
     for pattern, label in [
         (r"rule:execution-quality.conformance-evidence", "execution conformance-evidence owner"),
