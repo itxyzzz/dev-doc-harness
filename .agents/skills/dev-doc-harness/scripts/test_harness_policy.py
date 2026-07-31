@@ -1417,7 +1417,7 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, execution, r"applicable instructions.+frozen artifacts", "instruction and artifact load order")
     assert_text_contains(check_id, execution, r"branch.+worktree.+approval state.+amendments.+variance.+(?:baseline|validation baseline)", "working-state and baseline verification")
     assert_text_contains(check_id, execution, r"avoid.+rediscover", "rediscovery avoidance")
-    assert_text_contains(check_id, execution, r"First Plan Task|next activity", "named starting activity")
+    assert_text_contains(check_id, execution, r"documented next lifecycle stage", "named lifecycle stage")
     assert_text_contains(check_id, execution, r"variance", "variance stop route")
 
     assert_text_contains(check_id, models, r"new Codex task", "new-task transition preference")
@@ -1427,7 +1427,7 @@ def assert_execution_thread_start() -> None:
     small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
     phase_plan = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
     assert_text_contains(check_id, small_plan, r"## Implementation handoff", "small-plan handoff section")
-    assert_text_contains(check_id, small_plan, r"Next activity[\s\S]*First Plan Task[\s\S]*Frozen package", "small-plan compact handoff inputs")
+    assert_text_contains(check_id, small_plan, r"Next lifecycle stage[\s\S]*Stage:[\s\S]*Frozen package", "small-plan compact handoff inputs")
     assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
     assert_text_contains(check_id, phase_plan, r"## Phase transitions", "phase transition section")
     assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
@@ -1447,12 +1447,20 @@ def assert_lifecycle_transition_targets() -> None:
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
 
     assert_text_contains(check_id, lifecycle, re.escape("rule" + ":lifecycle.planning-shape"), "planning-shape rule owner")
-    assert_text_contains(check_id, lifecycle, r"## Small/medium planning shape", "planning-shape owner heading")
+    assert_text_contains(check_id, lifecycle, r"## Lifecycle stage boundaries", "lifecycle-stage owner heading")
+    assert_text_contains(check_id, lifecycle, r"Work item folders[\s\S]+Lifecycle stage boundaries", "lifecycle stage boundaries follow work-item folders")
     assert_text_contains(check_id, lifecycle, r"small/medium.+spec and plan.+(?:together|combined)", "combined small/medium default")
     assert_text_contains(check_id, lifecycle, r"spec-only freeze.+explicit.+(?:reason|exception)", "staged small/medium exception")
-    assert_text_contains(check_id, lifecycle, r"large/phased.+phase-plan drafting", "large-anchor phase-plan route")
+    for stage, label in [
+        ("plan drafting", "staged small/medium route"),
+        ("plan execution", "combined small/medium route"),
+        ("phase-plan drafting", "large-anchor route"),
+        ("phase execution", "phase-plan route"),
+        ("documented resumed stage", "amendment resumption route"),
+    ]:
+        assert_text_contains(check_id, lifecycle, re.escape(stage), label)
 
-    for label in ["Planning shape", "Frozen package", "Next activity"]:
+    for label in ["Planning shape", "Frozen package", "Next lifecycle stage"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze field '{label}'")
     assert_text_contains(check_id, freeze, r"explicit.+approval.+creat.+task|approval.+specifically.+creat.+task", "task-creation approval")
     assert_text_contains(check_id, freeze, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", "exact supported configuration")
@@ -1461,7 +1469,30 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, freeze, r"`same Codex task`[\s\S]+current-task authorization route separate", "separate same-task route")
     assert_text_contains(check_id, models, r"Run in`? accepts only `same Codex task` or `new Codex task`", "exclusive Run in values")
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
-    assert_text_contains(check_id, models, r"documented next activity|named next activity", "continuity uses documented next activity")
+    assert_text_contains(check_id, models, r"documented next lifecycle stage|named next lifecycle stage", "continuity uses documented lifecycle stage")
+
+    retired_route_paths = [
+        lifecycle,
+        freeze,
+        models,
+        ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md",
+        ".agents/skills/dev-doc-harness/SKILL.md",
+        *[to_repo_relative_path(path) for path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("*.md")],
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]
+    retired_handoff_snapshot_pattern = r"(?i)\bhandoff[- ]snapshot\b"
+    for path in retired_route_paths:
+        assert_text_not_contains(check_id, path, retired_handoff_snapshot_pattern, "retired handoff-snapshot route")
+        assert_text_not_contains(check_id, path, r"(?m)^#### Activity$", "retired Activity summary heading")
+        assert_text_not_contains(check_id, path, r"First Plan Task", "retired task-level transition field")
+    for legacy_route_fixture in [
+        "approval commit or handoff snapshot",
+        "<spec-filename or handoff snapshot>",
+    ]:
+        if not re.search(retired_handoff_snapshot_pattern, legacy_route_fixture):
+            add_failure(check_id, f"retired-route fixture was not rejected: {legacy_route_fixture}")
 
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
     post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
@@ -2359,9 +2390,16 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         errors.append(f"contains incompatible {forbidden_title}")
     if "Current planning Codex task" not in text:
         errors.append("missing current planning Codex task")
-    for group in ["Activity", "Orchestration", "Model", "Fallbacks and limits"]:
+    for group in ["Next lifecycle stage", "Orchestration", "Model", "Fallbacks and limits"]:
         if group not in text:
             errors.append(f"missing {group} group")
+    if not re.search(
+        r"Next lifecycle stage:\s*Stage:\s*`(?:plan drafting|plan execution|phase-plan drafting|phase execution|documented resumed stage)`",
+        text,
+    ):
+        errors.append("lifecycle stage is missing or unsupported")
+    if "First Plan Task" in text or re.search(r"(?m)^Activity:", text):
+        errors.append("retired task-level transition fields are present")
     if not re.search(r"Method:.*Run in:.*Plan Task reviewers", text, flags=re.DOTALL):
         errors.append("orchestration fields are incomplete")
     if not re.search(r"Model:.*Reasoning", text, flags=re.DOTALL):
@@ -2398,9 +2436,10 @@ def assert_next_stage_summary() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
 
-    draft_fixture = """Current planning Codex task: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nActivity: First Plan Task: `TASK-001`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current planning Codex task: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same Codex task", "new Codex task")
     invalid_fixture = draft_fixture.replace("same Codex task", "same session")
+    retired_fixture = draft_fixture.replace("Next lifecycle stage: Stage: `plan execution`", "Activity: First Plan Task: `TASK-001`")
     unknown_same_task_fixture = draft_fixture.replace("profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`", "profile `not exposed`")
     mixed_draft_fixture = draft_fixture + "\nApproved next stage"
     mixed_frozen_fixture = frozen_fixture + "\nNext-stage recommendation"
@@ -2410,6 +2449,8 @@ def assert_next_stage_summary() -> None:
         add_failure(check_id, "valid frozen summary fixture was rejected")
     if not next_stage_summary_fixture_errors(invalid_fixture, frozen=False):
         add_failure(check_id, "invalid Run in fixture was accepted")
+    if not next_stage_summary_fixture_errors(retired_fixture, frozen=False):
+        add_failure(check_id, "retired task-level transition fixture was accepted")
     if not next_stage_summary_fixture_errors(unknown_same_task_fixture, frozen=False):
         add_failure(check_id, "unknown-profile same-task fixture was accepted")
     if not next_stage_summary_fixture_errors(mixed_draft_fixture, frozen=False):
@@ -2446,7 +2487,7 @@ def assert_next_stage_summary() -> None:
         for error in draft_state_heading_errors(text):
             add_failure(check_id, f"{path} {error}")
         assert_text_contains(check_id, path, r"rename it `### Approved next stage` at freeze", "freeze-time next-stage rename")
-        assert_text_contains(check_id, path, r"Activity[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered handoff groups")
+        assert_text_contains(check_id, path, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered handoff groups")
 
     for path in generated_plans:
         text = read_repo_text(path)
@@ -2472,22 +2513,22 @@ def assert_next_stage_summary() -> None:
 
     assert_text_contains(check_id, models, r"Current planning Codex task", "current planning task separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
-    assert_text_contains(check_id, models, r"Activity[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
+    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
     assert_text_contains(check_id, models, r"Run in.*same Codex task.*new Codex task", "Run in values")
-    assert_text_contains(check_id, models, r"First Plan Task.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
+    assert_text_contains(check_id, models, r"Next lifecycle stage.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
     assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
-    if not re.search(r"Next-stage recommendation[\s\S]+Activity[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
+    if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
-    if not re.search(r"First Plan Task[\s\S]+Method[\s\S]+Run in[\s\S]+Plan Task reviewers[\s\S]+Model[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
+    if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Run in[\s\S]+Plan Task reviewers[\s\S]+Model[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft-review group definition is incomplete")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")
-    if re.search(r"Activity[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
+    if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze repeats the full next-stage group definition")
 
     post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")

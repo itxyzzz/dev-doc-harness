@@ -162,9 +162,9 @@ small/medium plan owns this handoff.
 Rename it `### Approved next stage` at freeze without changing its values.
 Do not render both headings together. Mirror the selected frozen values in chat.
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<named implementation activity>`; First Plan Task: `<TASK-NNN>`.
+Stage: `plan execution`.
 
 #### Orchestration
 
@@ -187,7 +187,7 @@ spec-owned handoff or infer a different transition.
 
 ## Readiness
 
-- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Activity, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
+- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Next lifecycle stage, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
 - [ ] Inputs, scope, tasks, checks, documentation, and changelog entry are clear.
 - [ ] The approved execution selection, implementation handoff, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.

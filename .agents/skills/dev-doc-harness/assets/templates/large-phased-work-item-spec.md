@@ -229,9 +229,9 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 
 ### Next-stage recommendation
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<phase-plan drafting>`; First Plan Task: `<not applicable until a phase plan>`.
+Stage: `phase-plan drafting`.
 
 #### Orchestration
 
@@ -252,7 +252,7 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next stage from that envelope or an approved amendment.
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next lifecycle stage from that envelope or an approved amendment.
 
 Upcoming-stage sub-agent assessment:
 
@@ -297,7 +297,7 @@ stable and independently plannable.
 
 Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
 
-Record the draft review, approval commit or handoff snapshot, and pause before implementation, later phase-plan drafting, or later phase execution. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
+Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
 ## Documentation artifact matrix
 
@@ -317,7 +317,7 @@ Record the draft review, approval commit or handoff snapshot, and pause before i
 Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
-2. Next activity: `phase-plan drafting` for `<named first phase-planning activity>`.
+2. Next lifecycle stage: `phase-plan drafting`.
 3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
 4. Batch planning is an explicit exception only for stable, independently plannable phases.
 5. The approved execution selection, artifacts, and variance stop condition are rendered at the actual phase-plan boundary under `rule:freeze.approval-freeze`.

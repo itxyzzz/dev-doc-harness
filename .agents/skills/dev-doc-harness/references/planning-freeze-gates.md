@@ -25,17 +25,17 @@ Use this workflow whenever one of these durable planning artifacts is ready for 
 
 Use `rule:naming.derived-patterns` for the current filename expansions.
 
-Draft artifacts may be edited until the operator explicitly approves them and the approval commit is created, or until the operator explicitly asks for a handoff snapshot. After that approval commit or explicit handoff snapshot, the artifacts are frozen and follow the immutable snapshot rules in `artifact-contract.md`.
+Draft artifacts may be edited until the operator explicitly approves them and the approval commit is created. After that approval commit, the artifacts are frozen and follow the immutable snapshot rules in `artifact-contract.md`.
 
 ## Draft review checkpoint
 
 Before committing any planning artifacts for approval:
 
 1. Draft or update the required planning artifacts.
-2. Verify package completeness before draft review: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next activity. A large/phased anchor remains a valid anchor-spec-only package.
+2. Verify package completeness before draft review: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next lifecycle stage. A large/phased anchor remains a valid anchor-spec-only package.
 3. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 4. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
-5. Present the staged package in chat with a **Next-stage recommendation** that mirrors four groups from the draft artifact: **Activity** names the next activity and First Plan Task when applicable; **Orchestration** gives Method, Run in, and Plan Task reviewers; **Model** gives Model and Reasoning; **Fallbacks and limits** includes only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
+5. Present the staged package in chat with a **Next-stage recommendation** that mirrors four groups from the draft artifact: **Next lifecycle stage** renders `Stage: <documented lifecycle stage>` determined by the frozen package and planning shape; **Orchestration** gives Method, Run in, and Plan Task reviewers; **Model** gives Model and Reasoning; **Fallbacks and limits** includes only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
 6. Ask the operator to approve the staged planning package or provide feedback.
 7. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
 
@@ -43,15 +43,15 @@ Do not create a plan amendment for feedback received before the planning package
 
 ## Approval freeze checkpoint
 
-After the operator explicitly approves the staged planning package, or explicitly asks for a handoff snapshot:
+After the operator explicitly approves the staged planning package:
 
 1. Update the matching changelog source fragment under `docs/work-items/<work-id>/changelog/*.md` with a newest-first entry for the approved artifact set.
-2. When the operator approved the package rather than requesting only a handoff snapshot, update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
-3. Verify package completeness before approval freeze: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is valid only with its operator-requested or operator-approved staged reason and `plan drafting` next activity; a large/phased anchor remains anchor-spec-only.
+2. Update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
+3. Recheck the draft-review package-completeness and artifact-completeness requirements before approval freeze.
 4. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 5. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
 6. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint. Include root `CHANGELOG.md` only when the operator is intentionally consolidating fragments as part of the same approved package; otherwise consolidation remains a later operator-owned checkpoint.
-7. Treat the package as frozen only after the approval commit or explicit handoff snapshot. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
+7. Treat the package as frozen only after the approval commit. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
 8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
 9. Report the commit hash and approved artifact paths.
 10. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
@@ -75,7 +75,7 @@ Before rendering a handoff or offering task creation, read these values from the
 
 1. Planning shape: combined small/medium, explicit staged small/medium, large/phased anchor, plan, phase plan, or amendment.
 2. Frozen package: the exact approved spec, applicable plan or phase plan, required snapshots, applicable amendments, required evidence, and any other current input named by the plan.
-3. Next activity: the documented planning, implementation, review, or replanning activity that follows this actual boundary.
+3. Next lifecycle stage: the documented planning, implementation, review, or replanning stage that follows this actual boundary.
 4. Transition owner: the plan for a combined small/medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
 
 ### Continuity rules
@@ -84,7 +84,7 @@ Then apply the approved execution continuity and current capability:
 
 #### `new Codex task`
 
-1. Display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat.
+1. Display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, documented next lifecycle stage, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat.
 2. Before offering compatible task creation, select and report the Git starting state. Use a named branch or ref when it is the approved baseline. For a detached managed-worktree source, use `working-tree`; it copies the source checkout and its uncommitted changes. Disclose the copied uncommitted paths. When those files are unrelated or should not continue, require an explicit source branch or ref, or current-task continuation. Omitting the starting state uses the project default branch and is prohibited for this route.
 3. When compatible task creation is available, ask for explicit approval specifically to create the task; this is the default continuation for a new-task route. Only after that approval may the platform action create the task with the displayed handoff as its initial prompt and the exact supported recorded model and reasoning configuration. Report the created task and do not begin its activity in the source task.
 4. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff.
@@ -98,13 +98,13 @@ For a documented non-execution transition that has no `Run in` value, follow onl
 
 An operator may explicitly direct continuation in the current task despite a recorded new-task recommendation. Present this only as an opt-in override, not as a question or recommended alternative.
 
-After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol. A new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, First Plan Task, and variance stop; a same-Codex-task route rereads the package after a model switch or recorded continuity risk.
+After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol. A new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, documented next lifecycle stage, and variance stop; a same-Codex-task route rereads the package after a model switch or recorded continuity risk.
 
 ## Multiple gates for very large or phased work items
 
 Large or phased work items normally pass through multiple freeze gates:
 
-- Anchor spec freeze: after `<spec-filename>` is approved or explicitly handed off for phase planning. This gate pauses before implementation and before later phase-plan drafting; phase-plan drafting resumes only after fresh operator instruction.
+- Anchor spec freeze: after `<spec-filename>` is approved. This gate pauses before implementation and before later phase-plan drafting; phase-plan drafting resumes only after fresh operator instruction.
 - Phase-plan freeze: after one or more `<phase-plan-filename>` files are approved.
 - Amendment freeze: after any high-impact `<amendment-filename>` is approved.
 

@@ -8,9 +8,9 @@ small/medium plan owns this handoff.
 Rename it `### Approved next stage` at freeze without changing its values.
 Do not render both headings together. Mirror the selected frozen values in chat.
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<named implementation activity>`; First Plan Task: `<TASK-NNN>`.
+Stage: `plan execution`.
 
 #### Orchestration
 

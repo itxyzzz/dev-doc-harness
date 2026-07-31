@@ -37,9 +37,9 @@ Use `module:models`, including `rule:models.strategy-required`, `rule:models.con
 
 ### Next-stage recommendation
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<phase-plan drafting>`; First Plan Task: `<not applicable until a phase plan>`.
+Stage: `phase-plan drafting`.
 
 #### Orchestration
 
@@ -60,7 +60,7 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next stage from that envelope or an approved amendment.
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next lifecycle stage from that envelope or an approved amendment.
 
 Upcoming-stage sub-agent assessment:
 

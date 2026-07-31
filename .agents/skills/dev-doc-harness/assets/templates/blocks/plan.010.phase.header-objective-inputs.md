@@ -23,7 +23,7 @@ State the phase outcome and how this phase advances the approved anchor spec wit
 
 Read these before finalizing phase implementation planning:
 
-1. Approved anchor spec: `<spec-filename or handoff snapshot>`.
+1. Approved anchor spec: `<spec-filename>`.
 2. Approved amendments: `<paths or None>`.
 3. Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
 4. Architecture input: `<architecture decisions in approved spec, snapshots/architecture.snapshot.md, amendments, or None with reason>`.

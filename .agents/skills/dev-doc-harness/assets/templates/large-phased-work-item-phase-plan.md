@@ -25,7 +25,7 @@ State the phase outcome and how this phase advances the approved anchor spec wit
 
 Read these before finalizing phase implementation planning:
 
-1. Approved anchor spec: `<spec-filename or handoff snapshot>`.
+1. Approved anchor spec: `<spec-filename>`.
 2. Approved amendments: `<paths or None>`.
 3. Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
 4. Architecture input: `<architecture decisions in approved spec, snapshots/architecture.snapshot.md, amendments, or None with reason>`.
@@ -202,9 +202,9 @@ independently plannable phases.
 Rename it `### Approved next stage` at freeze without changing its values.
 Do not render both headings together. Mirror the phase's frozen selection in chat.
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<named current-phase implementation>`; First Plan Task: `<TASK-NNN>`.
+Stage: `phase execution`.
 
 #### Orchestration
 
@@ -225,14 +225,14 @@ Model: `<actionable model or policy-relative selection instruction>`; Reasoning:
 
 ### Post-phase transition
 
-1. Expected next activity: `<next-phase planning or work-item completion>`.
-2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next activity>`.
-3. The completion report supplies the actual values; it does not begin the next activity automatically.
+1. Expected next lifecycle stage: `<phase-plan drafting or work-item completion>`.
+2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next lifecycle stage>`.
+3. The completion report supplies the actual values; it does not begin the next lifecycle stage automatically.
 4. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.
 
 ## Readiness
 
-- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Activity, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
+- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Next lifecycle stage, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
 - [ ] The phase preserves its approved anchor inputs and has clear tasks, checks, and changelog entry.
 - [ ] The approved execution selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.

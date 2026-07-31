@@ -10,9 +10,9 @@ independently plannable phases.
 Rename it `### Approved next stage` at freeze without changing its values.
 Do not render both headings together. Mirror the phase's frozen selection in chat.
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<named current-phase implementation>`; First Plan Task: `<TASK-NNN>`.
+Stage: `phase execution`.
 
 #### Orchestration
 
@@ -33,7 +33,7 @@ Model: `<actionable model or policy-relative selection instruction>`; Reasoning:
 
 ### Post-phase transition
 
-1. Expected next activity: `<next-phase planning or work-item completion>`.
-2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next activity>`.
-3. The completion report supplies the actual values; it does not begin the next activity automatically.
+1. Expected next lifecycle stage: `<phase-plan drafting or work-item completion>`.
+2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next lifecycle stage>`.
+3. The completion report supplies the actual values; it does not begin the next lifecycle stage automatically.
 4. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.

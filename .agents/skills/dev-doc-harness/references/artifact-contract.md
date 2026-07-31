@@ -37,6 +37,17 @@ docs/work-items/2026-05-25_user-profile-import/
 docs/work-items/2026-05-25_PROJ-123_user-profile-import/
 ```
 
+## Lifecycle stage boundaries
+
+An explicit operator approval and its planning approval commit freeze a planning package and separate the harness's major lifecycle stages. The frozen package and planning shape determine the recorded next lifecycle stage; a Plan Task or an instruction is never a lifecycle-stage value.
+
+The two established lifecycle shapes use these transitions:
+
+- An explicitly staged small/medium spec freezes for `plan drafting`; a combined small/medium spec-and-plan package freezes for `plan execution`.
+- A large/phased anchor spec freezes for `phase-plan drafting`; a phase plan freezes for `phase execution`. An approved amendment records the documented resumed stage from the package it changes.
+
+Draft continuation by ordinary operator instruction and approved-package continuity in the same or a new Codex task are operational behavior, not lifecycle stages or alternative freeze paths.
+
 ## Short artifact ID
 
 Durable planning artifact filenames include a short ID suffix so operators can distinguish files in chat `@` references when a repository contains many work item packages.
@@ -66,11 +77,11 @@ Keep uncertain work small/medium until the one-thread boundary demonstrably fail
 
 `rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
 
-A spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. It is valid only when the operator requested or approved the staging. Before review and freeze, the spec must record that operator-requested or operator-approved staging, the reason for staging, identify the spec as the frozen package, name plan drafting as the next activity, and provide only that plan-drafting handoff. A generic template heading or continuity preference cannot create this exception.
+A spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. It is valid only when the operator requested or approved the staging. Before review and freeze, the spec must record that operator-requested or operator-approved staging, the reason for staging, identify the spec as the frozen package, and name `plan drafting` as its next lifecycle stage. A generic template heading or continuity preference cannot create this exception.
 
-Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the implementation handoff. Plan, phase-plan, and amendment freezes hand off only to the implementation, replanning, or other next activity documented by their approved package.
+Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
 
-At every freeze boundary, record the planning shape, exact frozen package, and documented next activity before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
+At every freeze boundary, record the planning shape, exact frozen package, and documented next lifecycle stage before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
 ## Small/medium layout
 
@@ -145,7 +156,7 @@ The normal large/phased planning sequence is a rolling loop:
 
 1. Draft the anchor `<spec-filename>`.
 2. Stage the anchor-spec planning package for draft review.
-3. Freeze the anchor spec after explicit approval or create an explicit handoff snapshot.
+3. Freeze the anchor spec after explicit approval and its planning approval commit.
 4. Stop before implementation and before phase-plan drafting.
 5. Resume phase-plan drafting only after fresh operator instruction, draft and freeze one phase plan, then begin that phase implementation after fresh post-freeze authorization.
 6. Record the actual phase outputs, validation, variance, and commit state as inputs to the next phase plan.
@@ -211,7 +222,7 @@ Run the workflow defined in `planning-freeze-gates.md` whenever durable planning
 
 ## Immutable snapshots
 
-Draft artifacts may be edited until explicit operator approval and the approval commit, or until explicit handoff. After the approval commit or explicit handoff snapshot, these artifacts are immutable snapshots:
+Draft artifacts may be edited until explicit operator approval and the approval commit. After that approval commit, these artifacts are immutable snapshots:
 
 ```text
 <spec-filename>

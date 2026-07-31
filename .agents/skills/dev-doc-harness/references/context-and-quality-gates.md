@@ -35,7 +35,7 @@ Use this protocol after the transition and fresh authorization governed by `rule
 2. Load system and runtime constraints, applicable instructions, and all frozen artifacts and execution inputs named by the approved handoff.
 3. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
 4. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
-5. Begin the documented next activity or First Plan Task. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
+5. Begin the documented next lifecycle stage. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
 If runtime or environment limitations affect this startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions; `module:freeze-gate` owns planning-transition and authorization behavior.
 

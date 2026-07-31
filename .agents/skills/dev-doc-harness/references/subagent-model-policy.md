@@ -44,7 +44,7 @@ Current planning Codex task facts may record:
 - Resolved profile: the concrete runtime model/profile when exposed; otherwise `not exposed`.
 - Context visibility: the exposed signal or `not exposed`.
 
-The next-stage summary is ordered as **Activity**, **Orchestration**, **Model**, then **Fallbacks and limits**. Activity records the named next activity and First Plan Task when applicable. Orchestration records Method, `Run in`, and Plan Task reviewers, including the route's final reviewer. Model records the policy-relative model/profile and Reasoning. Fallbacks and limits record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
+The next-stage summary is ordered as **Next lifecycle stage**, **Orchestration**, **Model**, then **Fallbacks and limits**. Next lifecycle stage records the documented stage determined by the frozen package and planning shape. Orchestration records Method, `Run in`, and Plan Task reviewers, including the route's final reviewer. Model records the policy-relative model/profile and Reasoning. Fallbacks and limits record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
 
 Permanent capability tiers are vendor-neutral:
 
@@ -71,9 +71,9 @@ Platform multi-agent mode does not automatically provide harness-managed task pa
 
 Method does not determine Codex-task continuity. `Run in` accepts only `same Codex task` or `new Codex task`. Prefer `new Codex task` when the current profile or context suitability is `not exposed`, the approved profile cannot be reconciled with the current profile, or multiple Plan Tasks, validation cycles, reviewer/fix loops, or integration work make a clean context safer. Choose `same Codex task` only when the current profile is known suitable, context risk is known suitable or immaterial, and the artifact records a concrete continuity benefit.
 
-A new execution Codex task loads the applicable instructions, harness, exact frozen package, amendments and variance, approval/baseline, First Plan Task, and variance stop before edits. A same-task route rereads the frozen package after a model switch or recorded continuity risk. Do not use numeric context thresholds, invent remaining-context estimates, or predict compaction when the runtime does not expose those signals.
+A new execution Codex task loads the applicable instructions, harness, exact frozen package, amendments and variance, approval/baseline, documented next lifecycle stage, and variance stop before edits. A same-task route rereads the frozen package after a model switch or recorded continuity risk. Do not use numeric context thresholds, invent remaining-context estimates, or predict compaction when the runtime does not expose those signals.
 
-Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next activity, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
+Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next lifecycle stage, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
 ## Execution method and reviewer contract
 
@@ -211,10 +211,9 @@ Context visibility: `<exposed signal or not exposed>`
 
 ### Next-stage recommendation (draft only, large anchor spec)
 
-#### Activity
+#### Next lifecycle stage
 
-Next activity: `<named activity>`
-First Plan Task: `<TASK-NNN or not applicable>`
+Stage: `<phase-plan drafting / plan execution / phase execution / documented resumed stage>`
 
 #### Orchestration
 
