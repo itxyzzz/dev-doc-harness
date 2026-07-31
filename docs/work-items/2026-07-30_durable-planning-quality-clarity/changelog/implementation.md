@@ -1,3 +1,13 @@
+## 2026-07-31 docs: spec-quality-bar -- clarify planning inputs
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+#### Changed
+
+- Clarified the concise spec inputs needed for planning and the spec-to-plan self-containedness boundary.
+
 ## 2026-07-31 docs: entity-section-ownership -- clarify spec-plan hierarchy
 
 Release target: `unreleased`

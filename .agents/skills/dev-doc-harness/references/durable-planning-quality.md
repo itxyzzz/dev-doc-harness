@@ -38,18 +38,21 @@ Mutable external evidence used by an artifact is preserved through `module:evide
 
 ## Spec quality bar
 
-A durable `<spec-filename>` must preserve the handoff in repository terms. Include the applicable details from the planning discussion:
+A `<spec-filename>` records goals and scope, decisions and constraints needed to turn the approved scope into an implementation plan:
 
 - Goals and user or operator outcomes.
-- Scope, non-scope, and boundaries.
-- Domain and data model.
-- Public APIs, internal interfaces, config, schemas, and persistence.
-- State flow, lifecycle, or control flow.
-- Architectural decisions, including problem-imposed constraints, selected approaches, affected boundaries, rejected alternatives, and any required `snapshots/architecture.snapshot.md`.
-- Safety, security, privacy, compliance, migration, and rollback rules.
-- Tests, validation strategy, and Verification Criteria.
-- Triage, debugging, and operational notes.
-- Important assumptions, risks, and known unknowns.
+- Scope boundaries, assumptions, risks, and known unknowns.
+- Validation strategy and Verification Criteria.
+- Selected architectural decisions, constraints, and any required `snapshots/architecture.snapshot.md`.
+
+Include additional information when it materially affects scope, design, implementation, or verification:
+
+- Relevant domain, interfaces, configuration, data, and persistence.
+- Relevant state, data, lifecycle, or control flow.
+- Operational or recovery details when they affect the plan.
+- Safety, security, privacy, compliance, migration, or rollback behavior.
+
+The durable `<spec-filename>`, together with any required `snapshots/architecture.snapshot.md`, must let a fresh session draft the implementation plan without reconstructing the original discussion.
 
 A chat summary, outline, or heading-only checklist is not a durable spec.
 
