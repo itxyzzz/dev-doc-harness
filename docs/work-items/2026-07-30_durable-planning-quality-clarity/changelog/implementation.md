@@ -1,3 +1,14 @@
+## 2026-07-31 docs: task-bound-checks -- make checks task-bound
+
+Release target: `unreleased`
+Package impact: `distributable`
+Release-note: `source-only`
+
+#### Changed
+
+- Made the executable plan body a flat task list and nested every check under one parent task.
+- Replaced shared-check allocation with explicit integration tasks for end-to-end validation.
+
 ## 2026-07-30 docs: task-check-conformance -- clarify execution evidence
 
 Release target: `unreleased`

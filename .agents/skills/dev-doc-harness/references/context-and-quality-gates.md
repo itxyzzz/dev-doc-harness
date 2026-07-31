@@ -63,7 +63,7 @@ When local quality controls are unavailable, compensate explicitly.
 
 ## Conformance evidence
 
-During implementation, after a Plan Check runs, retain its result and evidence in the form that helps a later reader reproduce or trust it. Record each affected Verification Criterion as `met`, `not met`, `pending`, or `blocked`: evidence that satisfies the criterion is met; contradictory evidence is not met; absent or insufficient evidence is pending; and an unavailable evidence path with its reason is blocked.
+During implementation, after a task-bound Plan Check runs, retain its result and evidence in the form that helps a later reader reproduce or trust it. Record each affected Verification Criterion as `met`, `not met`, `pending`, or `blocked`: evidence that satisfies the criterion is met; contradictory evidence is not met; absent or insufficient evidence is pending; and an unavailable evidence path with its reason is blocked.
 
 This record is implementation evidence, not a planning-time assertion. Apply `module:quality`'s conformance definition when reporting completion: a commitment conforms only when all its applicable Verification Criteria are met. Report non-met, pending, or blocked criteria rather than treating a completed task as proof. `module:lifecycle` continues to own variance and amendment mechanics; `module:freeze-gate` owns approval, freeze, and authorization transitions.
 

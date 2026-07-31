@@ -731,8 +731,7 @@ def assert_template_assembly() -> None:
             (r"Add a mapping only when", "benefit-based mapping"),
             (r"## Implementation tasks", "task section"),
             (r"### `TASK-001` `<short imperative title>`", "concise task heading"),
-            (r"## Plan checks", "check section"),
-            (r"### `CHECK-001` `<short title>`", "concise check heading"),
+            (r"#### `CHECK-001` `<short title>`", "nested check heading"),
         ]:
             assert_text_contains(check_id, template, pattern, label)
 
@@ -1538,30 +1537,39 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
     for section in required_sections:
         if section not in text:
             errors.append(f"missing plan section {section}")
-    task_ids = re.findall(r"^### `(TASK-\d{3})` .+$", text, re.MULTILINE)
-    check_ids = re.findall(r"^### `(CHECK-\d{3})` .+$", text, re.MULTILINE)
-    task_matches = list(re.finditer(r"^### `(TASK-\d{3})` .+$", text, re.MULTILINE))
-    check_matches = list(re.finditer(r"^### `(CHECK-\d{3})` .+$", text, re.MULTILINE))
+    implementation_section = re.search(r"^## Implementation tasks$", text, re.MULTILINE)
+    section_start = implementation_section.end() if implementation_section else 0
+    next_section = re.search(r"^## ", text[section_start:], re.MULTILINE)
+    section_end = section_start + next_section.start() if next_section else len(text)
+    task_matches = [
+        match for match in re.finditer(r"^### `(TASK-\d{3})` .+$", text, re.MULTILINE)
+        if section_start < match.start() < section_end
+    ]
+    all_check_matches = list(re.finditer(r"^#### `(CHECK-\d{3})` .+$", text, re.MULTILINE))
+    check_matches = [match for match in all_check_matches if section_start < match.start() < section_end]
+    task_ids = [match.group(1) for match in task_matches]
+    check_ids = [match.group(1) for match in check_matches]
     if not task_ids:
         errors.append("missing exact Implementation Task heading")
     if not check_ids:
-        errors.append("missing exact Plan Check heading")
+        errors.append("missing exact nested Plan Check heading")
     if len(task_ids) != len(set(task_ids)):
         errors.append("duplicate Implementation Task ID")
     if len(check_ids) != len(set(check_ids)):
         errors.append("duplicate Plan Check ID")
+    if "## Plan checks" in text:
+        errors.append("shared Plan Checks section is not allowed")
+    if re.search(r"^### `(CHECK-\d{3})` .+$", text, re.MULTILINE):
+        errors.append("Plan Checks must be nested in an Implementation Task")
+    for match in all_check_matches:
+        if match not in check_matches:
+            errors.append(f"{match.group(1)} is outside the Implementation tasks section")
     entity_matches = sorted([*task_matches, *check_matches], key=lambda match: match.start())
     next_start = {match.start(): (entity_matches[index + 1].start() if index + 1 < len(entity_matches) else len(text)) for index, match in enumerate(entity_matches)}
-    shared_checks = re.search(r"^## Plan checks$", text, re.MULTILINE)
-    shared_checks_start = shared_checks.start() if shared_checks else len(text)
-    task_local_check_ids: set[str] = set()
-    for index, match in enumerate(entity_matches):
-        if not match.group(1).startswith("CHECK-") or match.start() >= shared_checks_start:
-            continue
-        task_local_check_ids.add(match.group(1))
-        previous = entity_matches[index - 1] if index else None
-        if previous is None or not previous.group(1).startswith("TASK-"):
-            errors.append(f"{match.group(1)} is not directly after an Implementation Task")
+    task_ranges = [
+        (match.group(1), match.start(), task_matches[index + 1].start() if index + 1 < len(task_matches) else len(text))
+        for index, match in enumerate(task_matches)
+    ]
     for match in task_matches:
         block = text[match.end():next_start[match.start()]]
         for field in ("Dependencies:", "Implementation:", "Exit criteria:"):
@@ -1569,13 +1577,13 @@ def validate_commitment_plan_fixture(text: str) -> list[str]:
                 errors.append(f"{match.group(1)} missing Implementation Task field {field}")
     for match in check_matches:
         block = text[match.end():next_start[match.start()]]
+        if not any(start < match.start() < end for _, start, end in task_ranges):
+            errors.append(f"{match.group(1)} is not nested in an Implementation Task")
         for field in ("Covers:", "Method:", "Expected result:", "Evidence record:"):
             if field not in block:
                 errors.append(f"{match.group(1)} missing Plan Check field {field}")
         if not re.search(r"`VER-\d{3}`", block.partition("Method:")[0]):
             errors.append(f"{match.group(1)} has no Verification Criterion coverage")
-        if match.group(1) in task_local_check_ids and "Related task(s):" not in block:
-            errors.append(f"{match.group(1)} missing task-local Plan Check relation")
     return errors
 
 
@@ -1607,14 +1615,16 @@ def assert_commitment_verification_quality() -> None:
         (r"one orchestration thread with its recorded bounded delegation", "phase execution-size boundary"),
         (r"## Plan Tasks", "Plan Task section"),
         (r"A Plan Task is a bounded", "Plan Task definition"),
-        (r"task relation records execution or input production, not conformance", "task/check relationship boundary"),
+        (r"flat list of self-contained tasks", "flat task-body rule"),
+        (r"nested in exactly one Plan Task", "task-bound check rule"),
+        (r"explicit integration or verification task", "end-to-end parent-task rule"),
     ]:
         assert_text_contains(check_id, quality, pattern, label)
     assert_text_not_contains(check_id, quality, r"Record Plan Check evidence", "planning-time evidence record")
     for pattern, label in [
         (r"rule:execution-quality.conformance-evidence", "execution conformance-evidence owner"),
         (r"## Conformance evidence", "execution conformance-evidence section"),
-        (r"During implementation, after a Plan Check runs", "implementation-time evidence timing"),
+        (r"During implementation, after a task-bound Plan Check runs", "implementation-time evidence timing"),
         (r"`met`, `not met`, `pending`, (?:or|and) `blocked`", "criterion conformance states"),
         (r"not a planning-time assertion", "planning/execution ownership boundary"),
     ]:
@@ -1634,9 +1644,10 @@ def assert_commitment_verification_templates() -> None:
         assert_text_contains(check_id, path, r"Use local links", "local-link traceability")
         assert_text_contains(check_id, path, r"Add a mapping only when", "benefit-based mapping")
         assert_text_contains(check_id, path, r"### `TASK-001` `<short imperative title>`", "TASK ID anchor")
-        assert_text_contains(check_id, path, r"### `CHECK-001` `<short title>`", "CHECK ID anchor")
-        assert_text_contains(check_id, path, r"Related task\(s\):", "Plan Check task-placement prompt")
+        assert_text_contains(check_id, path, r"#### `CHECK-001` `<short title>`", "nested CHECK ID anchor")
         assert_text_contains(check_id, path, r"Evidence record:", "Plan Check evidence-record prompt")
+        assert_text_not_contains(check_id, path, r"(?m)^## Plan checks$", "shared Plan Checks section")
+        assert_text_not_contains(check_id, path, r"Related task\(s\):", "variable task relation")
         assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
         assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
 
@@ -1646,42 +1657,31 @@ def assert_commitment_verification_templates() -> None:
     assert_text_contains(check_id, phase_template, r"one orchestration thread with bounded delegation", "phase template execution-size boundary")
     assert_text_not_contains(check_id, plan_paths[0], r"one orchestration thread with bounded delegation", "ordinary plan phase-only boundary")
 
-    local_link_plan = """## Implementation tasks
+    task_bound_plan = """## Implementation tasks
 ### `TASK-001` Implement one change
 Dependencies:
 1. None.
 Implementation:
 1. Change one surface.
 Exit criteria: Done.
-## Plan checks
-### `CHECK-001` Verify one criterion
+#### `CHECK-001` Verify one criterion
 Covers: `VER-001`.
 Method: Run the focused validator.
 Expected result: It passes.
 Evidence record: Completion report.
 """
-    if errors := validate_commitment_plan_fixture(local_link_plan):
-        add_failure(check_id, f"local-link Plan Check fixture failed: {errors}")
-    task_local_check_plan = local_link_plan.replace(
-        "Covers: `VER-001`.\n",
-        "Covers: `VER-001`.\nRelated task(s): `TASK-001`.\n",
-    ).replace("## Plan checks\n", "")
-    if errors := validate_commitment_plan_fixture(task_local_check_plan):
-        add_failure(check_id, f"task-local Plan Check fixture failed: {errors}")
-    mixed_check_plan = task_local_check_plan + """## Plan checks
-### `CHECK-002` Verify cross-cutting criterion
-Covers: `VER-002`.
-Method: Run the end-to-end validator.
-Expected result: It passes.
-Evidence record: Completion report.
-"""
-    if errors := validate_commitment_plan_fixture(mixed_check_plan):
-        add_failure(check_id, f"mixed local/shared Plan Check fixture failed: {errors}")
+    if errors := validate_commitment_plan_fixture(task_bound_plan):
+        add_failure(check_id, f"task-bound Plan Check fixture failed: {errors}")
+    shared_check_plan = task_bound_plan.replace("#### `CHECK-001`", "## Plan checks\n### `CHECK-001`")
+    after_section_check_plan = task_bound_plan.replace(
+        "#### `CHECK-001` Verify one criterion\nCovers: `VER-001`.\nMethod: Run the focused validator.\nExpected result: It passes.\nEvidence record: Completion report.\n",
+        "## Planned commits\n#### `CHECK-001` Verify one criterion\nCovers: `VER-001`.\nMethod: Run the focused validator.\nExpected result: It passes.\nEvidence record: Completion report.\n",
+    )
     for fixture, label in [
-        (local_link_plan.replace("Covers: `VER-001`.\n", ""), "missing criterion coverage"),
-        (local_link_plan.replace("Evidence record: Completion report.\n", ""), "missing evidence record"),
-        (task_local_check_plan.replace("Related task(s): `TASK-001`.\n", ""), "task-local check without a task relation"),
-        (mixed_check_plan.replace("Related task(s): `TASK-001`.\n", ""), "mixed local/shared check without a task relation"),
+        (task_bound_plan.replace("Covers: `VER-001`.\n", ""), "missing criterion coverage"),
+        (task_bound_plan.replace("Evidence record: Completion report.\n", ""), "missing evidence record"),
+        (shared_check_plan, "shared Plan Checks section"),
+        (after_section_check_plan, "check outside the Implementation tasks section"),
     ]:
         if not validate_commitment_plan_fixture(fixture):
             add_failure(check_id, f"local-link Plan Check fixture with {label} passed")
@@ -1766,7 +1766,7 @@ def multi_check_fixture_mode(text: str) -> str:
 
 
 def superpowers_task_fixture_errors(text: str) -> list[str]:
-    task_match = re.search(r"## Implementation tasks(?P<body>.*?)(?:\n## Plan checks|\Z)", text, flags=re.DOTALL)
+    task_match = re.search(r"## Implementation tasks(?P<body>.*?)(?:\n## Implementation handoff|\n## Phase transitions|\Z)", text, flags=re.DOTALL)
     if task_match is None:
         return ["missing implementation-task section"]
     task_body = task_match.group("body")
@@ -1984,7 +1984,7 @@ def assert_superpowers_adapter_contract() -> None:
         "2. Produces: validation evidence.\n\n"
         "Implementation:\n\n"
         "1. Run the validator.\n\n"
-        "## Plan checks\n"
+        "#### `CHECK-001` Verify adapter\n"
     )
     checkbox_task = valid_task.replace("1. Run the validator.", "- [ ] Run the validator.")
     dependency_only_task = valid_task.replace("Interfaces:\n\n1. Consumes: approved policy.\n2. Produces: validation evidence.\n\n", "")
@@ -2457,7 +2457,7 @@ def assert_next_stage_summary() -> None:
         if handoff_index < 0 or summary_index < handoff_index:
             add_failure(check_id, f"{path} places the next-stage summary before its handoff or transition")
         tasks_index = text.find("## Implementation tasks")
-        checks_index = text.find("## Plan checks")
+        checks_index = text.find("#### `CHECK-001`")
         if min(tasks_index, checks_index) < 0 or summary_index < max(tasks_index, checks_index):
             add_failure(check_id, f"{path} places the next-stage summary before implementation tasks or checks")
 

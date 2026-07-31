@@ -59,9 +59,9 @@ Each `<plan-filename>` and `<phase-plan-filename>` must be executable from its d
 
 - Exact input artifacts and context to read.
 - Files, directories, modules, interfaces, schemas, APIs, config, or docs likely to change.
-- Sequenced tasks with clear ownership and boundaries.
+- A flat list of self-contained tasks with clear ownership and boundaries; dependencies identify tasks that may run in parallel.
 - Test cases and validation commands with expected results.
-- Verification Criteria and Plan Checks for the plan.
+- Verification Criteria and their Plan Checks within the tasks that run them.
 - Documentation tasks and required changelog update.
 - Handoff output expected from the implementing agent.
 
@@ -83,13 +83,13 @@ A Verification Criterion says what evidence proves a commitment; it is not a pro
 
 ## Plan Tasks
 
-A Plan Task is a bounded implementation, documentation, or review unit that advances one or more commitments. Use a stable `TASK-NNN` ID and short title. State its outcome and enough dependencies, interfaces, numbered implementation steps, and observable exit criteria for a fresh executor to act without inventing scope.
+A Plan Task is a bounded implementation, documentation, or review unit that advances one or more commitments. The executable body is a flat list of self-contained tasks. Use a stable `TASK-NNN` ID and short title. State its outcome and enough dependencies, interfaces, numbered implementation steps, observable exit criteria, and checks for a fresh executor to act without inventing scope.
 
 ## Plan Checks
 
-A Plan Check is a command, test, inspection, analysis, demonstration, or review that obtains evidence. Use a stable `CHECK-NNN` ID, name the `VER-NNN` criterion it supports, and describe the evidence purpose, method, expected result, and evidence record. Commands that gather validation evidence belong here rather than in a Verification Criterion.
+A Plan Check is a command, test, inspection, analysis, demonstration, or review that obtains evidence. It is nested in exactly one Plan Task. Use a stable `CHECK-NNN` ID, name the `VER-NNN` criterion it supports, and describe the evidence purpose, method, expected result, and evidence record. Commands that gather validation evidence belong here rather than in a Verification Criterion.
 
-When one task runs a check or produces an input it requires, place a local check directly after that task and identify its related task when it makes execution order clear; put cross-cutting or end-to-end checks in the shared Plan Checks section. In either location, `Covers` links the check to its Verification Criterion. A task relation records execution or input production, not conformance.
+`Covers` links the check to its Verification Criterion. End-to-end or multi-area verification belongs in an explicit integration or verification task with its own checks; a standalone or shared check is invalid.
 
 The method may change through the variance process when it still proves the same thing; only a material change needs an amendment.
 
