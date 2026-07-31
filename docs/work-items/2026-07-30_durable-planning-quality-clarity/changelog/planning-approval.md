@@ -1,3 +1,13 @@
+## 2026-07-31 plan: task-bound-checks -- approve flat-task amendment
+
+Release target: `unreleased`
+Package impact: `planning-only`
+Release-note: `source-only`
+
+#### Changed
+
+- Approved `AMD-002` to make every check part of one parent task and remove standalone or cross-cutting Plan Check allocation.
+
 ## 2026-07-30 plan: task-check-conformance -- approve quality amendment
 
 Release target: `unreleased`
