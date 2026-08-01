@@ -303,7 +303,7 @@ Record the draft review, approval commit, and pause before the documented next l
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation.md` | Create after execution starts; planning approval creates no fragment |
+| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | Create after execution starts; planning approval creates no fragment |
 | Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | Consolidated publication view; implementation owns the fragment workflow |
 | Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |

@@ -90,7 +90,7 @@ At every freeze boundary, record the planning shape, exact frozen package, and d
   <plan-filename>
 
   changelog/
-    implementation.md
+    implementation-fragment.md
 
   snapshots/
     test-cases.snapshot.md
@@ -120,7 +120,7 @@ The full lifecycle package for large or phased work may eventually contain these
   <amendment-filename>
 
   changelog/
-    phase-01.md
+    phase-01-fragment.md
 
   snapshots/
     test-cases.snapshot.md
@@ -257,7 +257,7 @@ Every substantial spec or plan must include a compact matrix:
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | Before implementation commits | `docs/work-items/<work-id>/changelog/implementation.md` | See `module:implementation-changelog`; planning artifacts do not create fragments |
+| Implementation changelog source | Living | Yes | Before implementation commits | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | See `module:implementation-changelog`; planning artifacts do not create fragments |
 | Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | See `module:implementation-changelog` |
 | Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |

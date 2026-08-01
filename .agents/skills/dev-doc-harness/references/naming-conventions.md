@@ -107,7 +107,7 @@ Changelog source fragments live below the work item package:
 docs/work-items/<work-id>/changelog/*.md
 ```
 
-Implementation fragment filenames use lower-kebab-case, such as `implementation.md` or `phase-01.md`. Their compact metadata and compatibility rules are owned by `module:implementation-changelog`. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
+Implementation fragment filenames use lower-kebab-case: `implementation-fragment.md` for ordinary delivery and `phase-NN-fragment.md` for phase-specific delivery, such as `phase-01-fragment.md`. Their compact metadata and compatibility rules are owned by `module:implementation-changelog`. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
 
 ## Commit messages
 

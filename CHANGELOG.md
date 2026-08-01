@@ -6,6 +6,16 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-08-01 refactor: changelog-fragment-clarity -- clarify current fragment lifecycle
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Renamed current implementation and phase changelog examples to explicit `-fragment` filenames while preserving generic discovery for frozen historical paths.
+- Moved frozen legacy-format and root-migration guidance into a final compatibility section, leaving routine authoring and consolidation guidance first.
+- Normalized root changelog entry separators deterministically and added regression coverage for spacing, release-heading preservation, and idempotent reruns.
+
 ### 2026-08-01 fix: changelog-lifecycle-simplification -- restore implementation fragment lint guard
 
 Meta -- `unreleased` : `distributable`
@@ -23,6 +33,7 @@ Meta -- `unreleased` : `distributable`
 - Made `SKILL.md` the sole operational router and moved maintenance-only module ownership to `references/maintenance-architecture.md`.
 - Removed duplicate routing and unused maintenance taxonomy content while preserving module ownership, dependency, validation, and lifecycle-maintenance guidance.
 - Made naming an explicit planning input, deferred freeze-gate references from draft plan templates, regenerated the templates, and strengthened structural validation for those boundaries.
+
 ### 2026-08-01 refactor: changelog-lifecycle-simplification -- retain only implementation delivery records
 
 Meta -- `unreleased` : `distributable`
@@ -32,6 +43,7 @@ Meta -- `unreleased` : `distributable`
 - Moved current changelog authoring and consolidation policy into an implementation-only module and removed planning-approval changelog requirements from routing, freeze gates, templates, and validation.
 - Replaced root entry metadata with a compact tagged line, removed every root planning-only entry, and retained frozen legacy-fragment parsing for compatibility.
 - Added deterministic root migration and idempotency coverage, while keeping release-note curation manual and removing the obsolete root `TODO.md` package-boundary reference.
+
 ### 2026-08-01 docs: lifecycle-stage-boundaries -- align README stage terminology
 
 Meta -- `unreleased` : `repository-only`
@@ -39,6 +51,7 @@ Meta -- `unreleased` : `repository-only`
 #### Changed
 
 - Aligned the README lifecycle summary and next-stage recommendation list with the canonical `Next lifecycle stage` terminology, and normalized its long prose line wraps.
+
 ### 2026-07-31 docs: task-bound-checks -- make checks task-bound
 
 Meta -- `unreleased` : `distributable`
@@ -47,6 +60,7 @@ Meta -- `unreleased` : `distributable`
 
 - Made the executable plan body a flat task list and nested every check under one parent task.
 - Replaced shared-check allocation with explicit integration tasks for end-to-end validation.
+
 ### 2026-07-31 docs: spec-quality-bar -- clarify planning inputs
 
 Meta -- `unreleased` : `distributable`
@@ -54,6 +68,7 @@ Meta -- `unreleased` : `distributable`
 #### Changed
 
 - Clarified the concise spec inputs needed for planning and the spec-to-plan self-containedness boundary.
+
 ### 2026-07-31 docs: lifecycle-stage-boundaries -- clarify freeze lifecycle stages
 
 Meta -- `unreleased` : `distributable`
@@ -65,6 +80,7 @@ Meta -- `unreleased` : `distributable`
 - Confirmed that the intentionally simplified README remains semantically compatible and left it unchanged.
 - Used the assembler's required `--write` mode before its freshness check; this is equivalent to the planned regeneration step.
 - Included the operator-authorized formatting-only line-wrap change in `references/evidence-and-report-artifacts.md` without changing its semantics.
+
 ### 2026-07-31 docs: entity-section-ownership -- clarify spec-plan hierarchy
 
 Meta -- `unreleased` : `distributable`
@@ -72,6 +88,7 @@ Meta -- `unreleased` : `distributable`
 #### Changed
 
 - Nested `SPEC`/`VER` under spec quality and `TASK`/`CHECK` under plan quality, with a concise task-to-check-to-criterion cue.
+
 ### 2026-07-30 refactor: artifact-style-ownership-cleanup -- consolidate readability policy
 
 Meta -- `unreleased` : `distributable`
@@ -81,6 +98,7 @@ Meta -- `unreleased` : `distributable`
 - Moved author-facing plain-language guidance to Quality as `rule:quality.plain-language` and kept Quality as the Verification Criterion semantic owner.
 - Focused Artifact Style on conditional presentation, consolidated its traceability guidance under the retained `rule:style.trace-density`, and preserved the scoped one-line reflow while correcting the identified whitespace.
 - Regenerated the spec templates from their source block and updated policy validation to enforce the Quality owner without a definition-only modal exception.
+
 ### 2026-07-30 docs: task-check-conformance -- clarify execution evidence
 
 Meta -- `unreleased` : `distributable`
@@ -94,6 +112,7 @@ Meta -- `unreleased` : `distributable`
 
 - Kept `CHECK` → `VER` as the conformance-evidence relationship and made task links operational only.
 - Regenerated plan templates and extended validator coverage for task/check placement, execution-time status recording, and the preserved readability reordering.
+
 ### 2026-07-30 docs: durable-planning-quality-clarity -- clarify plans and conformance
 
 Meta -- `unreleased` : `distributable`
@@ -104,6 +123,7 @@ Meta -- `unreleased` : `distributable`
 - Clarified the plain-language and material-open-question rules, preserved material operator-provided source context in durable handoffs, and removed duplicate rejected-alternatives wording.
 - Defined a lightweight evidence model: `SPEC` commitments are established by `VER` criteria, while `CHECK` records the method, result, and evidence without mandatory mapping tables.
 - Regenerated affected plan templates and replaced the unreachable mandatory-matrix validator fixture with active local-link coverage.
+
 ### 2026-07-29 docs: worktree-continuity-rules -- clarify new-task worktree baselines
 
 Meta -- `unreleased` : `distributable`
@@ -117,6 +137,7 @@ Meta -- `unreleased` : `distributable`
   copied uncommitted paths, and avoid the implicit default-branch fallback.
 - Added policy-test coverage for the readable continuity section and the
   starting-state safeguards.
+
 ### 2026-07-29 docs: naming-convention-review-fixes -- reconcile review feedback
 
 Meta -- `unreleased` : `distributable`
@@ -126,72 +147,86 @@ Meta -- `unreleased` : `distributable`
 - Aligned current naming policy on two-digit amendment identifiers, kebab-case planning artifact types, optional issue-key work IDs, and one commit-subject changelog heading grammar.
 - Removed duplicate local grammar from current lifecycle and naming guidance while retaining filename-kind references and concrete examples.
 - Updated focused harness-policy validation without rewriting historical work-item artifacts or changelog entries.
+
 ### 2026-07-29 fix: harness-execution-flow-clarity -- deduplicate plan state and restore conditional style routing
 
 Meta -- `unreleased` : `distributable`
 
 - Placed plan-state fields at their single lifecycle boundaries, restored conditional artifact-style loading for routine small/medium artifacts, regenerated active templates, and added focused structural regression coverage.
 - **Consolidate reviewed changelog fragments:** Refreshed root `CHANGELOG.md` at the operator-owned post-integration checkpoint.
+
 ### 2026-07-28 refactor: harness-execution-flow-clarity -- separate transition flow from context loading
 
 Meta -- `unreleased` : `distributable`
 
 - Consolidated planning transitions and chat projection in the freeze-gate owner, narrowed execution-quality to context loading and startup consumption, and aligned architecture and validator ownership checks without changing operator-visible behavior.
+
 ### 2026-07-28 fix: harness-execution-flow-clarity -- replace no-review blocker with operator decision
 
 Meta -- `unreleased` : `distributable`
 
 - Replaced the hard no-review execution blocker with disclosure, one-time operator decision, recorded authorization, focused validation, and completion-report evidence while retaining independent review as the default.
+
 ### 2026-07-28 fix: harness-execution-flow-clarity -- consolidate post-freeze transition guidance
 
 Meta -- `unreleased` : `distributable`
 
 - Folded freeze mechanics into the approval checklist, moved continuation rules into structured post-freeze routing, and made execution handoffs apply explicit operator overrides to the frozen approved selection without rewriting the frozen artifact.
+
 ### 2026-07-28 fix: harness-execution-flow-clarity -- clarify freeze transition routing
 
 Meta -- `unreleased` : `distributable`
 
 - Moved the four-group next-stage explanation to draft review, clarified runtime-override recording, made approved agent task creation the default new-task continuation with manual creation as fallback, and stated the normal multi-gate large/phased flow.
+
 ### 2026-07-28 feat: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
 
 Meta -- `unreleased` : `distributable`
 
 - Compacted the repository bootstrap while preserving its semantic guards, added minimal generated skill UI metadata with focused validation, retained installation-neutral skill routing, and included the operator's README improvements.
+
 ### 2026-07-28 docs: harness-execution-flow-clarity -- clarify operator guidance and Superpowers workspace
 
 Meta -- `unreleased` : `distributable`
 
 - Reworked the package-local operator note as a human-facing harness explanation, clarified the harness and Superpowers responsibilities, ignored the plan-specific Superpowers workspace, and corrected a README typo.
+
 ### 2026-07-27 fix: harness-execution-flow-clarity -- harden next-stage validation
 
 Meta -- `unreleased` : `distributable`
 
 - Require known-suitable profile, suitable or immaterial context risk, and a concrete continuity benefit for same-Codex-task fixtures; reject mixed draft/frozen state labels.
+
 ### 2026-07-27 fix: harness-execution-flow-clarity -- clarify frozen handoff heading
 
 Meta -- `unreleased` : `distributable`
 
 - Made plan-handoff source blocks select one draft or frozen next-stage heading and extended focused validation to reject simultaneous headings in source and generated plans.
+
 ### 2026-07-27 feat: harness-execution-flow-clarity -- simplify next-stage presentation
 
 Meta -- `unreleased` : `distributable`
 
 - Simplified the next-stage interface into four plain-language groups, added execution terminology and chat projection, refreshed generated templates, and added focused validation.
+
 ### 2026-07-27 feat: harness-execution-flow-clarity -- restore execution and review defaults
 
 Meta -- `unreleased` : `distributable`
 
 - Restored the canonical execution-method cascade, route-specific reviewer contract, and start-override validation, including a model-only override fixture that records the selection without requiring an amendment solely for that runtime choice.
+
 ### 2026-07-27 feat: harness-execution-flow-clarity -- enforce combined planning
 
 Meta -- `unreleased` : `distributable`
 
 - Enforced complete combined small/medium packages at review and freeze, retained authorized staged and large-anchor exceptions, and added focused package-shape validation.
+
 ### 2026-07-27 docs: harness-execution-flow-clarity -- clarify drift and changelog guidance
 
 Meta -- `unreleased` : `distributable`
 
 - Reworked README as a user-facing harness overview and aligned its focused model-selection checks with the simpler prose and Markdown line wrapping.
+
 ### 2026-07-21 docs: harness-distribution-instructions -- separate reusable and release-maintenance guidance
 
 Meta -- `unreleased` : `distributable`
@@ -214,6 +249,7 @@ Meta -- `0.8.0` : `distributable`
 #### Changed
 
 - Aligned project, global-bootstrap, lifecycle, execution-quality, model-policy, router, README, and operator guidance around one durable harness route with ephemeral Superpowers execution aids.
+
 ### 2026-07-18_planning-template-clarity -- clarify models handoffs and phases
 
 Meta -- `0.8.0` : `repository-only`
@@ -227,6 +263,7 @@ Meta -- `0.8.0` : `repository-only`
 - Separated planning-task observations from approved execution selections across canonical policy and generated template prompts.
 - Made combined-plan and phase-transition ownership explicit, regenerated source-derived templates, and aligned operator guidance with rolling phase execution.
 - Simplified commitment and planned-commit prompts while preserving canonical validation, freeze, variance, and changelog rules.
+
 ### 2026-07-18_lifecycle-doc-clarity -- repair lifecycle diagram flow
 
 Meta -- `0.8.0` : `repository-only`
@@ -236,6 +273,7 @@ Meta -- `0.8.0` : `repository-only`
 - Restored the large-path node identity and the existing same-task/new-task
   handoff labels while retaining the approved fresh-transition nodes and
   feedback loops.
+
 ### 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle gates and planning guidance
 
 Meta -- `0.8.0` : `repository-only`
@@ -247,6 +285,7 @@ Meta -- `0.8.0` : `repository-only`
 - Replaced the formal planning trace-ID graph with proportional, plain-language
   guidance and aligned the operator note with pre-freeze execution selection
   and phased approval boundaries.
+
 ### 2026-07-18_lifecycle-doc-clarity -- clarify lifecycle confirmation gates
 
 Meta -- `0.8.0` : `repository-only`
@@ -255,6 +294,7 @@ Meta -- `0.8.0` : `repository-only`
 
 - Rendered the post-freeze operator confirmations as decision nodes and placed
   the same-task/new-task handoff label on each outgoing transition.
+
 ### 2026-07-18_lifecycle-doc-clarity -- clarify README planning terminology
 
 Meta -- `0.8.0` : `repository-only`
@@ -274,6 +314,7 @@ Meta -- `0.7.0` : `repository-only`
 
 - Aligned current policy and retained concise template cues, then regenerated
   the assembled templates and recorded amendment-owned validation evidence.
+
 ### 2026-07-14_harness-simplification -- restore focused template cues
 
 Meta -- `0.7.0` : `repository-only`
@@ -283,6 +324,7 @@ Meta -- `0.7.0` : `repository-only`
 - Approved amendment 001 to align current guidance, restore two concise
   template cues, and reconcile amendment-owned validation evidence without
   rewriting frozen implementation records.
+
 ### 2026-07-14_harness-simplification -- reduce policy and mapping overhead
 
 Meta -- `0.7.0` : `repository-only`
@@ -293,6 +335,7 @@ Meta -- `0.7.0` : `repository-only`
   keeping stable IDs, meaningful freeze boundaries, and material-change review.
 - Added deterministic scenarios for proportional mappings, uninterrupted
   approved execution, variance routing, and the copy-ready README bootstrap.
+
 ### 2026-07-14_harness-simplification -- ignore local implementation worktrees
 
 Meta -- `0.7.0` : `repository-only`
@@ -300,6 +343,7 @@ Meta -- `0.7.0` : `repository-only`
 ### Changed
 
 - Added an ignore rule for local `.worktrees/` implementation isolation.
+
 ### 2026-07-13_multi-changelog-fragments -- validate multiple fragment entries
 
 Meta -- `0.7.0` : `distributable`
@@ -311,6 +355,7 @@ Meta -- `0.7.0` : `distributable`
 #### Changed
 
 - Updated ordinary commit, release preparation, and operator guidance to preserve checkpoint-owned root consolidation.
+
 ### 2026-07-13_model-selection-calibration -- retain subagent review default
 
 Meta -- `0.7.0` : `distributable`
@@ -318,6 +363,7 @@ Meta -- `0.7.0` : `distributable`
 #### Changed
 
 - Retained independent sub-agent review as the default and made separate task/thread review an operator-managed fallback pending proven inter-task reporting.
+
 ### 2026-07-13_model-selection-calibration -- calibrate economy model guidance
 
 Meta -- `0.7.0` : `distributable`
@@ -326,6 +372,7 @@ Meta -- `0.7.0` : `distributable`
 
 - Calibrated the canonical `economy-default` model-selection guidance and aligned supporting reviewer examples, model-strategy prompts, generated templates, and policy validation.
 - Added focused regression protection for allocation, lifecycle/approval, reviewer-evidence, and canonical-owner boundaries.
+
 ### 2026-07-14_plain-language-artifacts -- require ordinary modal wording
 
 Meta -- `0.7.0` : `distributable`
@@ -347,6 +394,7 @@ Meta -- `0.6.0` : `distributable`
 - Completed freeze-boundary routing in the diagram so anchor and amendment packages visibly select their documented next activity and approved continuity before work resumes.
 - Added a standalone rationale and a maintainer-only tooling boundary to the package-local operator note.
 - Corrected root agent instructions to name protected post-release PR synchronization and remote verification.
+
 ### 2026-07-12_user-facing-narrative -- approve concise operator story
 
 Meta -- `0.6.0` : `distributable`
@@ -358,6 +406,7 @@ Meta -- `0.6.0` : `distributable`
 #### Changed
 
 - Planned a corrected retained lifecycle diagram, early problem framing, ordinary conversational usage guidance, a standalone package-local rationale, and accurate protected post-release synchronization wording.
+
 ### 2026-07-12_new-task-handoff-visibility -- create configured continuity tasks
 
 Meta -- `0.6.0` : `distributable`
@@ -367,6 +416,7 @@ Meta -- `0.6.0` : `distributable`
 - Defined combined and explicitly staged planning shapes with transition targets selected from the actual frozen package.
 - Added visible approval-gated configured task creation, exact-setting checks, and the manual copy-ready handoff fallback.
 - Split handoff template prompts by artifact shape, regenerated current templates, and aligned operator guidance and validation.
+
 ### 2026-07-12_new-task-handoff-visibility -- clarify transition targets
 
 Meta -- `0.6.0` : `distributable`
@@ -378,6 +428,7 @@ Meta -- `0.6.0` : `distributable`
 #### Changed
 
 - Recorded the default combined small/medium flow, explicit staged exception, large-anchor continuation, manual fallback, and focused validation plan.
+
 ### 2026-07-12_new-task-handoff-visibility -- align handoff block names
 
 Meta -- `0.6.0` : `distributable`
@@ -385,6 +436,7 @@ Meta -- `0.6.0` : `distributable`
 #### Changed
 
 - Renamed handoff source blocks to the standard spec/plan order-scope grammar and aligned manifests plus validation without changing generated template behavior.
+
 ### 2026-07-12 spec: commitment-verification-model -- define readable conformance layers
 
 Meta -- `0.6.0` : `repository-only`
@@ -397,6 +449,7 @@ Meta -- `0.6.0` : `repository-only`
 ### Changed
 
 - Defined the Specification Package to Plan information flow and the separate evidence-to-conformance loop that later implementation planning must preserve.
+
 ### 2026-07-11_model-selection-dimensions -- separate model tier and optimize execution handoff
 
 Meta -- `0.6.0` : `distributable`
@@ -408,6 +461,7 @@ Meta -- `0.6.0` : `distributable`
 - Added artifact-grounded fresh-task startup and same-task model-switch rehydration guidance without inferring unexposed context or compaction thresholds.
 - Added a reusable next-task handoff block to all four primary template assemblies and regenerated their outputs.
 - Added focused validation for selection dimensions, orchestration semantics, execution continuity, handoff parity, and the shared handoff assembly contract.
+
 ### 2026-07-11_commitment-verification-model -- separate commitments, criteria, and checks
 
 Meta -- `0.6.0` : `distributable`
@@ -419,6 +473,7 @@ Meta -- `0.6.0` : `distributable`
 - Regenerated the primary templates from authoritative source blocks and aligned architecture, amendment, variance, readiness, lifecycle, operator, and package guidance consumers.
 - Added deterministic positive and negative structural fixtures, real frozen historical compatibility coverage, and current-surface legacy-vocabulary checks.
 - Preserved fresh-context RED/GREEN/REFACTOR behavior transcripts and completed a blocking-finding-free semantic re-review.
+
 ### 2026-07-12_superpowers-stub-continuity -- prohibit bootstrapping compatibility pointers
 
 Meta -- `0.6.0` : `distributable`
@@ -431,6 +486,7 @@ Meta -- `0.6.0` : `distributable`
 #### Removed
 
 - Removed the repository's six current Superpowers pointer stubs.
+
 ### 2026-07-11_post-release-pr-flow docs: require protected post-release synchronization
 
 Meta -- `0.6.0` : `repository-only`
@@ -438,6 +494,7 @@ Meta -- `0.6.0` : `repository-only`
 #### Changed
 
 - Required post-release development state to reach protected `master` through a topic-branch pull request, followed by remote ancestry and released-changelog verification before new development branches are created.
+
 ### 2026-07-11_model-selection-dimensions -- define tier, orchestration, and handoff axes
 
 Meta -- `0.6.0` : `distributable`
@@ -450,6 +507,7 @@ Meta -- `0.6.0` : `distributable`
 #### Changed
 
 - Planned minimal copy-ready handoffs and canonical artifact-grounded task startup so model transitions do not require context rediscovery.
+
 ### 2026-07-09_changelog-fragment-consolidation -- add work-item changelog sources
 
 Meta -- `0.6.0` : `distributable`
@@ -463,6 +521,7 @@ Meta -- `0.6.0` : `distributable`
 
 - Changed routine harness commit guidance so independent work items update `docs/work-items/<work-id>/changelog/*.md` before commit and consolidate root `CHANGELOG.md` only at explicit checkpoints.
 - Clarified that Dev Doc Harness distribution release policy is separate from release processes for downstream applications, packages, or agentic systems that use the harness.
+
 ### 2026-07-09_plan-task-block-format -- replace checklist task rows
 
 Meta -- `0.6.0` : `distributable`
@@ -471,6 +530,7 @@ Meta -- `0.6.0` : `distributable`
 
 - Replaced checklist-shaped plan task prompts with sectioned task blocks and centralized requirement and acceptance traceability matrix guidance.
 - Added harness validation coverage so current plan templates must keep task-block fields, traceability matrix headers, and no checkbox task examples.
+
 ### 2026-07-07_superpowers-compat-guidance -- document adapter flow and fix release baseline
 
 Meta -- `0.6.0` : `distributable`
@@ -494,6 +554,7 @@ Meta -- `0.5.0` : `distributable`
 
 - Added a root-level agent-executable release branch runbook and an `AGENTS.md` pointer for chat-triggered release branch creation, including remote release version derivation, package-local release notes, release branch push, and post-release `master` reset steps.
 - Aligned release policy and validation with stable release-note filenames such as `0.5.0.md`, while allowing post-release development markers such as `0.5+` in `VERSION`.
+
 ### 2026-07-03_artifact-style-guidance -- add artifact style module
 
 Meta -- `0.5.0` : `distributable`
@@ -508,6 +569,7 @@ Meta -- `0.5.0` : `distributable`
 - Made artifact-style guidance mandatory for large anchor specs and conditional for other large or hard-to-scan artifacts while preserving routine small/medium route budgets.
 - Updated planning templates, the architecture snapshot template, amendment template, and variance log template with stronger final-state fields, unresolved-decision readiness checks, evidence cross-references, and model-policy source prompts.
 - Updated operator-facing docs and 0.4+ release notes to mention artifact-style guidance and template readability hardening.
+
 ### 2026-07-03_work-item-architecture-decisions -- make architecture snapshots first-class
 
 Meta -- `0.5.0` : `distributable`
@@ -519,6 +581,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Updated spec and plan templates so specs capture architecture decisions, plans consume architecture inputs, and repository-level `ARCHITECTURE.md` documents remain future work.
+
 ### 2026-07-02_template-block-assembly -- generate 0.4+ templates from shared blocks
 
 Meta -- `0.5.0` : `distributable`
@@ -532,6 +595,7 @@ Meta -- `0.5.0` : `distributable`
 
 - Updated the package-local release marker and current release notes to `0.4+`.
 - Regenerated the small/medium and large/phased spec and plan templates from shared blocks, with tag-header examples for requirement, acceptance-criterion, and risk entries.
+
 ### 2026-07-02_orchestration-sizing-large-templates -- align sizing and phased templates
 
 Meta -- `0.5.0` : `distributable`
@@ -540,6 +604,7 @@ Meta -- `0.5.0` : `distributable`
 
 - Clarified harness sizing around one orchestration thread with bounded delegation and aligned README, small/medium template wording, and large/phased templates with that distinction.
 - Updated large/phased spec and phase-plan templates to inherit the improved small/medium structure while adding anchor-specific phase decomposition and fresh-thread phase execution prompts.
+
 ### 2026-07-01_small-medium-plan-template-structure -- label task dependencies in plan template
 
 Meta -- `0.5.0` : `distributable`
@@ -547,6 +612,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Labeled task dependencies explicitly in the small/medium plan template task guidance and examples.
+
 ### 2026-07-01_small-medium-plan-template-structure -- improve plan-template scaffolding
 
 Meta -- `0.5.0` : `distributable`
@@ -555,6 +621,7 @@ Meta -- `0.5.0` : `distributable`
 
 - Updated the small/medium plan template with input-artifact grounding, spec traceability, implementation/change-surface prompts, SMART task guidance, validation mapping, readable sub-agent strategy blocks, readiness checks, and orchestration saturation guards.
 - Clarified that compact model and sub-agent strategy notation applies to substantial small/medium plans as well as large or phased planning artifacts.
+
 ### 2026-07-01_small-medium-template-structure -- improve spec-template scaffolding
 
 Meta -- `0.5.0` : `distributable`
@@ -562,6 +629,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Updated the small/medium spec template with source/intent, scope boundary, repository context, requirements, acceptance criteria, interface/control-flow, risks/rejected alternatives, and readiness checklist prompts while deferring plan-template changes.
+
 ### 2026-07-01-naming-conventions: deduplicate naming pattern references
 
 Meta -- `0.5.0` : `distributable`
@@ -573,6 +641,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Replaced repeated naming grammar in current lifecycle, freeze-gate, quality, template, operator-facing, and validation surfaces with references to the naming owner.
+
 ### 2026-07-01-naming-conventions: centralize naming convention rules
 
 Meta -- `0.5.0` : `distributable`
@@ -584,6 +653,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Updated lifecycle, router, template, operator-facing, example, and validation surfaces to cite the naming reference and use the new underscore-separated semantic field examples.
+
 ### 2026-06-28-implementation-commit-completion: require commit or blocker at implementation completion
 
 Meta -- `0.5.0` : `distributable`
@@ -591,6 +661,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Clarified that implementation completion with uncommitted implementation changes is exceptional: agents must either create the planned implementation commit or report the exact blocker or explicit no-commit instruction with current worktree status.
+
 ### 2026-06-28-changelog-release-sections: group changelog by release
 
 Meta -- `0.5.0` : `distributable`
@@ -599,6 +670,7 @@ Meta -- `0.5.0` : `distributable`
 
 - Grouped the root changelog under `Unreleased` and `Release 0.1` through `Release 0.4` sections based on the existing release branch contents.
 - Updated the harness validator to accept release-grouped changelog entries when checking `0.3.0` release-note sources.
+
 ### 2026-06-27-portable-harness-validator: replace PowerShell validator with Python
 
 Meta -- `0.5.0` : `distributable`
@@ -606,6 +678,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Replaced the PowerShell-only harness validator with a Python standard-library validator and updated current harness validation guidance to use the cross-platform command.
+
 ### 2026-06-27-large-phase-orchestration-owner: add large phase orchestration owner
 
 Meta -- `0.5.0` : `distributable`
@@ -613,6 +686,7 @@ Meta -- `0.5.0` : `distributable`
 #### Changed
 
 - Added `rule:lifecycle.large-phase-orchestration` as the lifecycle-owned state sequence for large/phased planning and aligned freeze-gate, model-policy, router, template, and validation references to cite that owner.
+
 ### 2026-06-27-phased-planning-orchestration: enforce anchor-spec-first phase planning
 
 Meta -- `0.5.0` : `distributable`
@@ -630,6 +704,7 @@ Meta -- `0.4.0` : `repository-only`
 
 - Migrated the active follow-up backlog from root `TODO.md` into a private Notion `Dev Doc Harness Backlog` database with grouped cards, priorities, complexity estimates, dependency notes, and clarified scope.
 - Removed root `TODO.md` so the repository no longer carries a duplicate backlog source.
+
 ### 2026-06-23-documentation-improvements: improve harness documentation surfaces
 
 Meta -- `0.4.0` : `distributable`
@@ -643,6 +718,7 @@ Meta -- `0.4.0` : `distributable`
 
 - Clarified that validator evolution should stay structural, graph-oriented, and high-signal instead of becoming a heavy semantic parser.
 - Reorganized `TODO.md` into a priority-labeled backlog with consistent item fields and current documentation-review follow-ups.
+
 ### 2026-06-17-commit-outcome-reporting: clarify completion reports
 
 Meta -- `0.4.0` : `repository-only`
@@ -650,6 +726,7 @@ Meta -- `0.4.0` : `repository-only`
 #### Changed
 
 - Updated the execution-quality gate so completion reports consistently include the commit hash and subject when a commit was created, or state why no commit was created.
+
 ### 2026-06-17-freeze-gate-status-reminders: clarify approval reminders
 
 Meta -- `0.4.0` : `repository-only`
@@ -658,6 +735,7 @@ Meta -- `0.4.0` : `repository-only`
 
 - Updated the planning freeze gate to require approved artifacts to move from draft or proposed status to approved status before the approval commit.
 - Expanded the post-freeze operator reminder to include compacting the thread alongside pushing or creating a draft plan-only PR.
+
 ### 2026-06-14-version-pointer: surface harness version marker
 
 Meta -- `0.4.0` : `distributable`
@@ -665,6 +743,7 @@ Meta -- `0.4.0` : `distributable`
 #### Changed
 
 - Updated the harness entrypoint to point agents at the package-local `VERSION` marker before they stamp work-item artifacts as `unknown`.
+
 ### 2026-06-14-commit-message-format: unify commit subject pattern
 
 Meta -- `0.4.0` : `repository-only`
@@ -672,6 +751,7 @@ Meta -- `0.4.0` : `repository-only`
 #### Changed
 
 - Changed harness approval commit examples and templates to use the same `SHORT-ID TYPE: TITLE-SNIPPET` pattern as implementation commits, with artifact approval types such as `spec`, `plan`, `phase N plan`, and `amendment NNN`.
+
 ### 2026-06-14-commit-message-format: define harness commit message format
 
 Meta -- `0.4.0` : `repository-only`
@@ -698,6 +778,7 @@ Meta -- `0.3.0` : `distributable`
 #### Changed
 
 - Updated `0.3.0` release notes and repository validation guidance to include release package consistency checks without adding generated release-note machinery.
+
 ### 2026-06-07-release-versioning: complete Phase 02 release package implementation
 
 Meta -- `0.3.0` : `distributable`
@@ -712,6 +793,7 @@ Meta -- `0.3.0` : `distributable`
 
 - Routed release/package/adoption work through `module:release` and replaced the broad rule-versioning deferral with the `0.3.0` release-level compatibility model.
 - Normalized current release-versioning changelog entries with release target, package impact, and release-note relevance.
+
 ### 2026-06-07-release-versioning: complete Phase 01 release policy architecture
 
 Meta -- `0.3.0` : `repository-only`

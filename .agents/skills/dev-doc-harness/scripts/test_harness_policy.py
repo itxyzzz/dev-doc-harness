@@ -966,7 +966,11 @@ def assert_changelog_fragment_contract() -> None:
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
-    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation-fragment\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"## Compatibility and legacy support", "legacy guidance section")
+    guidance_text = read_repo_text(changelog_reference)
+    if guidance_text.find("## Compatibility and legacy support") < guidance_text.find("## Consolidation"):
+        add_failure(check_id, "legacy guidance section must follow routine consolidation guidance")
     assert_text_contains(check_id, changelog_reference, r"Root `CHANGELOG\.md` is the curated release source", "root changelog publication view")
     assert_text_not_contains(check_id, freeze, r"changelog source fragment", "freeze planning fragment")
     assert_text_not_contains(check_id, lifecycle, r"^## Changelog$", "retired lifecycle changelog section")
@@ -1012,7 +1016,7 @@ def assert_changelog_fragment_contract() -> None:
             changelog,
             "# Changelog\n\n## Unreleased\n\n## 0.5.0 - 2026-06-01\n\n### Changed\n\n- Previous release.\n",
         )
-        valid_fragment = repo_root / "docs/work-items/2027-01-02_example/changelog/implementation.md"
+        valid_fragment = repo_root / "docs/work-items/2027-01-02_example/changelog/implementation-fragment.md"
         valid_entry = (
             "### 2027-01-02_example -- add newer fixture entry\n\n"
             "Meta -- `unreleased` : `repository-only`\n\n"
@@ -1187,6 +1191,34 @@ def assert_changelog_fragment_contract() -> None:
         write_fixture_file(
             changelog,
             "# Changelog\n\n## Unreleased\n\n"
+            "### 2026-07-02 later delivery\n\n"
+            "Meta -- `unreleased` : `repository-only`\n\n"
+            "#### Changed\n\n- Preserve later body.\n"
+            "### 2026-07-01 earlier delivery\n\n"
+            "Meta -- `unreleased` : `repository-only`\n\n"
+            "#### Changed\n\n- Preserve earlier body.\n\n"
+            "## 0.7.0 - 2026-07-01\n\n"
+            "### 2026-07-01 released delivery\n\n"
+            "Meta -- `0.7.0` : `distributable`\n\n"
+            "#### Changed\n\n- Preserve release body.\n",
+        )
+        first_spacing_migration = run_consolidation_fixture(["--migrate-root"], repo_root)
+        spaced_once = changelog.read_bytes()
+        migrated_spacing = changelog.read_text(encoding="utf-8")
+        if first_spacing_migration.returncode != 0 or "Preserve later body.\n\n### 2026-07-01 earlier delivery" not in migrated_spacing:
+            add_failure(check_id, "root migration should leave one blank line between consecutive entry headings")
+        if "## 0.7.0 - 2026-07-01" not in migrated_spacing or "Preserve release body." not in migrated_spacing:
+            add_failure(check_id, "root migration should preserve release headings and bodies while normalizing spacing")
+        second_spacing_migration = run_consolidation_fixture(["--migrate-root"], repo_root)
+        if second_spacing_migration.returncode != 0 or changelog.read_bytes() != spaced_once:
+            add_failure(check_id, "root spacing normalization should be byte-for-byte idempotent")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        changelog = repo_root / "CHANGELOG.md"
+        write_fixture_file(
+            changelog,
+            "# Changelog\n\n## Unreleased\n\n"
             "### 2026-07-01 legacy plan\n\n"
             "Release target: `unreleased`\nPackage impact: `planning-only`\nRelease-note: `source-only`\n\n"
             "#### Added\n\n- Remove this planning record.\n\n"
@@ -1218,7 +1250,7 @@ def assert_changelog_fragment_contract() -> None:
         repo_root = Path(temp_dir)
         write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
         write_fixture_file(
-            repo_root / "docs/work-items/2026-08-01_mixed/changelog/implementation.md",
+            repo_root / "docs/work-items/2026-08-01_mixed/changelog/implementation-fragment.md",
             "### 2026-08-01 mixed metadata\n\n"
             "Meta -- `unreleased` : `repository-only`\n"
             "Release target: `unreleased`\nPackage impact: `repository-only`\nRelease-note: `source-only`\n\n"

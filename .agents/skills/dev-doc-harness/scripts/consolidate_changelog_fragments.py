@@ -209,7 +209,13 @@ def migrate_root_changelog(changelog_text: str) -> str:
             )
         cursor = match.end()
     result.append(changelog_text[cursor:])
-    return re.sub(r"\n{3,}", "\n\n", "".join(result)).rstrip() + "\n"
+    migrated = re.sub(r"\n{3,}", "\n\n", "".join(result))
+    return re.sub(
+        rf"(?<!\n)\n(?=^###\s+{CHANGELOG_HEADING}\s*$)",
+        "\n\n",
+        migrated,
+        flags=re.MULTILINE,
+    ).rstrip() + "\n"
 
 
 def consolidate(repo_root: Path, check: bool, lint: bool, migrate_root: bool) -> int:
