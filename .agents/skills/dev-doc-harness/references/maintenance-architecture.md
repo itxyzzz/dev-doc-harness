@@ -25,7 +25,8 @@ IDs so maintenance surfaces can cite ownership without copying policy prose.
 |---|---|---|---|
 | `module:architecture` | `references/maintenance-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, validation constraints, route budget, duplication budget, and lifecycle decomposition direction. |
 | `module:naming` | `references/naming-conventions.md` | Normative policy | Work ID fields, derived naming patterns, normalization, work-item paths, artifact filenames, commit-message grammar, changelog-entry grammar, collision handling, and redundancy deduplication. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, combined or explicitly staged planning shape, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, commit planning, and changelog-before-commit rules. |
+| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, combined or explicitly staged planning shape, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation matrix, variance, and commit planning. |
+| `module:implementation-changelog` | `references/implementation-changelog.md` | Normative policy | Implementation-stage fragment authoring, compact metadata schema, legacy fragment compatibility, root consolidation, and approved root cleanup. |
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, continuity-selected post-freeze routing, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Execution terminology, model selection dimensions, orchestration mode, execution continuity, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, final review, and final integration ownership. |
 | `module:quality` | `references/durable-planning-quality.md` | Normative policy | Baseline plain-language and durable spec and plan quality, including additional phase-plan quality, Specification Commitments, Verification Criteria, Plan Tasks, task-bound Plan Checks, asymmetric plan coverage, static conformance semantics, and handoff preservation. |
@@ -128,11 +129,8 @@ the high-signal phrase blacklist as a fast regression check.
 
 ## Lifecycle Decomposition Direction
 
-Do not split `references/artifact-contract.md` until graph validation is in
-place. Prefer section-level lifecycle ownership unless maintenance evidence
-proves a file split is worthwhile. Large/phased planning orchestration is
-lifecycle-owned as `rule:lifecycle.large-phase-orchestration`; freeze-gate and
-model-policy references should cite it for ordering instead of owning the
-sequence. If a split becomes useful, first consider moving changelog and
-documentation-matrix policy to a documentation module while leaving work
-sizing, artifact layout, orchestration, immutability, and variance in lifecycle.
+The implementation-changelog module is the approved lifecycle split for
+commit-time delivery records and root consolidation. It owns only implementation
+changelog behavior; work sizing, artifact layout, planning orchestration,
+immutability, documentation-matrix decisions, and variance remain lifecycle-owned.
+Large/phased planning orchestration remains `rule:lifecycle.large-phase-orchestration`.

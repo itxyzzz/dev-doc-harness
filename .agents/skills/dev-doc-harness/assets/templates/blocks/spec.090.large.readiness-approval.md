@@ -11,7 +11,7 @@
 - [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
 - [ ] Current planning Codex task facts and the Next-stage recommendation are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized; any batch phase-planning exception is stable and independently plannable.
+- [ ] Planned implementation commit subjects are clear and any batch phase-planning exception is stable and independently plannable; planning approval has no changelog entry.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 
 ## Approval

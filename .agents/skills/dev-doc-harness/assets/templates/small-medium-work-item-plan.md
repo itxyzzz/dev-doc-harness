@@ -135,7 +135,7 @@ For end-to-end validation, add a final task such as `TASK-999 Verify end-to-end 
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
 
 | Stage | Planned subject |
 |---|---|

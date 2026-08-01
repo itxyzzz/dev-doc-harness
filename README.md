@@ -84,7 +84,7 @@ The copyable distributable package is the root `AGENTS.md` file plus the `.agent
 
 The copyable package records its version in `.agents/skills/dev-doc-harness/VERSION`. Package-local release notes, a compact downstream guide, and harness release process document travel under `.agents/skills/dev-doc-harness/docs/`. The root README, `CHANGELOG.md`, and repository work-item history are not part of that distribution.
 
-For ordinary work-item commits, update the matching fragment and run `python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`. Fragments may contain multiple newest-first entries, each with its own required metadata and change body. Root consolidation remains a project-owned checkpoint: release preparation runs lint followed by `--check`, then uses the default mode only for an explicit write consolidation.
+For implementation commits, update the matching implementation fragment and run `python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`. Planning approvals create no fragment. Root consolidation remains a project-owned checkpoint: release preparation runs lint followed by `--check`, then uses the default mode only for an explicit write consolidation.
 
 When merging `AGENTS.md` instructions, copy the full section `## Using Dev Doc Harness` -- or parts of it, according to your preferences and the intended degree to which the harness should be enforced on the respective level, one repository or globally.
 
@@ -114,7 +114,7 @@ The planning package also records which supporting documentation artifacts are n
 
 ### Review, execution, and handoff
 
-Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: update the matching work-item changelog source, commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current task or start a new one using the provided handoff.
+Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current task or start a new one using the provided handoff.
 
 For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
 - The next lifecycle stage (for example, plan execution after approval);
@@ -132,7 +132,7 @@ The operator can override all these recommendations on start authorization.
 
 Implementation does not always follow a frozen plan line for line. The harness keeps approved planning artifacts unchanged so reviewers can see what was planned and what was delivered. Small implementation or validation adjustments are normal when they preserve the approved scope and outcome. That includes changes that serve the same evidence purpose; using a different command to prove the same result is one example. A change that materially affects the outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence goes through an amendment and approval.
 
-Each work item keeps changelog source fragments under `docs/work-items/<work-id>/changelog/`. They record what its commits delivered and keep those entries aligned with the commit subjects. This gives reviewers a local history without turning the root `CHANGELOG.md` into a working log.
+Each work item may keep an implementation changelog fragment under `docs/work-items/<work-id>/changelog/`. It records delivered implementation work and keeps that entry aligned with the implementation commit subject without turning the root `CHANGELOG.md` into a working log.
 
 The root changelog remains the curated publication view. Reviewed fragments can be consolidated at a project-owned checkpoint, such as after work branches merge or before release-note preparation or a product/application release:
 
@@ -170,7 +170,8 @@ For routine orientation, these routes cover most maintenance questions:
 
 | Need | Canonical owner |
 |---|---|
-| Work sizing, artifacts, variance, changelog sources | `references/artifact-contract.md` |
+| Work sizing, artifacts, and variance | `references/artifact-contract.md` |
+| Implementation changelog sources and consolidation | `references/implementation-changelog.md` |
 | Approval checkpoints and post-freeze routing | `references/planning-freeze-gates.md` |
 | Commitments, criteria, checks, and plan coverage | `references/durable-planning-quality.md` |
 | Readability and template prompt style | `references/artifact-style.md` |
@@ -201,4 +202,4 @@ This is not a project-management system, a replacement for human review, or a de
 
 ## Contributing
 
-This repository keeps its own planning artifacts under `docs/work-items/` so future contributors can understand why the harness changed. Contributions include the relevant planning package, user-facing updates, and a matching changelog source fragment. Root `CHANGELOG.md` changes only at an operator-owned consolidation checkpoint.
+This repository keeps its own planning artifacts under `docs/work-items/` so future contributors can understand why the harness changed. Contributions include the relevant planning package and user-facing updates; implementation commits add their matching changelog source. Root `CHANGELOG.md` changes only at an operator-owned consolidation checkpoint.

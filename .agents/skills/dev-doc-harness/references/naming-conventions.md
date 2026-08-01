@@ -107,7 +107,7 @@ Changelog source fragments live below the work item package:
 docs/work-items/<work-id>/changelog/*.md
 ```
 
-Use stable, descriptive fragment filenames tied to the commit or checkpoint they cover, such as `planning-approval.md`, `implementation.md`, `phase-01.md`, `validation.md`, or `release-prep.md`. Fragment filenames use lower-kebab-case and may hold multiple independently valid, newest-first entries. Each entry has its own heading, exactly one `Release target`, `Package impact`, and `Release-note` field, plus its change body. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
+Implementation fragment filenames use lower-kebab-case, such as `implementation.md` or `phase-01.md`. Their compact metadata and compatibility rules are owned by `module:implementation-changelog`. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
 
 ## Commit messages
 

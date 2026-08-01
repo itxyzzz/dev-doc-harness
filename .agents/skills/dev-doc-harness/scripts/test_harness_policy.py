@@ -89,6 +89,7 @@ CANONICAL_REFERENCES = [
     ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
+    ".agents/skills/dev-doc-harness/references/implementation-changelog.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
     ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
@@ -177,6 +178,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
+    ".agents/skills/dev-doc-harness/references/implementation-changelog.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
     ".agents/skills/dev-doc-harness/references/durable-planning-quality.md",
@@ -864,9 +866,9 @@ def assert_release_notes() -> None:
     if not source_entries:
         add_failure(check_id, "No source changelog entries listed in release notes")
 
-    for entry in source_entries:
-        if not re.search(rf"^###?\s+{re.escape(entry)}\s*$", changelog, flags=re.MULTILINE):
-            add_failure(check_id, f"Release-note source entry is missing from CHANGELOG.md: {entry}")
+    # Release-note files are frozen historical artifacts. They may retain source
+    # headings for planning-only entries intentionally removed from the compact
+    # root changelog; Git preserves the original source record.
 
 
 def get_changelog_sections() -> list[ChangelogSection]:
@@ -878,7 +880,7 @@ def get_changelog_sections() -> list[ChangelogSection]:
             text,
             flags=re.MULTILINE | re.DOTALL,
         )
-        if re.search(r"^Release target:\s+`", match.group("body"), flags=re.MULTILINE)
+        if re.search(r"^Meta --\s+`", match.group("body"), flags=re.MULTILINE)
     ]
 
 
@@ -890,24 +892,24 @@ def assert_release_changelog_schema() -> None:
         return
 
     for section in sections:
-        release_target_lines = list(re.finditer(r"^Release target:\s+`([^`]+)`\s*$", section.body, flags=re.MULTILINE))
-        package_impact_lines = list(re.finditer(r"^Package impact:\s+`([^`]+)`\s*$", section.body, flags=re.MULTILINE))
-        release_note_lines = list(re.finditer(r"^Release-note:\s+`([^`]+)`\s*$", section.body, flags=re.MULTILINE))
+        meta_lines = list(re.finditer(r"^Meta --\s+`([^`]+)`\s*:\s*`([^`]+)`\s*$", section.body, flags=re.MULTILINE))
 
-        if len(release_target_lines) != 1:
-            add_failure(check_id, f"{section.heading} must contain exactly one Release target field")
-        elif not re.search(r"^(?:unreleased|0\.\d+\.\d+|0\.\d+\+)$", release_target_lines[0].group(1)):
-            add_failure(check_id, f"{section.heading} has invalid Release target '{release_target_lines[0].group(1)}'")
+        if len(meta_lines) != 1:
+            add_failure(check_id, f"{section.heading} must contain exactly one compact Meta field")
+            continue
 
-        if len(package_impact_lines) != 1:
-            add_failure(check_id, f"{section.heading} must contain exactly one Package impact field")
-        elif package_impact_lines[0].group(1) not in ("distributable", "repository-only", "planning-only"):
-            add_failure(check_id, f"{section.heading} has invalid Package impact '{package_impact_lines[0].group(1)}'")
+        release_target, package_impact = meta_lines[0].groups()
+        if not re.search(r"^(?:unreleased|0\.\d+\.\d+|0\.\d+\+)$", release_target):
+            add_failure(check_id, f"{section.heading} has invalid Meta release target '{release_target}'")
+        if package_impact not in ("distributable", "repository-only"):
+            add_failure(check_id, f"{section.heading} has invalid Meta package impact '{package_impact}'")
 
-        if len(release_note_lines) != 1:
-            add_failure(check_id, f"{section.heading} must contain exactly one Release-note field")
-        elif release_note_lines[0].group(1) not in ("include", "source-only", "omit"):
-            add_failure(check_id, f"{section.heading} has invalid Release-note '{release_note_lines[0].group(1)}'")
+    changelog = read_repo_text("CHANGELOG.md")
+    if re.search(r"^Package impact:\s+`planning-only`\s*$", changelog, flags=re.MULTILINE):
+        add_failure(check_id, "CHANGELOG.md must not retain planning-only entries")
+    for legacy_field in ["Release target:", "Package impact:", "Release-note:"]:
+        if legacy_field in changelog:
+            add_failure(check_id, f"CHANGELOG.md must not retain legacy metadata field '{legacy_field}'")
 
 
 def assert_release_package_boundary() -> None:
@@ -956,6 +958,7 @@ def assert_changelog_fragment_contract() -> None:
     check_id = "changelog.fragments"
     script_path = ".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    changelog_reference = ".agents/skills/dev-doc-harness/references/implementation-changelog.md"
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     naming = ".agents/skills/dev-doc-harness/references/naming-conventions.md"
     release_policy = ".agents/skills/dev-doc-harness/references/release-policy.md"
@@ -963,9 +966,10 @@ def assert_changelog_fragment_contract() -> None:
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
-    assert_text_contains(check_id, lifecycle, r"docs/work-items/<work-id>/changelog/\*\.md", "lifecycle fragment location")
-    assert_text_contains(check_id, lifecycle, r"root `CHANGELOG\.md` remains the consolidated publication view", "root changelog publication view")
-    assert_text_contains(check_id, freeze, r"approved planning artifacts.+changelog source fragment", "freeze stages fragment")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"Root `CHANGELOG\.md` is the curated release source", "root changelog publication view")
+    assert_text_not_contains(check_id, freeze, r"changelog source fragment", "freeze planning fragment")
+    assert_text_not_contains(check_id, lifecycle, r"^## Changelog$", "retired lifecycle changelog section")
     assert_text_contains(check_id, naming, r"<changelog-fragment-path>", "fragment path derived pattern")
     assert_text_contains(check_id, naming, r"## <date> <commit-subject>", "changelog heading grammar")
     assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
@@ -973,10 +977,9 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --lint", "release process lint")
     assert_text_contains(check_id, release_process, r"before renaming `## Unreleased`", "release process ordering")
-    assert_text_contains(check_id, lifecycle, r"multiple independently valid, newest-first entries", "lifecycle multi-entry grammar")
-    assert_text_contains(check_id, naming, r"multiple independently valid, newest-first entries", "naming multi-entry grammar")
+    assert_text_contains(check_id, changelog_reference, r"newest-first", "implementation fragment ordering")
     assert_text_contains(check_id, hook, r"set -eu", "hook strict shell mode")
-    assert_text_contains(check_id, hook, r"consolidate_changelog_fragments\.py --lint", "hook lint gate")
+    assert_text_not_contains(check_id, hook, r"consolidate_changelog_fragments\.py --lint", "retired universal lint gate")
     assert_text_not_contains(check_id, hook, r"consolidate_changelog_fragments\.py --check", "hook root completeness gate")
 
     for phrase, label in [
@@ -990,9 +993,13 @@ def assert_changelog_fragment_contract() -> None:
         assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
         assert_text_contains(check_id, path, r"product/application release", f"{path} downstream release boundary")
 
-    for template in PRIMARY_TEMPLATE_FILES:
-        assert_text_contains(check_id, template, r"docs/work-items/<work-id>/changelog/\*\.md", f"{template} fragment matrix guidance")
-        assert_text_contains(check_id, template, r"consolidat", f"{template} consolidation guidance")
+    for template in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]:
+        assert_text_contains(check_id, template, r"planning approval creates no fragment", f"{template} planning boundary")
+    for template in PLAN_TEMPLATE_FILES:
+        assert_text_contains(check_id, template, r"implementation task then records the matching compact changelog entry", f"{template} implementation boundary")
 
     if not join_repo_path(script_path).exists():
         add_failure(check_id, f"Missing consolidation script: {script_path}")
@@ -1008,15 +1015,11 @@ def assert_changelog_fragment_contract() -> None:
         valid_fragment = repo_root / "docs/work-items/2027-01-02_example/changelog/implementation.md"
         valid_entry = (
             "### 2027-01-02_example -- add newer fixture entry\n\n"
-            "Release target: `unreleased`\n"
-            "Package impact: `repository-only`\n"
-            "Release-note: `source-only`\n\n"
+            "Meta -- `unreleased` : `repository-only`\n\n"
             "#### Added\n\n"
             "- Added a newer fixture entry.\n\n"
             "### 2027-01-02_example -- add fixture entry\n\n"
-            "Release target: `unreleased`\n"
-            "Package impact: `repository-only`\n"
-            "Release-note: `source-only`\n\n"
+            "Meta -- `unreleased` : `repository-only`\n\n"
             "#### Added\n\n"
             "- Added a fixture entry.\n"
         )
@@ -1154,6 +1157,76 @@ def assert_changelog_fragment_contract() -> None:
         lint_result = run_consolidation_fixture(["--lint"], repo_root)
         if lint_result.returncode != 0:
             add_failure(check_id, f"--lint should not require CHANGELOG.md: {(lint_result.stdout + lint_result.stderr).strip()}")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        changelog = repo_root / "CHANGELOG.md"
+        write_fixture_file(
+            changelog,
+            "# Changelog\n\n## Unreleased\n\n"
+            "### 2026-07-01 legacy delivery\n\n"
+            "Release target: `unreleased`\nPackage impact: `repository-only`\nRelease-note: `source-only`\n\n"
+            "#### Changed\n\n- Keep delivered work.\n\n"
+            "### 2026-07-01 legacy plan\n\n"
+            "Release target: `unreleased`\nPackage impact: `planning-only`\nRelease-note: `source-only`\n\n"
+            "#### Added\n\n- Remove this planning record.\n",
+        )
+        first_migration = run_consolidation_fixture(["--migrate-root"], repo_root)
+        if first_migration.returncode != 0:
+            add_failure(check_id, f"root migration fixture failed: {(first_migration.stdout + first_migration.stderr).strip()}")
+        migrated_once = changelog.read_bytes()
+        if b"planning-only" in migrated_once or b"Release-note:" in migrated_once or b"Meta -- `unreleased` : `repository-only`" not in migrated_once:
+            add_failure(check_id, "root migration should remove planning-only legacy entries and compact remaining metadata")
+        second_migration = run_consolidation_fixture(["--migrate-root"], repo_root)
+        if second_migration.returncode != 0 or changelog.read_bytes() != migrated_once:
+            add_failure(check_id, "a second root migration should be byte-for-byte idempotent")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        changelog = repo_root / "CHANGELOG.md"
+        write_fixture_file(
+            changelog,
+            "# Changelog\n\n## Unreleased\n\n"
+            "### 2026-07-01 legacy plan\n\n"
+            "Release target: `unreleased`\nPackage impact: `planning-only`\nRelease-note: `source-only`\n\n"
+            "#### Added\n\n- Remove this planning record.\n\n"
+            "## 0.7.0 - 2026-07-01\n\n"
+            "### 2026-07-01 legacy delivery\n\n"
+            "Release target: `0.7.0`\nPackage impact: `distributable`\nRelease-note: `include`\n\n"
+            "#### Changed\n\n- Preserve this release section.\n",
+        )
+        release_migration = run_consolidation_fixture(["--migrate-root"], repo_root)
+        migrated_release = changelog.read_text(encoding="utf-8")
+        if release_migration.returncode != 0 or "## 0.7.0 - 2026-07-01" not in migrated_release:
+            add_failure(check_id, "root migration must preserve conventional release headings adjacent to removed planning-only entries")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
+        write_fixture_file(
+            repo_root / "docs/work-items/2026-07-01_legacy/changelog/planning-approval.md",
+            "### 2026-07-01 legacy plan\n\n"
+            "Release target: `unreleased`\nPackage impact: `planning-only`\nRelease-note: `source-only`\n\n"
+            "#### Added\n\n- Frozen planning record.\n",
+        )
+        legacy_lint = run_consolidation_fixture(["--lint"], repo_root)
+        legacy_check = run_consolidation_fixture(["--check"], repo_root)
+        if legacy_lint.returncode != 0 or legacy_check.returncode != 0:
+            add_failure(check_id, "legacy planning-only fragments should lint but never require root consolidation")
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = Path(temp_dir)
+        write_fixture_file(repo_root / "CHANGELOG.md", "# Changelog\n\n## Unreleased\n")
+        write_fixture_file(
+            repo_root / "docs/work-items/2026-08-01_mixed/changelog/implementation.md",
+            "### 2026-08-01 mixed metadata\n\n"
+            "Meta -- `unreleased` : `repository-only`\n"
+            "Release target: `unreleased`\nPackage impact: `repository-only`\nRelease-note: `source-only`\n\n"
+            "#### Changed\n\n- Invalid mixed metadata.\n",
+        )
+        mixed_result = run_consolidation_fixture(["--lint"], repo_root)
+        if mixed_result.returncode == 0 or "mixed compact and legacy metadata" not in (mixed_result.stdout + mixed_result.stderr):
+            add_failure(check_id, "mixed compact and legacy fragment metadata must fail lint")
 
 
 def assert_work_item_architecture_decisions() -> None:
@@ -2650,7 +2723,7 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "stop before implementation", "label": "stop before implementation"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Immutable snapshots", "label": "immutable snapshots"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Variance policy", "label": "variance and amendments"},
-        {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": r"CHANGELOG.md.+before commits", "label": "changelog before commit"},
+        {"path": ".agents/skills/dev-doc-harness/references/implementation-changelog.md", "pattern": "before implementation commits", "label": "implementation changelog before commit"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
         {"path": ".agents/skills/dev-doc-harness/references/maintenance-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
@@ -2789,7 +2862,7 @@ def run_checks() -> None:
             {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "fresh operator response", "label": "fresh authorization"},
             {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "rule:lifecycle.variance-policy", "label": "variance rule"},
             {"path": ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md", "pattern": "Implementation stayed within scope", "label": "scope quality gate"},
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": r"CHANGELOG.md.+before commits", "label": "changelog expectation"},
+            {"path": ".agents/skills/dev-doc-harness/references/implementation-changelog.md", "pattern": "before an implementation commit", "label": "implementation changelog expectation"},
         ],
     )
     assert_scenario_evidence(

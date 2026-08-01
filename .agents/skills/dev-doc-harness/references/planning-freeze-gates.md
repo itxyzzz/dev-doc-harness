@@ -45,12 +45,11 @@ Do not create a plan amendment for feedback received before the planning package
 
 After the operator explicitly approves the staged planning package:
 
-1. Update the matching changelog source fragment under `docs/work-items/<work-id>/changelog/*.md` with a newest-first entry for the approved artifact set.
-2. Update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
-3. Recheck the draft-review package-completeness and artifact-completeness requirements before approval freeze.
-4. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
-5. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`, and verify the changelog source fragment entry title snippet matches that planned subject.
-6. Verify the worktree status, stage only the approved planning artifacts and their changelog source fragment, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, generated files, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint. Include root `CHANGELOG.md` only when the operator is intentionally consolidating fragments as part of the same approved package; otherwise consolidation remains a later operator-owned checkpoint.
+1. Update every approved artifact's status fields from draft or proposed state to approved state before staging. This includes the top-level `Status:` line and any status line in an `Approval` section.
+2. Recheck the draft-review package-completeness and artifact-completeness requirements before approval freeze.
+3. Verify again that the approved artifacts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
+4. Verify the approved artifacts include a planned approval commit subject following `rule:lifecycle.commit-message-format`.
+5. Verify the worktree status, stage only the approved planning artifacts, and commit only those staged paths together using the planned approval commit subject. Do not stage or commit unrelated pre-existing operator work, root `CHANGELOG.md`, or implementation edits during a plan-only checkpoint.
 7. Treat the package as frozen only after the approval commit. From that point onward, high-impact changes use the amendment process from `artifact-contract.md`.
 8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
 9. Report the commit hash and approved artifact paths.

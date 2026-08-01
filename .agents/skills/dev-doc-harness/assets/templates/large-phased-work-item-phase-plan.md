@@ -148,7 +148,7 @@ For end-to-end validation, add a final task such as `TASK-999 Verify end-to-end 
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during phase-plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
 
 | Stage | Planned subject |
 |---|---|
@@ -171,8 +171,8 @@ procedure here.
 
 List snapshot or delta artifacts this phase must create, update, or mark not applicable.
 
-1. Changelog source: `docs/work-items/<work-id>/changelog/*.md` before each commit.
-2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned checkpoint when root changelog completeness is needed.
+1. Implementation changelog source: `docs/work-items/<work-id>/changelog/implementation.md` during implementation; phase-plan approval creates no fragment.
+2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned implementation or release checkpoint when root changelog completeness is needed.
 3. Test cases: `<snapshot path or not applicable with reason>`.
 4. Testing guide delta: `<delta path or not applicable with reason>`.
 5. Operator manual delta: `<delta path or not applicable with reason>`.

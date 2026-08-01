@@ -34,7 +34,7 @@ Use the harness release version as the compatibility unit for team adoption and 
 
 The distributable harness package is root `AGENTS.md` plus `.agents/`.
 
-The package excludes root `README.md`, root `CHANGELOG.md`, root `TODO.md`, this repository's `docs/work-items/`, `.git/`, and local development files.
+The package excludes root `README.md`, root `CHANGELOG.md`, this repository's `docs/work-items/`, `.git/`, and local development files.
 
 Package-critical release policy, release notes, release identity, and the release-branch runbook live under `.agents/skills/dev-doc-harness/` so they travel with the package. The package-local runbook applies only when maintaining or releasing the Dev Doc Harness distribution in its source repository; downstream adopters keep their own release workflows.
 
@@ -42,9 +42,9 @@ Package-critical release policy, release notes, release identity, and the releas
 
 Root `CHANGELOG.md` is the repository source material for Dev Doc Harness package-local release notes after fragment consolidation.
 
-Work-item-local changelog fragments under `docs/work-items/<work-id>/changelog/*.md` are pre-publication source evidence. They are consolidated into root `CHANGELOG.md` at an operator-owned checkpoint before Dev Doc Harness distribution release-note curation in this repository. Fragments are not independent Dev Doc Harness release notes, and package-local release notes must not be curated directly from unconsolidated fragments.
+Implementation changelog fragments under `docs/work-items/<work-id>/changelog/*.md` are pre-publication source evidence. They are consolidated into root `CHANGELOG.md` at an operator-owned checkpoint before Dev Doc Harness distribution release-note curation in this repository. Fragments are not independent Dev Doc Harness release notes, and package-local release notes must not be curated directly from unconsolidated fragments.
 
-Release notes are curated from changelog entries in the consolidated root changelog and must not become an independent feature history. Multiple changelog entries for one delivered feature, such as spec approval, phase-plan approval, and implementation, are source evidence; release notes should summarize the delivered package-facing change once unless an approval entry matters for audit, migration, or compatibility.
+Release notes are curated from delivered implementation entries in the consolidated root changelog and must not become an independent feature history.
 
 ## Release Notes
 
