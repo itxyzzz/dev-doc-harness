@@ -1,3 +1,11 @@
+### 2026-08-01 fix: changelog-lifecycle-simplification -- restore implementation fragment lint guard
+
+Meta -- `unreleased` : `distributable`
+
+#### Fixed
+
+- Restored the pre-commit fragment-lint guard and its policy-validator expectation; planning routes remain free of changelog authoring requirements.
+
 ### 2026-08-01 refactor: changelog-lifecycle-simplification -- retain only implementation delivery records
 
 Meta -- `unreleased` : `distributable`

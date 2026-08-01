@@ -979,7 +979,7 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, release_process, r"before renaming `## Unreleased`", "release process ordering")
     assert_text_contains(check_id, changelog_reference, r"newest-first", "implementation fragment ordering")
     assert_text_contains(check_id, hook, r"set -eu", "hook strict shell mode")
-    assert_text_not_contains(check_id, hook, r"consolidate_changelog_fragments\.py --lint", "retired universal lint gate")
+    assert_text_contains(check_id, hook, r"consolidate_changelog_fragments\.py --lint", "implementation fragment lint gate")
     assert_text_not_contains(check_id, hook, r"consolidate_changelog_fragments\.py --check", "hook root completeness gate")
 
     for phrase, label in [
