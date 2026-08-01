@@ -53,6 +53,7 @@ CHECK_IDS = [
     "graph.template-routes",
     "router.required-routes",
     "router.route-budget",
+    "router.maintenance-architecture",
     "release.route",
     "discoverability.safety",
     "skill.openai-metadata",
@@ -85,7 +86,7 @@ CHECK_IDS = [
 ]
 
 CANONICAL_REFERENCES = [
-    ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+    ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
@@ -156,6 +157,13 @@ PLAIN_LANGUAGE_ACTIVE_MARKDOWN_PATHS = [
     *CANONICAL_REFERENCES,
     *TEMPLATE_FILES,
 ]
+OPERATIONAL_ROUTER_SURFACES = [
+    "AGENTS.md",
+    "README.md",
+    ".agents/skills/dev-doc-harness/SKILL.md",
+    ".agents/skills/dev-doc-harness/docs/operator-note.md",
+    *CANONICAL_REFERENCES,
+]
 
 REQUIRED_FILES = [
     "AGENTS.md",
@@ -166,7 +174,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/agents/openai.yaml",
     ".agents/skills/dev-doc-harness/scripts/test_harness_policy.py",
     ".agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py",
-    ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+    ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
@@ -465,9 +473,9 @@ def get_policy_references(path: str) -> list[str]:
 
 def assert_template_routes() -> None:
     operation_requirements = {
-        "small-medium": ["module:lifecycle", "module:quality", "module:models"],
-        "large-anchor": ["module:lifecycle", "module:quality", "module:models", "module:artifact-style"],
-        "phase-plan": ["module:lifecycle", "module:quality", "module:models"],
+        "small-medium": ["module:lifecycle", "module:naming", "module:quality", "module:models"],
+        "large-anchor": ["module:lifecycle", "module:naming", "module:quality", "module:models", "module:artifact-style"],
+        "phase-plan": ["module:lifecycle", "module:naming", "module:quality", "module:models"],
         "amendment": ["module:lifecycle", "module:freeze-gate"],
     }
     operation_templates = {
@@ -487,6 +495,14 @@ def assert_template_routes() -> None:
         for required in requirements:
             if required not in combined:
                 add_failure("graph.template-routes", f"Template set for '{operation}' is missing policy reference '{required}'")
+
+    for template in PLAN_TEMPLATE_FILES:
+        references = get_policy_references(template)
+        if "module:freeze-gate" in references:
+            add_failure("graph.template-routes", f"Draft plan template retains deferred policy reference 'module:freeze-gate': {template}")
+        deferred_freeze_prefix = "rule:" + "freeze."
+        if any(reference.startswith(deferred_freeze_prefix) for reference in references):
+            add_failure("graph.template-routes", f"Draft plan template retains deferred freeze rule: {template}")
 
 
 def assert_route_contains(operation: str, required_patterns: list[str], check_id: str = "router.required-routes") -> None:
@@ -520,8 +536,8 @@ def assert_route_budgets() -> None:
     budgets = {
         "Classify work size": 1,
         "Draft or review small/medium specs and plans": 4,
-        "Draft or review large anchor specs": 4,
-        "Draft or review phase plans": 3,
+        "Draft or review large anchor specs": 5,
+        "Draft or review phase plans": 4,
         "Freeze planning packages": 4,
         "Execute approved work and record variance": 4,
         "Use or review sub-agent strategy": 2,
@@ -550,6 +566,43 @@ def assert_route_budgets() -> None:
         module_count = len(set(re.findall(r"module:[a-z0-9][a-z0-9.-]*", required_cell)))
         if module_count > budget:
             add_failure("router.route-budget", f"Route '{operation}' requires {module_count} modules, budget is {budget}")
+
+
+def get_operation_router_owners(surface_texts: dict[str, str]) -> list[str]:
+    heading = r"(?m)^## Operation router\s*$"
+    return sorted(path for path, text in surface_texts.items() if re.search(heading, text))
+
+
+def assert_router_maintenance_architecture() -> None:
+    check_id = "router.maintenance-architecture"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    maintenance = ".agents/skills/dev-doc-harness/references/maintenance-architecture.md"
+    former_reference = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+
+    assert_path_absent(check_id, former_reference)
+    router_owners = get_operation_router_owners({path: read_repo_text(path) for path in OPERATIONAL_ROUTER_SURFACES})
+    if router_owners != [router]:
+        add_failure(check_id, f"SKILL.md must be the sole operational-router surface; found: {', '.join(router_owners) or 'none'}")
+
+    duplicate_router_fixture = {
+        router: "## Operation router\n",
+        "README.md": "## Operation router\n",
+    }
+    if get_operation_router_owners(duplicate_router_fixture) != [router, "README.md"]:
+        add_failure(check_id, "duplicate operational-router fixture was not detected")
+
+    assert_text_not_contains(check_id, maintenance, r"(?m)^## Router Inputs\s*$", "duplicate router inputs heading")
+    assert_text_not_contains(
+        check_id,
+        maintenance,
+        re.escape("docs/work-items/2026-06-05-refactor-as-code"),
+        "work-item snapshot provenance",
+    )
+    assert_text_not_contains(check_id, maintenance, re.escape("Reusable policy source?"), "retired taxonomy column")
+    for removed_type in ["Artifact schema", "Operator-facing summary", "Historical snapshot"]:
+        assert_text_not_contains(check_id, maintenance, re.escape(removed_type), f"retired content type {removed_type}")
+    for retained_type in ["Normative policy", "Advisory guidance", "Example"]:
+        assert_text_contains(check_id, maintenance, re.escape(retained_type), f"retained content type {retained_type}")
 
 
 def assert_scenario_evidence(scenario_id: str, evidence: list[dict[str, str]]) -> None:
@@ -1173,7 +1226,7 @@ def assert_work_item_architecture_decisions() -> None:
 def assert_artifact_style_guidance() -> None:
     check_id = "artifact-style.guidance"
     style = ".agents/skills/dev-doc-harness/references/artifact-style.md"
-    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    architecture = ".agents/skills/dev-doc-harness/references/maintenance-architecture.md"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
     role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
@@ -1407,7 +1460,7 @@ def assert_execution_thread_start() -> None:
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
     execution = ".agents/skills/dev-doc-harness/references/context-and-quality-gates.md"
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
-    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    architecture = ".agents/skills/dev-doc-harness/references/maintenance-architecture.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
 
     assert_text_contains(check_id, execution, re.escape("rule:execution-quality.execution-thread-start"), "execution-thread-start owner")
@@ -2422,7 +2475,7 @@ def assert_next_stage_summary() -> None:
     check_id = "presentation.next-stage-summary"
     models = ".agents/skills/dev-doc-harness/references/subagent-model-policy.md"
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
-    architecture = ".agents/skills/dev-doc-harness/references/policy-architecture.md"
+    architecture = ".agents/skills/dev-doc-harness/references/maintenance-architecture.md"
     header_sources = [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.small.header-inputs.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
@@ -2569,9 +2622,9 @@ def run_checks() -> None:
     write_check_result("graph.template-routes")
 
     assert_route_contains("Classify work size", ["module:lifecycle", "rule:lifecycle.work-sizing"])
-    assert_route_contains("Draft or review small/medium specs and plans", ["module:lifecycle", "module:quality", "module:models"])
-    assert_route_contains("Draft or review large anchor specs", ["module:lifecycle", "module:quality", "module:models"])
-    assert_route_contains("Draft or review phase plans", ["module:quality", "module:lifecycle", "module:models"])
+    assert_route_requires("Draft or review small/medium specs and plans", ["module:lifecycle", "module:naming", "module:quality", "module:models"], "router.required-routes")
+    assert_route_requires("Draft or review large anchor specs", ["module:lifecycle", "module:naming", "module:quality", "module:models", "module:artifact-style"], "router.required-routes")
+    assert_route_requires("Draft or review phase plans", ["module:naming", "module:quality", "module:lifecycle", "module:models"], "router.required-routes")
     assert_route_contains("Freeze planning packages", ["module:freeze-gate", "module:lifecycle"])
     assert_route_contains("Execute approved work and record variance", ["module:lifecycle", "module:execution-quality"])
     assert_route_contains("Use or review sub-agent strategy", ["module:models", "rule:models.strategy-required"])
@@ -2583,6 +2636,9 @@ def run_checks() -> None:
 
     assert_route_budgets()
     write_check_result("router.route-budget")
+
+    assert_router_maintenance_architecture()
+    write_check_result("router.maintenance-architecture")
 
     assert_route_contains("Release, package, or team adoption work", ["module:release"], "release.route")
     write_check_result("release.route")
@@ -2597,7 +2653,7 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": r"CHANGELOG.md.+before commits", "label": "changelog before commit"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
-        {"path": ".agents/skills/dev-doc-harness/references/policy-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
+        {"path": ".agents/skills/dev-doc-harness/references/maintenance-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
     ]
     for topic in discoverability:
         assert_text_contains("discoverability.safety", topic["path"], topic["pattern"], topic["label"])
@@ -2642,7 +2698,7 @@ def run_checks() -> None:
         "AGENTS.md",
         "README.md",
         ".agents/skills/dev-doc-harness/SKILL.md",
-        ".agents/skills/dev-doc-harness/references/policy-architecture.md",
+        ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
         ".agents/skills/dev-doc-harness/references/naming-conventions.md",
         ".agents/skills/dev-doc-harness/references/artifact-contract.md",
         ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
@@ -2771,7 +2827,7 @@ def run_checks() -> None:
         "scenario:history.historical-artifact-handling",
         [
             {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "rule:lifecycle.immutable-snapshots", "label": "immutable rule"},
-            {"path": ".agents/skills/dev-doc-harness/references/policy-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical handling"},
+            {"path": ".agents/skills/dev-doc-harness/references/maintenance-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical handling"},
             {"path": "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md", "pattern": "scenario:history.historical-artifact-handling", "label": "source scenario"},
         ],
     )
