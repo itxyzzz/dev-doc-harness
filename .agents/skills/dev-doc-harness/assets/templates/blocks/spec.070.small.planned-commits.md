@@ -1,6 +1,6 @@
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
 
 | Stage | Planned subject |
 |---|---|

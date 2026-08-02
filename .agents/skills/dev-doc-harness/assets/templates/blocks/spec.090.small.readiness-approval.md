@@ -8,8 +8,8 @@
 - [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] The plan owns the combined package's implementation handoff; a staged spec-only exception records only plan drafting.
+- [ ] Planned implementation commit subjects are clear; planning approval has no changelog entry.
+- [ ] The companion plan is present in the combined package and owns its implementation handoff; a staged spec-only exception records the operator-requested or operator-approved reason and only plan drafting.
 - [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 

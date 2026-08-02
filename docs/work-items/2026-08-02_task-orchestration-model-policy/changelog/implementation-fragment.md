@@ -1,0 +1,50 @@
+### 2026-08-02 docs: task-orchestration-model-policy -- restore four-field orchestration
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Restored Method, Orchestration mode, `Run in`, and Review as the complete Orchestration field set.
+- Moved conditional rationale into canonical strategy prose covering the combined Orchestration and Model selection when non-obvious.
+- Removed the mode-specific rationale field from freeze guidance, templates, generated artifacts, README guidance, and validation fixtures.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- tighten selection templates
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Constrained fixed-stage templates to planning- or execution-appropriate Method and Review prompts.
+- Added an explicit Orchestration mode fit rationale across canonical notation, template sources, generated artifacts, freeze presentation, and validation.
+- Added the large-anchor draft-to-frozen heading transition and replaced position-dependent policy references with stable rule IDs.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- correct policy ownership structure
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Reorganized the canonical model policy into explicit orchestration, model-selection, review, and sub-agent responsibility groups.
+- Added a stable execution-review contract rule and corrected nested rule-owner mappings and consumers.
+- Made owner-heading validation enforce exact nested heading levels and documented the operator-authorized structure-only policy variance.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- align orchestration and model selection
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Made Orchestration mode an explicit next-stage field across policy, templates, freeze presentation, and validation.
+- Defined portable model facets and host-native fallbacks while simplifying optional current-session diagnostics.
+- Required canonical continuity and preserved independent high-risk review as distinct from final integration.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- clarify session and stage selection
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Reorganized the model policy around lifecycle-owned stages and stage-appropriate orchestration, review, continuity, and model selection.
+- Replaced top-level Codex-task terminology with portable orchestration-session terminology across current policy and templates.
+- Preserved sub-agent authorization, context, concurrency, review, reporting, and integration safeguards with focused validation.
+- Added focused validation that keeps current-session metadata independent from resolved-profile observations.

@@ -5,8 +5,9 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
+Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
@@ -22,7 +23,7 @@ State the phase outcome and how this phase advances the approved anchor spec wit
 
 Read these before finalizing phase implementation planning:
 
-1. Approved anchor spec: `<spec-filename or handoff snapshot>`.
+1. Approved anchor spec: `<spec-filename>`.
 2. Approved amendments: `<paths or None>`.
 3. Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
 4. Architecture input: `<architecture decisions in approved spec, snapshots/architecture.snapshot.md, amendments, or None with reason>`.

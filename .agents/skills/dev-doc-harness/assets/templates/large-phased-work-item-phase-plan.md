@@ -7,8 +7,9 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:freeze-gate`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
+Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
@@ -24,7 +25,7 @@ State the phase outcome and how this phase advances the approved anchor spec wit
 
 Read these before finalizing phase implementation planning:
 
-1. Approved anchor spec: `<spec-filename or handoff snapshot>`.
+1. Approved anchor spec: `<spec-filename>`.
 2. Approved amendments: `<paths or None>`.
 3. Prior phase outputs or handoffs: `<paths, commit hashes, notes, or None>`.
 4. Architecture input: `<architecture decisions in approved spec, snapshots/architecture.snapshot.md, amendments, or None with reason>`.
@@ -63,31 +64,12 @@ State only the sequencing, dependencies, and tradeoffs a fresh executor needs.
 
 Fresh-thread readiness:
 
-1. This phase should be safely executable by one orchestration thread with bounded delegation.
+1. This phase should be safely executable by one orchestration session with bounded delegation.
 2. If the phase still needs hidden chat context, split the phase, update the anchor spec before freeze, or create an amendment after freeze.
 
 ## Model and Sub-agent Strategy
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
-
-Planning-task observations:
-
-1. Model generation: `<generation or not exposed>`.
-2. Resolved profile: `<concrete runtime profile or not exposed>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Context visibility: `<exposed signal or not exposed>`.
-
-Approved execution selection:
-
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
 
 Upcoming-stage sub-agent assessment:
 
@@ -114,15 +96,15 @@ Sub-agent `<role or task id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
 4. Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Implementation tasks
 
@@ -150,15 +132,7 @@ implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
-## Plan checks
-
-Use stable check IDs. Describe the evidence purpose, method, and expected
-result; do not turn an equivalent command into a separate approval gate.
-When multiple checks cover one criterion, state whether all are required or
-whether they are equivalent alternatives; for alternatives, explain why either
-proves the same evidence purpose.
-
-### `CHECK-001` `<short title>`
+#### `CHECK-001` `<short title>`
 
 Covers: `VER-001`.
 
@@ -166,9 +140,15 @@ Method: `<command, test, inspection, analysis, demonstration, or review>`.
 
 Expected result: `<observable pass signal>`.
 
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
+
+When multiple checks cover one criterion, state whether all are required or they are equivalent alternatives, and why either alternative proves the same evidence purpose.
+
+For end-to-end validation, add a final task such as `TASK-999 Verify end-to-end integration` and nest its checks inside it.
+
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during phase-plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during phase-plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
 
 | Stage | Planned subject |
 |---|---|
@@ -182,15 +162,17 @@ exception or independently reviewable split as concise prose below.
 
 List the checks that produce the needed evidence. Use
 `rule:lifecycle.variance-policy` for noteworthy allowed drift and material
-changes. Use `module:freeze-gate` for planning approval; do not repeat its
+changes. Keep the draft artifact state and planned evidence clear. When the
+package is later presented for review or freeze, the planning-freeze gate
+document is the authority for approval, commit, and pause; do not repeat its
 procedure here.
 
 ## Documentation Tasks
 
 List snapshot or delta artifacts this phase must create, update, or mark not applicable.
 
-1. Changelog source: `docs/work-items/<work-id>/changelog/*.md` before each commit.
-2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned checkpoint when root changelog completeness is needed.
+1. Implementation changelog source: `docs/work-items/<work-id>/changelog/phase-NN-fragment.md` during phase implementation; phase-plan approval creates no fragment.
+2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned implementation or release checkpoint when root changelog completeness is needed.
 3. Test cases: `<snapshot path or not applicable with reason>`.
 4. Testing guide delta: `<delta path or not applicable with reason>`.
 5. Operator manual delta: `<delta path or not applicable with reason>`.
@@ -217,25 +199,44 @@ The normal route is rolling: implement this phase, record actual outputs, then
 plan the next phase. Batch planning is an explicit exception only for stable,
 independently plannable phases.
 
+### Next-stage recommendation
+
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together. Mirror the phase's frozen selection in chat.
+
+#### Next lifecycle stage
+
+Stage: `phase execution`.
+
+#### Orchestration
+
+Method: `<execution method for phase execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
+
+#### Model
+
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
 ### Current-phase implementation handoff
 
 1. Frozen package: `<approved anchor, phase plan, amendments, prior outputs, and required evidence>`.
-2. Next activity: `<named current-phase implementation>`.
-3. First task: `<TASK-NNN>`.
-4. Approved execution selection and fallback: `<selection section or concise values>`.
-5. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
 ### Post-phase transition
 
-1. Expected next activity: `<next-phase planning or work-item completion>`.
-2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next activity>`.
-3. The completion report supplies the actual values; it does not begin the next activity automatically.
+1. Expected next lifecycle stage: `<phase-plan drafting or work-item completion>`.
+2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next lifecycle stage>`.
+3. The completion report supplies the actual values; it does not begin the next lifecycle stage automatically.
 4. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.
 
 ## Readiness
 
+- [ ] Optional current-session diagnostics contain only Resolved model profile and Context visibility and are omitted unless exposed and material; the Next-stage recommendation remains separate: Next lifecycle stage, Orchestration (Method, Orchestration mode, Run in, Review), Model (Generation, Capability tier, and Reasoning), then Fallbacks and limits.
 - [ ] The phase preserves its approved anchor inputs and has clear tasks, checks, and changelog entry.
-- [ ] The approved execution selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
+- [ ] The grouped next-stage selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
 
 ## Completion
@@ -246,4 +247,5 @@ independently plannable phases.
 ## Approval
 
 - Status: Draft
+- At freeze, relabel the grouped recommendation **Approved next stage** and mirror it in chat.
 - Superseded by: None

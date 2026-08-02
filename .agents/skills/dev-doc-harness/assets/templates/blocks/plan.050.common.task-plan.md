@@ -24,18 +24,16 @@ implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
-## Plan checks
-
-Use stable check IDs. Describe the evidence purpose, method, and expected
-result; do not turn an equivalent command into a separate approval gate.
-When multiple checks cover one criterion, state whether all are required or
-whether they are equivalent alternatives; for alternatives, explain why either
-proves the same evidence purpose.
-
-### `CHECK-001` `<short title>`
+#### `CHECK-001` `<short title>`
 
 Covers: `VER-001`.
 
 Method: `<command, test, inspection, analysis, demonstration, or review>`.
 
 Expected result: `<observable pass signal>`.
+
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
+
+When multiple checks cover one criterion, state whether all are required or they are equivalent alternatives, and why either alternative proves the same evidence purpose.
+
+For end-to-end validation, add a final task such as `TASK-999 Verify end-to-end integration` and nest its checks inside it.

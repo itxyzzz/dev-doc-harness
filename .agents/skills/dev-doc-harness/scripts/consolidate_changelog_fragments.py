@@ -14,18 +14,20 @@ class FragmentEntry:
     heading: str
     release_target: str
     package_impact: str
-    release_note: str
+    legacy: bool
     body: str
 
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 FRAGMENT_GLOB = "docs/work-items/*/changelog/*.md"
-METADATA_PATTERNS = {
+LEGACY_METADATA_PATTERNS = {
     "Release target": re.compile(r"^Release target:\s+`([^`]+)`\s*$", flags=re.MULTILINE),
     "Package impact": re.compile(r"^Package impact:\s+`([^`]+)`\s*$", flags=re.MULTILINE),
     "Release-note": re.compile(r"^Release-note:\s+`([^`]+)`\s*$", flags=re.MULTILINE),
 }
-VALID_PACKAGE_IMPACT = {"distributable", "repository-only", "planning-only"}
+COMPACT_METADATA_PATTERN = re.compile(r"^Meta --\s+`([^`]+)`\s*:\s*`([^`]+)`\s*$", flags=re.MULTILINE)
+VALID_PACKAGE_IMPACT = {"distributable", "repository-only"}
+LEGACY_PACKAGE_IMPACT = VALID_PACKAGE_IMPACT | {"planning-only"}
 VALID_RELEASE_NOTE = {"include", "source-only", "omit"}
 CHANGELOG_HEADING = r"\d{4}-\d{2}-\d{2}[^\n]+"
 
@@ -56,31 +58,51 @@ def parse_fragment(path: Path, repo_root: Path) -> tuple[list[FragmentEntry], li
         entry_text = text[heading_match.start() : next_start].strip()
         heading = heading_match.group(2).strip()
         context = f"{display_path}: entry {index} `{heading}`"
-        values: dict[str, str] = {}
         entry_errors: list[str] = []
-        for field, pattern in METADATA_PATTERNS.items():
-            matches = list(pattern.finditer(entry_text))
-            if len(matches) != 1:
-                entry_errors.append(f"{context}: expected exactly one {field} field, found {len(matches)}")
+        body_without_heading = entry_text[heading_match.end() - heading_match.start() :].strip()
+        compact_matches = list(COMPACT_METADATA_PATTERN.finditer(body_without_heading))
+        legacy_matches = {
+            field: list(pattern.finditer(body_without_heading)) for field, pattern in LEGACY_METADATA_PATTERNS.items()
+        }
+        legacy = not compact_matches
+        if compact_matches:
+            if len(compact_matches) != 1:
+                entry_errors.append(f"{context}: expected exactly one Meta field, found {len(compact_matches)}")
+            elif any(legacy_matches.values()):
+                entry_errors.append(f"{context}: mixed compact and legacy metadata is not allowed")
             else:
-                values[field] = matches[0].group(1)
-
-        if not entry_errors:
-            release_target = values["Release target"]
-            package_impact = values["Package impact"]
-            release_note = values["Release-note"]
-            if not release_target.strip():
-                entry_errors.append(f"{context}: Release target must not be blank")
-            if package_impact not in VALID_PACKAGE_IMPACT:
-                entry_errors.append(f"{context}: invalid Package impact value `{package_impact}`")
-            if release_note not in VALID_RELEASE_NOTE:
-                entry_errors.append(f"{context}: invalid Release-note value `{release_note}`")
+                release_target, package_impact = compact_matches[0].groups()
+                if not release_target.strip():
+                    entry_errors.append(f"{context}: Meta release target must not be blank")
+                if package_impact not in VALID_PACKAGE_IMPACT:
+                    entry_errors.append(f"{context}: invalid Meta package impact `{package_impact}`")
+                body_without_metadata = COMPACT_METADATA_PATTERN.sub("", body_without_heading).strip()
+        else:
+            values: dict[str, str] = {}
+            for field, matches in legacy_matches.items():
+                if len(matches) != 1:
+                    entry_errors.append(f"{context}: expected exactly one legacy {field} field, found {len(matches)}")
+                else:
+                    values[field] = matches[0].group(1)
+            if not entry_errors:
+                release_target = values["Release target"]
+                package_impact = values["Package impact"]
+                release_note = values["Release-note"]
+                if not release_target.strip():
+                    entry_errors.append(f"{context}: Release target must not be blank")
+                if package_impact not in LEGACY_PACKAGE_IMPACT:
+                    entry_errors.append(f"{context}: invalid legacy Package impact value `{package_impact}`")
+                if release_note not in VALID_RELEASE_NOTE:
+                    entry_errors.append(f"{context}: invalid legacy Release-note value `{release_note}`")
+                body_without_metadata = body_without_heading
+                for pattern in LEGACY_METADATA_PATTERNS.values():
+                    body_without_metadata = pattern.sub("", body_without_metadata)
+                body_without_metadata = body_without_metadata.strip()
 
         if entry_errors:
             errors.extend(entry_errors)
             continue
 
-        body_without_heading = entry_text[heading_match.end() - heading_match.start() :].strip()
         entries.append(
             FragmentEntry(
                 path=path,
@@ -88,8 +110,11 @@ def parse_fragment(path: Path, repo_root: Path) -> tuple[list[FragmentEntry], li
                 heading=heading,
                 release_target=release_target,
                 package_impact=package_impact,
-                release_note=release_note,
-                body=f"### {heading}\n\n{body_without_heading}\n",
+                legacy=legacy,
+                body=(
+                    f"### {heading}\n\nMeta -- `{release_target}` : `{package_impact}`\n\n"
+                    f"{body_without_metadata}\n"
+                ),
             )
         )
     return entries, errors
@@ -152,7 +177,48 @@ def build_updated_changelog(changelog_text: str, missing_entries: list[FragmentE
     return updated, []
 
 
-def consolidate(repo_root: Path, check: bool, lint: bool) -> int:
+def migrate_root_changelog(changelog_text: str) -> str:
+    entry_pattern = re.compile(
+        rf"^(#{{2,3}}\s+{CHANGELOG_HEADING})\s*\n(?P<body>.*?)(?=^##\s+|^###\s+{CHANGELOG_HEADING}\s*$|\Z)",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    result: list[str] = []
+    cursor = 0
+    for match in entry_pattern.finditer(changelog_text):
+        result.append(changelog_text[cursor : match.start()])
+        body = match.group("body").strip()
+        compact_matches = list(COMPACT_METADATA_PATTERN.finditer(body))
+        legacy_matches = {field: list(pattern.finditer(body)) for field, pattern in LEGACY_METADATA_PATTERNS.items()}
+        if compact_matches:
+            release_target, package_impact = compact_matches[0].groups()
+            body_without_metadata = COMPACT_METADATA_PATTERN.sub("", body).strip()
+        elif all(len(matches) == 1 for matches in legacy_matches.values()):
+            release_target = legacy_matches["Release target"][0].group(1)
+            package_impact = legacy_matches["Package impact"][0].group(1)
+            body_without_metadata = body
+            for pattern in LEGACY_METADATA_PATTERNS.values():
+                body_without_metadata = pattern.sub("", body_without_metadata)
+            body_without_metadata = body_without_metadata.strip()
+        else:
+            result.append(match.group(0))
+            cursor = match.end()
+            continue
+        if package_impact != "planning-only":
+            result.append(
+                f"{match.group(1)}\n\nMeta -- `{release_target}` : `{package_impact}`\n\n{body_without_metadata}\n"
+            )
+        cursor = match.end()
+    result.append(changelog_text[cursor:])
+    migrated = re.sub(r"\n{3,}", "\n\n", "".join(result))
+    return re.sub(
+        rf"(?<!\n)\n(?=^###\s+{CHANGELOG_HEADING}\s*$)",
+        "\n\n",
+        migrated,
+        flags=re.MULTILINE,
+    ).rstrip() + "\n"
+
+
+def consolidate(repo_root: Path, check: bool, lint: bool, migrate_root: bool) -> int:
     entries, errors = discover_fragments(repo_root)
     if errors:
         for error in errors:
@@ -172,11 +238,21 @@ def consolidate(repo_root: Path, check: bool, lint: bool) -> int:
         return 1
 
     changelog_text = normalize_newlines(changelog_path.read_text(encoding="utf-8"))
+    if migrate_root:
+        migrated_text = migrate_root_changelog(changelog_text)
+        if migrated_text == changelog_text:
+            print("Root changelog is already migrated.")
+            return 0
+        changelog_path.write_text(migrated_text, encoding="utf-8", newline="\n")
+        print("Migrated root CHANGELOG.md to compact metadata.")
+        return 0
     existing_headings = get_root_headings(changelog_text)
     missing_entries = [
         entry
         for entry in entries
-        if entry.release_target == "unreleased" and entry.heading not in existing_headings
+        if entry.release_target == "unreleased"
+        and entry.package_impact in VALID_PACKAGE_IMPACT
+        and entry.heading not in existing_headings
     ]
 
     if check:
@@ -207,6 +283,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="Validate root changelog completeness without modifying it.")
     mode.add_argument("--lint", action="store_true", help="Validate fragment grammar and duplicate headings only.")
+    mode.add_argument("--migrate-root", action="store_true", help="Remove root planning-only entries and compact root metadata.")
     parser.add_argument(
         "--repo-root",
         type=Path,
@@ -218,7 +295,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    return consolidate(args.repo_root.resolve(), args.check, args.lint)
+    return consolidate(args.repo_root.resolve(), args.check, args.lint, args.migrate_root)
 
 
 if __name__ == "__main__":

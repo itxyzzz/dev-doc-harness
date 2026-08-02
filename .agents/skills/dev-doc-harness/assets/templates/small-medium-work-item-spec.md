@@ -7,9 +7,10 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:artifact-style`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
+Companion plan: `<plan-filename>`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
-Artifact style: small/medium specifications must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
+Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the specification becomes large or hard to scan.
 
 ## Goal
 
@@ -75,7 +76,7 @@ rationale and examples do not add scope. Every additional `SPEC-*` uses the
 complete `SPEC-001` structure: Statement plus a local Verification Criterion,
 unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
-Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:quality.plain-language`.
 
 ### `SPEC-001` `<short title>`
 
@@ -187,7 +188,7 @@ Risk prompts:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
 
 | Stage | Planned subject |
 |---|---|
@@ -201,8 +202,8 @@ or independently reviewable split as concise prose under this table.
 
 | Artifact | Type | Required? | Stage | Output path | Notes |
 |---|---|---:|---|---|---|
-| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with planned commit subjects |
-| Root changelog consolidation | Living | As needed | After merge, before release-note preparation, before product/application release, or at another project-owned checkpoint | `CHANGELOG.md` | Consolidated publication view; run consolidation when the operator's process needs root changelog completeness |
+| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | Create after execution starts; planning approval creates no fragment |
+| Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | Consolidated publication view; implementation owns the fragment workflow |
 | Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
 | Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
 | Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
@@ -212,17 +213,40 @@ or independently reviewable split as concise prose under this table.
 
 ## Planning shape and transition ownership
 
-Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.planning-shape`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 Default combined package:
 
 1. Planning shape: `combined small/medium`.
-2. Transition owner: `<plan-filename>` owns the implementation handoff after the combined package freezes.
-3. Next activity: `<implementation activity named by the approved plan>`.
+2. Companion plan: `<plan-filename>` is drafted and presented with this spec in the same planning turn.
+3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
+4. Next lifecycle stage: `plan execution`.
 
-For an explicitly approved staged spec-only exception, record the staging reason,
-the spec-only frozen package, and `plan drafting` as the next activity. Do not
-duplicate the later plan's implementation handoff here.
+For an explicit staged spec-only exception, record the operator-requested or
+operator-approved staging reason, the spec-only frozen package, and `plan drafting`
+as the next lifecycle stage. Do not duplicate the later plan's implementation handoff here. Include the conditional selection below only for this explicit exception; omit it from the default combined package.
+
+### Next-stage recommendation
+
+Rename it `### Approved next stage` at freeze without changing its values. Do not render both headings together.
+
+#### Next lifecycle stage
+
+Stage: `plan drafting`.
+
+#### Orchestration
+
+Method: `<planning method for plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
+
+#### Model
+
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
+Upcoming-stage sub-agent assessment: `Sub-agents: None` with a plan-drafting fit reason, or `<authorized bounded strategy>`.
 
 ## Spec readiness checklist
 
@@ -234,8 +258,8 @@ duplicate the later plan's implementation handoff here.
 - [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] The plan owns the combined package's implementation handoff; a staged spec-only exception records only plan drafting.
+- [ ] Planned implementation commit subjects are clear; planning approval has no changelog entry.
+- [ ] The companion plan is present in the combined package and owns its implementation handoff; a staged spec-only exception records the operator-requested or operator-approved reason and only plan drafting.
 - [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
 

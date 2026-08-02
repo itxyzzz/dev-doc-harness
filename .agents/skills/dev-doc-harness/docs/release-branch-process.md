@@ -93,7 +93,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
 5. Update `CHANGELOG.md`.
 
    - Rename the top `## Unreleased` group to the release group for the current version.
-   - Use the current changelog heading style, such as `## Release 0.5`, while keeping entry metadata release targets as exact versions such as `0.5.0`.
+   - Use the current changelog heading style, such as `## Release 0.5`, while updating compact entry metadata release targets to the exact released version such as `0.5.0`.
    - Do not add the next empty `Unreleased` group yet. That happens after the release branch is created and `master` is checked out again.
 
 6. Create package-local release notes at:
@@ -119,7 +119,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    - `Compatibility`, `Team Adoption`, and `Rollback` sections when the current release-note style includes them.
    - A `Source Changelog Entries` section listing the exact changelog entry headings used as source material.
 
-   The release notes should summarize delivered release-facing changes once. Planning-only entries may appear in `Source Changelog Entries` for traceability when they support the delivered change, but they should not become duplicate feature bullets.
+   The release notes should summarize delivered release-facing changes once. Source entries identify delivered implementation changes and should not become duplicate feature bullets.
 
 8. Run the harness validator.
 
@@ -238,7 +238,7 @@ If the operator wants a patch, major, prerelease, or nonstandard release, stop a
    - Head: `post-release/<major>.<minor>-start-development`
    - Base: `master`
 
-   Merge the pull request only after its required review and checks have passed. Do not commit or push the post-release reset directly to `master`.
+   The agent creates the pull request. The operator reviews and merges it after the required reviews and checks pass; the agent proceeds to step 10 only after the operator confirms that merge. Do not commit or push the post-release reset directly to `master`.
 
 10. After the pull request merges, fetch the remotes and verify that `master` contains the release baseline before creating any new development branch.
 

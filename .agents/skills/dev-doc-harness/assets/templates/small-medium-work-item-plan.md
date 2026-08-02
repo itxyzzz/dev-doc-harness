@@ -7,10 +7,11 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, `rule:freeze.stop-before-implementation`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
+Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
 
-Artifact style: small/medium plans must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
+Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the plan becomes large or hard to scan.
 
 When Superpowers is the approved execution method, record it in the metadata
 above. The harness retains scope, model-policy bounds, variance handling,
@@ -57,25 +58,6 @@ State only the sequencing, dependencies, and tradeoffs a fresh executor needs.
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this work item or phase.
 
-Planning-task observations:
-
-1. Model generation: `<generation or not exposed>`.
-2. Resolved profile: `<concrete runtime profile or not exposed>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Context visibility: `<exposed signal or not exposed>`.
-
-Approved execution selection:
-
-1. Target model/profile: `<actionable model or policy-relative selection instruction>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Availability/fallback: `<availability result and approved fallback>`.
-6. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-7. Artifact rehydration required: `<Yes/No plus reason>`.
-8. Model-policy source: `<AGENTS.md active repository policy, operator override with date, or approved plan>`.
-9. Override scope and expiry: `<work item, phase, final review, or None>`.
-
 Upcoming-stage sub-agent assessment:
 
 1. Sub-agents: None, or `<bounded strategy below>`.
@@ -101,15 +83,15 @@ Sub-agent `<role or task id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
 4. Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Implementation tasks
 
@@ -137,15 +119,7 @@ implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
-## Plan checks
-
-Use stable check IDs. Describe the evidence purpose, method, and expected
-result; do not turn an equivalent command into a separate approval gate.
-When multiple checks cover one criterion, state whether all are required or
-whether they are equivalent alternatives; for alternatives, explain why either
-proves the same evidence purpose.
-
-### `CHECK-001` `<short title>`
+#### `CHECK-001` `<short title>`
 
 Covers: `VER-001`.
 
@@ -153,9 +127,15 @@ Method: `<command, test, inspection, analysis, demonstration, or review>`.
 
 Expected result: `<observable pass signal>`.
 
+Evidence record: `<where the result, artifact, log, or review finding is recorded>`.
+
+When multiple checks cover one criterion, state whether all are required or they are equivalent alternatives, and why either alternative proves the same evidence purpose.
+
+For end-to-end validation, add a final task such as `TASK-999 Verify end-to-end integration` and nest its checks inside it.
+
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during plan approval, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Update this section before committing if implementation changes the subject wording. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
 
 | Stage | Planned subject |
 |---|---|
@@ -169,7 +149,9 @@ exception or independently reviewable split as concise prose below.
 
 List the checks that produce the needed evidence. Use
 `rule:lifecycle.variance-policy` for noteworthy allowed drift and material
-changes. Use `module:freeze-gate` for planning approval; do not repeat its
+changes. Keep the draft artifact state and planned evidence clear. When the
+package is later presented for review or freeze, the planning-freeze gate
+document is the authority for approval, commit, and pause; do not repeat its
 procedure here.
 
 ## Implementation handoff
@@ -177,21 +159,39 @@ procedure here.
 Render this section at the plan's real frozen boundary. The combined
 small/medium plan owns this handoff.
 
+### Next-stage recommendation
+
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together. Mirror the selected frozen values in chat.
+
+#### Next lifecycle stage
+
+Stage: `plan execution`.
+
+#### Orchestration
+
+Method: `<execution method for plan execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
+
+#### Model
+
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+
+#### Fallbacks and limits
+
+`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+
 1. Frozen package: `<approved spec, plan, snapshots, amendments, and required evidence>`.
-2. Next activity: `<named implementation activity>`.
-3. First task: `<TASK-NNN>`.
-4. Approved execution selection and fallback: `<selection section or concise values>`.
-5. Artifact rehydration: `<required artifacts and startup rule>`.
-6. Variance stop condition: `<approval-required variance or other explicit stop>`.
-7. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.
+2. Artifact rehydration: `<required artifacts and startup rule>`.
+3. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
 Use `rule:execution-quality.execution-thread-start`; do not duplicate a
 spec-owned handoff or infer a different transition.
 
 ## Readiness
 
+- [ ] Optional current-session diagnostics contain only Resolved model profile and Context visibility and are omitted unless exposed and material; the Next-stage recommendation remains separate: Next lifecycle stage, Orchestration (Method, Orchestration mode, Run in, Review), Model (Generation, Capability tier, and Reasoning), then Fallbacks and limits.
 - [ ] Inputs, scope, tasks, checks, documentation, and changelog entry are clear.
-- [ ] The approved execution selection, implementation handoff, and upcoming-stage sub-agent assessment are explicit.
+- [ ] The grouped next-stage selection, implementation handoff, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
 
 ## Completion
@@ -202,4 +202,5 @@ spec-owned handoff or infer a different transition.
 ## Approval
 
 - Status: Draft
+- At freeze, relabel the grouped recommendation **Approved next stage** and mirror it in chat.
 - Superseded by: None
