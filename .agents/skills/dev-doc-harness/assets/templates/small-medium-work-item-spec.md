@@ -213,7 +213,7 @@ or independently reviewable split as concise prose under this table.
 
 ## Planning shape and transition ownership
 
-Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.planning-shape`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 Default combined package:
 

@@ -296,7 +296,7 @@ def assert_agents_bootstrap_contract() -> None:
         (r"combined small/medium[\s\S]+spec[\s\S]+plan", "combined small/medium planning"),
         (r"docs/superpowers[\s\S]+only when[\s\S]+already exists[\s\S]+previous documentation packages", "guarded legacy compatibility route"),
         (r"fresh start authorization[\s\S]+planned method", "execution-start routing"),
-        (r"operator[\s\S]+(?:method|model)[\s\S]+reasoning[\s\S]+Codex-task continuity[\s\S]+without an amendment", "operator runtime overrides"),
+        (r"operator[\s\S]+(?:method|model)[\s\S]+reasoning[\s\S]+next-stage continuity[\s\S]+without an amendment", "operator runtime overrides"),
         (r"only when[\s\S]+maintain, package, or release[\s\S]+Dev Doc Harness distribution[\s\S]+source repository", "source-repository-only distribution maintenance"),
         (r"Do not use[\s\S]+downstream[\s\S]+releases", "downstream release exclusion"),
     ]
@@ -1443,10 +1443,27 @@ def assert_model_selection_dimensions() -> None:
     role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
     readme = "README.md"
 
+    current_session_selection = read_markdown_h2_section(models, "Upcoming-stage selection")
+    for field in [
+        "Model generation:",
+        "Capability tier:",
+        "Reasoning effort:",
+        "Orchestration mode:",
+        "Resolved profile:",
+        "Context visibility:",
+    ]:
+        if field not in current_session_selection:
+            add_failure(check_id, f"Current orchestration session facts omit independent '{field}' metadata")
+    if re.search(
+        r"(?i)resolved model profile:.*generation.*capability tier.*reasoning effort",
+        current_session_selection,
+    ):
+        add_failure(check_id, "Current orchestration session facts conflate selection dimensions with resolved profile")
+
     for rule_id in [
         "rule:models.selection-dimensions",
         "rule:models.orchestration-mode",
-        "rule:models.execution-continuity",
+        "rule:models.next-stage-continuity",
     ]:
         assert_text_contains(check_id, models, re.escape(rule_id), f"{rule_id} owner")
 
@@ -1457,7 +1474,7 @@ def assert_model_selection_dimensions() -> None:
         "Orchestration mode",
         "Resolved profile",
         "Availability/fallback",
-        "Execution continuity",
+        "Next-stage continuity",
         "Context visibility",
         "Run in",
     ]:
@@ -1491,6 +1508,12 @@ def assert_model_selection_dimensions() -> None:
         "missing-decision approval boundary",
     )
 
+    assert_text_contains(check_id, models, r"rule:lifecycle.stage-boundaries", "lifecycle-owned stage boundary")
+    assert_text_contains(check_id, models, r"planning method.+planning-review|planning-review.+planning method", "planning-stage method and review")
+    assert_text_contains(check_id, models, r"execution method.+Plan Task.+final review|Plan Task.+final review.+execution method", "execution-stage method and review")
+    assert_text_contains(check_id, models, r"spec drafting", "pre-spec assessment boundary")
+    assert_text_contains(check_id, models, r"future work", "pre-spec mechanism future-work boundary")
+
     for path in [models, role_examples]:
         assert_text_contains(check_id, path, r"independent sub-agent reviewer.+default", "independent sub-agent reviewer default")
         assert_text_contains(check_id, path, r"curated artifacts", "independent reviewer context")
@@ -1499,7 +1522,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"evidence-backed", "evidence-backed finding requirement")
         assert_text_contains(check_id, path, r"severity", "evidence-backed finding severity")
         assert_text_contains(check_id, path, r"reproduction or validation path", "finding validation path")
-        assert_text_contains(check_id, path, r"orchestration thread.+(?:owns|retains).+integration", "orchestration-owned integration")
+        assert_text_contains(check_id, path, r"orchestration session.+(?:owns|retains).+integration", "orchestration-owned integration")
 
     assert_text_contains(check_id, models, r"plan's normal post-freeze", "approved strategy starts with plan authorization")
     assert_text_contains(check_id, models, r"outside that strategy", "out-of-strategy confirmation boundary")
@@ -1514,19 +1537,22 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
     for path in strategy_templates:
-        for label in ["Current planning Codex task", "Next-stage recommendation", "Method", "Run in", "Plan Task reviewers", "Model", "Reasoning"]:
+        for label in ["Current orchestration session", "Next-stage recommendation", "Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
         assert_text_not_contains(check_id, path, r"Model class/profile:", "conflated per-role model class/profile field")
 
     large_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     for path in [large_strategy_source]:
-        assert_text_contains(check_id, path, r"Current planning Codex task", "planning observations prompt")
+        assert_text_contains(check_id, path, r"Current orchestration session", "planning observations prompt")
         assert_text_contains(check_id, path, r"Next-stage recommendation", "approved execution selection prompt")
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
     plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
     assert_text_contains(check_id, plan_strategy_source, r"upcoming-stage sub-agent assessment", "plan sub-agent assessment prompt")
+    for path in [plan_strategy_source, large_strategy_source]:
+        assert_text_contains(check_id, path, r"Write authority", "sub-agent write-authority prompt")
+        assert_text_contains(check_id, path, r"Concurrency", "sub-agent concurrency prompt")
     assert_text_not_contains(check_id, plan_strategy_source, r"Current planning Codex task", "duplicated plan current-task prompt")
     assert_text_not_contains(check_id, plan_strategy_source, r"Next-stage recommendation", "duplicated plan next-stage prompt")
     assert_text_contains(check_id, models, r"header metadata.+final handoff.+shared strategy", "plan-state placement guidance")
@@ -1541,13 +1567,13 @@ def assert_model_selection_dimensions() -> None:
     assert_normalized_text_contains(
         check_id,
         readme,
-        "Model (model and reasoning)",
+        "Model (generation, capability tier, and reasoning)",
         "plain-language model guidance",
     )
     assert_normalized_text_contains(
         check_id,
         readme,
-        "Orchestration (run in same task or new one",
+        "Orchestration (run in same orchestration session or new one",
         "plain-language orchestration guidance",
     )
     assert_text_contains(check_id, readme, r"ultra", "ultra guidance")
@@ -1555,8 +1581,8 @@ def assert_model_selection_dimensions() -> None:
     assert_normalized_text_contains(
         check_id,
         readme,
-        "same-task switch rehydrates the frozen package before editing",
-        "execution-continuity guidance",
+        "same-session switch rehydrates the frozen package before editing",
+        "next-stage continuity guidance",
     )
 
 
@@ -1571,16 +1597,16 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, execution, re.escape("rule:execution-quality.execution-thread-start"), "execution-thread-start owner")
     assert_text_contains(check_id, execution, re.escape("rule:freeze.stop-before-implementation"), "post-freeze authorization owner")
     assert_text_contains(check_id, execution, re.escape("rule:models.selection-dimensions"), "runtime selection owner")
-    assert_text_contains(check_id, execution, re.escape("rule:models.execution-continuity"), "execution continuity owner")
+    assert_text_contains(check_id, execution, re.escape("rule:models.next-stage-continuity"), "next-stage continuity owner")
     assert_text_contains(check_id, execution, r"applicable instructions.+frozen artifacts", "instruction and artifact load order")
     assert_text_contains(check_id, execution, r"branch.+worktree.+approval state.+amendments.+variance.+(?:baseline|validation baseline)", "working-state and baseline verification")
     assert_text_contains(check_id, execution, r"avoid.+rediscover", "rediscovery avoidance")
     assert_text_contains(check_id, execution, r"documented next lifecycle stage", "named lifecycle stage")
     assert_text_contains(check_id, execution, r"variance", "variance stop route")
 
-    assert_text_contains(check_id, models, r"new Codex task", "new-task transition preference")
+    assert_text_contains(check_id, models, r"new orchestration session", "new-session transition preference")
     assert_text_contains(check_id, models, r"numeric context thresholds.+remaining-context estimates.+predict compaction", "no unexposed context estimate")
-    assert_text_contains(check_id, models, r"same-task route rereads the frozen package", "same-task artifact rehydration")
+    assert_text_contains(check_id, models, r"same-session route rereads the frozen package", "same-session artifact rehydration")
 
     small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
     phase_plan = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
@@ -1591,7 +1617,7 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
     assert_text_contains(check_id, phase_plan, r"Post-phase transition", "post-phase transition handoff")
 
-    for label in ["Method", "Run in", "Plan Task reviewers", "Model", "Reasoning", "Fallbacks and limits"]:
+    for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Fallbacks and limits"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, freeze, re.escape("rule:execution-quality.execution-thread-start"), "consumer-side startup protocol")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
@@ -1624,8 +1650,8 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, freeze, r"exact supported.+(?:model|configuration)|supported.+recorded.+settings", "exact supported configuration")
     assert_text_contains(check_id, freeze, r"manual.+copy-ready handoff|copy-ready handoff.+manual", "visible manual fallback")
     assert_text_contains(check_id, freeze, r"(?:do not|without).+silently substitut", "no configuration substitution")
-    assert_text_contains(check_id, freeze, r"`same Codex task`[\s\S]+current-task authorization route separate", "separate same-task route")
-    assert_text_contains(check_id, models, r"Run in`? accepts only `same Codex task` or `new Codex task`", "exclusive Run in values")
+    assert_text_contains(check_id, freeze, r"`same orchestration session`[\s\S]+current-session authorization route separate", "separate same-session route")
+    assert_text_contains(check_id, models, r"Run in`? accepts only `same orchestration session` or `new orchestration session`", "exclusive Run in values")
     assert_text_contains(check_id, models, r"actual frozen.+(?:boundary|package)|frozen.+boundary", "continuity uses actual frozen boundary")
     assert_text_contains(check_id, models, r"documented next lifecycle stage|named next lifecycle stage", "continuity uses documented lifecycle stage")
 
@@ -1665,8 +1691,8 @@ def assert_lifecycle_transition_targets() -> None:
         add_failure(check_id, "approval-freeze checkpoint contains post-freeze routing details")
     if not re.search(r"fresh operator response[\s\S]+planned execution method[\s\S]+fresh explicit operator start", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "post-freeze routing does not own authorization and runtime override handling")
-    if not re.search(r"new Codex task[\s\S]+default continuation[\s\S]+approval[\s\S]+create", post_freeze, flags=re.IGNORECASE):
-        add_failure(check_id, "new-Codex-task route does not make approved agent task creation the default")
+    if not re.search(r"new orchestration session[\s\S]+default continuation[\s\S]+approval[\s\S]+create", post_freeze, flags=re.IGNORECASE):
+        add_failure(check_id, "new-session route does not make approved agent task creation the default")
     if not re.search(r"manual[\s\S]+(?:unavailable|incompatible|operator)", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "new-Codex-task route does not limit manual creation to fallback or operator request")
     continuity_match = re.search(
@@ -1677,7 +1703,7 @@ def assert_lifecycle_transition_targets() -> None:
     if not continuity_match:
         add_failure(check_id, "post-freeze routing must contain a Continuity rules section")
     continuity_labels = re.findall(r"(?m)^#### `([^`]+)`\s*$", continuity_body)
-    if continuity_labels != ["new Codex task", "same Codex task"]:
+    if continuity_labels != ["new orchestration session", "same orchestration session"]:
         add_failure(check_id, f"post-freeze routing must contain exactly the two canonical Run in branches; found {continuity_labels}")
     assert_text_contains(check_id, freeze, r"select and report.+(?:Git )?starting state", "explicit Git starting-state selection")
     assert_text_contains(check_id, freeze, r"`working-tree`", "detached managed-worktree source baseline")
@@ -1801,7 +1827,7 @@ def assert_commitment_verification_quality() -> None:
         (r"operator-provided source materials", "durable source-preservation rule"),
         (r"## Plan quality bar", "general plan-quality section"),
         (r"## Additional phase-plan quality bar", "phase-only quality section"),
-        (r"one orchestration thread with its recorded bounded delegation", "phase execution-size boundary"),
+        (r"one orchestration session with its recorded bounded delegation", "phase execution-size boundary"),
         (r"## Spec quality bar[\s\S]*?### Specification Commitments[\s\S]*?### Verification Criteria[\s\S]*?## Plan quality bar", "spec entity hierarchy"),
         (r"## Plan quality bar[\s\S]*?### Plan Tasks[\s\S]*?### Plan Checks[\s\S]*?## Additional phase-plan quality bar", "plan entity hierarchy"),
         (r"A Plan Task is a bounded", "Plan Task definition"),
@@ -1844,9 +1870,9 @@ def assert_commitment_verification_templates() -> None:
 
     phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.fresh-thread-readiness.md"
     phase_template = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
-    assert_text_contains(check_id, phase_source, r"one orchestration thread with bounded delegation", "phase source execution-size boundary")
-    assert_text_contains(check_id, phase_template, r"one orchestration thread with bounded delegation", "phase template execution-size boundary")
-    assert_text_not_contains(check_id, plan_paths[0], r"one orchestration thread with bounded delegation", "ordinary plan phase-only boundary")
+    assert_text_contains(check_id, phase_source, r"one orchestration session with bounded delegation", "phase source execution-size boundary")
+    assert_text_contains(check_id, phase_template, r"one orchestration session with bounded delegation", "phase template execution-size boundary")
+    assert_text_not_contains(check_id, plan_paths[0], r"one orchestration session with bounded delegation", "ordinary plan phase-only boundary")
 
     task_bound_plan = """## Implementation tasks
 ### `TASK-001` Implement one change
@@ -2241,7 +2267,7 @@ def reviewer_fixture_route(text: str) -> str:
         if "Preserve executing-plans checkpoints" in text and "Reviewer capability disclosure" in text:
             return "fallback-disclosed"
     if "Method: native Codex" in text:
-        if "Independent reviewer sub-agent" in text and "curated artifacts" in text and "named lens" in text and "evidence-backed findings" in text and "execution Codex task owns final integration" in text:
+        if "Independent reviewer sub-agent" in text and "curated artifacts" in text and "named lens" in text and "evidence-backed findings" in text and "execution orchestration session owns final integration" in text:
             return "native-reviewed"
         no_review_record = (
             "Independent review: not run" in text
@@ -2300,7 +2326,7 @@ def assert_execution_method_fallbacks() -> None:
     reviewer_fixtures = {
         "preferred-reviewed": "Method: superpowers:subagent-driven-development\nIndependent reviewer after each Plan Task\nIndependent final whole-branch reviewer",
         "fallback-disclosed": "Method: superpowers:executing-plans\nPreserve executing-plans checkpoints\nReviewer capability disclosure",
-        "native-reviewed": "Method: native Codex\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution Codex task owns final integration",
+        "native-reviewed": "Method: native Codex\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution orchestration session owns final integration",
         "awaiting-operator-decision": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nAsk once whether to proceed without independent review\nOperator authorization: pending",
         "operator-authorized-no-review": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
         "operator-declined-review-authorized": "Method: native Codex\nOperator declined independent review\nIndependent review: not run\nReason: operator declined review\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
@@ -2324,8 +2350,8 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, models, r"ask once.*proceed without independent review", "one-time no-review decision")
     assert_text_contains(check_id, models, r"Sub-agents: None.*operator authorization", "authorized native no-review route")
     assert_text_contains(check_id, models, r"completion report.*independent review", "no-review completion evidence")
-    assert_text_contains(check_id, models, r"execution Codex task owns final integration", "execution integration ownership")
-    assert_text_contains(check_id, models, r"external execution session.*execution controller", "Superpowers session interpretation")
+    assert_text_contains(check_id, models, r"execution orchestration session owns final integration", "execution integration ownership")
+    assert_text_contains(check_id, models, r"external method session.*execution controller", "Superpowers session interpretation")
     assert_text_contains(check_id, freeze, r"fresh explicit operator.*method.*model", "execution-start override")
     assert_text_contains(check_id, freeze, r"record.*actual.*selection", "recorded runtime selection")
     assert_text_contains(check_id, freeze, r"without.*plan amendment.*solely", "no amendment for runtime selection")
@@ -2478,7 +2504,7 @@ def assert_planning_template_clarity() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
     for path in [models, large_model_source, *model_consumers]:
-        assert_text_contains(check_id, path, r"Current planning Codex task", "planning observations group")
+        assert_text_contains(check_id, path, r"Current orchestration session", "planning observations group")
         assert_text_contains(check_id, path, r"Next-stage recommendation", "approved selection group")
     assert_text_contains(check_id, plan_model_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
     assert_text_not_contains(check_id, plan_model_source, r"Current planning Codex task", "duplicated plan observations group")
@@ -2546,8 +2572,8 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
     forbidden_title = "Next-stage recommendation" if frozen else "Approved next stage"
     if forbidden_title in text:
         errors.append(f"contains incompatible {forbidden_title}")
-    if "Current planning Codex task" not in text:
-        errors.append("missing current planning Codex task")
+    if "Current orchestration session" not in text:
+        errors.append("missing current orchestration session")
     for group in ["Next lifecycle stage", "Orchestration", "Model", "Fallbacks and limits"]:
         if group not in text:
             errors.append(f"missing {group} group")
@@ -2558,19 +2584,19 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         errors.append("lifecycle stage is missing or unsupported")
     if "First Plan Task" in text or re.search(r"(?m)^Activity:", text):
         errors.append("retired task-level transition fields are present")
-    if not re.search(r"Method:.*Run in:.*Plan Task reviewers", text, flags=re.DOTALL):
+    if not re.search(r"Method:.*Run in:.*Review", text, flags=re.DOTALL):
         errors.append("orchestration fields are incomplete")
-    if not re.search(r"Model:.*Reasoning", text, flags=re.DOTALL):
+    if not re.search(r"Generation:.*Capability tier:.*Reasoning", text, flags=re.DOTALL):
         errors.append("model fields are incomplete")
-    if not re.search(r"Run in:\s*(?:same Codex task|new Codex task)(?=;|\n|$)", text):
+    if not re.search(r"Run in:\s*(?:same orchestration session|new orchestration session)(?=;|\n|$)", text):
         errors.append("Run in uses an unsupported value")
-    if "Run in: same Codex task" in text:
+    if "Run in: same orchestration session" in text:
         if not re.search(r"profile\s+`known suitable`", text, flags=re.IGNORECASE):
-            errors.append("same Codex task lacks a known-suitable profile")
+            errors.append("same orchestration session lacks a known-suitable profile")
         if not re.search(r"Context risk:\s*`(?:suitable|immaterial)`", text, flags=re.IGNORECASE):
-            errors.append("same Codex task lacks suitable or immaterial context risk")
+            errors.append("same orchestration session lacks suitable or immaterial context risk")
         if not re.search(r"Continuity benefit:\s*`[^`\n]+`", text, flags=re.IGNORECASE):
-            errors.append("same Codex task lacks a concrete continuity benefit")
+            errors.append("same orchestration session lacks a concrete continuity benefit")
     if re.search(r"(?:\d+[% ]+context|remaining context|compaction prediction)", text, flags=re.IGNORECASE):
         errors.append("context speculation is present")
     return errors
@@ -2594,9 +2620,9 @@ def assert_next_stage_summary() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
 
-    draft_fixture = """Current planning Codex task: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same Codex task; Plan Task reviewers: per-Plan-Task plus final reviewer\nModel: Model: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
-    frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same Codex task", "new Codex task")
-    invalid_fixture = draft_fixture.replace("same Codex task", "same session")
+    draft_fixture = """Current orchestration session: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
+    invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     retired_fixture = draft_fixture.replace("Next lifecycle stage: Stage: `plan execution`", "Activity: First Plan Task: `TASK-001`")
     unknown_same_task_fixture = draft_fixture.replace("profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`", "profile `not exposed`")
     mixed_draft_fixture = draft_fixture + "\nApproved next stage"
@@ -2628,9 +2654,9 @@ def assert_next_stage_summary() -> None:
 
     for path in header_sources:
         text = read_repo_text(path)
-        if len(re.findall(r"(?m)^Current planning Codex task:", text)) != 1:
+        if len(re.findall(r"(?m)^Current orchestration session:", text)) != 1:
             add_failure(check_id, f"{path} must render one current-task metadata field")
-        if re.search(r"(?m)^##+ Current planning Codex task$", text):
+        if re.search(r"(?m)^##+ Current orchestration session$", text):
             add_failure(check_id, f"{path} renders a current-task section instead of metadata")
         if re.search(r"(?m)^##+ Next-stage recommendation$", text):
             add_failure(check_id, f"{path} renders next-stage summary before handoff")
@@ -2649,7 +2675,7 @@ def assert_next_stage_summary() -> None:
 
     for path in generated_plans:
         text = read_repo_text(path)
-        if len(re.findall(r"(?m)^Current planning Codex task:", text)) != 1:
+        if len(re.findall(r"(?m)^Current orchestration session:", text)) != 1:
             add_failure(check_id, f"{path} must render one current-task metadata field")
         for error in draft_state_heading_errors(text):
             add_failure(check_id, f"{path} {error}")
@@ -2664,25 +2690,25 @@ def assert_next_stage_summary() -> None:
 
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
     large_spec_text = read_repo_text(large_spec)
-    if len(re.findall(r"(?m)^### Current planning Codex task$", large_spec_text)) != 1:
+    if len(re.findall(r"(?m)^### Current orchestration session$", large_spec_text)) != 1:
         add_failure(check_id, "large anchor spec no longer has its single current-task strategy presentation")
     if len(re.findall(r"(?m)^### Next-stage recommendation(?: \(draft only\))?$", large_spec_text)) != 1:
         add_failure(check_id, "large anchor spec no longer has its single next-stage strategy presentation")
 
-    assert_text_contains(check_id, models, r"Current planning Codex task", "current planning task separation")
+    assert_text_contains(check_id, models, r"Current orchestration session", "current orchestration session separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
     assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
-    assert_text_contains(check_id, models, r"Run in.*same Codex task.*new Codex task", "Run in values")
-    assert_text_contains(check_id, models, r"Next lifecycle stage.*Plan Task reviewers.*final reviewer", "canonical reviewer terms")
-    assert_text_contains(check_id, architecture, r"execution terminology", "models terminology catalog")
+    assert_text_contains(check_id, models, r"Run in.*same orchestration session.*new orchestration session", "Run in values")
+    assert_text_contains(check_id, models, r"Next lifecycle stage.*Review.*Plan Task.*final review", "canonical reviewer terms")
+    assert_text_contains(check_id, architecture, r"Task/session terminology", "models terminology catalog")
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
     if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
-    if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Run in[\s\S]+Plan Task reviewers[\s\S]+Model[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
+    if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Run in[\s\S]+Review[\s\S]+Model[\s\S]+Generation[\s\S]+Capability tier[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft-review group definition is incomplete")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")

@@ -212,7 +212,7 @@ Phase `02`: `<phase name>`
 
 Phase decomposition prompts:
 
-1. Each phase should be safely executable by one orchestration thread with bounded delegation.
+1. Each phase should be safely executable by one orchestration session with bounded delegation.
 2. Shared setup, discovery, migrations, hardening, and review phases are acceptable when vertical slicing would make task execution less safe.
 3. If phase objectives are independently plannable, later phase-plan drafting may use curated-artifact sub-agents under `module:models`.
 
@@ -220,7 +220,7 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-### Current planning Codex task
+### Current orchestration session
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
@@ -235,11 +235,11 @@ Stage: `phase-plan drafting`.
 
 #### Orchestration
 
-Method: `<recommended method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<recommended route-specific arrangement and final reviewer>`.
+Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Model: `<policy-relative recommendation>`; Reasoning: `<recommended effort>`.
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
 #### Fallbacks and limits
 
@@ -278,6 +278,8 @@ Sub-agent `<role or phase id>`:
 11. Selection reason: `<why this delegation is useful>`.
 12. Parallel execution: `<Yes/No and dependency>`.
 13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+14. Write authority: `<read-only / bounded paths / other approved scope>`.
+15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Planned commits
 
@@ -314,7 +316,7 @@ Record the draft review, approval commit, and pause before the documented next l
 
 ## Anchor-to-phase transition
 
-Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
 2. Next lifecycle stage: `phase-plan drafting`.
@@ -332,8 +334,8 @@ Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuit
 - [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.
 - [ ] Risks and rejected alternatives are listed or explicitly absent after review.
 - [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
-- [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Current planning Codex task facts and the Next-stage recommendation are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
+- [ ] Each phase is expected to fit one orchestration session with bounded delegation, or the spec explains the escalation boundary.
+- [ ] Optional Current orchestration session facts and the Next-stage recommendation are distinct; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
 - [ ] Documentation artifact matrix decisions have paths or reasons.
 - [ ] Planned implementation commit subjects are clear and any batch phase-planning exception is stable and independently plannable; planning approval has no changelog entry.
 - [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.

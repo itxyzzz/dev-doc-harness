@@ -9,7 +9,7 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
-Current planning Codex task: Model/profile, reasoning, and context visibility: `<current facts or not exposed>`.
+Current orchestration session: Generation, capability tier, reasoning, resolved profile, and context visibility: `<exposed facts, or omit when not exposed or material>`.
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
@@ -64,7 +64,7 @@ State only the sequencing, dependencies, and tradeoffs a fresh executor needs.
 
 Fresh-thread readiness:
 
-1. This phase should be safely executable by one orchestration thread with bounded delegation.
+1. This phase should be safely executable by one orchestration session with bounded delegation.
 2. If the phase still needs hidden chat context, split the phase, update the anchor spec before freeze, or create an amendment after freeze.
 
 ## Model and Sub-agent Strategy
@@ -105,6 +105,8 @@ Sub-agent `<role or task id>`:
 11. Selection reason: `<why this delegation is useful>`.
 12. Parallel execution: `<Yes/No and dependency>`.
 13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+14. Write authority: `<read-only / bounded paths / other approved scope>`.
+15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Implementation tasks
 
@@ -210,11 +212,11 @@ Stage: `phase execution`.
 
 #### Orchestration
 
-Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
+Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
 
 #### Fallbacks and limits
 
@@ -234,7 +236,7 @@ Model: `<actionable model or policy-relative selection instruction>`; Reasoning:
 
 ## Readiness
 
-- [ ] Current planning Codex task facts are separate from the Next-stage recommendation: Next lifecycle stage, Orchestration (Method, Run in, Plan Task reviewers), Model (Model and Reasoning), then Fallbacks and limits.
+- [ ] Optional Current orchestration session facts are separate from the Next-stage recommendation: Next lifecycle stage, Orchestration (Method, Run in, Review), Model (Generation, Capability tier, and Reasoning), then Fallbacks and limits.
 - [ ] The phase preserves its approved anchor inputs and has clear tasks, checks, and changelog entry.
 - [ ] The approved execution selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.

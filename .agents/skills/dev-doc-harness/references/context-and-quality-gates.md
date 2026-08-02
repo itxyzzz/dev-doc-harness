@@ -9,7 +9,7 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:execution-quality.context-load-order` | `## Context load order` |
-| `rule:execution-quality.execution-thread-start` | `## Execution thread start` |
+| `rule:execution-quality.execution-thread-start` | `## Execution session start` |
 | `rule:execution-quality.task-preflight` | `## Task preflight` |
 | `rule:execution-quality.environment-compensation` | `## Environment compensation` |
 | `rule:execution-quality.conformance-evidence` | `## Conformance evidence` |
@@ -27,11 +27,11 @@ Before planning or implementation, build context in this order:
 
 If instructions conflict, preserve higher-priority system and user constraints, then apply the most specific repository or artifact rule.
 
-## Execution thread start
+## Execution session start
 
-Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution Codex task or when an approved same-task model switch or recorded continuity risk requires rehydration:
+Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution session or when an approved same-session model switch or recorded continuity risk requires rehydration:
 
-1. Consume the approved runtime selection from `rule:models.selection-dimensions` and the same-task or new-task choice from `rule:models.execution-continuity`; do not reconstruct either decision here.
+1. Consume the approved runtime selection from `rule:models.selection-dimensions` and the same-session or new-session choice from `rule:models.next-stage-continuity`; do not reconstruct either decision here.
 2. Load system and runtime constraints, applicable instructions, and all frozen artifacts and execution inputs named by the approved handoff.
 3. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
 4. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
@@ -57,7 +57,7 @@ When local quality controls are unavailable, compensate explicitly.
 |---|---|
 | Superpowers unavailable | State a short plan, use focused verification, and run fresh checks before completion claims. |
 | Model or reasoning controls unavailable | Record the limitation and apply the repository's policy-relative intent manually. |
-| Subagents unavailable | Keep role boundaries in the plan and have the orchestration thread own integration and review. |
+| Subagents unavailable | Keep role boundaries in the plan and have the orchestration session own integration and review. |
 | Tests unavailable | Record the blocker, inspect the diff, and provide the best manual or static validation available. |
 | Browser or runtime tooling unavailable | Probe first, record the unavailable tool, and avoid claiming visual or runtime verification. |
 

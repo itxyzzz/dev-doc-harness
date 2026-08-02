@@ -36,3 +36,5 @@ Sub-agent `<role or task id>`:
 11. Selection reason: `<why this delegation is useful>`.
 12. Parallel execution: `<Yes/No and dependency>`.
 13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+14. Write authority: `<read-only / bounded paths / other approved scope>`.
+15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.

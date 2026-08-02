@@ -16,11 +16,11 @@ Stage: `phase execution`.
 
 #### Orchestration
 
-Method: `<method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<route-specific arrangement, including final reviewer>`.
+Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Model: `<actionable model or policy-relative selection instruction>`; Reasoning: `<runtime value>`.
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
 
 #### Fallbacks and limits
 

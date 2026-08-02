@@ -10,7 +10,7 @@ When Superpowers is installed and active, use it for normal software-development
 
 Add `docs/superpowers` documents only when that directory already exists and contains previous documentation packages from before the current work. Do not create or seed it for compatibility. Any allowed new file must be a minimal pointer stub to the canonical harness work item rather than a duplicate spec or plan.
 
-After a frozen package receives fresh start authorization, follow its planned method and the execution and reviewer routes in the active skill without another generic method question. A fresh explicit operator start instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity without an amendment solely for that runtime choice. Record the actual selection, and use the canonical variance route if the instruction also changes scope or another material boundary.
+After a frozen package receives fresh start authorization, follow its planned method and the execution and reviewer routes in the active skill without another generic method question. A fresh explicit operator start instruction may select another available method, model/profile, reasoning effort, or next-stage continuity without an amendment solely for that runtime choice. Record the actual selection, and use the canonical variance route if the instruction also changes scope or another material boundary.
 
 ## Dev Doc Harness distribution maintenance
 

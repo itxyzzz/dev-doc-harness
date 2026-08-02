@@ -38,7 +38,7 @@ capability_tier: balanced
 reasoning_effort: medium
 orchestration_mode: bounded delegated sub-agents
 resolved_profile: not exposed
-availability_fallback: orchestration thread review
+availability_fallback: orchestration session review
 context_strategy: curated artifacts
 inputs:
   - <work-item-path><spec-filename>
@@ -62,11 +62,11 @@ Each sub-agent report must include:
 - Recommended next step.
 - Context strategy actually used and observed context/model inheritance behavior, if any.
 
-The orchestration thread owns decomposition, integration, conflict resolution,
+The orchestration session owns decomposition, integration, conflict resolution,
 final validation, and the user-facing summary.
 
 ## Independent reviewer pattern
 
-Use an independent sub-agent reviewer by default with curated artifacts, the changed diff, validation evidence, and a short role prompt. Give it one named lens, such as requirements traceability, regression risk, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven. Each finding is evidence-backed and records severity plus a reproduction or validation path. The reviewer advises; the orchestration thread retains final integration ownership.
+Use an independent sub-agent reviewer by default with curated artifacts, the changed diff, validation evidence, and a short role prompt. Give it one named lens, such as requirements traceability, regression risk, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven. Each finding is evidence-backed and records severity plus a reproduction or validation path. The reviewer advises; the orchestration session retains final integration ownership.
 
 For a fresh-task reviewer or model transition, use curated artifacts and `rule:execution-quality.execution-thread-start`; name the first activity and stop for approval-required variance.

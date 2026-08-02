@@ -9,6 +9,7 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:lifecycle.work-item-folders` | `## Work item folders` |
+| `rule:lifecycle.stage-boundaries` | `## Lifecycle stage boundaries` |
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
 | `rule:lifecycle.planning-shape` | `## Small/medium planning shape` |
@@ -45,7 +46,7 @@ The two established lifecycle shapes use these transitions:
 - An explicitly staged small/medium spec freezes for `plan drafting`; a combined small/medium spec-and-plan package freezes for `plan execution`.
 - A large/phased anchor spec freezes for `phase-plan drafting`; a phase plan freezes for `phase execution`. An approved amendment records the documented resumed stage from the package it changes.
 
-Draft continuation by ordinary operator instruction and approved-package continuity in the same or a new Codex task are operational behavior, not lifecycle stages or alternative freeze paths.
+Draft continuation by ordinary operator instruction and approved-package continuity in the same or a new orchestration session are operational behavior, not lifecycle stages or alternative freeze paths.
 
 ## Short artifact ID
 
@@ -62,13 +63,13 @@ Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id
 
 Small mechanical work may skip the harness unless the operator requests durable artifacts.
 
-Small/medium work is substantial work that one orchestration thread can safely coordinate with bounded delegation and a manageable context window. The orchestration thread owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
+Small/medium work is substantial work that one orchestration session can safely coordinate with bounded delegation and a manageable context window. The orchestration session owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
 
 Small/medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
 
-Large or phased work needs an anchor spec and later phase plans when one orchestration thread cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
+Large or phased work needs an anchor spec and later phase plans when one orchestration session cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
 
-Keep uncertain work small/medium until the one-thread boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration thread can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
+Keep uncertain work small/medium until the one-session boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration session can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
 
 `module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
 
@@ -80,7 +81,7 @@ A spec-only freeze is an explicit staged-planning exception, not an implied inte
 
 Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
 
-At every freeze boundary, record the planning shape, exact frozen package, and documented next lifecycle stage before applying execution-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
+At every freeze boundary, record the planning shape, exact frozen package, and documented next lifecycle stage before applying next-stage-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
 ## Small/medium layout
 
@@ -143,7 +144,7 @@ The full lifecycle package for large or phased work may eventually contain these
 
 The normal initial planning package is anchor-spec-only: create `<spec-filename>` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `<phase-plan-filename>` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
 
-Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be safely executable by one orchestration thread with bounded delegation. Create handoff files when they are useful for continuity.
+Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be safely executable by one orchestration session with bounded delegation. Create handoff files when they are useful for continuity.
 
 ## Large or phased planning orchestration
 
@@ -187,7 +188,7 @@ The ordered execution-method cascade is:
 2. When Superpowers is available but that preferred route is unavailable or unsuitable, use `superpowers:executing-plans`.
 3. Native Codex is the default only when Superpowers is unavailable. Independent review remains the default; `module:models` owns the disclosed, operator-authorized exception when independent review cannot run or the operator declines it.
 
-Native Codex is not a default while Superpowers is available. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or Codex-task continuity. Record that actual selection without a plan amendment solely for the runtime choice; use normal variance handling only when the instruction also changes a material scope, commitment, Plan Task, commit, review, or safety boundary. `module:models` owns the route-specific reviewer contract and `module:freeze-gate` owns the authorization transition.
+Native Codex is not a default while Superpowers is available. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or next-stage continuity. Record that actual selection without a plan amendment solely for the runtime choice; use normal variance handling only when the instruction also changes a material scope, commitment, Plan Task, commit, review, or safety boundary. `module:models` owns the route-specific reviewer contract and `module:freeze-gate` owns the authorization transition.
 
 When Superpowers is unavailable, keep each task independently executable and verifiable with its recorded checks. This fallback is a concise task-quality cue, not a second detailed task-sizing method.
 

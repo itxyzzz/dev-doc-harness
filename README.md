@@ -104,7 +104,7 @@ If Superpowers is installed and active, use Superpowers for its normal software-
 
 For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a combined small/medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as the next lifecycle stage. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
 
-The practical boundary is whether one orchestration thread can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
+The practical boundary is whether one orchestration session can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
 
 Specs `spec-*` state the agreed outcomes, boundaries, and verification criteria. A spec preserves goals, boundaries, requirements, risks, and relevant decisions. Plans `plan-*` turn the specs into actionable delivery recipes with tasks for step-by-step execution and checks to provide evidence that all verification criteria are covered. The plan records task sequencing, validation, documentation work, planned commit subjects, and the execution strategy.
 
@@ -118,13 +118,13 @@ Draft planning artifacts are staged for feedback but not committed. Explicit app
 
 For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
 - The next lifecycle stage (for example, plan execution after approval);
-- Orchestration (run in same task or new one, using sub-agents, etc.);
-- Model (model and reasoning);
+- Orchestration (run in same orchestration session or new one, using sub-agents, etc.);
+- Model (generation, capability tier, and reasoning);
 - Fallbacks and limits (only those applicable).
 
-A new Codex task loads the frozen package; a same-task switch rehydrates the frozen package before editing after a model switch or continuity risk.
+A new orchestration session loads the frozen package; a same-session switch rehydrates the frozen package before editing after a model switch or continuity risk.
 
-Execution method defaults to `superpowers:subagent-driven-development`, with fallback to `superpowers:executing-plans` if sub-agents are not available or this method is unsuitable for other reasons, and final fallback to native agentic tool execution if Superpowers is not installed. The handoff also includes recommendations on review sub-agents and their roles, context management strategy for them, and the fallback when the chosen runtime combination is unavailable. Platform-managed multi-agent/`ultra` execution and controlled harness sub-agents are distinct: the latter have named roles, curated context, outputs, and review boundaries. The orchestration thread always retains final integration and completion-report ownership.
+Execution method defaults to `superpowers:subagent-driven-development`, with fallback to `superpowers:executing-plans` if sub-agents are not available or this method is unsuitable for other reasons, and final fallback to native agentic tool execution if Superpowers is not installed. The handoff also includes recommendations on review sub-agents and their roles, context management strategy for them, and the fallback when the chosen runtime combination is unavailable. Platform-managed multi-agent/`ultra` execution and controlled harness sub-agents are distinct: the latter have named roles, curated context, outputs, and review boundaries. The orchestration session always retains final integration and completion-report ownership.
 
 The operator can override all these recommendations on start authorization.
 

@@ -35,7 +35,7 @@ Before committing any planning artifacts for approval:
 2. Verify package completeness before draft review: a normal combined small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next lifecycle stage. A large/phased anchor remains a valid anchor-spec-only package.
 3. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 4. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
-5. Present the staged package in chat with a **Next-stage recommendation** that mirrors four groups from the draft artifact: **Next lifecycle stage** renders `Stage: <documented lifecycle stage>` determined by the frozen package and planning shape; **Orchestration** gives Method, Run in, and Plan Task reviewers; **Model** gives Model and Reasoning; **Fallbacks and limits** includes only applicable limits. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
+5. Present the staged package in chat with a **Next-stage recommendation** that mirrors four groups from the draft artifact: **Next lifecycle stage** renders `Stage: <documented lifecycle stage>` determined by `rule:lifecycle.stage-boundaries`; **Orchestration** gives Method, Run in, and stage-appropriate Review; **Model** gives Generation, Capability tier, and Reasoning; **Fallbacks and limits** includes only applicable limits. Planning stages use a planning-review arrangement; execution stages use the Plan Task/final-review arrangement. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful.
 6. Ask the operator to approve the staged planning package or provide feedback.
 7. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
 
@@ -54,7 +54,7 @@ After the operator explicitly approves the staged planning package:
 8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
 9. Report the commit hash and approved artifact paths.
 10. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-11. Confirm that the frozen package distinguishes the Current planning Codex task from **Next-stage recommendation** defined under `## Draft review checkpoint`. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-task start question when the approved route is a new task.
+11. Confirm that the frozen package distinguishes optional Current orchestration session facts from **Next-stage recommendation** defined under `## Draft review checkpoint`. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-session start question when the approved route is a new session.
 
 ## Post-freeze transition routing
 
@@ -62,7 +62,7 @@ After the operator explicitly approves the staged planning package:
 
 A fresh operator response after the freeze may authorize the action offered by the selected continuity route when the response clearly approves that action. The planned execution method starts after that fresh authorization without a second generic method question.
 
-A fresh explicit operator start instruction may instead override the approved method, model/profile, reasoning effort, or Codex-task continuity. At execution handoff, present the effective next-stage values: start with the frozen **Approved next stage** and apply any explicit operator override. Record the actual runtime selection in the completion report without rewriting the frozen artifact or requiring a plan amendment solely for that runtime choice. Use the variance log only when the override creates a noteworthy allowed variance under `rule:lifecycle.variance-policy`. Report a concrete availability or compatibility blocker, and apply variance policy when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
+A fresh explicit operator start instruction may instead override the approved method, model/profile, reasoning effort, or next-stage continuity. At execution handoff, present the effective next-stage values: start with the frozen **Approved next stage** and apply any explicit operator override. Record the actual runtime selection in the completion report without rewriting the frozen artifact or requiring a plan amendment solely for that runtime choice. Use the variance log only when the override creates a noteworthy allowed variance under `rule:lifecycle.variance-policy`. Report a concrete availability or compatibility blocker, and apply variance policy when the instruction changes a material scope, commitment, Plan Task, commit boundary, mandatory review, or safety boundary.
 
 If the selected route cannot use independent review or the operator declines it, apply `module:models` before execution: disclose the assurance gap, obtain or record the one operator decision, and preserve its completion-report evidence.
 
@@ -79,9 +79,9 @@ Before rendering a handoff or offering task creation, read these values from the
 
 ### Continuity rules
 
-Then apply the approved execution continuity and current capability:
+Then apply the approved next-stage continuity and current capability:
 
-#### `new Codex task`
+#### `new orchestration session`
 
 1. Display the copy-ready handoff as a primary conversation result. Include the instructions, harness, exact frozen package, amendments or variance, approval/baseline, documented next lifecycle stage, and variance stop without restating frozen requirements. Mirror the **Approved next stage** groups in chat.
 2. Before offering compatible task creation, select and report the Git starting state. Use a named branch or ref when it is the approved baseline. For a detached managed-worktree source, use `working-tree`; it copies the source checkout and its uncommitted changes. Disclose the copied uncommitted paths. When those files are unrelated or should not continue, require an explicit source branch or ref, or current-task continuation. Omitting the starting state uses the project default branch and is prohibited for this route.
@@ -89,15 +89,15 @@ Then apply the approved execution continuity and current capability:
 4. Use manual operator creation only when task creation is unavailable or incompatible, or when the operator specifically requests it; state the limitation and display the same copy-ready handoff.
 5. Do not silently substitute a model, reasoning effort, orchestration mode, or task-creation action.
 
-#### `same Codex task`
+#### `same orchestration session`
 
-Keep the current-task authorization route separate and use the fresh explicit start authorization described above. A fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-task implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
+Keep the current-session authorization route separate and use the fresh explicit start authorization described above. A fresh operator response may both confirm execution settings and authorize implementation when it clearly says to begin, such as `Confirmed, proceed`, `Confirm and start`, or equivalent wording. If the operator only confirms settings without clear start authorization, ask a concise follow-up about whether implementation should begin now. A bare `Confirm` authorizes same-session implementation only when the post-freeze prompt explicitly states that confirming also means beginning implementation now.
 
 For a documented non-execution transition that has no `Run in` value, follow only the transition recorded in the approved package; do not infer task creation or same-task authorization.
 
 An operator may explicitly direct continuation in the current task despite a recorded new-task recommendation. Present this only as an opt-in override, not as a question or recommended alternative.
 
-After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol. A new Codex task loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, documented next lifecycle stage, and variance stop; a same-Codex-task route rereads the package after a model switch or recorded continuity risk.
+After fresh authorization, `rule:execution-quality.execution-thread-start` is the consumer-side startup protocol. A new orchestration session loads the instructions, harness, exact frozen package, amendments or variance, approval/baseline, documented next lifecycle stage, and variance stop; a same-session route rereads the package after a model switch or recorded continuity risk.
 
 ## Multiple gates for very large or phased work items
 

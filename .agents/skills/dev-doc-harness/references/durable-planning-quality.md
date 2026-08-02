@@ -94,7 +94,7 @@ The method may change through the variance process when it still proves the same
 
 ## Additional phase-plan quality bar
 
-Each `<phase-plan-filename>` must also be safely executable by one orchestration thread with its recorded bounded delegation. If it cannot meet that bar without hidden context, excessive coordination, or an oversized change boundary, split or rewrite it before implementation.
+Each `<phase-plan-filename>` must also be safely executable by one orchestration session with its recorded bounded delegation. If it cannot meet that bar without hidden context, excessive coordination, or an oversized change boundary, split or rewrite it before implementation.
 
 ## Asymmetric plan coverage
 

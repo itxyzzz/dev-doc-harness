@@ -20,7 +20,7 @@ Phase `02`: `<phase name>`
 
 Phase decomposition prompts:
 
-1. Each phase should be safely executable by one orchestration thread with bounded delegation.
+1. Each phase should be safely executable by one orchestration session with bounded delegation.
 2. Shared setup, discovery, migrations, hardening, and review phases are acceptable when vertical slicing would make task execution less safe.
 3. If phase objectives are independently plannable, later phase-plan drafting may use curated-artifact sub-agents under `module:models`.
 
@@ -28,7 +28,7 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-### Current planning Codex task
+### Current orchestration session
 
 1. Model generation: `<generation or not exposed>`.
 2. Resolved profile: `<concrete runtime profile or not exposed>`.
@@ -43,11 +43,11 @@ Stage: `phase-plan drafting`.
 
 #### Orchestration
 
-Method: `<recommended method>`; Run in: `<same Codex task / new Codex task>`; Plan Task reviewers: `<recommended route-specific arrangement and final reviewer>`.
+Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Model: `<policy-relative recommendation>`; Reasoning: `<recommended effort>`.
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
 #### Fallbacks and limits
 
@@ -86,3 +86,5 @@ Sub-agent `<role or phase id>`:
 11. Selection reason: `<why this delegation is useful>`.
 12. Parallel execution: `<Yes/No and dependency>`.
 13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+14. Write authority: `<read-only / bounded paths / other approved scope>`.
+15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
