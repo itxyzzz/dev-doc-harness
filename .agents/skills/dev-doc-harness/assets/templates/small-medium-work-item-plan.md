@@ -171,7 +171,6 @@ Stage: `plan execution`.
 #### Orchestration
 
 Method: `<execution method for plan execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
-Orchestration mode fit: `<why this topology fits plan execution>`.
 
 #### Model
 

@@ -49,7 +49,6 @@ Stage: `<documented resumed stage>`.
 ### Orchestration
 
 Method: `<planning or execution method for Stage>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
-Orchestration mode fit: `<why this topology fits the documented resumed stage>`.
 
 ### Model
 

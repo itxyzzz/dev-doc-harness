@@ -1,3 +1,13 @@
+### 2026-08-02 docs: task-orchestration-model-policy -- restore four-field orchestration
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Restored Method, Orchestration mode, `Run in`, and Review as the complete Orchestration field set.
+- Moved conditional rationale into canonical strategy prose covering the combined Orchestration and Model selection when non-obvious.
+- Removed the mode-specific rationale field from freeze guidance, templates, generated artifacts, README guidance, and validation fixtures.
+
 ### 2026-08-02 docs: task-orchestration-model-policy -- tighten selection templates
 
 Meta -- `unreleased` : `distributable`

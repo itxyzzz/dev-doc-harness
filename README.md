@@ -118,7 +118,7 @@ Draft planning artifacts are staged for feedback but not committed. Explicit app
 
 For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
 - The next lifecycle stage (for example, plan execution after approval);
-- Orchestration (Method, Orchestration mode with a fit reason, `Run in` the same orchestration session or a new one, and stage-appropriate Review);
+- Orchestration (Method, Orchestration mode, `Run in` the same orchestration session or a new one, and stage-appropriate Review);
 - Model (generation, capability tier, and reasoning);
 - Fallbacks and limits (only those applicable).
 

@@ -1619,7 +1619,7 @@ def assert_model_selection_dimensions() -> None:
     assert_text_contains(
         check_id,
         readme,
-        r"Orchestration \(Method, Orchestration mode with a fit reason, `Run in` the same orchestration session or a new one, and stage-appropriate Review\)",
+        r"Orchestration \(Method, Orchestration mode, `Run in` the same orchestration session or a new one, and stage-appropriate Review\)",
         "plain-language orchestration guidance",
     )
     assert_normalized_text_contains(
@@ -2675,8 +2675,8 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         errors.append("retired task-level transition fields are present")
     if not re.search(r"Method:.*Orchestration mode:.*Run in:.*Review", text, flags=re.DOTALL):
         errors.append("orchestration fields are incomplete")
-    if not re.search(r"Orchestration mode fit:\s*`[^`\n]+`", text):
-        errors.append("orchestration mode fit reason is missing")
+    if re.search(r"(?m)^Orchestration mode fit:", text):
+        errors.append("noncanonical orchestration mode fit field is present")
     if re.search(r"(?<!Orchestration )Mode:", text):
         errors.append("orchestration mode uses shorthand label")
     if not re.search(r"Generation:.*Capability tier:.*Reasoning", text, flags=re.DOTALL):
@@ -2711,8 +2711,8 @@ def next_stage_template_contract_errors(
         errors.append(f"missing Stage: `{expected_stage}`")
     if not re.search(r"Method:[^\n]+Orchestration mode:[^\n]+Run in:[^\n]+Review:", text):
         errors.append("missing complete orchestration fields")
-    if not re.search(r"(?m)^Orchestration mode fit:\s*`<[^>\n]+>`\.$", text):
-        errors.append("missing orchestration mode fit prompt")
+    if re.search(r"(?m)^Orchestration mode fit:", text):
+        errors.append("contains noncanonical orchestration mode fit prompt")
     if expected_method_prompt is not None and f"Method: `{expected_method_prompt}`" not in text:
         errors.append(f"missing stage-appropriate Method prompt `{expected_method_prompt}`")
     if expected_review_prompt is not None and f"Review: `{expected_review_prompt}`" not in text:
@@ -2759,13 +2759,13 @@ def assert_next_stage_summary() -> None:
     large_anchor_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nOrchestration mode fit: `bounded review isolation without concurrent writes`\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")
     shorthand_mode_fixture = draft_fixture.replace("Orchestration mode:", "Mode:")
-    missing_mode_fit_fixture = draft_fixture.replace(
-        "\nOrchestration mode fit: `bounded review isolation without concurrent writes`", ""
+    extra_mode_fit_fixture = draft_fixture.replace(
+        "\nModel:", "\nOrchestration mode fit: `bounded review isolation without concurrent writes`\nModel:"
     )
     retired_fixture = draft_fixture.replace("Next lifecycle stage: Stage: `plan execution`", "Activity: First Plan Task: `TASK-001`")
     unknown_same_task_fixture = draft_fixture.replace(
@@ -2797,8 +2797,8 @@ def assert_next_stage_summary() -> None:
         add_failure(check_id, "missing Run in fixture was accepted")
     if not next_stage_summary_fixture_errors(shorthand_mode_fixture, frozen=False):
         add_failure(check_id, "shorthand Mode fixture was accepted")
-    if not next_stage_summary_fixture_errors(missing_mode_fit_fixture, frozen=False):
-        add_failure(check_id, "missing orchestration mode fit fixture was accepted")
+    if not next_stage_summary_fixture_errors(extra_mode_fit_fixture, frozen=False):
+        add_failure(check_id, "extra orchestration mode fit field fixture was accepted")
     if not next_stage_summary_fixture_errors(retired_fixture, frozen=False):
         add_failure(check_id, "retired task-level transition fixture was accepted")
     if not next_stage_summary_fixture_errors(unknown_same_task_fixture, frozen=False):
@@ -2884,13 +2884,14 @@ def assert_next_stage_summary() -> None:
         run_in_line = "Run in: `<same orchestration session / new orchestration session>`; "
         if not next_stage_template_contract_errors(text.replace(run_in_line, "", 1), expected_stage=expected_stage):
             add_failure(check_id, f"{path} missing Run in mutation was accepted")
-        mode_fit_line = re.search(r"(?m)^Orchestration mode fit:.*\n?", text)
-        if mode_fit_line is None:
-            add_failure(check_id, f"{path} has no orchestration mode fit line to mutate")
-        elif not next_stage_template_contract_errors(
-            text.replace(mode_fit_line.group(0), "", 1), expected_stage=expected_stage
-        ):
-            add_failure(check_id, f"{path} missing orchestration mode fit mutation was accepted")
+        model_heading = "\n### Model" if "\n### Model" in text else "\n#### Model"
+        extra_mode_fit_text = text.replace(
+            model_heading,
+            f"\nOrchestration mode fit: `<why this topology fits>`\n{model_heading}",
+            1,
+        )
+        if not next_stage_template_contract_errors(extra_mode_fit_text, expected_stage=expected_stage):
+            add_failure(check_id, f"{path} extra orchestration mode fit mutation was accepted")
 
     for rule_id in ["rule:models.selection-dimensions", "rule:models.orchestration-mode", "rule:models.next-stage-continuity"]:
         assert_text_contains(check_id, amendment_template, re.escape(rule_id), f"amendment template {rule_id} route")
@@ -2947,8 +2948,16 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
     assert_text_contains(check_id, models, r"Run in.*same orchestration session.*new orchestration session", "Run in values")
     assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]+Orchestration mode[\s\S]+Review[\s\S]+Plan Task[\s\S]+final review", "canonical reviewer terms")
-    assert_text_contains(check_id, models, r"Orchestration mode fit", "canonical orchestration mode fit rationale")
-    assert_text_contains(check_id, readme, r"Orchestration mode[^\n]+fit reason", "README orchestration mode fit summary")
+    assert_text_contains(
+        check_id,
+        models,
+        r"Orchestration and Model choices[^\n]+non-obvious[^\n]+rationale",
+        "conditional whole-selection rationale",
+    )
+    required_notation = read_markdown_h2_section(models, "Required notation")
+    if "Orchestration mode fit:" in required_notation:
+        add_failure(check_id, "required notation adds an orchestration mode fit field")
+    assert_text_not_contains(check_id, readme, r"Orchestration mode[^\n]+fit reason", "README extra mode-fit field")
     assert_text_contains(check_id, architecture, r"Task/session terminology", "models terminology catalog")
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
@@ -2964,8 +2973,8 @@ def assert_next_stage_summary() -> None:
         add_failure(check_id, "draft review does not cite the selection and lifecycle owners")
     if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Orchestration mode[\s\S]+Run in[\s\S]+Review[\s\S]+Model[\s\S]+Generation[\s\S]+Capability tier[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft-review group definition is incomplete")
-    if not re.search(r"Orchestration mode[^\n]+fit reason", draft_review, flags=re.IGNORECASE):
-        add_failure(check_id, "draft-review projection omits the orchestration mode fit reason")
+    if re.search(r"Orchestration mode with (?:its|a) fit reason", draft_review, flags=re.IGNORECASE):
+        add_failure(check_id, "draft-review projection adds an orchestration mode fit field")
     assert_text_not_contains(check_id, freeze, r"documented non-execution transition that has no `Run in`", "no-Run-in continuity exception")
     assert_text_not_contains(check_id, freeze, r"same-task|new-task recommendation|current task", "retired continuity terminology")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):

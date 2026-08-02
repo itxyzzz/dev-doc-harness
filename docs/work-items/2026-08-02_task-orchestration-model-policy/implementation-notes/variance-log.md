@@ -7,6 +7,16 @@ Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance
 
 ## Entries
 
+### `VAR-003` 2026-08-02 - Restore the four-field Orchestration schema
+
+- Variance class: `Routine equivalent adjustment`
+- Original plan reference: `AMD-001-DEC-001`, `AMD-001-DEC-003`, `AMD-001-CHECK-003`, and `AMD-001-CHECK-008` in `plan_amendment-01_selection-policy-consistency_task-orchestration-model-policy.md`; follow-up `VAR-002`
+- What changed: Removed `Orchestration mode fit` as a peer field from canonical required notation, freeze projection, README guidance, source templates, generated templates, and semantic fixtures. Restored Method, Orchestration mode, `Run in`, and Review as the complete Orchestration field set. Added a conditional canonical requirement to record concise surrounding strategy rationale for the combined Orchestration and Model selection when that choice is non-obvious.
+- Why it changed: Operator review found that the reviewer-derived mode-specific field was asymmetric, duplicated existing strategy reasoning, and contradicted the intended four-field Orchestration interface. The operator explicitly directed restoration of the original schema and requested this variance record.
+- Evidence and scope stay equivalent: `Yes`; the correction preserves deliberate selection and stage-specific template safeguards while removing an unplanned schema field. Lifecycle stages, execution-method ordering, authorization boundaries, model facets, and `enterprise-default` semantics remain unchanged.
+- Documented implementation subject: `docs: task-orchestration-model-policy -- restore four-field orchestration`
+- Superseded by: None
+
 ### `VAR-002` 2026-08-02 - Complete reviewer-identified selection template safeguards
 
 - Variance class: `Routine equivalent adjustment`
@@ -15,7 +25,7 @@ Policy references: `module:lifecycle`, `module:naming`, `rule:lifecycle.variance
 - Why it changed: The approved independent reviewer found template and canonical-clarity gaps after the initial amended implementation and ownership-structure follow-up commits. The operator explicitly selected findings 2, 3, 4, and the three position-dependent references for correction.
 - Evidence and scope stay equivalent: `Yes`; the changes complete the approved stage-applicability, orchestration-selection, freeze-label, and validator outcomes without changing lifecycle stages, execution-method ordering, authorization boundaries, or `enterprise-default` semantics.
 - Documented implementation subject: `docs: task-orchestration-model-policy -- tighten selection templates`
-- Superseded by: None
+- Superseded by: `VAR-003` for the `Orchestration mode fit` field only; the stage-specific Method/Review prompts, large-anchor heading transition, and stable policy references remain current.
 
 ### `VAR-001` 2026-08-02 - Reparent model policies without changing enterprise-default semantics
 

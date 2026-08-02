@@ -41,17 +41,18 @@ Upcoming-stage orchestration and model selection for substantial work is actiona
 The next-stage summary is ordered as:
 
 1. **Next lifecycle stage** records the next documented stage determined by `rule:lifecycle.stage-boundaries`.
-2. **Orchestration** records Method, Orchestration mode and its fit reason, `Run in` (next-stage continuity: same or new orchestration session), and the stage-appropriate Review arrangement.
+2. **Orchestration** records Method, Orchestration mode, `Run in` (next-stage continuity: same or new orchestration session), and the stage-appropriate Review arrangement.
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
 4. **Fallbacks and limits** record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
 
+When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
+
 ### Orchestration selection
 
-The Orchestration group defines four selection fields and one required rationale at first use:
+The Orchestration group defines four fields at first use:
 
 - **Method:** the named workflow used for the documented next lifecycle stage.
 - **Orchestration mode:** the agent/controller topology used to perform that stage.
-- **Orchestration mode fit:** the concise reason that topology fits the stage's coupling, delegation, review, and integration needs.
 - **Run in:** next-stage continuity, recorded as `same orchestration session` or `new orchestration session`.
 - **Review:** the stage-appropriate planning-review or execution Plan Task/final-review arrangement.
 
@@ -293,7 +294,6 @@ Stage: `<plan drafting / phase-plan drafting / plan execution / phase execution 
 
 Method: `<planning or execution method for Stage>`
 Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`
-Orchestration mode fit: `<why this topology fits the stage>`
 Run in: `<same orchestration session / new orchestration session>`
 Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`
 
