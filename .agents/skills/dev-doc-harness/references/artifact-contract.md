@@ -186,9 +186,9 @@ The ordered execution-method cascade is:
 
 1. Prefer `superpowers:subagent-driven-development` when Superpowers, usable sub-agents, and the written Plan Tasks fit its execution-controller model.
 2. When Superpowers is available but that preferred route is unavailable or unsuitable, use `superpowers:executing-plans`.
-3. Native Codex is the default only when Superpowers is unavailable. Independent review remains the default; `module:models` owns the disclosed, operator-authorized exception when independent review cannot run or the operator declines it.
+3. Host-native execution is the default only when Superpowers is unavailable. Independent review remains the default; `module:models` owns the disclosed, operator-authorized exception when independent review cannot run or the operator declines it.
 
-Native Codex is not a default while Superpowers is available. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or next-stage continuity. Record that actual selection without a plan amendment solely for the runtime choice; use normal variance handling only when the instruction also changes a material scope, commitment, Plan Task, commit, review, or safety boundary. `module:models` owns the route-specific reviewer contract and `module:freeze-gate` owns the authorization transition.
+Host-native execution is not a default while Superpowers is available. A fresh explicit operator execution-start instruction may select another available method, model/profile, reasoning effort, or next-stage continuity. Record that actual selection without a plan amendment solely for the runtime choice; use normal variance handling only when the instruction also changes a material scope, commitment, Plan Task, commit, review, or safety boundary. `module:models` owns the route-specific reviewer contract and `module:freeze-gate` owns the authorization transition.
 
 When Superpowers is unavailable, keep each task independently executable and verifiable with its recorded checks. This fallback is a concise task-quality cue, not a second detailed task-sizing method.
 

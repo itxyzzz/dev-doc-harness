@@ -1,3 +1,13 @@
+### 2026-08-02 docs: task-orchestration-model-policy -- align orchestration and model selection
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Made Orchestration mode an explicit next-stage field across policy, templates, freeze presentation, and validation.
+- Defined portable model facets and host-native fallbacks while simplifying optional current-session diagnostics.
+- Required canonical continuity and preserved independent high-risk review as distinct from final integration.
+
 ### 2026-08-02 docs: task-orchestration-model-policy -- clarify session and stage selection
 
 Meta -- `unreleased` : `distributable`

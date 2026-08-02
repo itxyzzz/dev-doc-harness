@@ -38,18 +38,18 @@ flowchart TD
     E -.->|"Feedback"| D
     E -->|"Yes"| F["Freeze combined package<br/>commit, pause"]:::house
     F --> G{"Operator confirms<br/>implementation start?"}:::house
-    G -->|"Same or new task (with handoff)"| S["Implement, validate, commit"]:::house
+    G -->|"Same or new orchestration session"| S["Implement, validate, commit"]:::house
 
     H --> I{"Operator approves?"}:::house
     I -.->|"Feedback"| H
     I -->|"Yes"| J["Freeze anchor package<br/>commit, pause"]:::house
     J --> K{"Operator confirms<br/>phase-plan drafting?"}:::house
-    K -->|"Same or new task (with handoff)"| L["Draft phase plan"]:::house
+    K -->|"Same or new orchestration session"| L["Draft phase plan"]:::house
     L --> M{"Operator approves?"}:::house
     M -.->|"Feedback"| L
     M -->|"Yes"| N["Freeze phase-plan package<br/>commit, pause"]:::house
     N --> O{"Operator confirms<br/>phase implementation?"}:::house
-    O -->|"Same or new task (with handoff)"| P["Implement phase<br/>record actual outputs"]:::house
+    O -->|"Same or new orchestration session"| P["Implement phase<br/>record actual outputs"]:::house
     P -.->|"Plan next phase"| K
 
     classDef house fill:#242429,stroke:#71717a,stroke-width:1.5px,color:#fafafa
@@ -73,7 +73,7 @@ Treat this work as very small mechanical edit, do not create documentation packa
 ```
 
 ```text
-Plan phases 01 and 02 are independent, draft them both in parallel new tasks and then stop for review before implementation.
+Plan phases 01 and 02 are independent, draft them both in parallel new orchestration sessions and then stop for review before implementation.
 ```
 
 ## Installation
@@ -114,17 +114,17 @@ The planning package also records which supporting documentation artifacts are n
 
 ### Review, execution, and handoff
 
-Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current task or start a new one using the provided handoff.
+Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current orchestration session or start a new one using the provided handoff.
 
 For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
 - The next lifecycle stage (for example, plan execution after approval);
-- Orchestration (run in same orchestration session or new one, using sub-agents, etc.);
+- Orchestration (Method, Orchestration mode, `Run in` the same orchestration session or a new one, and stage-appropriate Review);
 - Model (generation, capability tier, and reasoning);
 - Fallbacks and limits (only those applicable).
 
 A new orchestration session loads the frozen package; a same-session switch rehydrates the frozen package before editing after a model switch or continuity risk.
 
-Execution method defaults to `superpowers:subagent-driven-development`, with fallback to `superpowers:executing-plans` if sub-agents are not available or this method is unsuitable for other reasons, and final fallback to native agentic tool execution if Superpowers is not installed. The handoff also includes recommendations on review sub-agents and their roles, context management strategy for them, and the fallback when the chosen runtime combination is unavailable. Platform-managed multi-agent/`ultra` execution and controlled harness sub-agents are distinct: the latter have named roles, curated context, outputs, and review boundaries. The orchestration session always retains final integration and completion-report ownership.
+Execution method defaults to `superpowers:subagent-driven-development`, with fallback to `superpowers:executing-plans` if sub-agents are not available or this method is unsuitable for other reasons, and final fallback to host-native execution if Superpowers is not installed. The handoff also includes recommendations on review sub-agents and their roles, context management strategy for them, and the fallback when the chosen runtime combination is unavailable. Platform-managed multi-agent/`ultra` execution and controlled harness sub-agents are distinct: the latter have named roles, curated context, outputs, and review boundaries. The orchestration session always retains final integration and completion-report ownership.
 
 The operator can override all these recommendations on start authorization.
 
@@ -160,7 +160,7 @@ Agents discover the router through `AGENTS.md`:
 .agents/skills/dev-doc-harness/SKILL.md
 ```
 
-It routes work to the minimum useful canonical owner. The common owners are `module:lifecycle` for work-item lifecycle, `module:quality` for durable planning and conformance, `module:freeze-gate` for approval pauses, `module:models` for execution strategy, `module:release` for distribution, and `module:execution-quality` for execution preflight and fresh-task startup.
+It routes work to the minimum useful canonical owner. The common owners are `module:lifecycle` for work-item lifecycle, `module:quality` for durable planning and conformance, `module:freeze-gate` for approval pauses, `module:models` for upcoming-stage orchestration, model selection, sub-agent strategy, review, and integration, `module:release` for distribution, and `module:execution-quality` for execution preflight and execution-session startup.
 
 The agents should use the router rather than load every reference. In particular, it routes evidence-heavy reviews to evidence preservation guidance, large work to the anchor-spec and phase-plan lifecycle, release work to the package-boundary and release-note policy, and template changes to the owning policy plus source blocks and assembly manifests. The router, not this README, is authoritative for the exact required artifacts and validation steps.
 
@@ -175,7 +175,7 @@ For routine orientation, these routes cover most maintenance questions:
 | Approval checkpoints and post-freeze routing | `references/planning-freeze-gates.md` |
 | Commitments, criteria, checks, and plan coverage | `references/durable-planning-quality.md` |
 | Readability and template prompt style | `references/artifact-style.md` |
-| Model, reasoning, and sub-agent strategy | `references/subagent-model-policy.md` |
+| Task orchestration, model selection, and sub-agent strategy | `references/subagent-model-policy.md` |
 | Package identity, release notes, and adoption | `references/release-policy.md` |
 
 The naming reference owns work IDs, artifact filenames, commit subjects, and changelog-entry grammar. Evidence-heavy reviews preserve their sources through the evidence module instead of treating mutable live material as a durable record. These owners keep the router small without requiring templates or operator summaries to reproduce long policy sections.

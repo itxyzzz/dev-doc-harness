@@ -1443,22 +1443,26 @@ def assert_model_selection_dimensions() -> None:
     role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
     readme = "README.md"
 
-    current_session_selection = read_markdown_h2_section(models, "Upcoming-stage selection")
-    for field in [
-        "Model generation:",
-        "Capability tier:",
-        "Reasoning effort:",
-        "Orchestration mode:",
-        "Resolved profile:",
-        "Context visibility:",
-    ]:
-        if field not in current_session_selection:
-            add_failure(check_id, f"Current orchestration session facts omit independent '{field}' metadata")
-    if re.search(
-        r"(?i)resolved model profile:.*generation.*capability tier.*reasoning effort",
-        current_session_selection,
-    ):
-        add_failure(check_id, "Current orchestration session facts conflate selection dimensions with resolved profile")
+    model_selection = read_markdown_h2_section(models, "Model selection")
+    for facet in ["Generation", "Capability tier", "Reasoning effort"]:
+        if facet not in model_selection:
+            add_failure(check_id, f"Model selection does not define the '{facet}' facet")
+    assert_text_contains(
+        check_id,
+        models,
+        r"Resolved profile.+concrete runtime mapping.+(?:three|Generation.+Capability tier.+Reasoning effort).+(?:not|isn't|is not).+(?:fourth|facet)",
+        "resolved profile is an optional runtime mapping rather than a fourth facet",
+    )
+
+    current_diagnostics = read_markdown_h2_section(models, "Current-session diagnostics")
+    for field in ["Resolved model profile", "Context visibility"]:
+        if field not in current_diagnostics:
+            add_failure(check_id, f"Current-session diagnostics omit '{field}'")
+    for duplicated_field in ["Generation:", "Capability tier:", "Reasoning effort:", "Orchestration mode:"]:
+        if duplicated_field in current_diagnostics:
+            add_failure(check_id, f"Current-session diagnostics duplicate next-stage field '{duplicated_field}'")
+    if not re.search(r"omit unless.+exposed and material", current_diagnostics, flags=re.IGNORECASE):
+        add_failure(check_id, "Current-session diagnostics do not use the exposed-and-material omission rule")
 
     for rule_id in [
         "rule:models.selection-dimensions",
@@ -1468,7 +1472,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, models, re.escape(rule_id), f"{rule_id} owner")
 
     for label in [
-        "Model generation",
+        "Generation",
         "Capability tier",
         "Reasoning effort",
         "Orchestration mode",
@@ -1488,17 +1492,17 @@ def assert_model_selection_dimensions() -> None:
     assert_text_contains(check_id, models, r"[Uu]ltra.+platform[- ]managed.+multi-agent|platform[- ]managed.+multi-agent.+[Uu]ltra", "ultra orchestration classification")
     assert_text_contains(check_id, models, r"does not (?:automatically )?provide.+task partitioning", "platform orchestration limitation")
     assert_text_contains(check_id, models, r"enterprise-default.+(?:assess|consider).+(?:platform multi-agent|ultra)", "enterprise platform-orchestration assessment")
-    assert_text_contains(check_id, models, r"economy-default.+Terra medium.+suggested baseline", "economy baseline policy")
+    assert_text_contains(check_id, models, r"economy-default.+balanced/medium.+Terra medium or equivalent", "economy baseline policy")
 
     assert_text_contains(
         check_id,
         models,
-        r"Terra medium.+suggested baseline.+substantial bounded work.+explicit outputs and validation",
-        "calibrated Terra-medium bounded-work baseline",
+        r"balanced/medium.+Terra medium or equivalent.+suggested baseline.+substantial bounded work.+explicit outputs and validation",
+        "calibrated balanced/medium bounded-work baseline",
     )
-    assert_text_contains(check_id, models, r"Terra high.+effort escalation", "effort escalation classification")
-    assert_text_contains(check_id, models, r"Sol medium.+tier escalation", "tier escalation classification")
-    assert_text_contains(check_id, models, r"Sol high.+exceptional.+written reason", "exceptional Sol-high escalation")
+    assert_text_contains(check_id, models, r"balanced/high.+Terra high or equivalent.+effort escalation", "effort escalation classification")
+    assert_text_contains(check_id, models, r"flagship/medium.+Sol medium or equivalent.+tier escalation", "tier escalation classification")
+    assert_text_contains(check_id, models, r"flagship/high.+Sol high or equivalent.+exceptional.+written reason", "exceptional flagship/high escalation")
     assert_text_contains(check_id, models, r"residual uncertainty|new variance", "late escalation justification")
     assert_text_contains(check_id, models, r"de-escalat.+bounded", "bounded-work de-escalation")
     assert_text_contains(
@@ -1530,6 +1534,24 @@ def assert_model_selection_dimensions() -> None:
     assert_text_contains(check_id, models, r"availability fallback", "approved fallback behavior")
     assert_text_contains(check_id, models, r"de-facto orchestration mode", "de-facto orchestration reporting")
     assert_text_contains(check_id, models, r"unplanned sub-agent.+stronger tier or effort.+broader write authority", "unplanned orchestration confirmation")
+    assert_text_contains(
+        check_id,
+        models,
+        r"tightly coupled.+same-file.+write-capable.+(?:do not|does not).+read-only reviewer",
+        "read-only reviewer remains suitable for tightly coupled work",
+    )
+    assert_text_contains(
+        check_id,
+        models,
+        r"high-blast-radius.+independent reviewer",
+        "independent high-blast-radius final review",
+    )
+    assert_text_contains(
+        check_id,
+        models,
+        r"orchestration session.+(?:not|isn't|is not).+independent review",
+        "final integration is distinct from independent review",
+    )
 
     strategy_templates = [
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
@@ -1537,14 +1559,14 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
     for path in strategy_templates:
-        for label in ["Current orchestration session", "Next-stage recommendation", "Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning"]:
+        for label in ["Current orchestration session", "Next-stage recommendation", "Method", "Orchestration mode", "Run in", "Review", "Generation", "Capability tier", "Reasoning"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
         assert_text_not_contains(check_id, path, r"Model class/profile:", "conflated per-role model class/profile field")
 
     large_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     for path in [large_strategy_source]:
         assert_text_contains(check_id, path, r"Current orchestration session", "planning observations prompt")
-        assert_text_contains(check_id, path, r"Next-stage recommendation", "approved execution selection prompt")
+        assert_text_contains(check_id, path, r"Next-stage recommendation", "next-stage selection prompt")
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
@@ -1570,12 +1592,19 @@ def assert_model_selection_dimensions() -> None:
         "Model (generation, capability tier, and reasoning)",
         "plain-language model guidance",
     )
+    assert_text_contains(
+        check_id,
+        readme,
+        r"Orchestration \(Method, Orchestration mode, `Run in` the same orchestration session or a new one, and stage-appropriate Review\)",
+        "plain-language orchestration guidance",
+    )
     assert_normalized_text_contains(
         check_id,
         readme,
-        "Orchestration (run in same orchestration session or new one",
-        "plain-language orchestration guidance",
+        "Orchestration mode",
+        "plain-language orchestration-mode field",
     )
+    assert_text_contains(check_id, readme, r"host-native execution", "host-portable execution fallback")
     assert_text_contains(check_id, readme, r"ultra", "ultra guidance")
     assert_text_contains(check_id, role_examples, r"execution-thread-start", "execution startup route")
     assert_normalized_text_contains(
@@ -1685,7 +1714,7 @@ def assert_lifecycle_transition_targets() -> None:
     post_freeze_only = (
         r"fresh (?:explicit )?operator|operator response|authoriz(?:e|es|ed|ation) (?:implementation|execution|the action)|"
         r"runtime (?:selection|override)|operator override|independent review|Superpowers|execution-thread-start|"
-        r"complete the approved plan|bare `?Confirm`?|same-Codex-task route"
+        r"complete the approved plan|bare `?Confirm`?|same-orchestration-session route"
     )
     if re.search(post_freeze_only, approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval-freeze checkpoint contains post-freeze routing details")
@@ -1694,7 +1723,7 @@ def assert_lifecycle_transition_targets() -> None:
     if not re.search(r"new orchestration session[\s\S]+default continuation[\s\S]+approval[\s\S]+create", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "new-session route does not make approved agent task creation the default")
     if not re.search(r"manual[\s\S]+(?:unavailable|incompatible|operator)", post_freeze, flags=re.IGNORECASE):
-        add_failure(check_id, "new-Codex-task route does not limit manual creation to fallback or operator request")
+        add_failure(check_id, "new-orchestration-session route does not limit manual creation to fallback or operator request")
     continuity_match = re.search(
         r"(?ms)^### Continuity rules\s*$\n(?P<body>.*?)(?=^### |^## |\Z)",
         post_freeze,
@@ -2010,7 +2039,16 @@ def superpowers_global_constraints_fixture_errors(text: str) -> list[str]:
 
 
 def superpowers_dispatch_fixture_route(text: str) -> str:
-    if all(field in text for field in ["Capability tier:", "Reasoning effort:", "Model generation: `not exposed`", "Resolved profile: `not exposed`"]):
+    if all(
+        field in text
+        for field in [
+            "Active model policy:",
+            "Recommended sub-agent model:",
+            "Generation:",
+            "Capability tier:",
+            "Reasoning effort:",
+        ]
+    ):
         return "in-envelope"
     if "outside the approved envelope" in text and "approval" in text:
         return "approval"
@@ -2220,10 +2258,9 @@ def assert_superpowers_adapter_contract() -> None:
         add_failure(check_id, "unjustified global-constraints fixture passed")
 
     in_envelope_dispatch = (
-        "Capability tier: `fast/economy`\n"
-        "Reasoning effort: `medium`\n"
-        "Model generation: `not exposed`\n"
-        "Resolved profile: `not exposed`"
+        "Active model policy: `economy-default`\n"
+        "Recommended sub-agent model: Generation: `latest available`; "
+        "Capability tier: `fast/economy`; Reasoning effort: `medium`"
     )
     out_of_envelope_dispatch = "A dispatch outside the approved envelope requires approval."
     if superpowers_dispatch_fixture_route(in_envelope_dispatch) != "in-envelope":
@@ -2246,15 +2283,15 @@ def execution_method_fixture_route(text: str) -> str:
     if "Superpowers: available" in text:
         if "Sub-agent-driven conditions: true" in text:
             return "superpowers:subagent-driven-development"
-        if "Native Codex proposed as default" in text:
+        if "Host-native execution proposed as default" in text:
             return "invalid"
         return "superpowers:executing-plans"
     if "Superpowers: unavailable" in text:
         if "Reviewer sub-agent: unavailable" in text:
             if "Operator authorization: proceed without independent review" in text:
-                return "native Codex authorized no-review"
-            return "native Codex awaiting operator decision"
-        return "native Codex"
+                return "host-native execution authorized no-review"
+            return "host-native execution awaiting operator decision"
+        return "host-native execution"
     return "invalid"
 
 
@@ -2266,7 +2303,7 @@ def reviewer_fixture_route(text: str) -> str:
     if "Method: superpowers:executing-plans" in text:
         if "Preserve executing-plans checkpoints" in text and "Reviewer capability disclosure" in text:
             return "fallback-disclosed"
-    if "Method: native Codex" in text:
+    if "Method: host-native execution" in text:
         if "Independent reviewer sub-agent" in text and "curated artifacts" in text and "named lens" in text and "evidence-backed findings" in text and "execution orchestration session owns final integration" in text:
             return "native-reviewed"
         no_review_record = (
@@ -2312,10 +2349,10 @@ def assert_execution_method_fallbacks() -> None:
     method_fixtures = {
         "superpowers:subagent-driven-development": "Superpowers: available\nSub-agent-driven conditions: true",
         "superpowers:executing-plans": "Superpowers: available\nSub-agent-driven conditions: unavailable or unsuitable",
-        "native Codex": "Superpowers: unavailable\nReviewer sub-agent: available",
-        "native Codex awaiting operator decision": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nIndependent review decision: pending",
-        "native Codex authorized no-review": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nOperator authorization: proceed without independent review",
-        "invalid": "Superpowers: available\nNative Codex proposed as default",
+        "host-native execution": "Superpowers: unavailable\nReviewer sub-agent: available",
+        "host-native execution awaiting operator decision": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nIndependent review decision: pending",
+        "host-native execution authorized no-review": "Superpowers: unavailable\nReviewer sub-agent: unavailable\nOperator authorization: proceed without independent review",
+        "invalid": "Superpowers: available\nHost-native execution proposed as default",
         "operator-override": "Fresh explicit operator override\nSelected method available",
         "operator-model-override": "Fresh explicit operator override\nSelected model available\nActual runtime selection: recorded\nPlan amendment: not required solely for this runtime choice",
     }
@@ -2326,11 +2363,11 @@ def assert_execution_method_fallbacks() -> None:
     reviewer_fixtures = {
         "preferred-reviewed": "Method: superpowers:subagent-driven-development\nIndependent reviewer after each Plan Task\nIndependent final whole-branch reviewer",
         "fallback-disclosed": "Method: superpowers:executing-plans\nPreserve executing-plans checkpoints\nReviewer capability disclosure",
-        "native-reviewed": "Method: native Codex\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution orchestration session owns final integration",
-        "awaiting-operator-decision": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nAsk once whether to proceed without independent review\nOperator authorization: pending",
-        "operator-authorized-no-review": "Method: native Codex\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
-        "operator-declined-review-authorized": "Method: native Codex\nOperator declined independent review\nIndependent review: not run\nReason: operator declined review\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
-        "invalid": "Method: native Codex\nSub-agents: None",
+        "native-reviewed": "Method: host-native execution\nIndependent reviewer sub-agent\ncurated artifacts\nnamed lens\nevidence-backed findings\nexecution orchestration session owns final integration",
+        "awaiting-operator-decision": "Method: host-native execution\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nAsk once whether to proceed without independent review\nOperator authorization: pending",
+        "operator-authorized-no-review": "Method: host-native execution\nReviewer sub-agent: unavailable\nIndependent review: not run\nReason: reviewer tooling is unavailable\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
+        "operator-declined-review-authorized": "Method: host-native execution\nOperator declined independent review\nIndependent review: not run\nReason: operator declined review\nAssurance gap: no independent review\nFocused self-review and validation: required\nCompletion report: state whether independent review ran\nOperator authorization: proceed without independent review\nSub-agents: None",
+        "invalid": "Method: host-native execution\nSub-agents: None",
     }
     for expected, fixture in reviewer_fixtures.items():
         if reviewer_fixture_route(fixture) != expected:
@@ -2338,14 +2375,14 @@ def assert_execution_method_fallbacks() -> None:
 
     assert_text_contains(check_id, lifecycle, r"superpowers:subagent-driven-development", "preferred execution method")
     assert_text_contains(check_id, lifecycle, r"superpowers:executing-plans", "Superpowers fallback method")
-    assert_text_contains(check_id, lifecycle, r"Native Codex.*Superpowers.*unavailable", "native default boundary")
+    assert_text_contains(check_id, lifecycle, r"host-native execution.*Superpowers.*unavailable", "host-native default boundary")
     if "independent review can run" in read_repo_text(models).lower():
         add_failure(check_id, "native method cascade retains obsolete review-availability blocker")
     assert_text_contains(check_id, models, r"Independent reviewer after each Plan Task", "preferred per-Plan-Task review")
     assert_text_contains(check_id, models, r"Independent final whole-branch reviewer", "preferred final review")
     assert_text_contains(check_id, models, r"Preserve executing-plans checkpoints", "fallback checkpoints")
     assert_text_contains(check_id, models, r"Reviewer capability disclosure", "fallback reviewer disclosure")
-    assert_text_contains(check_id, models, r"Native Codex.*Independent reviewer sub-agent", "native independent review")
+    assert_text_contains(check_id, models, r"host-native execution.*Independent reviewer sub-agent", "host-native independent review")
     assert_text_contains(check_id, models, r"independent reviewer.*default", "native independent-review default")
     assert_text_contains(check_id, models, r"ask once.*proceed without independent review", "one-time no-review decision")
     assert_text_contains(check_id, models, r"Sub-agents: None.*operator authorization", "authorized native no-review route")
@@ -2361,18 +2398,21 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
 
 
-def planning_selection_fixture_errors(text: str) -> list[str]:
-    observations_match = re.search(r"Planning-task observations:(?P<body>.*?)(?:\n\nApproved execution selection:|\Z)", text, flags=re.DOTALL)
-    selection_match = re.search(r"Approved execution selection:(?P<body>.*)", text, flags=re.DOTALL)
-    if observations_match is None:
-        return ["missing planning-task observations"]
-    if selection_match is None:
-        return ["missing approved execution selection"]
-    selection = selection_match.group("body")
-    required = ["Target model/profile", "Capability tier", "Reasoning effort", "Orchestration mode", "Availability/fallback", "Execution continuity", "Artifact rehydration required"]
-    errors = [f"approved selection missing {field}" for field in required if field not in selection]
-    if re.search(r"(?:Target model/profile|Capability tier|Reasoning effort|Execution continuity):\s*`?not exposed`?", selection, flags=re.IGNORECASE):
-        errors.append("approved selection uses not exposed")
+def proposed_subagent_model_fixture_errors(text: str) -> list[str]:
+    required = [
+        "Active model policy",
+        "Recommended sub-agent model",
+        "Generation",
+        "Capability tier",
+        "Reasoning effort",
+        "Orchestration mode",
+        "Availability/fallback",
+    ]
+    errors = [f"proposed role missing {field}" for field in required if field not in text]
+    if re.search(r"(?:Generation|Capability tier|Reasoning effort):\s*`?not exposed`?", text, flags=re.IGNORECASE):
+        errors.append("recommended sub-agent model uses not exposed")
+    if re.search(r"Resolved target profile:\s*`?not exposed`?", text, flags=re.IGNORECASE):
+        errors.append("optional resolved target profile should be omitted when not exposed")
     return errors
 
 
@@ -2383,7 +2423,7 @@ def delegation_fixture_route(text: str) -> str:
         return "approved"
     if "Authorization state: `Pending`" in text and "Ask the operator" in text:
         return "pending"
-    if "unavailable" in text and "orchestration-thread fallback" in text:
+    if "unavailable" in text and "orchestration-session fallback" in text:
         return "fallback"
     if "outside the approved envelope" in text and "Ask the operator" in text:
         return "reapproval"
@@ -2510,17 +2550,20 @@ def assert_planning_template_clarity() -> None:
     assert_text_not_contains(check_id, plan_model_source, r"Current planning Codex task", "duplicated plan observations group")
     assert_text_not_contains(check_id, plan_model_source, r"Next-stage recommendation", "duplicated plan selection group")
 
-    unknown_observations = (
-        "Planning-task observations:\nModel generation: `not exposed`\nContext visibility: `not exposed`\n\n"
-        "Approved execution selection:\nTarget model/profile: `Terra`\nCapability tier: `balanced`\n"
-        "Reasoning effort: `high`\nOrchestration mode: `single-agent`\nAvailability/fallback: `Terra medium`\n"
-        "Execution continuity: `new task with curated-artifact handoff`\nArtifact rehydration required: `Yes`"
+    proposed_role = (
+        "Active model policy: `economy-default`\n"
+        "Recommended sub-agent model:\nGeneration: `latest available`\nCapability tier: `balanced`\n"
+        "Reasoning effort: `high`\nOrchestration mode: `bounded delegated sub-agents`\n"
+        "Availability/fallback: `Terra medium or equivalent`"
     )
-    unknown_target = unknown_observations.replace("Target model/profile: `Terra`", "Target model/profile: `not exposed`")
-    if planning_selection_fixture_errors(unknown_observations):
-        add_failure(check_id, "unknown-observations fixture was rejected")
-    if not planning_selection_fixture_errors(unknown_target):
-        add_failure(check_id, "unknown-target fixture was accepted")
+    unknown_target = proposed_role.replace("Generation: `latest available`", "Generation: `not exposed`")
+    redundant_resolved_target = proposed_role + "\nResolved target profile: `not exposed`"
+    if proposed_subagent_model_fixture_errors(proposed_role):
+        add_failure(check_id, "valid proposed-role model fixture was rejected")
+    if not proposed_subagent_model_fixture_errors(unknown_target):
+        add_failure(check_id, "unknown proposed-role generation fixture was accepted")
+    if not proposed_subagent_model_fixture_errors(redundant_resolved_target):
+        add_failure(check_id, "redundant unresolved target-profile fixture was accepted")
 
     small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
     small_plan = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md"
@@ -2553,7 +2596,7 @@ def assert_planning_template_clarity() -> None:
         "pending": "Authorization state: `Pending`\nAsk the operator to approve the recorded role.",
         "approved": "Authorization state: `Approved`\nUse the in-envelope strategy without another request.",
         "none": "Sub-agents: None\nFit reason: tightly coupled policy ownership.",
-        "fallback": "Tooling unavailable; use the orchestration-thread fallback.",
+        "fallback": "Tooling unavailable; use the orchestration-session fallback.",
         "reapproval": "This role is outside the approved envelope. Ask the operator before dispatch.",
     }
     for expected, fixture in fixtures.items():
@@ -2572,8 +2615,6 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
     forbidden_title = "Next-stage recommendation" if frozen else "Approved next stage"
     if forbidden_title in text:
         errors.append(f"contains incompatible {forbidden_title}")
-    if "Current orchestration session" not in text:
-        errors.append("missing current orchestration session")
     for group in ["Next lifecycle stage", "Orchestration", "Model", "Fallbacks and limits"]:
         if group not in text:
             errors.append(f"missing {group} group")
@@ -2584,8 +2625,10 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
         errors.append("lifecycle stage is missing or unsupported")
     if "First Plan Task" in text or re.search(r"(?m)^Activity:", text):
         errors.append("retired task-level transition fields are present")
-    if not re.search(r"Method:.*Run in:.*Review", text, flags=re.DOTALL):
+    if not re.search(r"Method:.*Orchestration mode:.*Run in:.*Review", text, flags=re.DOTALL):
         errors.append("orchestration fields are incomplete")
+    if re.search(r"(?<!Orchestration )Mode:", text):
+        errors.append("orchestration mode uses shorthand label")
     if not re.search(r"Generation:.*Capability tier:.*Reasoning", text, flags=re.DOTALL):
         errors.append("model fields are incomplete")
     if not re.search(r"Run in:\s*(?:same orchestration session|new orchestration session)(?=;|\n|$)", text):
@@ -2599,6 +2642,25 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
             errors.append("same orchestration session lacks a concrete continuity benefit")
     if re.search(r"(?:\d+[% ]+context|remaining context|compaction prediction)", text, flags=re.IGNORECASE):
         errors.append("context speculation is present")
+    return errors
+
+
+def next_stage_template_contract_errors(text: str, *, expected_stage: str) -> list[str]:
+    """Validate that a reusable planning template can render the four-group contract."""
+    errors: list[str] = []
+    ordered_groups = r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits"
+    if not re.search(ordered_groups, text, flags=re.IGNORECASE):
+        errors.append("missing ordered four-group next-stage recommendation")
+    if f"Stage: `{expected_stage}`" not in text:
+        errors.append(f"missing Stage: `{expected_stage}`")
+    if not re.search(r"Method:[^\n]+Orchestration mode:[^\n]+Run in:[^\n]+Review:", text):
+        errors.append("missing complete orchestration fields")
+    if not re.search(r"Generation:[^\n]+Capability tier:[^\n]+Reasoning:", text):
+        errors.append("missing complete model fields")
+    if not re.search(r"Run in:\s*`<same orchestration session / new orchestration session>`", text):
+        errors.append("missing canonical Run in choices")
+    if re.search(r"(?<!Orchestration )\bMode:", text):
+        errors.append("uses shorthand Mode field")
     return errors
 
 
@@ -2619,24 +2681,48 @@ def assert_next_stage_summary() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
+    staged_spec_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.small.handoff.md"
+    amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
+    missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")
+    shorthand_mode_fixture = draft_fixture.replace("Orchestration mode:", "Mode:")
     retired_fixture = draft_fixture.replace("Next lifecycle stage: Stage: `plan execution`", "Activity: First Plan Task: `TASK-001`")
-    unknown_same_task_fixture = draft_fixture.replace("profile `known suitable`; Context risk: `immaterial`; Continuity benefit: `active repository investigation`", "profile `not exposed`")
+    unknown_same_task_fixture = draft_fixture.replace(
+        "Resolved model profile `known suitable`; Context visibility: `material`",
+        "Resolved model profile `not exposed`; Context visibility: `material`",
+    )
     mixed_draft_fixture = draft_fixture + "\nApproved next stage"
     mixed_frozen_fixture = frozen_fixture + "\nNext-stage recommendation"
+    no_current_diagnostics_fixture = draft_fixture.split("\n\n", 1)[1].replace(
+        "same orchestration session", "new orchestration session"
+    )
     if next_stage_summary_fixture_errors(draft_fixture, frozen=False):
         add_failure(check_id, "valid draft summary fixture was rejected")
     if next_stage_summary_fixture_errors(frozen_fixture, frozen=True):
         add_failure(check_id, "valid frozen summary fixture was rejected")
+    if next_stage_summary_fixture_errors(no_current_diagnostics_fixture, frozen=False):
+        add_failure(check_id, "valid summary without optional current-session diagnostics was rejected")
+    for stage in ["plan drafting", "phase-plan drafting", "plan execution", "phase execution", "documented resumed stage"]:
+        stage_fixture = draft_fixture.replace("plan execution", stage)
+        if stage in {"plan drafting", "phase-plan drafting"}:
+            stage_fixture = stage_fixture.replace("superpowers:subagent-driven-development", "host-native planning").replace(
+                "Plan Task plus final reviewer", "planning-review arrangement"
+            )
+        if next_stage_summary_fixture_errors(stage_fixture, frozen=False):
+            add_failure(check_id, f"valid {stage} summary fixture was rejected")
     if not next_stage_summary_fixture_errors(invalid_fixture, frozen=False):
         add_failure(check_id, "invalid Run in fixture was accepted")
+    if not next_stage_summary_fixture_errors(missing_run_in_fixture, frozen=False):
+        add_failure(check_id, "missing Run in fixture was accepted")
+    if not next_stage_summary_fixture_errors(shorthand_mode_fixture, frozen=False):
+        add_failure(check_id, "shorthand Mode fixture was accepted")
     if not next_stage_summary_fixture_errors(retired_fixture, frozen=False):
         add_failure(check_id, "retired task-level transition fixture was accepted")
     if not next_stage_summary_fixture_errors(unknown_same_task_fixture, frozen=False):
-        add_failure(check_id, "unknown-profile same-task fixture was accepted")
+        add_failure(check_id, "unknown-profile same-session fixture was accepted")
     if not next_stage_summary_fixture_errors(mixed_draft_fixture, frozen=False):
         add_failure(check_id, "mixed draft state-label fixture was accepted")
     if not next_stage_summary_fixture_errors(mixed_frozen_fixture, frozen=True):
@@ -2660,6 +2746,9 @@ def assert_next_stage_summary() -> None:
             add_failure(check_id, f"{path} renders a current-task section instead of metadata")
         if re.search(r"(?m)^##+ Next-stage recommendation$", text):
             add_failure(check_id, f"{path} renders next-stage summary before handoff")
+        assert_text_contains(check_id, path, r"Resolved model profile.+Context visibility", "compact current-session diagnostics")
+        assert_text_contains(check_id, path, r"omit unless exposed and material", "current-session omission rule")
+        assert_text_not_contains(check_id, path, r"Generation, capability tier, reasoning", "duplicated current-session model facets")
 
     strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
     assert_text_contains(check_id, strategy_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
@@ -2672,6 +2761,26 @@ def assert_next_stage_summary() -> None:
             add_failure(check_id, f"{path} {error}")
         assert_text_contains(check_id, path, r"rename it `### Approved next stage` at freeze", "freeze-time next-stage rename")
         assert_text_contains(check_id, path, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered handoff groups")
+        assert_text_contains(check_id, path, r"Method:[^\n]+Orchestration mode:[^\n]+Run in:[^\n]+Review:", "complete orchestration handoff fields")
+
+    governed_transition_templates = [
+        (staged_spec_source, "plan drafting"),
+        (amendment_template, "<documented resumed stage>"),
+    ]
+    for path, expected_stage in governed_transition_templates:
+        text = read_repo_text(path)
+        for error in next_stage_template_contract_errors(text, expected_stage=expected_stage):
+            add_failure(check_id, f"{path} {error}")
+        if not next_stage_template_contract_errors(
+            text.replace("Orchestration mode:", "Mode:", 1), expected_stage=expected_stage
+        ):
+            add_failure(check_id, f"{path} shorthand Orchestration mode mutation was accepted")
+        run_in_line = "Run in: `<same orchestration session / new orchestration session>`; "
+        if not next_stage_template_contract_errors(text.replace(run_in_line, "", 1), expected_stage=expected_stage):
+            add_failure(check_id, f"{path} missing Run in mutation was accepted")
+
+    for rule_id in ["rule:models.selection-dimensions", "rule:models.orchestration-mode", "rule:models.next-stage-continuity"]:
+        assert_text_contains(check_id, amendment_template, re.escape(rule_id), f"amendment template {rule_id} route")
 
     for path in generated_plans:
         text = read_repo_text(path)
@@ -2690,7 +2799,7 @@ def assert_next_stage_summary() -> None:
 
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
     large_spec_text = read_repo_text(large_spec)
-    if len(re.findall(r"(?m)^### Current orchestration session$", large_spec_text)) != 1:
+    if len(re.findall(r"(?m)^### Current orchestration session diagnostics$", large_spec_text)) != 1:
         add_failure(check_id, "large anchor spec no longer has its single current-task strategy presentation")
     if len(re.findall(r"(?m)^### Next-stage recommendation(?: \(draft only\))?$", large_spec_text)) != 1:
         add_failure(check_id, "large anchor spec no longer has its single next-stage strategy presentation")
@@ -2698,18 +2807,28 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(check_id, models, r"Current orchestration session", "current orchestration session separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
     assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
+    assert_text_contains(check_id, models, r"Stage:[^\n]+plan drafting[^\n]+phase-plan drafting", "canonical plan-drafting stage notation")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
     assert_text_contains(check_id, models, r"Run in.*same orchestration session.*new orchestration session", "Run in values")
-    assert_text_contains(check_id, models, r"Next lifecycle stage.*Review.*Plan Task.*final review", "canonical reviewer terms")
+    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]+Orchestration mode[\s\S]+Review[\s\S]+Plan Task[\s\S]+final review", "canonical reviewer terms")
     assert_text_contains(check_id, architecture, r"Task/session terminology", "models terminology catalog")
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
     if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
-    if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Run in[\s\S]+Review[\s\S]+Model[\s\S]+Generation[\s\S]+Capability tier[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
+    owner_pattern = (
+        re.escape("rule" + ":models.selection-dimensions")
+        + r"[\s\S]+"
+        + re.escape("rule" + ":lifecycle.stage-boundaries")
+    )
+    if not re.search(owner_pattern, draft_review, flags=re.IGNORECASE):
+        add_failure(check_id, "draft review does not cite the selection and lifecycle owners")
+    if not re.search(r"Next lifecycle stage[\s\S]+Stage:[\s\S]+Method[\s\S]+Orchestration mode[\s\S]+Run in[\s\S]+Review[\s\S]+Model[\s\S]+Generation[\s\S]+Capability tier[\s\S]+Reasoning", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft-review group definition is incomplete")
+    assert_text_not_contains(check_id, freeze, r"documented non-execution transition that has no `Run in`", "no-Run-in continuity exception")
+    assert_text_not_contains(check_id, freeze, r"same-task|new-task recommendation|current task", "retired continuity terminology")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")
     if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):

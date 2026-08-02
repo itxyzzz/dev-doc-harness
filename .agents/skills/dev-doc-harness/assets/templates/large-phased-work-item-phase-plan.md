@@ -9,7 +9,7 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.phase`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:lifecycle.large-phase-orchestration`, `rule:quality.phase-plan-fresh-thread`, `rule:models.strategy-required`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
-Current orchestration session: Generation, capability tier, reasoning, resolved profile, and context visibility: `<exposed facts, or omit when not exposed or material>`.
+Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
@@ -96,17 +96,15 @@ Sub-agent `<role or task id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<files, specs, docs, diffs, decisions, or supplied text>`.
 4. Output artifact: `<notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
-14. Write authority: `<read-only / bounded paths / other approved scope>`.
-15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Implementation tasks
 
@@ -212,7 +210,7 @@ Stage: `phase execution`.
 
 #### Orchestration
 
-Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
+Method: `<planning or execution method for Stage>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
@@ -236,9 +234,9 @@ Generation: `<latest available or concrete generation>`; Capability tier: `<flag
 
 ## Readiness
 
-- [ ] Optional Current orchestration session facts are separate from the Next-stage recommendation: Next lifecycle stage, Orchestration (Method, Run in, Review), Model (Generation, Capability tier, and Reasoning), then Fallbacks and limits.
+- [ ] Optional current-session diagnostics contain only Resolved model profile and Context visibility and are omitted unless exposed and material; the Next-stage recommendation remains separate: Next lifecycle stage, Orchestration (Method, Orchestration mode, Run in, Review), Model (Generation, Capability tier, and Reasoning), then Fallbacks and limits.
 - [ ] The phase preserves its approved anchor inputs and has clear tasks, checks, and changelog entry.
-- [ ] The approved execution selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
+- [ ] The grouped next-stage selection, current-phase implementation handoff, post-phase transition, and upcoming-stage sub-agent assessment are explicit.
 - [ ] No required decision or ownerless deferral remains.
 
 ## Completion

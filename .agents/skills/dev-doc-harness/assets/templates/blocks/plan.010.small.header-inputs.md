@@ -7,7 +7,7 @@ Harness release: `<version or unknown>`
 Schema: `schema:plan.small-medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
-Current orchestration session: Generation, capability tier, reasoning, resolved profile, and context visibility: `<exposed facts, or omit when not exposed or material>`.
+Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
 
 Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the plan becomes large or hard to scan.
 

@@ -28,12 +28,12 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-### Current orchestration session
+### Current orchestration session diagnostics
 
-1. Model generation: `<generation or not exposed>`.
-2. Resolved profile: `<concrete runtime profile or not exposed>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Context visibility: `<exposed signal or not exposed>`.
+Omit unless exposed and material.
+
+1. Resolved model profile: `<concrete runtime profile>`.
+2. Context visibility: `<exposed material signal>`.
 
 ### Next-stage recommendation
 
@@ -43,7 +43,7 @@ Stage: `phase-plan drafting`.
 
 #### Orchestration
 
-Method: `<planning or execution method for Stage>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
+Method: `<planning or execution method for Stage>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
 
 #### Model
 
@@ -77,14 +77,12 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
-14. Write authority: `<read-only / bounded paths / other approved scope>`.
-15. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
