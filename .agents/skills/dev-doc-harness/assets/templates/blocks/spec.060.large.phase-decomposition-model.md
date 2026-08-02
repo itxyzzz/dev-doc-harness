@@ -37,13 +37,17 @@ Omit unless exposed and material.
 
 ### Next-stage recommendation
 
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together.
+
 #### Next lifecycle stage
 
 Stage: `phase-plan drafting`.
 
 #### Orchestration
 
-Method: `<planning or execution method for Stage>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
+Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
+Orchestration mode fit: `<why this topology fits phase-plan drafting>`.
 
 #### Model
 

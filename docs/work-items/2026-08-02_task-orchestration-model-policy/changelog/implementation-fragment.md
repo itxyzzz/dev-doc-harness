@@ -1,3 +1,13 @@
+### 2026-08-02 docs: task-orchestration-model-policy -- tighten selection templates
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Constrained fixed-stage templates to planning- or execution-appropriate Method and Review prompts.
+- Added an explicit Orchestration mode fit rationale across canonical notation, template sources, generated artifacts, freeze presentation, and validation.
+- Added the large-anchor draft-to-frozen heading transition and replaced position-dependent policy references with stable rule IDs.
+
 ### 2026-08-02 docs: task-orchestration-model-policy -- correct policy ownership structure
 
 Meta -- `unreleased` : `distributable`

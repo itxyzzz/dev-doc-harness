@@ -210,7 +210,8 @@ Stage: `phase execution`.
 
 #### Orchestration
 
-Method: `<planning or execution method for Stage>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`.
+Method: `<execution method for phase execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
+Orchestration mode fit: `<why this topology fits phase execution>`.
 
 #### Model
 

@@ -237,6 +237,7 @@ Stage: `plan drafting`.
 #### Orchestration
 
 Method: `<planning method for plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
+Orchestration mode fit: `<why this topology fits plan drafting>`.
 
 #### Model
 

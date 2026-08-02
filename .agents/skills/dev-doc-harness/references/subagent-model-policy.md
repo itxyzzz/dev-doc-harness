@@ -41,16 +41,17 @@ Upcoming-stage orchestration and model selection for substantial work is actiona
 The next-stage summary is ordered as:
 
 1. **Next lifecycle stage** records the next documented stage determined by `rule:lifecycle.stage-boundaries`.
-2. **Orchestration** records Method, Orchestration mode, `Run in` (next-stage continuity: same or new orchestration session), and the stage-appropriate Review arrangement.
+2. **Orchestration** records Method, Orchestration mode and its fit reason, `Run in` (next-stage continuity: same or new orchestration session), and the stage-appropriate Review arrangement.
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
 4. **Fallbacks and limits** record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
 
 ### Orchestration selection
 
-The Orchestration group defines four fields at first use:
+The Orchestration group defines four selection fields and one required rationale at first use:
 
 - **Method:** the named workflow used for the documented next lifecycle stage.
-- **Orchestration mode:** the agent/controller topology used to perform that stage. Record one mode and a fit reason.
+- **Orchestration mode:** the agent/controller topology used to perform that stage.
+- **Orchestration mode fit:** the concise reason that topology fits the stage's coupling, delegation, review, and integration needs.
 - **Run in:** next-stage continuity, recorded as `same orchestration session` or `new orchestration session`.
 - **Review:** the stage-appropriate planning-review or execution Plan Task/final-review arrangement.
 
@@ -85,7 +86,7 @@ Findings must be evidence-backed and include severity plus a reproduction or val
 
 #### Final review
 
-Final review of high-blast-radius work must use the independent reviewer contract above, subject only to the documented unavailable-review or operator-declined-review disclosure and authorization exception in `rule:models.execution-review-contract`. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
+Final review of high-blast-radius work must use the independent reviewer contract in `rule:models.execution-review-contract`, subject only to that rule's documented unavailable-review or operator-declined-review disclosure and authorization exception. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
 
 #### Final integration ownership
 
@@ -272,7 +273,7 @@ Substantial small/medium plans and large or phased work item specs or phase plan
 
 For plans and phase plans, put the optional current orchestration session diagnostics once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation. Omit current-session diagnostics unless they are exposed and material.
 
-The following normative notation block defines the required labels and ordering. Large anchor specs render it as one section; plans and phase plans distribute the same fields between header diagnostics, the strategy section, and the final handoff as described above.
+The following normative notation block defines the required labels and ordering. Large anchor specs render it as one section; plans and phase plans distribute the same fields between current-session diagnostics, the upcoming-stage sub-agent assessment from `rule:models.strategy-required`, and the final selection from `rule:models.selection-dimensions`.
 
 ```md
 ## Model and Sub-agent Strategy
@@ -292,6 +293,7 @@ Stage: `<plan drafting / phase-plan drafting / plan execution / phase execution 
 
 Method: `<planning or execution method for Stage>`
 Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`
+Orchestration mode fit: `<why this topology fits the stage>`
 Run in: `<same orchestration session / new orchestration session>`
 Review: `<planning-review arrangement or execution Plan Task/final-review arrangement>`
 
@@ -309,4 +311,4 @@ At freeze, relabel this same block **Approved next stage**. Routine notation omi
 
 ```
 
-Refer to the preceding sections for normative meanings and to `module:role-examples` for optional role examples.
+Use `rule:models.selection-dimensions`, `rule:models.orchestration-mode`, `rule:models.next-stage-continuity`, and `rule:models.strategy-required` for normative meanings, and use `module:role-examples` for optional role examples.
