@@ -441,7 +441,25 @@ def get_reference_records() -> list[ReferenceRecord]:
 
 
 def get_owner_table_heading_names(owner_cell: str) -> list[str]:
-    return [f"## {match.group(1).strip()}" for match in re.finditer(r"##\s*([^`|]+?)(?:\s+and\s+|$)", owner_cell)]
+    return [
+        match.group("heading").strip()
+        for match in re.finditer(
+            r"(?<!`)(?P<fence>`+)(?P<heading>#{2,6}\s+.*?)(?P=fence)(?!`)",
+            owner_cell,
+        )
+    ]
+
+
+def assert_owner_heading_parser_contract() -> None:
+    expected = ["### Nested owner", "#### Deep owner", "#### `Run in` (next-stage continuity)"]
+    actual = get_owner_table_heading_names(
+        "`### Nested owner` and `#### Deep owner` and ``#### `Run in` (next-stage continuity)``"
+    )
+    if actual != expected:
+        add_failure(
+            "graph.owner-headings",
+            f"Owner-heading parser did not preserve nested heading levels: expected {expected}, got {actual}",
+        )
 
 
 def assert_graph_references(owners: dict[str, dict[str, list[Owner]]], references: list[ReferenceRecord]) -> None:
@@ -462,7 +480,13 @@ def assert_graph_references(owners: dict[str, dict[str, list[Owner]]], reference
 def assert_owner_headings(owner_rows: list[OwnerRow]) -> None:
     for row in owner_rows:
         text = read_repo_text(row.path)
-        for heading in get_owner_table_heading_names(row.owner_cell):
+        headings = get_owner_table_heading_names(row.owner_cell)
+        if not headings:
+            add_failure(
+                "graph.owner-headings",
+                f"Owner cell for {row.rule_id} does not declare a backticked Markdown heading in {row.path}",
+            )
+        for heading in headings:
             if not re.search(rf"^{re.escape(heading)}\s*$", text, flags=re.MULTILINE):
                 add_failure("graph.owner-headings", f"Owner heading '{heading}' for {row.rule_id} is missing in {row.path}")
 
@@ -2376,8 +2400,26 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, lifecycle, r"superpowers:subagent-driven-development", "preferred execution method")
     assert_text_contains(check_id, lifecycle, r"superpowers:executing-plans", "Superpowers fallback method")
     assert_text_contains(check_id, lifecycle, r"host-native execution.*Superpowers.*unavailable", "host-native default boundary")
+    assert_text_contains(
+        check_id,
+        lifecycle,
+        re.escape("rule:models.execution-review-contract"),
+        "route-specific reviewer-contract owner",
+    )
     if "independent review can run" in read_repo_text(models).lower():
         add_failure(check_id, "native method cascade retains obsolete review-availability blocker")
+    assert_text_contains(
+        check_id,
+        models,
+        re.escape("rule:models.execution-review-contract"),
+        "execution-review contract rule",
+    )
+    assert_text_not_contains(
+        check_id,
+        models,
+        re.escape("in `## Execution method and reviewer contract`"),
+        "heading-literal reviewer-contract reference",
+    )
     assert_text_contains(check_id, models, r"Independent reviewer after each Plan Task", "preferred per-Plan-Task review")
     assert_text_contains(check_id, models, r"Independent final whole-branch reviewer", "preferred final review")
     assert_text_contains(check_id, models, r"Preserve executing-plans checkpoints", "fallback checkpoints")
@@ -2396,6 +2438,12 @@ def assert_execution_method_fallbacks() -> None:
     assert_text_contains(check_id, freeze, r"variance log only when.*noteworthy allowed variance", "conditional variance-log record")
     assert_text_contains(check_id, freeze, r"without.*second generic.*method question", "freeze start selection")
     assert_text_contains(check_id, router, r"execution-method cascade", "router execution route")
+    assert_text_contains(
+        check_id,
+        router,
+        re.escape("rule:models.execution-review-contract"),
+        "router reviewer-contract owner",
+    )
 
 
 def proposed_subagent_model_fixture_errors(text: str) -> list[str]:
@@ -2865,6 +2913,7 @@ def run_checks() -> None:
     assert_graph_references(owners, references)
     write_check_result("graph.references")
 
+    assert_owner_heading_parser_contract()
     assert_owner_headings(owner_rows)
     write_check_result("graph.owner-headings")
 
@@ -2876,7 +2925,10 @@ def run_checks() -> None:
     assert_route_requires("Draft or review large anchor specs", ["module:lifecycle", "module:naming", "module:quality", "module:models", "module:artifact-style"], "router.required-routes")
     assert_route_requires("Draft or review phase plans", ["module:naming", "module:quality", "module:lifecycle", "module:models"], "router.required-routes")
     assert_route_contains("Freeze planning packages", ["module:freeze-gate", "module:lifecycle"])
-    assert_route_contains("Execute approved work and record variance", ["module:lifecycle", "module:execution-quality"])
+    assert_route_contains(
+        "Execute approved work and record variance",
+        ["module:lifecycle", "module:execution-quality", "rule:models.execution-review-contract"],
+    )
     assert_route_contains("Use or review sub-agent strategy", ["module:models", "rule:models.strategy-required"])
     assert_route_contains("Evidence-heavy review or reports", ["module:evidence"])
     assert_route_contains("Release, package, or team adoption work", ["module:release"])

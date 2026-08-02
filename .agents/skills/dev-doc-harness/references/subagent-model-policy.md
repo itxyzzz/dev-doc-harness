@@ -8,18 +8,19 @@ Owned rule IDs:
 
 | Rule ID | Local owner |
 |---|---|
-| `rule:models.strategy-required` | `## Upcoming-stage sub-agent assessment` |
-| `rule:models.selection-dimensions` | `## Upcoming-stage selection` |
-| `rule:models.orchestration-mode` | `## Orchestration selection` |
-| `rule:models.next-stage-continuity` | `## Next-stage continuity` |
-| `rule:models.context-strategy` | `## Sub-agent context` |
-| `rule:models.approved-strategy-authorized` | `## Sub-agent authorization` |
-| `rule:models.fresh-confirmation` | `## Sub-agent authorization` |
-| `rule:models.concurrent-cap` | `## Allocation` |
-| `rule:models.enterprise-default` | `## Policy: enterprise-default` |
-| `rule:models.economy-default` | `## Policy: economy-default` |
-| `rule:models.final-review` | `## Final review` |
-| `rule:models.final-integration-ownership` | `## Final integration ownership` |
+| `rule:models.strategy-required` | `### Upcoming-stage sub-agent assessment` |
+| `rule:models.selection-dimensions` | `## Upcoming-stage selection` and `### Model facets` |
+| `rule:models.orchestration-mode` | `### Orchestration selection` |
+| `rule:models.next-stage-continuity` | ``#### `Run in` (next-stage continuity)`` |
+| `rule:models.context-strategy` | `### Sub-agent context` |
+| `rule:models.approved-strategy-authorized` | `### Sub-agent authorization` |
+| `rule:models.fresh-confirmation` | `### Sub-agent authorization` |
+| `rule:models.concurrent-cap` | `### Sub-agent allocation` |
+| `rule:models.enterprise-default` | `#### Policy: enterprise-default` |
+| `rule:models.economy-default` | `#### Policy: economy-default` |
+| `rule:models.execution-review-contract` | `## Execution method and reviewer contract` |
+| `rule:models.final-review` | `#### Final review` |
+| `rule:models.final-integration-ownership` | `#### Final integration ownership` |
 
 ## Task and session terminology
 
@@ -44,7 +45,7 @@ The next-stage summary is ordered as:
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
 4. **Fallbacks and limits** record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
 
-## Orchestration selection
+### Orchestration selection
 
 The Orchestration group defines four fields at first use:
 
@@ -52,6 +53,10 @@ The Orchestration group defines four fields at first use:
 - **Orchestration mode:** the agent/controller topology used to perform that stage. Record one mode and a fit reason.
 - **Run in:** next-stage continuity, recorded as `same orchestration session` or `new orchestration session`.
 - **Review:** the stage-appropriate planning-review or execution Plan Task/final-review arrangement.
+
+#### Method and orchestration mode
+
+Method always names the workflow for the documented next lifecycle stage. Planning stages (`plan drafting` and `phase-plan drafting`) record a planning method and planning-review arrangement; they do not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
 
 Available orchestration modes are:
 
@@ -62,17 +67,39 @@ Available orchestration modes are:
 
 Platform multi-agent mode does not automatically provide harness-managed task partitioning, context strategies, per-agent model selection, file ownership, independent reports, or reviewer gates. The orchestration session still owns validation, integration judgment, variance, and the user-facing result.
 
-Method always names the workflow for the documented next lifecycle stage. Planning stages (`plan drafting` and `phase-plan drafting`) record a planning method and planning-review arrangement; they do not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
+#### `Run in` (next-stage continuity)
+
+Method does not determine next-stage continuity. `Run in` accepts only `same orchestration session` or `new orchestration session`. Prefer `new orchestration session` when the current profile or context suitability is `not exposed`, the approved profile cannot be reconciled with the current profile, or multiple Plan Tasks, validation cycles, reviewer/fix loops, or integration work make a clean context safer. Choose `same orchestration session` only when the current profile is known suitable, context risk is known suitable or immaterial, and the artifact records a concrete continuity benefit.
+
+A new orchestration session loads the applicable instructions, harness, exact frozen package, amendments and variance, approval/baseline, documented next lifecycle stage, and variance stop before edits. A same-session route rereads the frozen package after a model switch or recorded continuity risk. Do not use numeric context thresholds, invent remaining-context estimates, or predict compaction when the runtime does not expose those signals.
+
+Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next lifecycle stage, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
+
+### Review arrangement
+
+#### Independent review
+
+Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. Apply the route-specific mandatory obligations in `rule:models.execution-review-contract`; a separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
+
+Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it. Isolated read-only review remains valuable even when concurrent writing would be too tightly coupled.
+
+#### Final review
+
+Final review of high-blast-radius work must use the independent reviewer contract above, subject only to the documented unavailable-review or operator-declined-review disclosure and authorization exception in `rule:models.execution-review-contract`. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
+
+#### Final integration ownership
+
+The execution orchestration session owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. It consumes independent reviewer findings but is not itself independent review. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
 
 ## Model selection
+
+### Model facets
 
 The Model group selects three independent facets:
 
 - **Generation:** the model provider's model family or version cohort, such as `latest available` or a concrete compatibility-constrained generation.
 - **Capability tier:** the durable vendor-neutral class used to express task fit independently from a provider's concrete model name.
 - **Reasoning effort:** the independently selected runtime effort, commonly low, medium, high, and `max` where supported.
-
-**Resolved profile** is the concrete runtime mapping of those three choices when exposed. It is not a fourth durable selection facet. Host runtimes and model providers may expose different concrete names, availability signals, and mappings without changing the three durable facets.
 
 Permanent capability tiers are:
 
@@ -84,13 +111,44 @@ Concrete names are current mappings, not permanent policy vocabulary. The curren
 
 Reasoning effort stays independent of capability tier. Use the effort values exposed by the runtime, commonly low, medium, high, and `max` where supported. `Ultra` is not a reasoning-effort value or capability tier.
 
-## Next-stage continuity
+**Resolved profile** is the concrete runtime mapping of those three choices when exposed. It is not a fourth durable selection facet. Host runtimes and model providers may expose different concrete names, availability signals, and mappings without changing the three durable facets.
 
-Method does not determine next-stage continuity. `Run in` accepts only `same orchestration session` or `new orchestration session`. Prefer `new orchestration session` when the current profile or context suitability is `not exposed`, the approved profile cannot be reconciled with the current profile, or multiple Plan Tasks, validation cycles, reviewer/fix loops, or integration work make a clean context safer. Choose `same orchestration session` only when the current profile is known suitable, context risk is known suitable or immaterial, and the artifact records a concrete continuity benefit.
+### Model selection policies
 
-A new orchestration session loads the applicable instructions, harness, exact frozen package, amendments and variance, approval/baseline, documented next lifecycle stage, and variance stop before edits. A same-session route rereads the frozen package after a model switch or recorded continuity risk. Do not use numeric context thresholds, invent remaining-context estimates, or predict compaction when the runtime does not expose those signals.
+#### Policy: enterprise-default
 
-Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next lifecycle stage, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
+Cost minimization is not the primary optimization factor.
+
+Under `enterprise-default`, proactively assess platform multi-agent/`ultra` when complex decomposable work may benefit from parallelism, coverage, or throughput, and record why it is or is not selected.
+
+Optimize for:
+
+1. Correctness.
+2. Risk reduction.
+3. Context isolation.
+4. Parallel throughput.
+5. Review quality.
+6. Efficient main-thread use.
+
+Use the latest strongest available model class for architecture, security, compliance, schema or persistence changes, complex debugging, high-blast-radius implementation, and final review.
+
+Use a latest smaller or faster model class only for narrow search, summarization, mechanical file inspection, simple documentation extraction, and other bounded low-risk work.
+
+Do not fall back to older or cheaper models solely to save cost.
+
+#### Policy: economy-default
+
+Cost and usage limits are active optimization factors.
+
+Under `economy-default`, `balanced/medium` (Terra medium or equivalent) is the suggested baseline for substantial bounded work with explicit outputs and validation. The parenthetical profile is a current mapping, not permanent policy vocabulary or a mandate; the operator retains override authority.
+
+Use `balanced/high` (Terra high or equivalent) as an effort escalation when the task model remains suitable but needs fuller dependency or edge-case traversal. Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when ambiguity handling, competing interpretations, an unclear causal chain, or difficult judgment remains limiting. Reserve `flagship/high` (Sol high or equivalent) for an exceptional escalation with a written reason after `flagship/medium` leaves a high-impact unresolved conflict or evidence gap.
+
+For later-stage escalation, name the residual uncertainty or new variance that remains after the frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a spending trigger.
+
+Use fast/economy allocations for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
+
+A cheaper sub-agent must not be the final authority for high-blast-radius decisions.
 
 ## Current-session diagnostics
 
@@ -113,19 +171,21 @@ Route-specific review obligations are mandatory:
 
 For Superpowers, the external method session is the execution controller's session, not necessarily the planning orchestration session. A new orchestration session may load the frozen package, invoke the selected method, and remain the controller for Plan Task and reviewer sub-agent runs.
 
-## Upcoming-stage sub-agent assessment
+## Using sub-agents
+
+### Upcoming-stage sub-agent assessment
 
 Sub-agent model and reasoning-effort selection must be deliberate for substantial work. Before each upcoming-stage spec drafting, plan or phase-plan drafting, amendment or replanning, implementation, or consequential review stage, assess whether sub-agents are justified by isolation, review quality, parallel throughput, specialized execution, or risk reduction. Record either a bounded strategy or `Sub-agents: None` with a stage-specific fit reason.
 
 This preserves the pre-spec assessment boundary without adding a pre-spec artifact, lifecycle stage, gate, or mandatory reviewer. A durable pre-spec selection mechanism is future work.
 
-## Sub-agent authorization
+### Sub-agent authorization
 
 When useful delegation is not already authorized, record the roles, context, outputs, model and effort envelope, write authority, concurrency, and fallback, then explicitly ask the operator to approve that bounded strategy before dispatch. An approved in-envelope strategy does not need a repeated confirmation; approval does not override unavailable tooling, higher-priority platform limits, or an out-of-envelope role, model/effort, write scope, concurrency, or boundary.
 
 When `module:lifecycle` uses one orchestration session with bounded delegation as a work-sizing boundary, this module owns the related context strategy, concurrency, model-selection, authorization, and final integration mechanics.
 
-## Sub-agent context
+### Sub-agent context
 
 Plans that propose sub-agents must specify:
 
@@ -154,7 +214,7 @@ Prefer curated context for bounded sub-agent work. Do not use full-history forks
 
 For large or phased work, post-anchor phase-plan drafting should prefer curated-artifact sub-agent orchestration when phases are independently plannable, the approved anchor spec and amendments provide enough context, and the platform supports sub-agents. Use `rule:lifecycle.large-phase-orchestration` for phase order. Use the approved spec, approved amendments, and relevant prior phase outputs as curated artifacts. When a curated-artifact sub-agent is not used for phase-plan drafting, record the fallback reason, such as unavailable tooling, tightly coupled phases, coordination overhead, or a need for main-thread synthesis.
 
-## Allocation
+### Sub-agent allocation
 
 When exposed and material, account for the current session's Resolved model profile and Context visibility when judging continuity. For allocation, judge the recommended next-stage model against complexity, risk, ambiguity, blast radius, budget, and latency, and change its capability tier or reasoning effort when the proposed selection is clearly mismatched to the work.
 
@@ -183,60 +243,36 @@ The normal cap is 3 concurrent sub-agents. This is a concurrency guardrail, not 
 
 Escalate model strength or reasoning effort when a cheaper attempt fails or remains uncertain; requirements stay ambiguous after exploration; the task affects public APIs, data models, migrations, security, privacy, compliance, or irreversible operations; the output governs later implementation; or the work is a final high-risk review. Record the escalation rationale. Using the latest strongest model class for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason.
 
-## Policy: enterprise-default
+### Runtime report requirements
 
-Cost minimization is not the primary optimization factor.
+Every sub-agent report must include:
 
-Under `enterprise-default`, proactively assess platform multi-agent/`ultra` when complex decomposable work may benefit from parallelism, coverage, or throughput, and record why it is or is not selected.
+- Assigned scope.
+- Files inspected or changed.
+- Commands and tests run.
+- Assumptions.
+- Uncertainty or residual risk.
+- Recommended next step.
 
-Optimize for:
+The orchestration session's implementation completion report must also include de-facto sub-agent use when sub-agents were authorized or used:
 
-1. Correctness.
-2. Risk reduction.
-3. Context isolation.
-4. Parallel throughput.
-5. Review quality.
-6. Efficient main-thread use.
+- Total sub-agents used.
+- Roles or scopes handled.
+- Whether they ran concurrently or in waves.
+- Context strategy actually used for each sub-agent, including whether full-history fork was used.
+- The de-facto model, model class, or profile used for each sub-agent when the platform exposes it.
+- Observed context/model inheritance behavior when known, such as full-history fork forcing inherited model, reasoning, or agent type.
+- An explicit note when exact model details are unavailable, with the planned policy-relative class or observed profile information instead.
 
-Use the latest strongest available model class for architecture, security, compliance, schema or persistence changes, complex debugging, high-blast-radius implementation, and final review.
-
-Use a latest smaller or faster model class only for narrow search, summarization, mechanical file inspection, simple documentation extraction, and other bounded low-risk work.
-
-Do not fall back to older or cheaper models solely to save cost.
-
-## Policy: economy-default
-
-Cost and usage limits are active optimization factors.
-
-Under `economy-default`, `balanced/medium` (Terra medium or equivalent) is the suggested baseline for substantial bounded work with explicit outputs and validation. The parenthetical profile is a current mapping, not permanent policy vocabulary or a mandate; the operator retains override authority.
-
-Use `balanced/high` (Terra high or equivalent) as an effort escalation when the task model remains suitable but needs fuller dependency or edge-case traversal. Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when ambiguity handling, competing interpretations, an unclear causal chain, or difficult judgment remains limiting. Reserve `flagship/high` (Sol high or equivalent) for an exceptional escalation with a written reason after `flagship/medium` leaves a high-impact unresolved conflict or evidence gap.
-
-For later-stage escalation, name the residual uncertainty or new variance that remains after the frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a spending trigger.
-
-Use fast/economy allocations for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
-
-A cheaper sub-agent must not be the final authority for high-blast-radius decisions.
-
-## Independent review
-
-Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. Apply the route-specific mandatory obligations in `## Execution method and reviewer contract`; a separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
-
-Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it. Isolated read-only review remains valuable even when concurrent writing would be too tightly coupled.
-
-## Final review
-
-Final review of high-blast-radius work must use the independent reviewer contract above, subject only to the documented unavailable-review or operator-declined-review disclosure and authorization exception in `## Execution method and reviewer contract`. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
-
-## Final integration ownership
-
-The execution orchestration session owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. It consumes independent reviewer findings but is not itself independent review. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
+When the preferred execution strategy or fallback was exercised, completion also records the de-facto orchestration mode, runtime-permission result, platform-availability result, fallback use, next-stage continuity, context visibility, and artifact rehydration performed.
 
 ## Required notation
 
 Substantial small/medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Small/medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read.
 
-For plans and phase plans, put optional **Current orchestration session** diagnostics once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation. Omit current-session diagnostics unless they are exposed and material.
+For plans and phase plans, put the optional current orchestration session diagnostics once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation. Omit current-session diagnostics unless they are exposed and material.
+
+The following normative notation block defines the required labels and ordering. Large anchor specs render it as one section; plans and phase plans distribute the same fields between header diagnostics, the strategy section, and the final handoff as described above.
 
 ```md
 ## Model and Sub-agent Strategy
@@ -273,27 +309,4 @@ At freeze, relabel this same block **Approved next stage**. Routine notation omi
 
 ```
 
-Refer to the preceding sections for normative meanings and to `module:role-examples` for optional role examples; do not duplicate selection semantics or embed an example-role table here.
-
-## Runtime report requirements
-
-Every sub-agent report must include:
-
-- Assigned scope.
-- Files inspected or changed.
-- Commands and tests run.
-- Assumptions.
-- Uncertainty or residual risk.
-- Recommended next step.
-
-The orchestration session's implementation completion report must also include de-facto sub-agent use when sub-agents were authorized or used:
-
-- Total sub-agents used.
-- Roles or scopes handled.
-- Whether they ran concurrently or in waves.
-- Context strategy actually used for each sub-agent, including whether full-history fork was used.
-- The de-facto model, model class, or profile used for each sub-agent when the platform exposes it.
-- Observed context/model inheritance behavior when known, such as full-history fork forcing inherited model, reasoning, or agent type.
-- An explicit note when exact model details are unavailable, with the planned policy-relative class or observed profile information instead.
-
-When the preferred execution strategy or fallback was exercised, completion also records the de-facto orchestration mode, runtime-permission result, platform-availability result, fallback use, next-stage continuity, context visibility, and artifact rehydration performed.
+Refer to the preceding sections for normative meanings and to `module:role-examples` for optional role examples.

@@ -1,3 +1,13 @@
+### 2026-08-02 docs: task-orchestration-model-policy -- correct policy ownership structure
+
+Meta -- `unreleased` : `distributable`
+
+#### Changed
+
+- Reorganized the canonical model policy into explicit orchestration, model-selection, review, and sub-agent responsibility groups.
+- Added a stable execution-review contract rule and corrected nested rule-owner mappings and consumers.
+- Made owner-heading validation enforce exact nested heading levels and documented the operator-authorized structure-only policy variance.
+
 ### 2026-08-02 docs: task-orchestration-model-policy -- align orchestration and model selection
 
 Meta -- `unreleased` : `distributable`

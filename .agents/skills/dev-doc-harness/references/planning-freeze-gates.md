@@ -54,7 +54,7 @@ After the operator explicitly approves the staged planning package:
 8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
 9. Report the commit hash and approved artifact paths.
 10. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-11. Confirm that the frozen package distinguishes optional current-session diagnostics from **Next-stage recommendation** defined under `## Draft review checkpoint`. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-session start question when the approved route is a new session.
+11. Confirm that the frozen package distinguishes **Next-stage recommendation** defined under `## Draft review checkpoint` from the optional current-session diagnostics. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-session start question when the approved route is a new session.
 
 ## Post-freeze transition routing
 
