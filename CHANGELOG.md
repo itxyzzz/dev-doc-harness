@@ -6,6 +6,14 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-08-03 plan: spec-template-alignment -- approve spec template cleanup
+
+Meta -- `unreleased` : `repository-only`
+
+#### Planned
+
+- Approved the bounded source-block, generated-template, and validator plan for the small/medium and large/phased specification-template alignment.
+
 ### 2026-08-01 refactor: changelog-fragment-clarity -- clarify current fragment lifecycle
 
 Meta -- `unreleased` : `distributable`
