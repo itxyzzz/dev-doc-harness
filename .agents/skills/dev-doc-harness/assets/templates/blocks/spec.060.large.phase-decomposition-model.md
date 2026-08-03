@@ -52,9 +52,9 @@ Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<singl
 
 Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
-#### Fallbacks and limits
+#### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
 Fit assessment:
 

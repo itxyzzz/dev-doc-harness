@@ -1682,12 +1682,12 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, small_plan, r"Next lifecycle stage[\s\S]*Stage:[\s\S]*Frozen package", "small-plan compact handoff inputs")
     assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
     assert_text_contains(check_id, phase_plan, r"## Phase implementation handoff", "phase implementation handoff section")
-    assert_text_contains(check_id, phase_plan, r"Phase-execution startup", "phase execution startup")
+    assert_text_contains(check_id, phase_plan, r"Phase execution startup", "phase execution startup")
     assert_text_contains(check_id, phase_plan, r"## Phase completion report", "phase completion report")
     assert_text_contains(check_id, phase_plan, re.escape("rule:execution-quality.execution-thread-start"), "phase startup rule reference")
     assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired post-phase transition")
 
-    for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Fallbacks and limits"]:
+    for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Execution requirements and contingencies"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, freeze, re.escape("rule:execution-quality.execution-thread-start"), "consumer-side startup protocol")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
@@ -2706,7 +2706,7 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
     forbidden_title = "Next-stage recommendation" if frozen else "Approved next stage"
     if forbidden_title in text:
         errors.append(f"contains incompatible {forbidden_title}")
-    for group in ["Next lifecycle stage", "Orchestration", "Model", "Fallbacks and limits"]:
+    for group in ["Next lifecycle stage", "Orchestration", "Model", "Execution requirements and contingencies"]:
         if group not in text:
             errors.append(f"missing {group} group")
     if not re.search(
@@ -2747,12 +2747,12 @@ def next_stage_template_contract_errors(
 ) -> list[str]:
     """Validate that a reusable planning template can render the four-group contract."""
     errors: list[str] = []
-    ordered_groups = r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits"
+    ordered_groups = r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Execution requirements and contingencies"
     if not re.search(ordered_groups, text, flags=re.IGNORECASE):
         errors.append("missing ordered four-group next-stage recommendation")
     if f"Stage: `{expected_stage}`" not in text:
         errors.append(f"missing Stage: `{expected_stage}`")
-    if not re.search(r"Method:[^\n]+Orchestration mode:[^\n]+Run in:[^\n]+Review:", text):
+    if not re.search(r"Method:[\s\S]*?Orchestration mode:[\s\S]*?Run in:[\s\S]*?Review:", text):
         errors.append("missing complete orchestration fields")
     if re.search(r"(?m)^Orchestration mode fit:", text):
         errors.append("contains noncanonical orchestration mode fit prompt")
@@ -2760,7 +2760,7 @@ def next_stage_template_contract_errors(
         errors.append(f"missing stage-appropriate Method prompt `{expected_method_prompt}`")
     if expected_review_prompt is not None and f"Review: `{expected_review_prompt}`" not in text:
         errors.append(f"missing stage-appropriate Review prompt `{expected_review_prompt}`")
-    if not re.search(r"Generation:[^\n]+Capability tier:[^\n]+Reasoning:", text):
+    if not re.search(r"Generation:[\s\S]*?Capability tier:[\s\S]*?Reasoning:", text):
         errors.append("missing complete model fields")
     if not re.search(r"Run in:\s*`<same orchestration session / new orchestration session>`", text):
         errors.append("missing canonical Run in choices")
@@ -2806,7 +2806,7 @@ def assert_next_stage_summary() -> None:
     evidence_preservation_rule = "rule:" + "evidence.preservation"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")
@@ -2955,7 +2955,7 @@ def assert_next_stage_summary() -> None:
     assert_text_not_contains(
         check_id,
         staged_spec_source,
-        r"(?mi)^#{1,6}\s+(?:Orchestration|Model|Fallbacks and limits|Method|Generation|Capability tier|Reasoning|Upcoming-stage sub-agent assessment)\s*$|^(?:Method:|Generation:|Capability tier:|Reasoning:|Upcoming-stage sub-agent assessment:)",
+        r"(?mi)^#{1,6}\s+(?:Orchestration|Model|Execution requirements and contingencies|Method|Generation|Capability tier|Reasoning|Upcoming-stage sub-agent assessment)\s*$|^(?:Method:|Generation:|Capability tier:|Reasoning:|Upcoming-stage sub-agent assessment:)",
         "retired staged-spec next-stage summary fields",
     )
 
@@ -3018,7 +3018,7 @@ def assert_next_stage_summary() -> None:
 
     assert_text_contains(check_id, models, r"Current orchestration session", "current orchestration session separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
-    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
+    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Execution requirements and contingencies", "ordered next-stage groups")
     assert_text_contains(check_id, models, r"Stage:[^\n]+plan drafting[^\n]+phase-plan drafting", "canonical plan-drafting stage notation")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
@@ -3038,7 +3038,7 @@ def assert_next_stage_summary() -> None:
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
-    if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
+    if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Execution requirements and contingencies", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
     owner_pattern = (
         re.escape("rule" + ":models.selection-dimensions")
@@ -3055,7 +3055,7 @@ def assert_next_stage_summary() -> None:
     assert_text_not_contains(check_id, freeze, r"same-task|new-task recommendation|current task", "retired continuity terminology")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")
-    if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
+    if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Execution requirements and contingencies", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze repeats the full next-stage group definition")
 
     post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")

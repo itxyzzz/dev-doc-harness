@@ -12,15 +12,22 @@ Stage: `plan execution`.
 
 #### Orchestration
 
-Method: `<execution method for plan execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
+- Method: `<execution method for plan execution>`.
+- Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`.
+- Run in: `<same orchestration session / new orchestration session>`.
+- Review: `<execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+- Generation: `<latest available or concrete generation>`.
+- Capability tier: `<flagship / balanced / fast/economy>`.
+- Reasoning: `<runtime value>`.
 
-#### Fallbacks and limits
+#### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
+
+### Execution startup
 
 1. Frozen package: `<approved spec, plan, snapshots, amendments, and required evidence>`.
 2. Artifact rehydration: `<required artifacts and startup rule>`.
