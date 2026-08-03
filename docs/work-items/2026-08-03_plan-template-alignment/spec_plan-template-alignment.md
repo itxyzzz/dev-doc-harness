@@ -300,3 +300,12 @@ One cohesive implementation commit is planned because source-block moves, manife
 
 - Status: Approved
 - Superseded by: None
+
+## Errata
+
+### 2026-08-03 Changelog lifecycle correction
+
+1. This erratum supersedes only the `Root changelog consolidation` row in the Documentation artifact matrix above.
+2. Root changelog consolidation is `As needed` at an operator-owned implementation or release checkpoint. It records delivered implementation entries only; this planning approval creates no root `CHANGELOG.md` entry.
+3. The `Implementation changelog source` row remains required during implementation, before any implementation commit.
+4. This correction does not change the approved implementation scope, tasks, checks, execution handoff, or next lifecycle stage.
