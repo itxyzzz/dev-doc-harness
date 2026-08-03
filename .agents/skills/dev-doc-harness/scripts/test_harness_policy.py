@@ -1399,7 +1399,7 @@ def assert_artifact_style_guidance() -> None:
         assert_text_contains(
             check_id,
             path,
-            r"required decision|unresolved required decisions|No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain\.",
+            r"required decision|unresolved required decisions|unresolved implementation decision|No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain\.",
             "readiness unresolved-decision check",
         )
 
@@ -1599,7 +1599,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
-    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     assert_text_contains(check_id, plan_strategy_source, r"upcoming-stage sub-agent assessment", "plan sub-agent assessment prompt")
     for path in [plan_strategy_source, large_strategy_source]:
         assert_text_contains(check_id, path, r"Write authority", "sub-agent write-authority prompt")
@@ -1607,6 +1607,16 @@ def assert_model_selection_dimensions() -> None:
     assert_text_not_contains(check_id, plan_strategy_source, r"Current planning Codex task", "duplicated plan current-task prompt")
     assert_text_not_contains(check_id, plan_strategy_source, r"Next-stage recommendation", "duplicated plan next-stage prompt")
     assert_text_contains(check_id, models, r"header metadata.+final handoff.+shared strategy", "plan-state placement guidance")
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"## Implementation tasks[\s\S]*## Model and Sub-agent Strategy[\s\S]*## Planned commits",
+            "strategy appears after tasks and before planned commits",
+        )
 
     assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
 
@@ -1671,9 +1681,11 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, small_plan, r"## Implementation handoff", "small-plan handoff section")
     assert_text_contains(check_id, small_plan, r"Next lifecycle stage[\s\S]*Stage:[\s\S]*Frozen package", "small-plan compact handoff inputs")
     assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
-    assert_text_contains(check_id, phase_plan, r"## Phase transitions", "phase transition section")
-    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "post-phase transition handoff")
+    assert_text_contains(check_id, phase_plan, r"## Phase implementation handoff", "phase implementation handoff section")
+    assert_text_contains(check_id, phase_plan, r"Phase-execution startup", "phase execution startup")
+    assert_text_contains(check_id, phase_plan, r"## Phase completion report", "phase completion report")
+    assert_text_contains(check_id, phase_plan, re.escape("rule:execution-quality.execution-thread-start"), "phase startup rule reference")
+    assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired post-phase transition")
 
     for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Fallbacks and limits"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
@@ -1926,11 +1938,32 @@ def assert_commitment_verification_templates() -> None:
         assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
         assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
 
-    phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.fresh-thread-readiness.md"
+    phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.session-readiness.md"
     phase_template = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
-    assert_text_contains(check_id, phase_source, r"one orchestration session with bounded delegation", "phase source execution-size boundary")
-    assert_text_contains(check_id, phase_template, r"one orchestration session with bounded delegation", "phase template execution-size boundary")
+    assert_text_contains(check_id, phase_source, r"## Phase session readiness", "phase session-readiness heading")
+    assert_normalized_text_contains(
+        check_id,
+        phase_source,
+        "one orchestration session with its documented bounded delegation",
+        "phase source execution-size boundary",
+    )
+    assert_text_contains(check_id, phase_source, r"amendment", "approved-anchor amendment path")
+    assert_text_not_contains(check_id, phase_source, r"update the anchor spec before freeze", "retired approved-anchor edit path")
+    assert_normalized_text_contains(
+        check_id,
+        phase_template,
+        "one orchestration session with its documented bounded delegation",
+        "phase template execution-size boundary",
+    )
     assert_text_not_contains(check_id, plan_paths[0], r"one orchestration session with bounded delegation", "ordinary plan phase-only boundary")
+
+    small_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.small.readiness-completion-approval.md"
+    phase_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion-approval.md"
+    assert_text_contains(check_id, small_readiness, r"This plan document is self-sufficient", "small-plan fresh-session readiness")
+    assert_text_contains(check_id, small_readiness, r"Plan Checks cover the full set of Verification Criteria", "small-plan verification coverage")
+    assert_text_contains(check_id, small_readiness, r"documentation artifact matrix has been applied", "small-plan documentation-matrix application")
+    assert_text_contains(check_id, phase_readiness, r"Phase completion report", "phase completion-report readiness")
+    assert_text_not_contains(check_id, phase_readiness, r"Post-phase transition", "retired phase post-transition readiness")
 
     task_bound_plan = """## Implementation tasks
 ### `TASK-001` Implement one change
@@ -2041,7 +2074,11 @@ def multi_check_fixture_mode(text: str) -> str:
 
 
 def superpowers_task_fixture_errors(text: str) -> list[str]:
-    task_match = re.search(r"## Implementation tasks(?P<body>.*?)(?:\n## Implementation handoff|\n## Phase transitions|\Z)", text, flags=re.DOTALL)
+    task_match = re.search(
+        r"## Implementation tasks(?P<body>.*?)(?:\n## Model and Sub-agent Strategy|\n## Implementation handoff|\n## Phase implementation handoff|\Z)",
+        text,
+        flags=re.DOTALL,
+    )
     if task_match is None:
         return ["missing implementation-task section"]
     task_body = task_match.group("body")
@@ -2210,7 +2247,7 @@ def assert_superpowers_adapter_contract() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
     ]
     traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.common.traceability-approach-surfaces.md"
-    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     handoff_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md"
     task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
 
@@ -2588,7 +2625,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_contains(check_id, path, r"Execution method", "execution method metadata")
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete Superpowers meta-header section")
 
-    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     large_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     model_sources = [plan_model_source, large_model_source]
     model_consumers = [
@@ -2624,8 +2661,9 @@ def assert_planning_template_clarity() -> None:
     assert_text_contains(check_id, small_spec, r"Transition owner.*plan", "small spec plan transition ownership")
     assert_text_not_contains(check_id, small_spec, r"Implementation Handoff", "duplicate small-spec implementation handoff")
     assert_text_contains(check_id, small_plan, r"Implementation handoff", "small plan implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "phase implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "phase post-transition handoff")
+    assert_text_contains(check_id, phase_plan, r"Phase implementation handoff", "phase implementation handoff")
+    assert_text_contains(check_id, phase_plan, r"Phase completion report", "phase completion report")
+    assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired phase post-transition handoff")
 
     for path in [lifecycle, ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", phase_plan]:
         assert_text_contains(check_id, path, r"rolling", "rolling phase loop")
@@ -2839,7 +2877,7 @@ def assert_next_stage_summary() -> None:
         assert_text_contains(check_id, path, r"omit unless exposed and material", "current-session omission rule")
         assert_text_not_contains(check_id, path, r"Generation, capability tier, reasoning", "duplicated current-session model facets")
 
-    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     assert_text_contains(check_id, strategy_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
     assert_text_not_contains(check_id, strategy_source, r"Current planning Codex task", "duplicated plan current-task section")
     assert_text_not_contains(check_id, strategy_source, r"Next-stage recommendation", "duplicated plan next-stage summary")
@@ -2940,7 +2978,7 @@ def assert_next_stage_summary() -> None:
             add_failure(check_id, f"{path} must render one current-task metadata field")
         for error in draft_state_heading_errors(text):
             add_failure(check_id, f"{path} {error}")
-        handoff_index = min((text.find(heading) for heading in ("## Implementation handoff", "## Phase transitions") if heading in text), default=-1)
+        handoff_index = min((text.find(heading) for heading in ("## Implementation handoff", "## Phase implementation handoff") if heading in text), default=-1)
         summary_index = text.find("### Next-stage recommendation")
         if handoff_index < 0 or summary_index < handoff_index:
             add_failure(check_id, f"{path} places the next-stage summary before its handoff or transition")
