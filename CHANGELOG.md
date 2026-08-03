@@ -6,6 +6,14 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+### 2026-08-03 plan: plan-template-alignment -- approve plan template cleanup
+
+Meta -- `unreleased` : `repository-only`
+
+#### Planned
+
+- Approved the bounded source-block, assembly, and validator plan for small/medium and phase-plan template alignment.
+
 ### 2026-08-03 docs: spec-template-alignment -- align assembled spec templates
 
 Meta -- `unreleased` : `distributable`
