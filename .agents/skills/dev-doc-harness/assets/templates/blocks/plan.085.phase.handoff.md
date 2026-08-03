@@ -1,17 +1,10 @@
 ## Phase implementation handoff
 
-Finalize this handoff at the phase plan's real frozen boundary. It owns only
-the current phase's `phase execution` stage.
-The normal route is rolling: implement this phase, record actual outputs, then
-plan the next phase. Batch planning is an explicit exception only for stable,
-independently plannable phases. Batched or parallel execution follows each
-approved phase plan's recorded coordination boundary and does not create an
-automatic later transition.
+Finalize this handoff at the phase plan's real frozen boundary. It owns only the current phase's `phase execution` stage. The normal route is rolling: implement this phase, record actual outputs, then plan the next phase. Batch planning is an explicit exception only for stable, independently plannable phases. Batched or parallel execution follows each approved phase plan's recorded coordination boundary and does not create an automatic later transition.
 
 ### Next-stage recommendation
 
-Rename it `### Approved next stage` at freeze without changing its values.
-Do not render both headings together. Mirror the phase's frozen selection in chat.
+Rename it `### Approved next stage` at freeze without changing its values. Do not render both headings together. Mirror the phase's frozen selection in chat.
 
 #### Next lifecycle stage
 
@@ -35,5 +28,4 @@ Generation: `<latest available or concrete generation>`; Capability tier: `<flag
 2. Artifact rehydration: `<required artifacts and startup rule>`.
 3. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
-Use `rule:execution-quality.execution-thread-start`; do not infer a later
-lifecycle transition from this handoff.
+Use `rule:execution-quality.execution-thread-start`; do not infer a later lifecycle transition from this handoff.

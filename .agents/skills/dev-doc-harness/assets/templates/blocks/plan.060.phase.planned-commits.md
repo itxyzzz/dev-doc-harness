@@ -7,5 +7,4 @@ Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are 
 | Phase-plan approval | `<planning-commit-subject>` |
 | Phase implementation | `<commit-subject>` |
 
-One cohesive phase implementation commit is the default. Record an essential
-exception or independently reviewable split as concise prose below.
+One cohesive phase implementation commit is the default. Record an essential exception or independently reviewable split as concise prose below.

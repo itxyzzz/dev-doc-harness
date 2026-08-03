@@ -17,5 +17,4 @@
 ## Approval
 
 - Status: Draft
-- At freeze, relabel the grouped recommendation **Approved next stage** and mirror it in chat.
 - Superseded by: None

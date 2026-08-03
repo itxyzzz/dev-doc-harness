@@ -11,9 +11,7 @@ Current orchestration session: Resolved model profile and Context visibility: `<
 
 Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the plan becomes large or hard to scan.
 
-When Superpowers is the approved execution method, record it in the metadata
-above. The harness retains scope, model-policy bounds, variance handling,
-approved commit boundaries, and final integration; do not add a second route.
+When Superpowers is the approved execution method, record it in the metadata above. The harness retains scope, model-policy bounds, variance handling, approved commit boundaries, and final integration; do not add a second route.
 
 ## Input Artifacts
 

@@ -13,9 +13,7 @@ Current orchestration session: Resolved model profile and Context visibility: `<
 
 Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the plan becomes large or hard to scan.
 
-When Superpowers is the approved execution method, record it in the metadata
-above. The harness retains scope, model-policy bounds, variance handling,
-approved commit boundaries, and final integration; do not add a second route.
+When Superpowers is the approved execution method, record it in the metadata above. The harness retains scope, model-policy bounds, variance handling, approved commit boundaries, and final integration; do not add a second route.
 
 ## Input Artifacts
 
@@ -31,18 +29,13 @@ If architecture is missing, ambiguous, or changed before freeze, update the draf
 
 ## Traceability approach
 
-Use local links between related commitments, tasks, criteria, and checks when
-that is enough. Add a mapping only when it prevents a coverage gap, supports a
-fresh handoff, or feeds deterministic validation; name that benefit.
+Use local links between related commitments, tasks, criteria, and checks when that is enough. Add a mapping only when it prevents a coverage gap, supports a fresh handoff, or feeds deterministic validation; name that benefit.
 
 Optional mapping benefit: `<coverage | handoff | deterministic validation>`.
 
 ## Global Constraints (conditional)
 
-Render this section only when a concise shared constraint or reference is needed
-to make the plan or a task self-contained for a fresh executor. Do not repeat
-approved commitments, architecture decisions, task instructions, or Plan Checks
-only to fill this section.
+Render this section only when a concise shared constraint or reference is needed to make the plan or a task self-contained for a fresh executor. Do not repeat approved commitments, architecture decisions, task instructions, or Plan Checks only to fill this section.
 
 Self-containment reason: `<why the shared constraint or reference is needed>`.
 
@@ -56,8 +49,7 @@ State only the sequencing, dependencies, and tradeoffs a fresh executor needs.
 
 ## Implementation tasks
 
-Use stable task IDs, short titles, and enough detail to act without inventing
-scope. Order tasks by dependency.
+Use stable task IDs, short titles, and enough detail to act without inventing scope. Order tasks by dependency.
 
 ### `TASK-001` `<short imperative title>`
 
@@ -68,15 +60,13 @@ Interfaces:
 1. Consumes: `<inputs from a prior task, approved artifact, interface, or None>`.
 2. Produces: `<outputs that a later task or fresh executor relies on, or None>`.
 
-Dependencies describe readiness or ordering. Interfaces describe task-boundary
-inputs and outputs; do not use one in place of the other.
+Dependencies describe readiness or ordering. Interfaces describe task-boundary inputs and outputs; do not use one in place of the other.
 
 Implementation:
 
 1. `<specific change, test, documentation, or review step>`.
 
-Use numbered executable steps. Do not use checkbox task lists inside an
-implementation sequence.
+Use numbered executable steps. Do not use checkbox task lists inside an implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 
@@ -103,17 +93,9 @@ Upcoming-stage sub-agent assessment:
 1. Sub-agents: None, or `<bounded strategy below>`.
 2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
 3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
-4. When useful and unapproved, ask the operator to approve the recorded roles,
-   context, outputs, model/effort envelope, write authority, concurrency, and
-   fallback before dispatch.
+4. When useful and unapproved, ask the operator to approve the recorded roles, context, outputs, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
-Use sub-agents only when they improve isolation, review quality, parallel
-exploration, specialized execution, or risk reduction enough to justify the
-coordination cost. For each proposed sub-agent, record purpose, context
-strategy, input context, output artifact, model policy and allocation, write
-authority, concurrency, and blast radius. An approved in-envelope strategy does
-not need another generic confirmation; route an out-of-envelope dispatch through
-the existing operator-approval path.
+Use sub-agents only when they improve isolation, review quality, parallel exploration, specialized execution, or risk reduction enough to justify the coordination cost. For each proposed sub-agent, record purpose, context strategy, input context, output artifact, model policy and allocation, write authority, concurrency, and blast radius. An approved in-envelope strategy does not need another generic confirmation; route an out-of-envelope dispatch through the existing operator-approval path.
 
 For each proposed sub-agent, record a short block:
 
@@ -142,27 +124,19 @@ Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are 
 | Planning approval | `<planning-commit-subject>` |
 | Implementation | `<commit-subject>` |
 
-One cohesive implementation commit is the default. Record an essential
-exception or independently reviewable split as concise prose below.
+One cohesive implementation commit is the default. Record an essential exception or independently reviewable split as concise prose below.
 
 ## Validation and variance
 
-List the checks that produce the needed evidence. Use
-`rule:lifecycle.variance-policy` for noteworthy allowed drift and material
-changes. Keep the draft artifact state and planned evidence clear. When the
-package is later presented for review or freeze, the planning-freeze gate
-document is the authority for approval, commit, and pause; do not repeat its
-procedure here.
+List the checks that produce the needed evidence. Use `rule:lifecycle.variance-policy` for noteworthy allowed drift and material changes. Keep the draft artifact state and planned evidence clear. When the package is later presented for review or freeze, the planning-freeze gate document is the authority for approval, commit, and pause; do not repeat its procedure here.
 
 ## Implementation handoff
 
-Render this section at the plan's real frozen boundary. The combined
-small/medium plan owns this handoff.
+Render this section at the plan's real frozen boundary. The combined small/medium plan owns this handoff.
 
 ### Next-stage recommendation
 
-Rename it `### Approved next stage` at freeze without changing its values.
-Do not render both headings together. Mirror the selected frozen values in chat.
+Rename it `### Approved next stage` at freeze without changing its values. Do not render both headings together. Mirror the selected frozen values in chat.
 
 #### Next lifecycle stage
 
@@ -184,8 +158,7 @@ Generation: `<latest available or concrete generation>`; Capability tier: `<flag
 2. Artifact rehydration: `<required artifacts and startup rule>`.
 3. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
-Use `rule:execution-quality.execution-thread-start`; do not duplicate a
-spec-owned handoff or infer a different transition.
+Use `rule:execution-quality.execution-thread-start`; do not duplicate a spec-owned handoff or infer a different transition.
 
 ## Readiness
 
@@ -204,5 +177,4 @@ spec-owned handoff or infer a different transition.
 ## Approval
 
 - Status: Draft
-- At freeze, relabel the grouped recommendation **Approved next stage** and mirror it in chat.
 - Superseded by: None
