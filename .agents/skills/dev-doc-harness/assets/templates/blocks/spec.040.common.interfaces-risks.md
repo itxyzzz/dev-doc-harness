@@ -1,24 +1,22 @@
-## Interfaces, Data, and Control Flow
+## Impact Surfaces
 
-### Interfaces affected
+Record any impacted surfaces below. Use bullets for lists; state `None` when the respective surfaces are not affected or are not relevant.
 
-1. Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
-2. State `None` when the change does not affect interfaces.
+### Interfaces
+
+Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
 
 ### Data, config, and persistence
 
-1. Record data model, persistence, migration, configuration, release-identity, or rollout effects.
-2. State `None` when the change does not affect data, config, or persistence.
+Record data model, persistence, migration, configuration, release-identity, or rollout effects.
 
 ### State and control flow
 
-1. Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
-2. State `None` when the change does not affect state or control flow.
+Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
 
 ### Safety, security, privacy, migration, and rollback
 
-1. Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
-2. State `None identified after repository-context review` only after checking the relevant code and docs.
+Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
 
 ## Risks and Rejected Alternatives
 

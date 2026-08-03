@@ -1396,7 +1396,12 @@ def assert_artifact_style_guidance() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]:
-        assert_text_contains(check_id, path, r"required decision|unresolved required decisions", "readiness unresolved-decision check")
+        assert_text_contains(
+            check_id,
+            path,
+            r"required decision|unresolved required decisions|No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain\.",
+            "readiness unresolved-decision check",
+        )
 
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md", r"DEC-001", "architecture decision ID")
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", r"AMD-001", "amendment ID")
@@ -2757,6 +2762,10 @@ def assert_next_stage_summary() -> None:
     staged_spec_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.small.handoff.md"
     large_anchor_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     large_anchor_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
+    small_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md"
+    small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
+    large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
+    evidence_preservation_rule = "rule:" + "evidence.preservation"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
     draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
@@ -2850,12 +2859,6 @@ def assert_next_stage_summary() -> None:
 
     governed_transition_templates = [
         (
-            staged_spec_source,
-            "plan drafting",
-            "<planning method for plan drafting>",
-            "<planning-review arrangement>",
-        ),
-        (
             large_anchor_source,
             "phase-plan drafting",
             "<planning method for phase-plan drafting>",
@@ -2892,6 +2895,41 @@ def assert_next_stage_summary() -> None:
         )
         if not next_stage_template_contract_errors(extra_mode_fit_text, expected_stage=expected_stage):
             add_failure(check_id, f"{path} extra orchestration mode fit mutation was accepted")
+
+    assert_text_contains(
+        check_id,
+        staged_spec_source,
+        r"staging reason[\s\S]*spec-only frozen package",
+        "compact staged-spec exception facts",
+    )
+    assert_text_contains(
+        check_id,
+        staged_spec_source,
+        r"Next lifecycle stage:\s*`plan drafting`",
+        "staged-spec plan-drafting transition",
+    )
+    assert_text_not_contains(
+        check_id,
+        staged_spec_source,
+        r"(?mi)^#{1,6}\s+Next-stage recommendation\s*$",
+        "retired staged-spec next-stage recommendation",
+    )
+    assert_text_not_contains(
+        check_id,
+        staged_spec_source,
+        r"(?mi)^#{1,6}\s+(?:Orchestration|Model|Fallbacks and limits|Method|Generation|Capability tier|Reasoning|Upcoming-stage sub-agent assessment)\s*$|^(?:Method:|Generation:|Capability tier:|Reasoning:|Upcoming-stage sub-agent assessment:)",
+        "retired staged-spec next-stage summary fields",
+    )
+
+    for path in [small_readiness_source, large_anchor_readiness_source, small_spec, large_spec]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"All relevant operator input is preserved in (?:this )?specification or through `module:evidence` and `"
+            + re.escape(evidence_preservation_rule)
+            + r"`",
+            "operator-input preservation readiness check",
+        )
 
     for rule_id in ["rule:models.selection-dimensions", "rule:models.orchestration-mode", "rule:models.next-stage-continuity"]:
         assert_text_contains(check_id, amendment_template, re.escape(rule_id), f"amendment template {rule_id} route")
@@ -2936,7 +2974,7 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(
         check_id,
         large_anchor_readiness_source,
-        r"relabel(?:ed)?[^\n]+Approved next stage[^\n]+do not render both",
+        r"Next-stage recommendation[^\n]+relabeled `Approved next stage`",
         "large-anchor readiness relabel check",
     )
 

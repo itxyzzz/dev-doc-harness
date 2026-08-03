@@ -43,17 +43,6 @@ Success summary:
 1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
-### Assumptions
-
-1. Record assumptions that are safe to rely on during planning.
-2. Use `None identified after repository-context review` only after checking the relevant local context.
-
-### Open questions
-
-1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
-2. For each question, name the owner or later event needed to resolve it.
-3. Use `None identified after repository-context review` only when there are no known open questions.
-
 ## Repository Context
 
 ### Current state
@@ -68,6 +57,19 @@ Success summary:
 ### Constraints and compatibility
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
+
+## Assumptions and Open Questions
+
+### Assumptions
+
+1. Record assumptions that are safe to rely on during planning.
+2. Use `None identified after repository-context review` only after checking the relevant local context.
+
+### Open questions
+
+1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
+2. For each question, name the owner or later event needed to resolve it.
+3. Use `None identified after repository-context review` only when there are no known open questions.
 
 ## Commitments and verification
 
@@ -143,27 +145,25 @@ Decision summary:
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.
 
-## Interfaces, Data, and Control Flow
+## Impact Surfaces
 
-### Interfaces affected
+Record any impacted surfaces below. Use bullets for lists; state `None` when the respective surfaces are not affected or are not relevant.
 
-1. Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
-2. State `None` when the change does not affect interfaces.
+### Interfaces
+
+Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
 
 ### Data, config, and persistence
 
-1. Record data model, persistence, migration, configuration, release-identity, or rollout effects.
-2. State `None` when the change does not affect data, config, or persistence.
+Record data model, persistence, migration, configuration, release-identity, or rollout effects.
 
 ### State and control flow
 
-1. Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
-2. State `None` when the change does not affect state or control flow.
+Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
 
 ### Safety, security, privacy, migration, and rollback
 
-1. Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
-2. State `None identified after repository-context review` only after checking the relevant code and docs.
+Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
 
 ## Risks and Rejected Alternatives
 
@@ -222,46 +222,20 @@ Default combined package:
 3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
 4. Next lifecycle stage: `plan execution`.
 
-For an explicit staged spec-only exception, record the operator-requested or
-operator-approved staging reason, the spec-only frozen package, and `plan drafting`
-as the next lifecycle stage. Do not duplicate the later plan's implementation handoff here. Include the conditional selection below only for this explicit exception; omit it from the default combined package.
+For an explicit staged spec-only exception:
 
-### Next-stage recommendation
-
-Rename it `### Approved next stage` at freeze without changing its values. Do not render both headings together.
-
-#### Next lifecycle stage
-
-Stage: `plan drafting`.
-
-#### Orchestration
-
-Method: `<planning method for plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
-
-#### Model
-
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
-
-#### Fallbacks and limits
-
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
-
-Upcoming-stage sub-agent assessment: `Sub-agents: None` with a plan-drafting fit reason, or `<authorized bounded strategy>`.
+1. Staging reason: `<operator-requested or operator-approved staging reason>`.
+2. Spec-only frozen package: `<spec-filename>`.
+3. Next lifecycle stage: `plan drafting`.
 
 ## Spec readiness checklist
 
-- [ ] Source input and desired outcome are captured.
-- [ ] Scope, non-scope, assumptions, and open questions are explicit.
-- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
-- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and no hidden procedure or scope.
-- [ ] Repository evidence and compatibility constraints are recorded.
-- [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.
-- [ ] Risks and rejected alternatives are listed or explicitly absent after review.
-- [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned implementation commit subjects are clear; planning approval has no changelog entry.
-- [ ] The companion plan is present in the combined package and owns its implementation handoff; a staged spec-only exception records the operator-requested or operator-approved reason and only plan drafting.
-- [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
+- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
+- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
+- [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 

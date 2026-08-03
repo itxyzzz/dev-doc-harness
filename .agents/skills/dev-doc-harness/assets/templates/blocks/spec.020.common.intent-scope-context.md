@@ -25,17 +25,6 @@ Success summary:
 1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
-### Assumptions
-
-1. Record assumptions that are safe to rely on during planning.
-2. Use `None identified after repository-context review` only after checking the relevant local context.
-
-### Open questions
-
-1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
-2. For each question, name the owner or later event needed to resolve it.
-3. Use `None identified after repository-context review` only when there are no known open questions.
-
 ## Repository Context
 
 ### Current state
@@ -50,3 +39,16 @@ Success summary:
 ### Constraints and compatibility
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
+
+## Assumptions and Open Questions
+
+### Assumptions
+
+1. Record assumptions that are safe to rely on during planning.
+2. Use `None identified after repository-context review` only after checking the relevant local context.
+
+### Open questions
+
+1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
+2. For each question, name the owner or later event needed to resolve it.
+3. Use `None identified after repository-context review` only when there are no known open questions.
