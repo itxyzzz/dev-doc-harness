@@ -4,11 +4,83 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
-## Unreleased
+## Release 0.9
+
+### 2026-08-04 docs: documentation-assessment-simplification -- simplify documentation assessment
+
+Meta -- `0.9.0` : `repository-only`
+
+#### Changed
+
+- Replaced the documentation matrix with a compact five-item assessment and isolated current changelog authoring in the implementation-stage module.
+- Regenerated planning templates and added static checks for the new policy and ownership boundaries.
+
+### 2026-08-03 docs: plan-template-alignment -- align assembled plan templates
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Moved the shared plan strategy after implementation tasks and replaced the small-plan readiness checks with fresh-session coverage criteria.
+- Clarified phase session sizing, separated phase execution handoff from completion reporting, and preserved rolling, batched, and parallel coordination boundaries.
+- Regenerated both plan templates and strengthened structural validation for their revised ordering, handoff, readiness, and lifecycle contracts.
+- Removed the duplicate freeze relabel instruction from both Approval blocks and normalized prose wrapping across all plan source blocks and their assembled templates.
+- Renamed the next-stage fallback group to `Execution requirements and contingencies`, made its scope explicit, and added matched execution-startup headings to the small and phase handoffs.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- tighten selection templates
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Constrained fixed-stage templates to planning- or execution-appropriate Method and Review prompts.
+- Added an explicit Orchestration mode fit rationale across canonical notation, template sources, generated artifacts, freeze presentation, and validation.
+- Added the large-anchor draft-to-frozen heading transition and replaced position-dependent policy references with stable rule IDs.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- restore four-field orchestration
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Restored Method, Orchestration mode, `Run in`, and Review as the complete Orchestration field set.
+- Moved conditional rationale into canonical strategy prose covering the combined Orchestration and Model selection when non-obvious.
+- Removed the mode-specific rationale field from freeze guidance, templates, generated artifacts, README guidance, and validation fixtures.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- correct policy ownership structure
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Reorganized the canonical model policy into explicit orchestration, model-selection, review, and sub-agent responsibility groups.
+- Added a stable execution-review contract rule and corrected nested rule-owner mappings and consumers.
+- Made owner-heading validation enforce exact nested heading levels and documented the operator-authorized structure-only policy variance.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- clarify session and stage selection
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Reorganized the model policy around lifecycle-owned stages and stage-appropriate orchestration, review, continuity, and model selection.
+- Replaced top-level Codex-task terminology with portable orchestration-session terminology across current policy and templates.
+- Preserved sub-agent authorization, context, concurrency, review, reporting, and integration safeguards with focused validation.
+- Added focused validation that keeps current-session metadata independent from resolved-profile observations.
+
+### 2026-08-02 docs: task-orchestration-model-policy -- align orchestration and model selection
+
+Meta -- `0.9.0` : `distributable`
+
+#### Changed
+
+- Made Orchestration mode an explicit next-stage field across policy, templates, freeze presentation, and validation.
+- Defined portable model facets and host-native fallbacks while simplifying optional current-session diagnostics.
+- Required canonical continuity and preserved independent high-risk review as distinct from final integration.
 
 ### 2026-08-03 docs: spec-template-alignment -- align assembled spec templates
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -18,7 +90,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-08-03 plan: spec-template-alignment -- approve spec template cleanup
 
-Meta -- `unreleased` : `repository-only`
+Meta -- `0.9.0` : `repository-only`
 
 #### Planned
 
@@ -26,7 +98,7 @@ Meta -- `unreleased` : `repository-only`
 
 ### 2026-08-01 refactor: changelog-fragment-clarity -- clarify current fragment lifecycle
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -36,7 +108,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-08-01 fix: changelog-lifecycle-simplification -- restore implementation fragment lint guard
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Fixed
 
@@ -44,7 +116,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-08-01 refactor: router-maintenance-architecture -- isolate maintenance and freeze context
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -54,7 +126,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-08-01 refactor: changelog-lifecycle-simplification -- retain only implementation delivery records
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -64,7 +136,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-08-01 docs: lifecycle-stage-boundaries -- align README stage terminology
 
-Meta -- `unreleased` : `repository-only`
+Meta -- `0.9.0` : `repository-only`
 
 #### Changed
 
@@ -72,7 +144,7 @@ Meta -- `unreleased` : `repository-only`
 
 ### 2026-07-31 docs: task-bound-checks -- make checks task-bound
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -81,7 +153,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-31 docs: spec-quality-bar -- clarify planning inputs
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -89,7 +161,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-31 docs: lifecycle-stage-boundaries -- clarify freeze lifecycle stages
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -101,7 +173,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-31 docs: entity-section-ownership -- clarify spec-plan hierarchy
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -109,7 +181,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-30 refactor: artifact-style-ownership-cleanup -- consolidate readability policy
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -119,7 +191,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-30 docs: task-check-conformance -- clarify execution evidence
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Added
 
@@ -133,7 +205,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-30 docs: durable-planning-quality-clarity -- clarify plans and conformance
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -144,7 +216,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-29 docs: worktree-continuity-rules -- clarify new-task worktree baselines
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -158,7 +230,7 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-29 docs: naming-convention-review-fixes -- reconcile review feedback
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
@@ -168,86 +240,86 @@ Meta -- `unreleased` : `distributable`
 
 ### 2026-07-29 fix: harness-execution-flow-clarity -- deduplicate plan state and restore conditional style routing
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Placed plan-state fields at their single lifecycle boundaries, restored conditional artifact-style loading for routine small/medium artifacts, regenerated active templates, and added focused structural regression coverage.
 - **Consolidate reviewed changelog fragments:** Refreshed root `CHANGELOG.md` at the operator-owned post-integration checkpoint.
 
 ### 2026-07-28 refactor: harness-execution-flow-clarity -- separate transition flow from context loading
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Consolidated planning transitions and chat projection in the freeze-gate owner, narrowed execution-quality to context loading and startup consumption, and aligned architecture and validator ownership checks without changing operator-visible behavior.
 
 ### 2026-07-28 fix: harness-execution-flow-clarity -- replace no-review blocker with operator decision
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Replaced the hard no-review execution blocker with disclosure, one-time operator decision, recorded authorization, focused validation, and completion-report evidence while retaining independent review as the default.
 
 ### 2026-07-28 fix: harness-execution-flow-clarity -- consolidate post-freeze transition guidance
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Folded freeze mechanics into the approval checklist, moved continuation rules into structured post-freeze routing, and made execution handoffs apply explicit operator overrides to the frozen approved selection without rewriting the frozen artifact.
 
 ### 2026-07-28 fix: harness-execution-flow-clarity -- clarify freeze transition routing
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Moved the four-group next-stage explanation to draft review, clarified runtime-override recording, made approved agent task creation the default new-task continuation with manual creation as fallback, and stated the normal multi-gate large/phased flow.
 
 ### 2026-07-28 feat: harness-execution-flow-clarity -- compact bootstrap and add skill metadata
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Compacted the repository bootstrap while preserving its semantic guards, added minimal generated skill UI metadata with focused validation, retained installation-neutral skill routing, and included the operator's README improvements.
 
 ### 2026-07-28 docs: harness-execution-flow-clarity -- clarify operator guidance and Superpowers workspace
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Reworked the package-local operator note as a human-facing harness explanation, clarified the harness and Superpowers responsibilities, ignored the plan-specific Superpowers workspace, and corrected a README typo.
 
 ### 2026-07-27 fix: harness-execution-flow-clarity -- harden next-stage validation
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Require known-suitable profile, suitable or immaterial context risk, and a concrete continuity benefit for same-Codex-task fixtures; reject mixed draft/frozen state labels.
 
 ### 2026-07-27 fix: harness-execution-flow-clarity -- clarify frozen handoff heading
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Made plan-handoff source blocks select one draft or frozen next-stage heading and extended focused validation to reject simultaneous headings in source and generated plans.
 
 ### 2026-07-27 feat: harness-execution-flow-clarity -- simplify next-stage presentation
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Simplified the next-stage interface into four plain-language groups, added execution terminology and chat projection, refreshed generated templates, and added focused validation.
 
 ### 2026-07-27 feat: harness-execution-flow-clarity -- restore execution and review defaults
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Restored the canonical execution-method cascade, route-specific reviewer contract, and start-override validation, including a model-only override fixture that records the selection without requiring an amendment solely for that runtime choice.
 
 ### 2026-07-27 feat: harness-execution-flow-clarity -- enforce combined planning
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Enforced complete combined small/medium packages at review and freeze, retained authorized staged and large-anchor exceptions, and added focused package-shape validation.
 
 ### 2026-07-27 docs: harness-execution-flow-clarity -- clarify drift and changelog guidance
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 - Reworked README as a user-facing harness overview and aligned its focused model-selection checks with the simpler prose and Markdown line wrapping.
 
 ### 2026-07-21 docs: harness-distribution-instructions -- separate reusable and release-maintenance guidance
 
-Meta -- `unreleased` : `distributable`
+Meta -- `0.9.0` : `distributable`
 
 #### Changed
 
