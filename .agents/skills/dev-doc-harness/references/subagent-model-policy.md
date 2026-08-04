@@ -43,7 +43,7 @@ The next-stage summary is ordered as:
 1. **Next lifecycle stage** records the next documented stage determined by `rule:lifecycle.stage-boundaries`.
 2. **Orchestration** records Method, Orchestration mode, `Run in` (next-stage continuity: same or new orchestration session), and the stage-appropriate Review arrangement.
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
-4. **Fallbacks and limits** record only an applicable availability fallback, required artifact loading, authorization state, or material-variance stop.
+4. **Execution requirements and contingencies** record only applicable required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop.
 
 When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
 
@@ -303,9 +303,9 @@ Generation: `<generation>`
 Capability tier: `<flagship / balanced / fast/economy>`
 Reasoning: `<runtime value>`
 
-#### Fallbacks and limits
+#### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`
 
 At freeze, relabel this same block **Approved next stage**. Routine notation omits the model-policy source, override scope, expiry, and open-ended rehydration explanations.
 

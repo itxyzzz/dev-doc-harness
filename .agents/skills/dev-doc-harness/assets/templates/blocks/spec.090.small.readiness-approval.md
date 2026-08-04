@@ -1,17 +1,12 @@
 ## Spec readiness checklist
 
-- [ ] Source input and desired outcome are captured.
-- [ ] Scope, non-scope, assumptions, and open questions are explicit.
-- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
-- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and no hidden procedure or scope.
-- [ ] Repository evidence and compatibility constraints are recorded.
-- [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.
-- [ ] Risks and rejected alternatives are listed or explicitly absent after review.
-- [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned implementation commit subjects are clear; planning approval has no changelog entry.
-- [ ] The companion plan is present in the combined package and owns its implementation handoff; a staged spec-only exception records the operator-requested or operator-approved reason and only plan drafting.
-- [ ] The upcoming-stage sub-agent assessment records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
+- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
+- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
+- [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 

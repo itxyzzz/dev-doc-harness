@@ -1,14 +1,10 @@
-## Phase transitions
+## Phase implementation handoff
 
-Render these transitions at the phase plan's real frozen boundary.
-The normal route is rolling: implement this phase, record actual outputs, then
-plan the next phase. Batch planning is an explicit exception only for stable,
-independently plannable phases.
+Finalize this handoff at the phase plan's real frozen boundary. It owns only the current phase's `phase execution` stage. The normal route is rolling: implement this phase, record actual outputs, then plan the next phase. Batch planning is an explicit exception only for stable, independently plannable phases. Batched or parallel execution follows each approved phase plan's recorded coordination boundary and does not create an automatic later transition.
 
 ### Next-stage recommendation
 
-Rename it `### Approved next stage` at freeze without changing its values.
-Do not render both headings together. Mirror the phase's frozen selection in chat.
+Rename it `### Approved next stage` at freeze without changing its values. Do not render both headings together. Mirror the phase's frozen selection in chat.
 
 #### Next lifecycle stage
 
@@ -16,24 +12,25 @@ Stage: `phase execution`.
 
 #### Orchestration
 
-Method: `<execution method for phase execution>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<execution Plan Task/final-review arrangement>`.
+- Method: `<execution method for phase execution>`.
+- Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`.
+- Run in: `<same orchestration session / new orchestration session>`.
+- Review: `<execution Plan Task/final-review arrangement>`.
 
 #### Model
 
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+- Generation: `<latest available or concrete generation>`.
+- Capability tier: `<flagship / balanced / fast/economy>`.
+- Reasoning: `<runtime value>`.
 
-#### Fallbacks and limits
+#### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
-### Current-phase implementation handoff
+### Phase execution startup
 
 1. Frozen package: `<approved anchor, phase plan, amendments, prior outputs, and required evidence>`.
-2. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Artifact rehydration: `<required artifacts and startup rule>`.
+3. Variance stop condition: `<approval-required variance or other explicit stop>`.
 
-### Post-phase transition
-
-1. Expected next lifecycle stage: `<phase-plan drafting or work-item completion>`.
-2. Required actual outputs: `<outputs, validation, variance, commit state, and inputs for the next lifecycle stage>`.
-3. The completion report supplies the actual values; it does not begin the next lifecycle stage automatically.
-4. Upcoming-stage sub-agent assessment: `Sub-agents: None` with a fit reason, or an approved bounded strategy.
+Use `rule:execution-quality.execution-thread-start`; do not infer a later lifecycle transition from this handoff.

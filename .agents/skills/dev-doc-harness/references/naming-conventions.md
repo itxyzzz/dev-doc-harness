@@ -1,6 +1,6 @@
 # Naming Conventions
 
-This document is the canonical source for harness naming conventions across work-item folders, durable planning artifact filenames, commit messages, and changelog entries.
+This document is the canonical source for harness naming conventions across work-item folders, durable planning artifact filenames, and commit messages.
 
 Module: `module:naming`
 
@@ -14,7 +14,6 @@ Owned rule IDs:
 | `rule:naming.work-item-paths` | `## Work item paths` |
 | `rule:naming.artifact-filenames` | `## Artifact filenames` |
 | `rule:naming.commit-messages` | `## Commit messages` |
-| `rule:naming.changelog-entries` | `## Changelog entries` |
 | `rule:naming.collision-handling` | `## Collision handling` |
 | `rule:naming.redundancy-deduplication` | `## Redundancy deduplication` |
 
@@ -47,10 +46,8 @@ Use these derived pattern names from other current harness references and templa
 | `<phase-plan-filename>` | `plan_<phase-id>_<phase-title>_<short-id>.md` |
 | `<amendment-filename>` | `plan_amendment-NN_<amendment-title>_<short-id>.md` |
 | `<variance-log-path>` | `implementation-notes/variance-log.md` |
-| `<changelog-fragment-path>` | `docs/work-items/<work-id>/changelog/*.md` |
 | `<commit-subject>` | `[<issue-key> ]<type>: <title>[ -- <plain-language-elaboration>]` |
 | `<planning-commit-subject>` | `[<issue-key> ]<artifact-type>: <title>[ -- <plain-language-elaboration>]` |
-| `<changelog-heading>` | `## <date> <commit-subject>`. |
 
 Use the explicit expansions in this file when creating actual paths, examples, validation fixtures, or migration notes. Use the derived names in lifecycle, quality, freeze-gate, router, and template guidance when the exact spelling is not the point being taught.
 
@@ -101,14 +98,6 @@ plan_phase-01_discovery_KEY-123_user-profile-import.md
 plan_amendment-01_validation-scope_KEY-123_user-profile-import.md
 ```
 
-Changelog source fragments live below the work item package:
-
-```text
-docs/work-items/<work-id>/changelog/*.md
-```
-
-Implementation fragment filenames use lower-kebab-case: `implementation-fragment.md` for ordinary delivery and `phase-NN-fragment.md` for phase-specific delivery, such as `phase-01-fragment.md`. Their compact metadata and compatibility rules are owned by `module:implementation-changelog`. The fragment entry heading itself still follows `rule:naming.changelog-entries`.
-
 ## Commit messages
 
 Use this subject grammar:
@@ -129,12 +118,6 @@ KEY-123 fix: profile-import-timeout -- avoid deadlock on slow identity lookup
 docs: naming-conventions
 release: version-0-3-0
 ```
-
-## Changelog entries
-
-Use `<changelog-heading>`.
-
-When repository changelogs are grouped by release, apply the same entry grammar beneath the release heading.
 
 ## Collision handling
 

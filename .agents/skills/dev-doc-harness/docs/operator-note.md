@@ -41,7 +41,7 @@ A combined small/medium plan hands off directly to implementation. Large work no
 
 Independent review remains the default. If review cannot run or you decline it, the agent explains the assurance gap and compensating validation, then asks once whether to proceed when your decision is still needed. At execution start, you may choose another available method, model, reasoning effort, or task location without changing the plan solely for that runtime choice.
 
-You can expect ordinary work-item commits to carry matching changelog-fragment and lint evidence. Root `CHANGELOG.md` remains the later consolidated publication view at a project-owned checkpoint. A downstream product/application release keeps its own release process.
+For implementation-stage changelog authoring, follow `module:implementation-changelog`. Root `CHANGELOG.md` remains the later consolidated publication view at a project-owned checkpoint. A downstream product/application release keeps its own release process.
 
 ## Using Superpowers
 
@@ -70,6 +70,18 @@ Create a plan-only PR checkpoint before code changes.
 ```text
 Use one additional security-lens review sub-agent with a flagship-tier model at high reasoning.
 ```
+
+## Changelog
+
+Each work item may keep an implementation changelog fragment under `docs/work-items/<work-id>/changelog/`. It records delivered implementation work and keeps that entry aligned with the implementation commit subject without turning the root `CHANGELOG.md` into a working log.
+
+The root changelog remains the curated publication view. Reviewed fragments can be consolidated at a project-owned checkpoint, such as after work branches merge or before release-note preparation or a product/application release:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+```
+
+This separation gives the harness a consistent record while downstream projects keep their own release processes.
 
 ## For Harness Maintainers
 

@@ -1,7 +1,6 @@
 ## Implementation tasks
 
-Use stable task IDs, short titles, and enough detail to act without inventing
-scope. Order tasks by dependency.
+Use stable task IDs, short titles, and enough detail to act without inventing scope. Order tasks by dependency.
 
 ### `TASK-001` `<short imperative title>`
 
@@ -12,15 +11,13 @@ Interfaces:
 1. Consumes: `<inputs from a prior task, approved artifact, interface, or None>`.
 2. Produces: `<outputs that a later task or fresh executor relies on, or None>`.
 
-Dependencies describe readiness or ordering. Interfaces describe task-boundary
-inputs and outputs; do not use one in place of the other.
+Dependencies describe readiness or ordering. Interfaces describe task-boundary inputs and outputs; do not use one in place of the other.
 
 Implementation:
 
 1. `<specific change, test, documentation, or review step>`.
 
-Use numbered executable steps. Do not use checkbox task lists inside an
-implementation sequence.
+Use numbered executable steps. Do not use checkbox task lists inside an implementation sequence.
 
 Exit criteria: `<observable completion signal>`.
 

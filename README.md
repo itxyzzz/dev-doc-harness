@@ -84,7 +84,7 @@ The copyable distributable package is the root `AGENTS.md` file plus the `.agent
 
 The copyable package records its version in `.agents/skills/dev-doc-harness/VERSION`. Package-local release notes, a compact downstream guide, and harness release process document travel under `.agents/skills/dev-doc-harness/docs/`. The root README, `CHANGELOG.md`, and repository work-item history are not part of that distribution.
 
-For implementation commits, update the matching implementation fragment and run `python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py --lint`. Planning approvals create no fragment. Root consolidation remains a project-owned checkpoint: release preparation runs lint followed by `--check`, then uses the default mode only for an explicit write consolidation.
+For implementation-stage changelog authoring, follow `module:implementation-changelog` in `references/implementation-changelog.md`. Planning approvals create no fragment; release-stage consolidation remains a project-owned checkpoint.
 
 When merging `AGENTS.md` instructions, copy the full section `## Using Dev Doc Harness` -- or parts of it, according to your preferences and the intended degree to which the harness should be enforced on the respective level, one repository or globally.
 
@@ -132,15 +132,7 @@ The operator can override all these recommendations on start authorization.
 
 Implementation does not always follow a frozen plan line for line. The harness keeps approved planning artifacts unchanged so reviewers can see what was planned and what was delivered. Small implementation or validation adjustments are normal when they preserve the approved scope and outcome. That includes changes that serve the same evidence purpose; using a different command to prove the same result is one example. A change that materially affects the outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence goes through an amendment and approval.
 
-Each work item may keep an implementation changelog fragment under `docs/work-items/<work-id>/changelog/`. It records delivered implementation work and keeps that entry aligned with the implementation commit subject without turning the root `CHANGELOG.md` into a working log.
-
-The root changelog remains the curated publication view. Reviewed fragments can be consolidated at a project-owned checkpoint, such as after work branches merge or before release-note preparation or a product/application release:
-
-```bash
-python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
-```
-
-This separation gives the harness a consistent record while downstream projects keep their own release processes.
+Implementation-stage changelog authoring is governed by `module:implementation-changelog`; it keeps delivery records separate from the root publication view. Release-stage consolidation remains project-owned, while a downstream product/application release keeps its own process.
 
 ## Compatibility with other workflows
 
@@ -153,6 +145,8 @@ The harness distribution policy covers only its own artifacts and changelog cont
 The practical Superpowers adapter is straightforward: use its methodology to explore and execute, convert any governing planning content into the canonical work-item package, then run the harness draft-review and approval freeze before implementation. If generic Superpowers defaults conflict, the approved harness plan governs its numbered tasks and meaningful commit boundaries. If a Superpowers workflow would continue directly after planning, the harness pause takes precedence. This preserves one reviewable source of truth and makes the same package available to future threads. After the approved route authorizes execution, Superpowers pre-flight and task aids may remain ephemeral; when it is unavailable, keep each task independently executable and verifiable with the recorded checks.
 
 ## For harness maintainers
+
+### Routing
 
 Agents discover the router through `AGENTS.md`:
 
@@ -178,7 +172,9 @@ For routine orientation, these routes cover most maintenance questions:
 | Task orchestration, model selection, and sub-agent strategy | `references/subagent-model-policy.md` |
 | Package identity, release notes, and adoption | `references/release-policy.md` |
 
-The naming reference owns work IDs, artifact filenames, commit subjects, and changelog-entry grammar. Evidence-heavy reviews preserve their sources through the evidence module instead of treating mutable live material as a durable record. These owners keep the router small without requiring templates or operator summaries to reproduce long policy sections.
+The naming reference owns work IDs, artifact filenames, and commit subjects; the implementation-changelog module owns current changelog authoring. Evidence-heavy reviews preserve their sources through the evidence module instead of treating mutable live material as a durable record. These owners keep the router small without requiring templates or operator summaries to reproduce long policy sections.
+
+### Releases
 
 Release maintainers use the repository-local release process rather than a generic application-release workflow. The distributable package is root `AGENTS.md` plus `.agents/`; release notes are curated from the consolidated root changelog after work-item fragments have been integrated. A protected post-release PR synchronizes the released state back to `master` before later development branches begin. Downstream adopters can roll back a harness update by reverting its dedicated adoption commit or PR.
 
@@ -196,10 +192,16 @@ python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
 
 Use `--check` for a non-mutating freshness check. The optional root-local `.githooks/pre-commit` hook is a repository development aid; it is not copied with the distributable package.
 
+To consolidate changelog fragments before release, run:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+```
+
 ## What this is not
 
 This is not a project-management system, a replacement for human review, or a demand for a spec folder for every typo. It is a guardrail for work where planning quality, handoff, reviewability, or implementation drift matters.
 
 ## Contributing
 
-This repository keeps its own planning artifacts under `docs/work-items/` so future contributors can understand why the harness changed. Contributions include the relevant planning package and user-facing updates; implementation commits add their matching changelog source. Root `CHANGELOG.md` changes only at an operator-owned consolidation checkpoint.
+This repository keeps its own planning artifacts under `docs/work-items/` so future contributors can understand why the harness changed. Contributions include the relevant planning package and user-facing updates; implementation-stage changelog work follows `module:implementation-changelog`. Root `CHANGELOG.md` changes only at an operator-owned consolidation checkpoint.

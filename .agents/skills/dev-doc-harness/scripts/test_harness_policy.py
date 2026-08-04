@@ -69,6 +69,7 @@ CHECK_IDS = [
     "release.package-boundary",
     "release.template-context",
     "changelog.fragments",
+    "documentation.assessment",
     "architecture.decisions",
     "artifact-style.guidance",
     "plain-language.policy",
@@ -990,7 +991,13 @@ def assert_changelog_fragment_contract() -> None:
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
-    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation-fragment\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/\*\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"implementation-fragment\.md", "ordinary implementation fragment filename")
+    assert_text_contains(check_id, changelog_reference, r"phase-NN-fragment\.md", "phase implementation fragment filename")
+    assert_text_contains(check_id, changelog_reference, r"### `<date> <commit-subject>`", "fragment heading grammar")
+    assert_text_contains(check_id, changelog_reference, r"The heading must be synchronized to its implementation commit subject", "fragment heading synchronization")
+    assert_text_contains(check_id, changelog_reference, r"matching planned commit row and fragment heading", "commit synchronization")
+    assert_text_contains(check_id, changelog_reference, r"Keep a Changelog", "changelog body convention")
     assert_text_contains(check_id, changelog_reference, r"## Compatibility and legacy support", "legacy guidance section")
     guidance_text = read_repo_text(changelog_reference)
     if guidance_text.find("## Compatibility and legacy support") < guidance_text.find("## Consolidation"):
@@ -998,8 +1005,11 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, changelog_reference, r"Root `CHANGELOG\.md` is the curated release source", "root changelog publication view")
     assert_text_not_contains(check_id, freeze, r"changelog source fragment", "freeze planning fragment")
     assert_text_not_contains(check_id, lifecycle, r"^## Changelog$", "retired lifecycle changelog section")
-    assert_text_contains(check_id, naming, r"<changelog-fragment-path>", "fragment path derived pattern")
-    assert_text_contains(check_id, naming, r"## <date> <commit-subject>", "changelog heading grammar")
+    assert_text_not_contains(check_id, lifecycle, r"docs/work-items/<work-id>/changelog/", "lifecycle fragment path leak")
+    assert_text_not_contains(check_id, lifecycle, r"implementation-fragment\.md", "lifecycle ordinary fragment filename leak")
+    assert_text_not_contains(check_id, lifecycle, r"phase-(?:NN|01)-fragment\.md", "lifecycle phase fragment filename leak")
+    assert_text_not_contains(check_id, naming, r"changelog-fragment-path", "retired fragment path derived pattern")
+    assert_text_not_contains(check_id, naming, r"## Changelog entries", "retired changelog-entry section")
     assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
     assert_text_contains(check_id, release_policy, r"after fragment consolidation", "root source after consolidation")
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
@@ -1020,14 +1030,21 @@ def assert_changelog_fragment_contract() -> None:
     for path in operator_docs:
         assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
         assert_text_contains(check_id, path, r"product/application release", f"{path} downstream release boundary")
+        assert_text_contains(check_id, path, r"module:implementation-changelog", f"{path} implementation-stage handoff")
+        assert_text_contains(check_id, path, r"consolidate_changelog_fragments\.py", f"{path} consolidation command")
 
     for template in [
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]:
-        assert_text_contains(check_id, template, r"planning approval creates no fragment", f"{template} planning boundary")
+        assert_text_not_contains(check_id, template, r"changelog", f"{template} changelog procedure leak")
     for template in PLAN_TEMPLATE_FILES:
-        assert_text_contains(check_id, template, r"implementation task then records the matching compact changelog entry", f"{template} implementation boundary")
+        handoffs = len(re.findall(r"Before an implementation commit, follow `module:implementation-changelog`", read_repo_text(template)))
+        if handoffs != 1:
+            add_failure(check_id, f"{template} must contain exactly one concise implementation-changelog handoff; found {handoffs}")
+
+    for path in [lifecycle, freeze, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"]:
+        assert_text_not_contains(check_id, path, r"matching changelog", f"{path} changelog synchronization leak")
 
     if not join_repo_path(script_path).exists():
         add_failure(check_id, f"Missing consolidation script: {script_path}")
@@ -1285,6 +1302,68 @@ def assert_changelog_fragment_contract() -> None:
             add_failure(check_id, "mixed compact and legacy fragment metadata must fail lint")
 
 
+def assert_documentation_assessment_contract() -> None:
+    check_id = "documentation.assessment"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.common.documentation-assessment.md"
+    small_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.small.header.md"
+    large_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.large.header.md"
+    small_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md"
+    large_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
+    phase_tasks = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.080.phase.documentation-tasks.md"
+    expected_ids = [
+        "DOC-TEST-CASE",
+        "DOC-TEST-GUIDE",
+        "DOC-OPS-GUIDE",
+        "DOC-API-GUIDE",
+        "DOC-ARCH-SUMMARY",
+    ]
+
+    assert_text_contains(check_id, lifecycle, r"rule:lifecycle.documentation-assessment", "assessment rule owner")
+    assert_text_contains(check_id, lifecycle, r"## Documentation assessment", "assessment policy heading")
+    retired_matrix = "Documentation artifact" + r"\s+" + "matrix"
+    assert_text_not_contains(check_id, lifecycle, retired_matrix, "retired assessment matrix")
+    lifecycle_text = read_repo_text(lifecycle)
+    lifecycle_ids = re.findall(r"`(DOC-[A-Z-]+)`", lifecycle_text)
+    if lifecycle_ids != expected_ids:
+        add_failure(check_id, f"lifecycle assessment IDs must appear once in order; found {lifecycle_ids}")
+    for status in ["Not required", "Required", "Deferred"]:
+        assert_text_contains(check_id, lifecycle, re.escape(status), f"assessment status {status}")
+    assert_text_contains(check_id, lifecycle, r"no changelog entry and no architecture-snapshot entry", "assessment exclusions")
+
+    assert_text_contains(check_id, shared_block, r"## Documentation assessment", "shared assessment heading")
+    block_text = read_repo_text(shared_block)
+    block_ids = re.findall(r"^- `(DOC-[A-Z-]+)`:", block_text, flags=re.MULTILINE)
+    if block_ids != expected_ids:
+        add_failure(check_id, f"shared assessment bullets must appear once in order; found {block_ids}")
+    for phrase, label in [
+        ("Required — <output path>; Plan Task: TASK-NNN", "required output and task shape"),
+        ("Deferred — owner: <owner>; resolution point: <event>", "deferred owner and resolution shape"),
+    ]:
+        if block_text.count(phrase) != 1:
+            add_failure(check_id, f"shared assessment must define one {label}")
+    if block_text.count("<status>") != len(expected_ids):
+        add_failure(check_id, f"shared assessment must render {len(expected_ids)} status placeholders")
+    assert_text_not_contains(check_id, shared_block, r"changelog", "shared assessment changelog row")
+    assert_text_not_contains(check_id, shared_block, r"Architecture snapshot", "shared assessment architecture row")
+
+    for path in [small_header, large_header]:
+        assert_text_contains(check_id, path, r"rule:lifecycle.documentation-assessment", f"{path} assessment reference")
+    for path in [small_readiness, large_readiness]:
+        assert_text_contains(check_id, path, r"Documentation assessment covers every required decision", f"{path} generic assessment readiness")
+        assert_text_not_contains(check_id, path, r"DOC-", f"{path} duplicated assessment IDs")
+    assert_text_contains(check_id, phase_tasks, r"Consume the approved documentation assessment", "phase assessment handoff")
+    assert_text_not_contains(check_id, phase_tasks, r"DOC-", "phase duplicated assessment IDs")
+    assert_text_not_contains(check_id, phase_tasks, r"changelog", "phase changelog procedure")
+
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]:
+        assert_text_contains(check_id, path, r"## Documentation assessment", f"{path} assembled assessment")
+        assert_text_not_contains(check_id, path, retired_matrix, f"{path} retired matrix")
+
+
 def assert_work_item_architecture_decisions() -> None:
     check_id = "architecture.decisions"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
@@ -1396,7 +1475,12 @@ def assert_artifact_style_guidance() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]:
-        assert_text_contains(check_id, path, r"required decision|unresolved required decisions", "readiness unresolved-decision check")
+        assert_text_contains(
+            check_id,
+            path,
+            r"required decision|unresolved required decisions|unresolved implementation decision|No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain\.",
+            "readiness unresolved-decision check",
+        )
 
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/architecture-snapshot.md", r"DEC-001", "architecture decision ID")
     assert_text_contains(check_id, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md", r"AMD-001", "amendment ID")
@@ -1594,7 +1678,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
-    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     assert_text_contains(check_id, plan_strategy_source, r"upcoming-stage sub-agent assessment", "plan sub-agent assessment prompt")
     for path in [plan_strategy_source, large_strategy_source]:
         assert_text_contains(check_id, path, r"Write authority", "sub-agent write-authority prompt")
@@ -1602,6 +1686,16 @@ def assert_model_selection_dimensions() -> None:
     assert_text_not_contains(check_id, plan_strategy_source, r"Current planning Codex task", "duplicated plan current-task prompt")
     assert_text_not_contains(check_id, plan_strategy_source, r"Next-stage recommendation", "duplicated plan next-stage prompt")
     assert_text_contains(check_id, models, r"header metadata.+final handoff.+shared strategy", "plan-state placement guidance")
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
+    ]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"## Implementation tasks[\s\S]*## Model and Sub-agent Strategy[\s\S]*## Planned commits",
+            "strategy appears after tasks and before planned commits",
+        )
 
     assert_text_not_contains(check_id, models, r"\| Model class/profile \|", "conflated canonical example column")
 
@@ -1666,11 +1760,13 @@ def assert_execution_thread_start() -> None:
     assert_text_contains(check_id, small_plan, r"## Implementation handoff", "small-plan handoff section")
     assert_text_contains(check_id, small_plan, r"Next lifecycle stage[\s\S]*Stage:[\s\S]*Frozen package", "small-plan compact handoff inputs")
     assert_text_contains(check_id, small_plan, re.escape("rule:execution-quality.execution-thread-start"), "small-plan startup rule reference")
-    assert_text_contains(check_id, phase_plan, r"## Phase transitions", "phase transition section")
-    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "current-phase implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "post-phase transition handoff")
+    assert_text_contains(check_id, phase_plan, r"## Phase implementation handoff", "phase implementation handoff section")
+    assert_text_contains(check_id, phase_plan, r"Phase execution startup", "phase execution startup")
+    assert_text_contains(check_id, phase_plan, r"## Phase completion report", "phase completion report")
+    assert_text_contains(check_id, phase_plan, re.escape("rule:execution-quality.execution-thread-start"), "phase startup rule reference")
+    assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired post-phase transition")
 
-    for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Fallbacks and limits"]:
+    for label in ["Method", "Run in", "Review", "Generation", "Capability tier", "Reasoning", "Execution requirements and contingencies"]:
         assert_text_contains(check_id, freeze, re.escape(label), f"freeze confirmation '{label}'")
     assert_text_contains(check_id, freeze, re.escape("rule:execution-quality.execution-thread-start"), "consumer-side startup protocol")
     assert_text_contains(check_id, architecture, r"execution-thread-start", "architecture owner route")
@@ -1921,11 +2017,37 @@ def assert_commitment_verification_templates() -> None:
         assert_text_not_contains(check_id, path, r"Commitment-Disposition Mapping", "mandatory commitment mapping")
         assert_text_not_contains(check_id, path, r"Verification-Execution Mapping", "mandatory verification mapping")
 
-    phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.fresh-thread-readiness.md"
+    phase_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.030.phase.session-readiness.md"
     phase_template = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md"
-    assert_text_contains(check_id, phase_source, r"one orchestration session with bounded delegation", "phase source execution-size boundary")
-    assert_text_contains(check_id, phase_template, r"one orchestration session with bounded delegation", "phase template execution-size boundary")
+    assert_text_contains(check_id, phase_source, r"## Phase session readiness", "phase session-readiness heading")
+    assert_normalized_text_contains(
+        check_id,
+        phase_source,
+        "one orchestration session with its documented bounded delegation",
+        "phase source execution-size boundary",
+    )
+    assert_text_contains(check_id, phase_source, r"amendment", "approved-anchor amendment path")
+    assert_text_not_contains(check_id, phase_source, r"update the anchor spec before freeze", "retired approved-anchor edit path")
+    assert_normalized_text_contains(
+        check_id,
+        phase_template,
+        "one orchestration session with its documented bounded delegation",
+        "phase template execution-size boundary",
+    )
     assert_text_not_contains(check_id, plan_paths[0], r"one orchestration session with bounded delegation", "ordinary plan phase-only boundary")
+
+    small_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.small.readiness-completion-approval.md"
+    phase_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion-approval.md"
+    assert_text_contains(check_id, small_readiness, r"This plan document is self-sufficient", "small-plan fresh-session readiness")
+    assert_text_contains(check_id, small_readiness, r"Plan Checks cover the full set of Verification Criteria", "small-plan verification coverage")
+    assert_text_contains(check_id, small_readiness, r"Required documentation outputs are assigned to implementation tasks", "small-plan documentation assignment")
+    assert_text_contains(check_id, small_readiness, r"deferred documentation items name an owner and resolution point", "small-plan documentation deferral")
+    assert_text_not_contains(check_id, small_readiness, r"DOC-", "small-plan duplicated documentation IDs")
+    assert_text_contains(check_id, phase_readiness, r"Required documentation outputs are assigned to this phase", "phase-plan documentation assignment")
+    assert_text_contains(check_id, phase_readiness, r"deferred documentation items name an owner and resolution point", "phase-plan documentation deferral")
+    assert_text_not_contains(check_id, phase_readiness, r"DOC-", "phase-plan duplicated documentation IDs")
+    assert_text_contains(check_id, phase_readiness, r"Phase completion report", "phase completion-report readiness")
+    assert_text_not_contains(check_id, phase_readiness, r"Post-phase transition", "retired phase post-transition readiness")
 
     task_bound_plan = """## Implementation tasks
 ### `TASK-001` Implement one change
@@ -2036,7 +2158,11 @@ def multi_check_fixture_mode(text: str) -> str:
 
 
 def superpowers_task_fixture_errors(text: str) -> list[str]:
-    task_match = re.search(r"## Implementation tasks(?P<body>.*?)(?:\n## Implementation handoff|\n## Phase transitions|\Z)", text, flags=re.DOTALL)
+    task_match = re.search(
+        r"## Implementation tasks(?P<body>.*?)(?:\n## Model and Sub-agent Strategy|\n## Implementation handoff|\n## Phase implementation handoff|\Z)",
+        text,
+        flags=re.DOTALL,
+    )
     if task_match is None:
         return ["missing implementation-task section"]
     task_body = task_match.group("body")
@@ -2205,7 +2331,7 @@ def assert_superpowers_adapter_contract() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
     ]
     traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.common.traceability-approach-surfaces.md"
-    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     handoff_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.small.handoff.md"
     task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
 
@@ -2583,7 +2709,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_contains(check_id, path, r"Execution method", "execution method metadata")
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete Superpowers meta-header section")
 
-    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     large_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     model_sources = [plan_model_source, large_model_source]
     model_consumers = [
@@ -2619,8 +2745,9 @@ def assert_planning_template_clarity() -> None:
     assert_text_contains(check_id, small_spec, r"Transition owner.*plan", "small spec plan transition ownership")
     assert_text_not_contains(check_id, small_spec, r"Implementation Handoff", "duplicate small-spec implementation handoff")
     assert_text_contains(check_id, small_plan, r"Implementation handoff", "small plan implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Current-phase implementation handoff", "phase implementation handoff")
-    assert_text_contains(check_id, phase_plan, r"Post-phase transition", "phase post-transition handoff")
+    assert_text_contains(check_id, phase_plan, r"Phase implementation handoff", "phase implementation handoff")
+    assert_text_contains(check_id, phase_plan, r"Phase completion report", "phase completion report")
+    assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired phase post-transition handoff")
 
     for path in [lifecycle, ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", phase_plan]:
         assert_text_contains(check_id, path, r"rolling", "rolling phase loop")
@@ -2663,7 +2790,7 @@ def next_stage_summary_fixture_errors(text: str, *, frozen: bool) -> list[str]:
     forbidden_title = "Next-stage recommendation" if frozen else "Approved next stage"
     if forbidden_title in text:
         errors.append(f"contains incompatible {forbidden_title}")
-    for group in ["Next lifecycle stage", "Orchestration", "Model", "Fallbacks and limits"]:
+    for group in ["Next lifecycle stage", "Orchestration", "Model", "Execution requirements and contingencies"]:
         if group not in text:
             errors.append(f"missing {group} group")
     if not re.search(
@@ -2704,12 +2831,12 @@ def next_stage_template_contract_errors(
 ) -> list[str]:
     """Validate that a reusable planning template can render the four-group contract."""
     errors: list[str] = []
-    ordered_groups = r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits"
+    ordered_groups = r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Execution requirements and contingencies"
     if not re.search(ordered_groups, text, flags=re.IGNORECASE):
         errors.append("missing ordered four-group next-stage recommendation")
     if f"Stage: `{expected_stage}`" not in text:
         errors.append(f"missing Stage: `{expected_stage}`")
-    if not re.search(r"Method:[^\n]+Orchestration mode:[^\n]+Run in:[^\n]+Review:", text):
+    if not re.search(r"Method:[\s\S]*?Orchestration mode:[\s\S]*?Run in:[\s\S]*?Review:", text):
         errors.append("missing complete orchestration fields")
     if re.search(r"(?m)^Orchestration mode fit:", text):
         errors.append("contains noncanonical orchestration mode fit prompt")
@@ -2717,7 +2844,7 @@ def next_stage_template_contract_errors(
         errors.append(f"missing stage-appropriate Method prompt `{expected_method_prompt}`")
     if expected_review_prompt is not None and f"Review: `{expected_review_prompt}`" not in text:
         errors.append(f"missing stage-appropriate Review prompt `{expected_review_prompt}`")
-    if not re.search(r"Generation:[^\n]+Capability tier:[^\n]+Reasoning:", text):
+    if not re.search(r"Generation:[\s\S]*?Capability tier:[\s\S]*?Reasoning:", text):
         errors.append("missing complete model fields")
     if not re.search(r"Run in:\s*`<same orchestration session / new orchestration session>`", text):
         errors.append("missing canonical Run in choices")
@@ -2757,9 +2884,13 @@ def assert_next_stage_summary() -> None:
     staged_spec_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.small.handoff.md"
     large_anchor_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     large_anchor_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
+    small_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md"
+    small_spec = ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md"
+    large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
+    evidence_preservation_rule = "rule:" + "evidence.preservation"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nFallbacks and limits: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")
@@ -2830,7 +2961,7 @@ def assert_next_stage_summary() -> None:
         assert_text_contains(check_id, path, r"omit unless exposed and material", "current-session omission rule")
         assert_text_not_contains(check_id, path, r"Generation, capability tier, reasoning", "duplicated current-session model facets")
 
-    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.040.common.model-strategy.md"
+    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
     assert_text_contains(check_id, strategy_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
     assert_text_not_contains(check_id, strategy_source, r"Current planning Codex task", "duplicated plan current-task section")
     assert_text_not_contains(check_id, strategy_source, r"Next-stage recommendation", "duplicated plan next-stage summary")
@@ -2849,12 +2980,6 @@ def assert_next_stage_summary() -> None:
             add_failure(check_id, f"{path} {error}")
 
     governed_transition_templates = [
-        (
-            staged_spec_source,
-            "plan drafting",
-            "<planning method for plan drafting>",
-            "<planning-review arrangement>",
-        ),
         (
             large_anchor_source,
             "phase-plan drafting",
@@ -2893,6 +3018,41 @@ def assert_next_stage_summary() -> None:
         if not next_stage_template_contract_errors(extra_mode_fit_text, expected_stage=expected_stage):
             add_failure(check_id, f"{path} extra orchestration mode fit mutation was accepted")
 
+    assert_text_contains(
+        check_id,
+        staged_spec_source,
+        r"staging reason[\s\S]*spec-only frozen package",
+        "compact staged-spec exception facts",
+    )
+    assert_text_contains(
+        check_id,
+        staged_spec_source,
+        r"Next lifecycle stage:\s*`plan drafting`",
+        "staged-spec plan-drafting transition",
+    )
+    assert_text_not_contains(
+        check_id,
+        staged_spec_source,
+        r"(?mi)^#{1,6}\s+Next-stage recommendation\s*$",
+        "retired staged-spec next-stage recommendation",
+    )
+    assert_text_not_contains(
+        check_id,
+        staged_spec_source,
+        r"(?mi)^#{1,6}\s+(?:Orchestration|Model|Execution requirements and contingencies|Method|Generation|Capability tier|Reasoning|Upcoming-stage sub-agent assessment)\s*$|^(?:Method:|Generation:|Capability tier:|Reasoning:|Upcoming-stage sub-agent assessment:)",
+        "retired staged-spec next-stage summary fields",
+    )
+
+    for path in [small_readiness_source, large_anchor_readiness_source, small_spec, large_spec]:
+        assert_text_contains(
+            check_id,
+            path,
+            r"All relevant operator input is preserved in (?:this )?specification or through `module:evidence` and `"
+            + re.escape(evidence_preservation_rule)
+            + r"`",
+            "operator-input preservation readiness check",
+        )
+
     for rule_id in ["rule:models.selection-dimensions", "rule:models.orchestration-mode", "rule:models.next-stage-continuity"]:
         assert_text_contains(check_id, amendment_template, re.escape(rule_id), f"amendment template {rule_id} route")
 
@@ -2902,7 +3062,7 @@ def assert_next_stage_summary() -> None:
             add_failure(check_id, f"{path} must render one current-task metadata field")
         for error in draft_state_heading_errors(text):
             add_failure(check_id, f"{path} {error}")
-        handoff_index = min((text.find(heading) for heading in ("## Implementation handoff", "## Phase transitions") if heading in text), default=-1)
+        handoff_index = min((text.find(heading) for heading in ("## Implementation handoff", "## Phase implementation handoff") if heading in text), default=-1)
         summary_index = text.find("### Next-stage recommendation")
         if handoff_index < 0 or summary_index < handoff_index:
             add_failure(check_id, f"{path} places the next-stage summary before its handoff or transition")
@@ -2936,13 +3096,13 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(
         check_id,
         large_anchor_readiness_source,
-        r"relabel(?:ed)?[^\n]+Approved next stage[^\n]+do not render both",
+        r"Next-stage recommendation[^\n]+relabeled `Approved next stage`",
         "large-anchor readiness relabel check",
     )
 
     assert_text_contains(check_id, models, r"Current orchestration session", "current orchestration session separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
-    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Fallbacks and limits", "ordered next-stage groups")
+    assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Execution requirements and contingencies", "ordered next-stage groups")
     assert_text_contains(check_id, models, r"Stage:[^\n]+plan drafting[^\n]+phase-plan drafting", "canonical plan-drafting stage notation")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
@@ -2962,7 +3122,7 @@ def assert_next_stage_summary() -> None:
 
     draft_review = read_markdown_h2_section(freeze, "Draft review checkpoint")
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
-    if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Fallbacks and limits", draft_review, flags=re.IGNORECASE):
+    if not re.search(r"Next-stage recommendation[\s\S]+Next lifecycle stage[\s\S]+Orchestration[\s\S]+Model[\s\S]+Execution requirements and contingencies", draft_review, flags=re.IGNORECASE):
         add_failure(check_id, "draft review does not own the four-group next-stage recommendation")
     owner_pattern = (
         re.escape("rule" + ":models.selection-dimensions")
@@ -2979,7 +3139,7 @@ def assert_next_stage_summary() -> None:
     assert_text_not_contains(check_id, freeze, r"same-task|new-task recommendation|current task", "retired continuity terminology")
     if not re.search(r"Draft review checkpoint[\s\S]+Approved next stage", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze does not reference the draft-review group definition")
-    if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Fallbacks and limits", approval_freeze, flags=re.IGNORECASE):
+    if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Execution requirements and contingencies", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze repeats the full next-stage group definition")
 
     post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
@@ -3055,7 +3215,7 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Immutable snapshots", "label": "immutable snapshots"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Variance policy", "label": "variance and amendments"},
         {"path": ".agents/skills/dev-doc-harness/references/implementation-changelog.md", "pattern": "before implementation commits", "label": "implementation changelog before commit"},
-        {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
+        {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation assessment", "label": "documentation assessment"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
         {"path": ".agents/skills/dev-doc-harness/references/maintenance-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
     ]
@@ -3255,6 +3415,9 @@ def run_checks() -> None:
 
     assert_changelog_fragment_contract()
     write_check_result("changelog.fragments")
+
+    assert_documentation_assessment_contract()
+    write_check_result("documentation.assessment")
 
     assert_work_item_architecture_decisions()
     write_check_result("architecture.decisions")

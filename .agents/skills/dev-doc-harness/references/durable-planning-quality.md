@@ -75,7 +75,7 @@ Each `<plan-filename>` and `<phase-plan-filename>` must be executable from its d
 - A flat list of self-contained tasks with clear ownership and boundaries; dependencies identify tasks that may run in parallel.
 - Test cases and validation commands with expected results.
 - Plan Tasks with executable checks that link to relevant Verification Criteria.
-- Documentation tasks and required changelog update.
+- Required or deferred documentation outputs assigned to Plan Tasks; before an implementation commit, use `module:implementation-changelog`.
 - Handoff output expected from the implementing agent.
 
 Plans consume the approved spec, approved amendments, and any approved architecture snapshot. They may use architecture decisions as implementation inputs, but they must not silently reinterpret frozen architecture or introduce new high-impact architecture decisions. `artifact-contract.md` owns architecture-snapshot eligibility, post-freeze variance, and amendment mechanics.

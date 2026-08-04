@@ -78,7 +78,7 @@ If spec-kit is installed and active, use a project-local adapter when one exists
 - [ ] Required small/medium or large/phased artifacts exist and meet `module:quality`.
 - [ ] A normal small/medium package contains both canonical files, `<spec-filename>` and `<plan-filename>`; a spec-only package records the operator-requested or operator-approved staged reason and `plan drafting` next lifecycle stage.
 - [ ] Each approved spec, plan, phase plan, or amendment has passed `module:freeze-gate`.
-- [ ] The documentation artifact matrix uses `rule:lifecycle.documentation-matrix`.
+- [ ] The documentation assessment uses `rule:lifecycle.documentation-assessment`.
 - [ ] Implementation commit subjects follow `rule:lifecycle.commit-message-format`, and the matching implementation changelog source is updated under `module:implementation-changelog`.
 - [ ] Frozen snapshots follow `rule:lifecycle.immutable-snapshots`.
 - [ ] Variance follows `rule:lifecycle.variance-policy`.

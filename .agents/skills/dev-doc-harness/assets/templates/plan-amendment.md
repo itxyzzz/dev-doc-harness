@@ -54,9 +54,9 @@ Method: `<planning or execution method for Stage>`; Orchestration mode: `<single
 
 Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
 
-### Fallbacks and limits
+### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
 ## Approval
 
@@ -67,8 +67,7 @@ Generation: `<latest available or concrete generation>`; Capability tier: `<flag
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`; keep the matching changelog fragment
-in sync.
+Use `rule:lifecycle.commit-message-format`.
 
 | Stage | Planned subject |
 |---|---|

@@ -11,9 +11,7 @@ Current orchestration session: Resolved model profile and Context visibility: `<
 
 Artifact style baseline: write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables. Load `module:artifact-style` when the phase plan becomes large or hard to scan.
 
-When Superpowers is the approved execution method, record it in the metadata
-above. The harness retains scope, model-policy bounds, variance handling,
-approved commit boundaries, and final integration; do not add a second route.
+When Superpowers is the approved execution method, record it in the metadata above. The harness retains scope, model-policy bounds, variance handling, approved commit boundaries, and final integration; do not add a second route.
 
 ## Objective
 
@@ -33,4 +31,5 @@ Read these before finalizing phase implementation planning:
 8. Unresolved phase context to confirm before editing: `<questions, owners, or None identified>`.
 
 Confirm this phase plan follows `rule:lifecycle.large-phase-orchestration`, preserves applicable details from the large/phased work item spec, and does not narrow, drop, or reinterpret spec decisions.
+
 If architecture is missing, ambiguous, or changed before phase-plan freeze, update the draft spec or architecture snapshot when still draftable. After freeze, route architecture drift through variance handling and an amendment when `rule:lifecycle.variance-policy` requires approval.

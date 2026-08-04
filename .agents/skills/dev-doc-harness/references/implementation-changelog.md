@@ -4,25 +4,39 @@ This document owns current implementation-stage changelog authoring, fragment co
 
 Module: `module:implementation-changelog`
 
-## Current entry schema
+## Fragment lifecycle
 
-An implementation fragment entry has a commit-derived heading followed by exactly one compact metadata line:
+Create or update the relevant fragment before an implementation commit. Do not create planning-approval, spec, plan, amendment, or other planning-only fragments. Fragment entries stay newest-first.
+
+## Fragment locations and names
+
+Changelog source fragments live below the work item package:
+
+```text
+docs/work-items/<work-id>/changelog/*.md
+```
+
+Implementation fragment filenames use lower-kebab-case: `implementation-fragment.md` for ordinary delivery and `phase-NN-fragment.md` for phase-specific delivery, such as `phase-01-fragment.md`.
+
+## Current entry schema and commit synchronization
+
+Each changelog fragment consists of the header, metadata line, and body, according to the schema
 
 ```md
-### 2026-08-01 refactor: example -- retain delivery records
+### `<date> <commit-subject>`
 
-Meta -- `unreleased` : `repository-only`
+Meta -- `<release target: unreleased, a concrete version, or a development marker>` : `<package impact: repository-only, or distributable>`
 
-#### Changed
+#### `<Change type: Added, Changed, Removed, Fixed, Deprecated, or Security>`
 
 - Describe the delivered implementation change.
 ```
 
-The release target is `unreleased`, a concrete version, or a development marker. Package impact is `distributable` or `repository-only`. Release-note selection is release-maintainer curation, not entry metadata.
+The heading must be synchronized to its implementation commit subject as defined in `rule:naming.commit-messages`.
 
-## Fragment lifecycle
+The body format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Group together the changes of the same type.
 
-Create or update `docs/work-items/<work-id>/changelog/implementation-fragment.md` before an implementation commit. For phase-specific delivery, use `phase-NN-fragment.md`. Do not create planning-approval, spec, plan, amendment, or other planning-only fragments. Fragment entries stay newest-first and use `rule:naming.changelog-entries` for headings.
+If an implementation subject changes, update the matching planned commit row and fragment heading before committing. When one entry covers multiple commits, each subject must match a listed planned commit row or a clear bullet-level title snippet under that entry.
 
 ## Consolidation
 

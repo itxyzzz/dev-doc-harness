@@ -7,7 +7,7 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`
 
 Artifact style: large anchor specs must load `module:artifact-style`. Write final artifact content with scannable structure, stable trace IDs, and no unresolved authoring scaffolds before approval or handoff.
 
@@ -42,17 +42,6 @@ Success summary:
 1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
-### Assumptions
-
-1. Record assumptions that are safe to rely on during planning.
-2. Use `None identified after repository-context review` only after checking the relevant local context.
-
-### Open questions
-
-1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
-2. For each question, name the owner or later event needed to resolve it.
-3. Use `None identified after repository-context review` only when there are no known open questions.
-
 ## Repository Context
 
 ### Current state
@@ -67,6 +56,19 @@ Success summary:
 ### Constraints and compatibility
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
+
+## Assumptions and Open Questions
+
+### Assumptions
+
+1. Record assumptions that are safe to rely on during planning.
+2. Use `None identified after repository-context review` only after checking the relevant local context.
+
+### Open questions
+
+1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
+2. For each question, name the owner or later event needed to resolve it.
+3. Use `None identified after repository-context review` only when there are no known open questions.
 
 ## Commitments and verification
 
@@ -142,27 +144,25 @@ Decision summary:
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.
 
-## Interfaces, Data, and Control Flow
+## Impact Surfaces
 
-### Interfaces affected
+Record any impacted surfaces below. Use bullets for lists; state `None` when the respective surfaces are not affected or are not relevant.
 
-1. Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
-2. State `None` when the change does not affect interfaces.
+### Interfaces
+
+Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
 
 ### Data, config, and persistence
 
-1. Record data model, persistence, migration, configuration, release-identity, or rollout effects.
-2. State `None` when the change does not affect data, config, or persistence.
+Record data model, persistence, migration, configuration, release-identity, or rollout effects.
 
 ### State and control flow
 
-1. Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
-2. State `None` when the change does not affect state or control flow.
+Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
 
 ### Safety, security, privacy, migration, and rollback
 
-1. Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
-2. State `None identified after repository-context review` only after checking the relevant code and docs.
+Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
 
 ## Risks and Rejected Alternatives
 
@@ -185,7 +185,7 @@ Risk prompts:
 3. Over-scoping, under-specifying, or making the work too large for the selected lifecycle path.
 4. Alternatives rejected because they duplicate canonical harness policy, import too much external process, or create reviewer burden.
 
-### Triage, debugging, and operations
+## Triage, debugging, and operations
 
 1. Record logs, metrics, diagnostics, runbooks, failure modes, recovery steps, support workflows, or operational review signals.
 2. State `None` when not applicable.
@@ -244,9 +244,9 @@ Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<singl
 
 Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
-#### Fallbacks and limits
+#### Execution requirements and contingencies
 
-`<availability fallback, required artifact loading, authorization state, and material-variance stop only when applicable>`.
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
 Fit assessment:
 
@@ -284,7 +284,7 @@ Sub-agent `<role or phase id>`:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
 
 | Stage | Planned subject |
 |---|---|
@@ -292,54 +292,44 @@ Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are 
 | Phase-plan approval pattern | `<planning-commit-subject>` |
 | Phase implementation pattern | `<commit-subject>` |
 
-The normal large-work sequence is rolling: plan and implement one phase before
-planning the next. Record a batch-planning exception only when phases are
-stable and independently plannable.
-
 ## Planning artifact freeze gates
 
-Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
+At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
 
 Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
-## Documentation artifact matrix
+## Documentation assessment
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | Create after execution starts; planning approval creates no fragment |
-| Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | Consolidated publication view; implementation owns the fragment workflow |
-| Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
+
+- `DOC-TEST-CASE`: `<status>`.
+- `DOC-TEST-GUIDE`: `<status>`.
+- `DOC-OPS-GUIDE`: `<status>`.
+- `DOC-API-GUIDE`: `<status>`.
+- `DOC-ARCH-SUMMARY`: `<status>`.
 
 ## Anchor-to-phase transition
 
-Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, and `rule:freeze.approval-freeze`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
 2. Next lifecycle stage: `phase-plan drafting`.
 3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
 4. Batch planning is an explicit exception only for stable, independently plannable phases.
-5. The approved next-stage selection, artifacts, and variance stop condition are rendered at the actual phase-plan boundary under `rule:freeze.approval-freeze`.
+5. This anchor’s approved next-stage selection governs `phase-plan drafting`. Each phase plan records its own phase-execution handoff, required artifacts, and variance stop condition at its freeze boundary.
 
 ## Spec readiness checklist
 
-- [ ] Source input and desired outcome are captured.
-- [ ] Scope, non-scope, assumptions, open questions, and known unknowns are explicit.
-- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
-- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and explicit cross-phase ownership.
-- [ ] Repository evidence and compatibility constraints are recorded.
-- [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.
-- [ ] Risks and rejected alternatives are listed or explicitly absent after review.
-- [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
-- [ ] Each phase is expected to fit one orchestration session with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Optional current-session diagnostics contain only Resolved model profile and Context visibility and are omitted unless exposed and material; the Next-stage recommendation includes Method, Orchestration mode, `Run in`, Review, Generation, Capability tier, and Reasoning; at freeze relabel it Approved next stage and do not render both state headings; each upcoming stage records `Sub-agents: None` with a fit reason or an authorized bounded strategy.
-- [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned implementation commit subjects are clear and any batch phase-planning exception is stable and independently plannable; planning approval has no changelog entry.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
+- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
+- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
+- [ ] Verification Criteria cover all applicable Commitments, have no hidden procedure or scope, and identify cross-phase ownership where applicable.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained enough that a fresh session can draft each actionable phase plan without reconstructing original session context.
+- [ ] Phase decomposition explains why each phase belongs, identifies its future phase-plan output, and keeps each phase within one orchestration session or records the escalation boundary.
+- [ ] The Next-stage recommendation records the required lifecycle, orchestration, model, fallback, and stage-specific sub-agent decisions; optional current-session diagnostics are omitted unless material, and the recommendation is relabeled `Approved next stage` at freeze.
+- [ ] Impact Surfaces, triage/debugging/operations, risks, documentation obligations, planned commits, and any batch-planning exception have been assessed.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 
