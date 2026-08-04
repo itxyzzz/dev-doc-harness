@@ -146,6 +146,8 @@ The practical Superpowers adapter is straightforward: use its methodology to exp
 
 ## For harness maintainers
 
+### Routing
+
 Agents discover the router through `AGENTS.md`:
 
 ```text
@@ -172,6 +174,8 @@ For routine orientation, these routes cover most maintenance questions:
 
 The naming reference owns work IDs, artifact filenames, and commit subjects; the implementation-changelog module owns current changelog authoring. Evidence-heavy reviews preserve their sources through the evidence module instead of treating mutable live material as a durable record. These owners keep the router small without requiring templates or operator summaries to reproduce long policy sections.
 
+### Releases
+
 Release maintainers use the repository-local release process rather than a generic application-release workflow. The distributable package is root `AGENTS.md` plus `.agents/`; release notes are curated from the consolidated root changelog after work-item fragments have been integrated. A protected post-release PR synchronizes the released state back to `master` before later development branches begin. Downstream adopters can roll back a harness update by reverting its dedicated adoption commit or PR.
 
 Before committing changes to current harness entrypoints, policy, templates, README, or validation artifacts, run:
@@ -187,6 +191,12 @@ python .agents/skills/dev-doc-harness/scripts/assemble_templates.py --write
 ```
 
 Use `--check` for a non-mutating freshness check. The optional root-local `.githooks/pre-commit` hook is a repository development aid; it is not copied with the distributable package.
+
+To consolidate changelog fragments before release, run:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+```
 
 ## What this is not
 

@@ -991,10 +991,13 @@ def assert_changelog_fragment_contract() -> None:
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
-    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation-fragment\.md", "ordinary implementation fragment location")
-    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/phase-NN-fragment\.md", "phase implementation fragment location")
-    assert_text_contains(check_id, changelog_reference, r"Each entry heading is `<date> <commit-subject>`", "fragment heading grammar")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/\*\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"implementation-fragment\.md", "ordinary implementation fragment filename")
+    assert_text_contains(check_id, changelog_reference, r"phase-NN-fragment\.md", "phase implementation fragment filename")
+    assert_text_contains(check_id, changelog_reference, r"### `<date> <commit-subject>`", "fragment heading grammar")
+    assert_text_contains(check_id, changelog_reference, r"The heading must be synchronized to its implementation commit subject", "fragment heading synchronization")
     assert_text_contains(check_id, changelog_reference, r"matching planned commit row and fragment heading", "commit synchronization")
+    assert_text_contains(check_id, changelog_reference, r"Keep a Changelog", "changelog body convention")
     assert_text_contains(check_id, changelog_reference, r"## Compatibility and legacy support", "legacy guidance section")
     guidance_text = read_repo_text(changelog_reference)
     if guidance_text.find("## Compatibility and legacy support") < guidance_text.find("## Consolidation"):
@@ -1028,8 +1031,7 @@ def assert_changelog_fragment_contract() -> None:
         assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
         assert_text_contains(check_id, path, r"product/application release", f"{path} downstream release boundary")
         assert_text_contains(check_id, path, r"module:implementation-changelog", f"{path} implementation-stage handoff")
-        assert_text_not_contains(check_id, path, r"implementation-fragment\.md", f"{path} fragment filename leak")
-        assert_text_not_contains(check_id, path, r"consolidate_changelog_fragments\.py", f"{path} consolidation command leak")
+        assert_text_contains(check_id, path, r"consolidate_changelog_fragments\.py", f"{path} consolidation command")
 
     for template in [
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",

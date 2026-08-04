@@ -71,6 +71,18 @@ Create a plan-only PR checkpoint before code changes.
 Use one additional security-lens review sub-agent with a flagship-tier model at high reasoning.
 ```
 
+## Changelog
+
+Each work item may keep an implementation changelog fragment under `docs/work-items/<work-id>/changelog/`. It records delivered implementation work and keeps that entry aligned with the implementation commit subject without turning the root `CHANGELOG.md` into a working log.
+
+The root changelog remains the curated publication view. Reviewed fragments can be consolidated at a project-owned checkpoint, such as after work branches merge or before release-note preparation or a product/application release:
+
+```bash
+python .agents/skills/dev-doc-harness/scripts/consolidate_changelog_fragments.py
+```
+
+This separation gives the harness a consistent record while downstream projects keep their own release processes.
+
 ## For Harness Maintainers
 
 The following is for people changing the copied harness itself, not ordinary operators using it for product work. Run the package validation command when practical:
