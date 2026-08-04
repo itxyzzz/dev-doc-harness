@@ -1338,8 +1338,10 @@ def assert_documentation_assessment_contract() -> None:
         ("Required — <output path>; Plan Task: TASK-NNN", "required output and task shape"),
         ("Deferred — owner: <owner>; resolution point: <event>", "deferred owner and resolution shape"),
     ]:
-        if block_text.count(phrase) != len(expected_ids):
-            add_failure(check_id, f"shared assessment must render {len(expected_ids)} {label} prompts")
+        if block_text.count(phrase) != 1:
+            add_failure(check_id, f"shared assessment must define one {label}")
+    if block_text.count("<status>") != len(expected_ids):
+        add_failure(check_id, f"shared assessment must render {len(expected_ids)} status placeholders")
     assert_text_not_contains(check_id, shared_block, r"changelog", "shared assessment changelog row")
     assert_text_not_contains(check_id, shared_block, r"Architecture snapshot", "shared assessment architecture row")
 
