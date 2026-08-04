@@ -20,9 +20,15 @@ Meta -- `unreleased` : `repository-only`
 
 The release target is `unreleased`, a concrete version, or a development marker. Package impact is `distributable` or `repository-only`. Release-note selection is release-maintainer curation, not entry metadata.
 
+## Fragment locations, names, and commit synchronization
+
+Ordinary fragments live at `docs/work-items/<work-id>/changelog/implementation-fragment.md`. Phase-specific fragments live at `docs/work-items/<work-id>/changelog/phase-NN-fragment.md`, such as `phase-01-fragment.md`.
+
+Each entry heading is `<date> <commit-subject>` and may use Markdown level two or three. The heading and its implementation commit use the same title or elaboration snippet. If an implementation subject changes, update the matching planned commit row and fragment heading before committing. When one entry covers multiple commits, each subject must match a listed planned commit row or a clear bullet-level title snippet under that entry.
+
 ## Fragment lifecycle
 
-Create or update `docs/work-items/<work-id>/changelog/implementation-fragment.md` before an implementation commit. For phase-specific delivery, use `phase-NN-fragment.md`. Do not create planning-approval, spec, plan, amendment, or other planning-only fragments. Fragment entries stay newest-first and use `rule:naming.changelog-entries` for headings.
+Create or update the relevant fragment before an implementation commit. Do not create planning-approval, spec, plan, amendment, or other planning-only fragments. Fragment entries stay newest-first.
 
 ## Consolidation
 

@@ -132,7 +132,7 @@ Sub-agent `<role or task id>`:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during phase-plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during phase-plan approval. Update this section before committing if implementation changes the subject wording. Before an implementation commit, follow `module:implementation-changelog`.
 
 | Stage | Planned subject |
 |---|---|
@@ -147,15 +147,7 @@ List the checks that produce the needed evidence. Use `rule:lifecycle.variance-p
 
 ## Documentation Tasks
 
-List snapshot or delta artifacts this phase must create, update, or mark not applicable.
-
-1. Implementation changelog source: `docs/work-items/<work-id>/changelog/phase-NN-fragment.md` during phase implementation; phase-plan approval creates no fragment.
-2. Root changelog consolidation: `CHANGELOG.md` at the operator-owned implementation or release checkpoint when root changelog completeness is needed.
-3. Test cases: `<snapshot path or not applicable with reason>`.
-4. Testing guide delta: `<delta path or not applicable with reason>`.
-5. Operator manual delta: `<delta path or not applicable with reason>`.
-6. API reference delta: `<delta path or not applicable with reason>`.
-7. Architecture snapshot or summary delta: `<path or not applicable with reason>`.
+Consume the approved documentation assessment. List only documentation outputs owned by this phase: required outputs name their path and Plan Task; deferred outputs name their owner and resolution point. Do not repeat the assessment catalog or architecture-snapshot status.
 
 ## Phase implementation handoff
 
@@ -213,7 +205,7 @@ Record what the implementing agent must report at phase completion:
 - [ ] This phase is safely executable by one orchestration session with its documented bounded delegation; any required split or anchor-level change follows the approved phase boundary or amendment path.
 - [ ] Each implementation task has a bounded outcome, clear dependencies and interfaces where relevant, executable steps, and observable exit criteria.
 - [ ] Plan Checks cover the full set of applicable Verification Criteria; each is nested under its owning task, states an expected result, and identifies where evidence will be recorded.
-- [ ] Applicable documentation and changelog obligations are clear and assigned in the plan.
+- [ ] Required documentation outputs are assigned to this phase, and deferred documentation items name an owner and resolution point.
 - [ ] The Phase implementation handoff names the frozen package, artifact rehydration, variance stop condition, and recommended orchestration, model, and sub-agent strategy appropriate for current phase execution.
 - [ ] The Phase completion report records actual outputs, validation evidence, variance, commit state, residual risk, and inputs for later coordination without selecting or starting a later lifecycle stage.
 - [ ] No placeholder, unresolved implementation decision, missing owner, or ownerless deferral remains.

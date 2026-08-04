@@ -1,6 +1,6 @@
 # Artifact Contract
 
-This document is the canonical source for repository work item artifact layout, lifecycle rules, and variance handling. A work item can be a feature, bug fix, prior issue investigation, refactor, migration, documentation/process change, or other substantial body of work. Naming grammar for work IDs, short IDs, artifact filenames, commit messages, and changelog entries is owned by `module:naming` in `references/naming-conventions.md`.
+This document is the canonical source for repository work item artifact layout, lifecycle rules, and variance handling. A work item can be a feature, bug fix, prior issue investigation, refactor, migration, documentation/process change, or other substantial body of work. Naming grammar for work IDs, short IDs, artifact filenames, and commit messages is owned by `module:naming` in `references/naming-conventions.md`.
 
 Module: `module:lifecycle`
 
@@ -18,7 +18,7 @@ Owned rule IDs:
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
 | `rule:lifecycle.work-item-architecture-decisions` | `## Work-item architecture decisions` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
-| `rule:lifecycle.documentation-matrix` | `## Documentation artifact matrix` |
+| `rule:lifecycle.documentation-assessment` | `## Documentation assessment` |
 | `rule:lifecycle.variance-policy` | `## Variance policy` and `## Variance classes` |
 | `rule:lifecycle.commit-message-format` | `## Commit messages` |
 
@@ -91,7 +91,7 @@ At every freeze boundary, record the planning shape, exact frozen package, and d
   <plan-filename>
 
   changelog/
-    implementation-fragment.md
+    <implementation-stage source; see module:implementation-changelog>
 
   snapshots/
     test-cases.snapshot.md
@@ -108,7 +108,7 @@ At every freeze boundary, record the planning shape, exact frozen package, and d
     variance-log.md
 ```
 
-Create only the supplemental snapshot and delta files that are required for the work. The documentation artifact matrix in the spec or plan must mark every listed artifact as required, not applicable, or deferred with a reason.
+Create only the supplemental snapshot and delta files that are required for the work. The specification's documentation assessment records the applicable documentation outputs; Architecture Decisions owns the architecture-snapshot decision.
 
 ## Large or phased work item layout
 
@@ -121,7 +121,7 @@ The full lifecycle package for large or phased work may eventually contain these
   <amendment-filename>
 
   changelog/
-    phase-01-fragment.md
+    <phase implementation source; see module:implementation-changelog>
 
   snapshots/
     test-cases.snapshot.md
@@ -208,7 +208,7 @@ Do not duplicate full specs or plans under `docs/superpowers`, and do not mainta
 
 Architectural decisions belong in the draft spec and, when the decision record needs dedicated shape, in `snapshots/architecture.snapshot.md`. A spec may summarize simple architectural decisions inline. Use `snapshots/architecture.snapshot.md` when the work makes or depends on meaningful architecture decisions, when multiple boundaries or alternatives need preservation, when a future phase or fresh thread will depend on the decision, or when the operator asks for architecture to be explicit.
 
-The documentation artifact matrix must mark the architecture snapshot as required, not applicable, or deferred. Use required when meaningful work-item architecture decisions are made or depended on. Use not applicable when the work has no architectural decision beyond local implementation mechanics, and record the reason. Use deferred only with a reason plus the owner or event that will resolve it before implementation, phase planning, or approval.
+Architecture Decisions must mark the architecture snapshot as required, not applicable, or deferred. Use required when meaningful work-item architecture decisions are made or depended on. Use not applicable when the work has no architectural decision beyond local implementation mechanics, and record the reason. Use deferred only with a reason plus the owner or event that will resolve it before implementation, phase planning, or approval.
 
 Plans and phase plans consume the approved spec and architecture snapshot as inputs. They may cite architecture to explain sequencing, dependencies, validation, and drift handling, but they must not invent or silently reinterpret architectural decisions that are absent from the approved spec or snapshot. Before freeze, missing architecture is corrected by editing the draft spec or draft architecture snapshot. After freeze, high-impact architecture drift follows `rule:lifecycle.variance-policy` and uses an amendment when the variance class requires operator approval.
 
@@ -249,28 +249,21 @@ deltas/*.delta.md
 
 Use deltas to describe changes that should later be merged into project-level documentation such as testing guides, operator manuals, API references, or architecture summaries. This harness defines where deltas live and when they are required; it does not define detailed schemas for those long-lived documents.
 
-## Documentation artifact matrix
+## Documentation assessment
 
-Every substantial spec or plan must include a compact matrix:
+Every new substantial specification assesses each compact documentation prompt:
 
-```md
-## Documentation artifact matrix
+| ID | Consider when |
+|---|---|
+| `DOC-TEST-CASE` | Expected behavior needs a durable test-case snapshot before implementation. |
+| `DOC-TEST-GUIDE` | The work changes a testing guide, test flow, or contributor testing instructions. |
+| `DOC-OPS-GUIDE` | The work changes operator or runtime guidance. |
+| `DOC-API-GUIDE` | The work changes a public API or its reference documentation. |
+| `DOC-ARCH-SUMMARY` | The work needs a durable update to long-lived architecture documentation. |
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | Before implementation commits | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | See `module:implementation-changelog`; planning artifacts do not create fragments |
-| Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | See `module:implementation-changelog` |
-| Test cases | Snapshot | Yes/No | Before implementation | snapshots/test-cases.snapshot.md | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | deltas/testing-guide.delta.md | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | deltas/operator-manual.delta.md | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | deltas/api-reference.delta.md | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | snapshots/architecture.snapshot.md | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | deltas/architecture-summary.delta.md | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
-```
+Record every ID in the specification as `Not required`, `Required`, or `Deferred`. A required item names its output path and Plan Task. A deferred item names its owner and resolution point. Plans assign only required or deferred documentation outputs; they do not repeat this catalog.
 
-Use `No` only when the artifact is not applicable. Use `Deferred` only with a reason and a later owner or event.
-
-Implementation changelog sources are required only before implementation commits. Root `CHANGELOG.md` is consolidated at operator-owned implementation or release checkpoints; planning work does not create changelog sources.
+This assessment has no changelog entry and no architecture-snapshot entry. Follow `module:implementation-changelog` before implementation commits. Architecture Decisions own the architecture-snapshot status.
 
 ## Commit messages
 
@@ -278,16 +271,7 @@ All commits made under the harness must use a planned or documented subject. Com
 
 Use `rule:naming.commit-messages` for the current subject grammar, action types, issue-key handling, elaboration snippets, and nonredundancy rules.
 
-The title or elaboration snippet is shared by the durable planning artifact, planned commit row, and implementation changelog heading when an implementation commit is made. Implementation subjects should describe the concrete delivered change or phase output.
-
-Commit subjects and changelog entry titles must stay synchronized:
-
-- The implementation changelog entry heading must follow `rule:naming.changelog-entries` and include the same title or elaboration snippet represented in the implementation commit subject.
-- When a commit subject changes during review or implementation, update the
-  matching planned commit row and changelog heading before committing.
-- When one changelog entry covers multiple commits for the same work item, each
-  commit subject must match a listed planned commit row or a clear bullet-level
-  title snippet under that changelog heading.
+Implementation subjects should describe the concrete delivered change or phase output. `module:implementation-changelog` owns current fragment authoring and synchronization with implementation commits.
 
 ## Variance policy
 

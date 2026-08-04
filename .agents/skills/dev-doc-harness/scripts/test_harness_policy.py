@@ -69,6 +69,7 @@ CHECK_IDS = [
     "release.package-boundary",
     "release.template-context",
     "changelog.fragments",
+    "documentation.assessment",
     "architecture.decisions",
     "artifact-style.guidance",
     "plain-language.policy",
@@ -990,7 +991,10 @@ def assert_changelog_fragment_contract() -> None:
     operator_docs = ["README.md", ".agents/skills/dev-doc-harness/docs/operator-note.md"]
     hook = ".githooks/pre-commit"
 
-    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation-fragment\.md", "implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/implementation-fragment\.md", "ordinary implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"docs/work-items/<work-id>/changelog/phase-NN-fragment\.md", "phase implementation fragment location")
+    assert_text_contains(check_id, changelog_reference, r"Each entry heading is `<date> <commit-subject>`", "fragment heading grammar")
+    assert_text_contains(check_id, changelog_reference, r"matching planned commit row and fragment heading", "commit synchronization")
     assert_text_contains(check_id, changelog_reference, r"## Compatibility and legacy support", "legacy guidance section")
     guidance_text = read_repo_text(changelog_reference)
     if guidance_text.find("## Compatibility and legacy support") < guidance_text.find("## Consolidation"):
@@ -998,8 +1002,11 @@ def assert_changelog_fragment_contract() -> None:
     assert_text_contains(check_id, changelog_reference, r"Root `CHANGELOG\.md` is the curated release source", "root changelog publication view")
     assert_text_not_contains(check_id, freeze, r"changelog source fragment", "freeze planning fragment")
     assert_text_not_contains(check_id, lifecycle, r"^## Changelog$", "retired lifecycle changelog section")
-    assert_text_contains(check_id, naming, r"<changelog-fragment-path>", "fragment path derived pattern")
-    assert_text_contains(check_id, naming, r"## <date> <commit-subject>", "changelog heading grammar")
+    assert_text_not_contains(check_id, lifecycle, r"docs/work-items/<work-id>/changelog/", "lifecycle fragment path leak")
+    assert_text_not_contains(check_id, lifecycle, r"implementation-fragment\.md", "lifecycle ordinary fragment filename leak")
+    assert_text_not_contains(check_id, lifecycle, r"phase-(?:NN|01)-fragment\.md", "lifecycle phase fragment filename leak")
+    assert_text_not_contains(check_id, naming, r"changelog-fragment-path", "retired fragment path derived pattern")
+    assert_text_not_contains(check_id, naming, r"## Changelog entries", "retired changelog-entry section")
     assert_text_contains(check_id, release_policy, r"Dev Doc Harness distribution release", "harness distribution release scope")
     assert_text_contains(check_id, release_policy, r"after fragment consolidation", "root source after consolidation")
     assert_text_contains(check_id, release_process, r"consolidate_changelog_fragments\.py --check", "release process consolidation check")
@@ -1020,14 +1027,22 @@ def assert_changelog_fragment_contract() -> None:
     for path in operator_docs:
         assert_text_contains(check_id, path, r"project-owned checkpoint", f"{path} operator checkpoint")
         assert_text_contains(check_id, path, r"product/application release", f"{path} downstream release boundary")
+        assert_text_contains(check_id, path, r"module:implementation-changelog", f"{path} implementation-stage handoff")
+        assert_text_not_contains(check_id, path, r"implementation-fragment\.md", f"{path} fragment filename leak")
+        assert_text_not_contains(check_id, path, r"consolidate_changelog_fragments\.py", f"{path} consolidation command leak")
 
     for template in [
         ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]:
-        assert_text_contains(check_id, template, r"planning approval creates no fragment", f"{template} planning boundary")
+        assert_text_not_contains(check_id, template, r"changelog", f"{template} changelog procedure leak")
     for template in PLAN_TEMPLATE_FILES:
-        assert_text_contains(check_id, template, r"implementation task then records the matching compact changelog entry", f"{template} implementation boundary")
+        handoffs = len(re.findall(r"Before an implementation commit, follow `module:implementation-changelog`", read_repo_text(template)))
+        if handoffs != 1:
+            add_failure(check_id, f"{template} must contain exactly one concise implementation-changelog handoff; found {handoffs}")
+
+    for path in [lifecycle, freeze, ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"]:
+        assert_text_not_contains(check_id, path, r"matching changelog", f"{path} changelog synchronization leak")
 
     if not join_repo_path(script_path).exists():
         add_failure(check_id, f"Missing consolidation script: {script_path}")
@@ -1283,6 +1298,66 @@ def assert_changelog_fragment_contract() -> None:
         mixed_result = run_consolidation_fixture(["--lint"], repo_root)
         if mixed_result.returncode == 0 or "mixed compact and legacy metadata" not in (mixed_result.stdout + mixed_result.stderr):
             add_failure(check_id, "mixed compact and legacy fragment metadata must fail lint")
+
+
+def assert_documentation_assessment_contract() -> None:
+    check_id = "documentation.assessment"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.common.documentation-assessment.md"
+    small_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.small.header.md"
+    large_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.large.header.md"
+    small_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.small.readiness-approval.md"
+    large_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
+    phase_tasks = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.080.phase.documentation-tasks.md"
+    expected_ids = [
+        "DOC-TEST-CASE",
+        "DOC-TEST-GUIDE",
+        "DOC-OPS-GUIDE",
+        "DOC-API-GUIDE",
+        "DOC-ARCH-SUMMARY",
+    ]
+
+    assert_text_contains(check_id, lifecycle, r"rule:lifecycle.documentation-assessment", "assessment rule owner")
+    assert_text_contains(check_id, lifecycle, r"## Documentation assessment", "assessment policy heading")
+    retired_matrix = "Documentation artifact" + r"\s+" + "matrix"
+    assert_text_not_contains(check_id, lifecycle, retired_matrix, "retired assessment matrix")
+    lifecycle_text = read_repo_text(lifecycle)
+    lifecycle_ids = re.findall(r"`(DOC-[A-Z-]+)`", lifecycle_text)
+    if lifecycle_ids != expected_ids:
+        add_failure(check_id, f"lifecycle assessment IDs must appear once in order; found {lifecycle_ids}")
+    for status in ["Not required", "Required", "Deferred"]:
+        assert_text_contains(check_id, lifecycle, re.escape(status), f"assessment status {status}")
+    assert_text_contains(check_id, lifecycle, r"no changelog entry and no architecture-snapshot entry", "assessment exclusions")
+
+    assert_text_contains(check_id, shared_block, r"## Documentation assessment", "shared assessment heading")
+    block_text = read_repo_text(shared_block)
+    block_ids = re.findall(r"^- `(DOC-[A-Z-]+)`:", block_text, flags=re.MULTILINE)
+    if block_ids != expected_ids:
+        add_failure(check_id, f"shared assessment bullets must appear once in order; found {block_ids}")
+    for phrase, label in [
+        ("Required — <output path>; Plan Task: TASK-NNN", "required output and task shape"),
+        ("Deferred — owner: <owner>; resolution point: <event>", "deferred owner and resolution shape"),
+    ]:
+        if block_text.count(phrase) != len(expected_ids):
+            add_failure(check_id, f"shared assessment must render {len(expected_ids)} {label} prompts")
+    assert_text_not_contains(check_id, shared_block, r"changelog", "shared assessment changelog row")
+    assert_text_not_contains(check_id, shared_block, r"Architecture snapshot", "shared assessment architecture row")
+
+    for path in [small_header, large_header]:
+        assert_text_contains(check_id, path, r"rule:lifecycle.documentation-assessment", f"{path} assessment reference")
+    for path in [small_readiness, large_readiness]:
+        assert_text_contains(check_id, path, r"Documentation assessment covers every required decision", f"{path} generic assessment readiness")
+        assert_text_not_contains(check_id, path, r"DOC-", f"{path} duplicated assessment IDs")
+    assert_text_contains(check_id, phase_tasks, r"Consume the approved documentation assessment", "phase assessment handoff")
+    assert_text_not_contains(check_id, phase_tasks, r"DOC-", "phase duplicated assessment IDs")
+    assert_text_not_contains(check_id, phase_tasks, r"changelog", "phase changelog procedure")
+
+    for path in [
+        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
+    ]:
+        assert_text_contains(check_id, path, r"## Documentation assessment", f"{path} assembled assessment")
+        assert_text_not_contains(check_id, path, retired_matrix, f"{path} retired matrix")
 
 
 def assert_work_item_architecture_decisions() -> None:
@@ -1961,7 +2036,12 @@ def assert_commitment_verification_templates() -> None:
     phase_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion-approval.md"
     assert_text_contains(check_id, small_readiness, r"This plan document is self-sufficient", "small-plan fresh-session readiness")
     assert_text_contains(check_id, small_readiness, r"Plan Checks cover the full set of Verification Criteria", "small-plan verification coverage")
-    assert_text_contains(check_id, small_readiness, r"documentation artifact matrix has been applied", "small-plan documentation-matrix application")
+    assert_text_contains(check_id, small_readiness, r"Required documentation outputs are assigned to implementation tasks", "small-plan documentation assignment")
+    assert_text_contains(check_id, small_readiness, r"deferred documentation items name an owner and resolution point", "small-plan documentation deferral")
+    assert_text_not_contains(check_id, small_readiness, r"DOC-", "small-plan duplicated documentation IDs")
+    assert_text_contains(check_id, phase_readiness, r"Required documentation outputs are assigned to this phase", "phase-plan documentation assignment")
+    assert_text_contains(check_id, phase_readiness, r"deferred documentation items name an owner and resolution point", "phase-plan documentation deferral")
+    assert_text_not_contains(check_id, phase_readiness, r"DOC-", "phase-plan duplicated documentation IDs")
     assert_text_contains(check_id, phase_readiness, r"Phase completion report", "phase completion-report readiness")
     assert_text_not_contains(check_id, phase_readiness, r"Post-phase transition", "retired phase post-transition readiness")
 
@@ -3131,7 +3211,7 @@ def run_checks() -> None:
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Immutable snapshots", "label": "immutable snapshots"},
         {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Variance policy", "label": "variance and amendments"},
         {"path": ".agents/skills/dev-doc-harness/references/implementation-changelog.md", "pattern": "before implementation commits", "label": "implementation changelog before commit"},
-        {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation artifact matrix", "label": "documentation matrix"},
+        {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Documentation assessment", "label": "documentation assessment"},
         {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Superpowers compatibility", "label": "Superpowers compatibility"},
         {"path": ".agents/skills/dev-doc-harness/references/maintenance-architecture.md", "pattern": "Historical artifacts are tracked documentation", "label": "historical artifact handling"},
     ]
@@ -3331,6 +3411,9 @@ def run_checks() -> None:
 
     assert_changelog_fragment_contract()
     write_check_result("changelog.fragments")
+
+    assert_documentation_assessment_contract()
+    write_check_result("documentation.assessment")
 
     assert_work_item_architecture_decisions()
     write_check_result("architecture.decisions")

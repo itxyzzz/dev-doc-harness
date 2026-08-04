@@ -8,7 +8,7 @@ Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
 Companion plan: `<plan-filename>`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
 Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the specification becomes large or hard to scan.
 
@@ -188,7 +188,7 @@ Risk prompts:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review.
 
 | Stage | Planned subject |
 |---|---|
@@ -198,18 +198,15 @@ Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are 
 Use one cohesive implementation commit by default. Record an essential deferral
 or independently reviewable split as concise prose under this table.
 
-## Documentation artifact matrix
+## Documentation assessment
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | Create after execution starts; planning approval creates no fragment |
-| Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | Consolidated publication view; implementation owns the fragment workflow |
-| Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+Assess every prompt below using `Not required`, `Required`, or `Deferred`. A required output names its path and Plan Task. A deferred output names its owner and resolution point. Architecture-snapshot status belongs in Architecture Decisions.
+
+- `DOC-TEST-CASE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-TEST-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-OPS-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-API-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-ARCH-SUMMARY`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
 
 ## Planning shape and transition ownership
 
@@ -235,6 +232,7 @@ For an explicit staged spec-only exception:
 - [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
 - [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
 - [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
 - [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval

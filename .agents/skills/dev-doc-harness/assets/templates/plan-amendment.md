@@ -67,8 +67,7 @@ Generation: `<latest available or concrete generation>`; Capability tier: `<flag
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`; keep the matching changelog fragment
-in sync.
+Use `rule:lifecycle.commit-message-format`.
 
 | Stage | Planned subject |
 |---|---|

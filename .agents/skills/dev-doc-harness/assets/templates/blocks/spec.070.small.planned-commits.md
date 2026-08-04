@@ -1,6 +1,6 @@
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review.
 
 | Stage | Planned subject |
 |---|---|

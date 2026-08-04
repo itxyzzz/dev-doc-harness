@@ -117,7 +117,7 @@ Sub-agent `<role or task id>`:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during plan approval. Update this section before committing if implementation changes the subject wording; the implementation task then records the matching compact changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during plan approval. Update this section before committing if implementation changes the subject wording. Before an implementation commit, follow `module:implementation-changelog`.
 
 | Stage | Planned subject |
 |---|---|
@@ -172,7 +172,7 @@ Use `rule:execution-quality.execution-thread-start`; do not duplicate a spec-own
 - [ ] This plan document is self-sufficient: the declared inputs, architecture decisions, change surfaces, implementation approach, tasks and checks allow a fresh executor session to implement it fully without reconstructing hidden context or inventing scope.
 - [ ] Each implementation task has a bounded outcome, clear dependencies and interfaces where relevant, executable steps, and observable exit criteria.
 - [ ] Plan Checks cover the full set of Verification Criteria; each is nested under its owning task, states an expected result, and identifies where evidence will be recorded.
-- [ ] The companion specification’s documentation artifact matrix has been applied: every required documentation or changelog change is embedded in an implementation task, and every non-applicable or deferred item retains its recorded reason.
+- [ ] Required documentation outputs are assigned to implementation tasks, and deferred documentation items name an owner and resolution point.
 - [ ] The next-implementation-stage recommended orchestration, model, and sub-agent strategy are fully documented and appropriate for the tasks and scope.
 - [ ] No placeholder, unresolved implementation decision, missing owner, or ownerless deferral remains.
 

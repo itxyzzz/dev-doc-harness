@@ -7,7 +7,7 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`
 
 Artifact style: large anchor specs must load `module:artifact-style`. Write final artifact content with scannable structure, stable trace IDs, and no unresolved authoring scaffolds before approval or handoff.
 
@@ -284,7 +284,7 @@ Sub-agent `<role or phase id>`:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review. The implementation task later records its matching compact changelog entry; planning approval creates no changelog entry.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
 
 | Stage | Planned subject |
 |---|---|
@@ -298,18 +298,15 @@ At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review
 
 Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
-## Documentation artifact matrix
+## Documentation assessment
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Implementation changelog source | Living | Yes | During implementation | `docs/work-items/<work-id>/changelog/implementation-fragment.md` | Create after execution starts; planning approval creates no fragment |
-| Root changelog consolidation | Living | As needed | At an operator-owned implementation or release checkpoint | `CHANGELOG.md` | Consolidated publication view; implementation owns the fragment workflow |
-| Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+Assess every prompt below using `Not required`, `Required`, or `Deferred`. A required output names its path and Plan Task. A deferred output names its owner and resolution point. Architecture-snapshot status belongs in Architecture Decisions.
+
+- `DOC-TEST-CASE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-TEST-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-OPS-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-API-GUIDE`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
+- `DOC-ARCH-SUMMARY`: `<Not required | Required — <output path>; Plan Task: TASK-NNN | Deferred — owner: <owner>; resolution point: <event>>`.
 
 ## Anchor-to-phase transition
 
@@ -331,6 +328,7 @@ Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continui
 - [ ] Phase decomposition explains why each phase belongs, identifies its future phase-plan output, and keeps each phase within one orchestration session or records the escalation boundary.
 - [ ] The Next-stage recommendation records the required lifecycle, orchestration, model, fallback, and stage-specific sub-agent decisions; optional current-session diagnostics are omitted unless material, and the recommendation is relabeled `Approved next stage` at freeze.
 - [ ] Impact Surfaces, triage/debugging/operations, risks, documentation obligations, planned commits, and any batch-planning exception have been assessed.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
 - [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
