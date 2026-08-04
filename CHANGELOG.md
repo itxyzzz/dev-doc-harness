@@ -4,6 +4,8 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
+## Unreleased
+
 ## Release 0.9
 
 ### 2026-08-04 docs: documentation-assessment-simplification -- simplify documentation assessment
