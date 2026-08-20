@@ -20,7 +20,7 @@ Phase `02`: `<phase name>`
 
 Phase decomposition prompts:
 
-1. Each phase should be safely executable by one orchestration thread with bounded delegation.
+1. Each phase should be safely executable by one orchestration session with bounded delegation.
 2. Shared setup, discovery, migrations, hardening, and review phases are acceptable when vertical slicing would make task execution less safe.
 3. If phase objectives are independently plannable, later phase-plan drafting may use curated-artifact sub-agents under `module:models`.
 
@@ -28,19 +28,33 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Selection dimensions:
+### Current orchestration session diagnostics
 
-1. Model generation: `<generation or not exposed>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Resolved profile: `<concrete runtime profile or not exposed>`.
-6. Availability/fallback: `<availability result and approved fallback>`.
-7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-8. Context visibility: `<exposed signal or not exposed>`.
-9. Artifact rehydration required: `<Yes/No plus reason>`.
-10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-11. Override scope and expiry: `<work item, phase, final review, or None>`.
+Omit unless exposed and material.
+
+1. Resolved model profile: `<concrete runtime profile>`.
+2. Context visibility: `<exposed material signal>`.
+
+### Next-stage recommendation
+
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together.
+
+#### Next lifecycle stage
+
+Stage: `phase-plan drafting`.
+
+#### Orchestration
+
+Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
+
+#### Model
+
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
+
+#### Execution requirements and contingencies
+
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
 Fit assessment:
 
@@ -49,13 +63,14 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended selection change:
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next lifecycle stage from that envelope or an approved amendment.
 
-1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
+Upcoming-stage sub-agent assessment:
 
-Sub-agents:
-
-1. `<None with rationale, or bounded strategy below>`.
+1. Sub-agents: None, or `<bounded strategy below>`.
+2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
+3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
+4. If useful and unapproved, ask the operator to approve the recorded role, context, output, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
 Prefer curated-artifact sub-agent phase-plan drafting after anchor-spec freeze when phases are independently plannable and platform support is available. For each proposed role, record a short block:
 
@@ -65,12 +80,12 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.

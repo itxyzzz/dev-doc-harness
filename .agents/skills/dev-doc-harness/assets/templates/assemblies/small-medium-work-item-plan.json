@@ -3,11 +3,11 @@
   "blocks": [
     "blocks/plan.010.small.header-inputs.md",
     "blocks/plan.020.common.traceability-approach-surfaces.md",
-    "blocks/plan.040.common.model-strategy.md",
     "blocks/plan.050.common.task-plan.md",
+    "blocks/plan.055.common.model-strategy.md",
     "blocks/plan.060.small.planned-commits.md",
     "blocks/plan.070.common.validation-variance-freeze.md",
-    "blocks/plan.085.common.handoff.md",
+    "blocks/plan.085.small.handoff.md",
     "blocks/plan.090.small.readiness-completion-approval.md"
   ]
 }

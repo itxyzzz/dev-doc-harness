@@ -7,7 +7,7 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.large-phased`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `module:freeze-gate`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`, `rule:freeze.multi-gate-flow`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `module:artifact-style`, `rule:lifecycle.large-anchor-spec`, `rule:lifecycle.large-phase-orchestration`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`, `rule:style.final-artifact-content`, `rule:style.scannable-structure`, `rule:models.strategy-required`
 
 Artifact style: large anchor specs must load `module:artifact-style`. Write final artifact content with scannable structure, stable trace IDs, and no unresolved authoring scaffolds before approval or handoff.
 
@@ -42,17 +42,6 @@ Success summary:
 1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
-### Assumptions
-
-1. Record assumptions that are safe to rely on during planning.
-2. Use `None identified after repository-context review` only after checking the relevant local context.
-
-### Open questions
-
-1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
-2. For each question, name the owner or later event needed to resolve it.
-3. Use `None identified after repository-context review` only when there are no known open questions.
-
 ## Repository Context
 
 ### Current state
@@ -68,17 +57,29 @@ Success summary:
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
 
+## Assumptions and Open Questions
+
+### Assumptions
+
+1. Record assumptions that are safe to rely on during planning.
+2. Use `None identified after repository-context review` only after checking the relevant local context.
+
+### Open questions
+
+1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
+2. For each question, name the owner or later event needed to resolve it.
+3. Use `None identified after repository-context review` only when there are no known open questions.
+
 ## Commitments and verification
 
 Keep stable IDs and short titles. Put delivery scope in each Statement;
-rationale and examples do not add scope. Classification is optional; when it
-helps, use one compact line such as `Constraint · Preserve`.
+rationale and examples do not add scope. Every additional `SPEC-*` uses the
+complete `SPEC-001` structure: Statement plus a local Verification Criterion,
+unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
-Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:quality.plain-language`.
 
 ### `SPEC-001` `<short title>`
-
-`Constraint · Preserve`
 
 Statement:
 
@@ -99,6 +100,14 @@ Applicability / owning phase (optional): `<where this applies or which phase own
 Statement:
 
 1. `<second obligation, or remove this example>`.
+
+#### `VER-002` `<second title when needed>`
+
+Covers: `SPEC-002`.
+
+Criterion: `<what proves this commitment>`.
+
+Expected evidence: `<test, inspection, review, or other proof>`.
 
 ## Cross-cutting verification
 
@@ -135,27 +144,25 @@ Decision summary:
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.
 
-## Interfaces, Data, and Control Flow
+## Impact Surfaces
 
-### Interfaces affected
+Record any impacted surfaces below. Use bullets for lists; state `None` when the respective surfaces are not affected or are not relevant.
 
-1. Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
-2. State `None` when the change does not affect interfaces.
+### Interfaces
+
+Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
 
 ### Data, config, and persistence
 
-1. Record data model, persistence, migration, configuration, release-identity, or rollout effects.
-2. State `None` when the change does not affect data, config, or persistence.
+Record data model, persistence, migration, configuration, release-identity, or rollout effects.
 
 ### State and control flow
 
-1. Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
-2. State `None` when the change does not affect state or control flow.
+Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
 
 ### Safety, security, privacy, migration, and rollback
 
-1. Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
-2. State `None identified after repository-context review` only after checking the relevant code and docs.
+Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
 
 ## Risks and Rejected Alternatives
 
@@ -178,7 +185,7 @@ Risk prompts:
 3. Over-scoping, under-specifying, or making the work too large for the selected lifecycle path.
 4. Alternatives rejected because they duplicate canonical harness policy, import too much external process, or create reviewer burden.
 
-### Triage, debugging, and operations
+## Triage, debugging, and operations
 
 1. Record logs, metrics, diagnostics, runbooks, failure modes, recovery steps, support workflows, or operational review signals.
 2. State `None` when not applicable.
@@ -205,7 +212,7 @@ Phase `02`: `<phase name>`
 
 Phase decomposition prompts:
 
-1. Each phase should be safely executable by one orchestration thread with bounded delegation.
+1. Each phase should be safely executable by one orchestration session with bounded delegation.
 2. Shared setup, discovery, migrations, hardening, and review phases are acceptable when vertical slicing would make task execution less safe.
 3. If phase objectives are independently plannable, later phase-plan drafting may use curated-artifact sub-agents under `module:models`.
 
@@ -213,19 +220,33 @@ Phase decomposition prompts:
 
 Use `module:models`, including `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, and `rule:models.fresh-confirmation`. Record only the compact strategy needed for this large/phased work item.
 
-Selection dimensions:
+### Current orchestration session diagnostics
 
-1. Model generation: `<generation or not exposed>`.
-2. Capability tier: `<flagship / balanced / fast/economy>`.
-3. Reasoning effort: `<runtime value or not exposed>`.
-4. Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / justified hybrid>`.
-5. Resolved profile: `<concrete runtime profile or not exposed>`.
-6. Availability/fallback: `<availability result and approved fallback>`.
-7. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-8. Context visibility: `<exposed signal or not exposed>`.
-9. Artifact rehydration required: `<Yes/No plus reason>`.
-10. Model-policy source: `<AGENTS.md active repository policy, operator override with date, approved plan, or not exposed>`.
-11. Override scope and expiry: `<work item, phase, final review, or None>`.
+Omit unless exposed and material.
+
+1. Resolved model profile: `<concrete runtime profile>`.
+2. Context visibility: `<exposed material signal>`.
+
+### Next-stage recommendation
+
+Rename it `### Approved next stage` at freeze without changing its values.
+Do not render both headings together.
+
+#### Next lifecycle stage
+
+Stage: `phase-plan drafting`.
+
+#### Orchestration
+
+Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<single-agent / bounded delegated sub-agents / platform multi-agent / hybrid>`; Run in: `<same orchestration session / new orchestration session>`; Review: `<planning-review arrangement>`.
+
+#### Model
+
+Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
+
+#### Execution requirements and contingencies
+
+`<required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop; omit any item that does not apply>`.
 
 Fit assessment:
 
@@ -234,13 +255,14 @@ Fit assessment:
 3. Ambiguity: `<low/medium/high plus reason>`.
 4. Budget and latency fit: `<acceptable constraints or tradeoff>`.
 
-Recommended selection change:
+The anchor records a recommendation/default envelope only. Each later phase plan records its concrete approved next lifecycle stage from that envelope or an approved amendment.
 
-1. `<Suggested baseline, or concrete generation/tier/effort/orchestration/continuity change with reason; classify an effort versus tier change and name residual uncertainty or variance for a later-stage escalation.>`
+Upcoming-stage sub-agent assessment:
 
-Sub-agents:
-
-1. `<None with rationale, or bounded strategy below>`.
+1. Sub-agents: None, or `<bounded strategy below>`.
+2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
+3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
+4. If useful and unapproved, ask the operator to approve the recorded role, context, output, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
 Prefer curated-artifact sub-agent phase-plan drafting after anchor-spec freeze when phases are independently plannable and platform support is available. For each proposed role, record a short block:
 
@@ -250,89 +272,64 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
-6. Model generation: `<generation or not exposed>`.
-7. Capability tier: `<flagship / balanced / fast/economy>`.
-8. Resolved profile: `<concrete runtime profile or not exposed>`.
-9. Availability/fallback: `<availability result and approved fallback>`.
-10. Reasoning effort: `<low/medium/high/max when supported plus reason>`.
-11. Selection reason: `<why this delegation is useful>`.
-12. Parallel execution: `<Yes/No and dependency>`.
-13. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
+7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
+8. Availability/fallback: `<availability result and approved fallback>`.
+9. Selection reason: `<why this delegation is useful>`.
+10. Parallel execution: `<Yes/No and dependency>`.
+11. Blast radius if wrong: `<Low/Medium/High plus consequence>`.
+12. Write authority: `<read-only / bounded paths / other approved scope>`.
+13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
 
-Anchor spec approval:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Approval commit for this anchor spec.`
-
-Phase plan approval pattern:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace or refine in each concrete phase plan.`
-
-Implementation pattern:
-
-1. Planned subject: `<commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace with concrete rows in phase plans.`
+| Stage | Planned subject |
+|---|---|
+| Anchor spec approval | `<planning-commit-subject>` |
+| Phase-plan approval pattern | `<planning-commit-subject>` |
+| Phase implementation pattern | `<commit-subject>` |
 
 ## Planning artifact freeze gates
 
-Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
+At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
 
-Record the draft review, approval commit or handoff snapshot, and pause before implementation, later phase-plan drafting, or later phase execution. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
+Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
-## Documentation artifact matrix
+## Documentation assessment
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with planned commit subjects |
-| Root changelog consolidation | Living | As needed | After merge, before release-note preparation, before product/application release, or at another project-owned checkpoint | `CHANGELOG.md` | Consolidated publication view; run consolidation when the operator's process needs root changelog completeness |
-| Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
 
-## Next-task handoff
+- `DOC-TEST-CASE`: `<status>`.
+- `DOC-TEST-GUIDE`: `<status>`.
+- `DOC-OPS-GUIDE`: `<status>`.
+- `DOC-API-GUIDE`: `<status>`.
+- `DOC-ARCH-SUMMARY`: `<status>`.
 
-Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+## Anchor-to-phase transition
+
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, and `rule:freeze.approval-freeze`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
-2. Frozen package: `<approved anchor spec plus required snapshots, amendments, evidence, and other anchor-named inputs>`.
-3. Next activity: `phase-plan drafting` for `<named phase or first phase-planning activity>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named phase-planning task or review action>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
-
-After the anchor actually freezes, a new-task route displays a conditional copy-ready prompt for the documented phase-plan drafting activity. It names the exact artifacts above, applicable `AGENTS.md` and harness rules, `rule:execution-quality.execution-thread-start`, the approved strategy and fallback, and the variance stop condition without duplicating frozen requirements. Follow `rule:freeze.approval-freeze` for any configured task-creation offer or manual fallback.
+2. Next lifecycle stage: `phase-plan drafting`.
+3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
+4. Batch planning is an explicit exception only for stable, independently plannable phases.
+5. This anchor’s approved next-stage selection governs `phase-plan drafting`. Each phase plan records its own phase-execution handoff, required artifacts, and variance stop condition at its freeze boundary.
 
 ## Spec readiness checklist
 
-- [ ] Source input and desired outcome are captured.
-- [ ] Scope, non-scope, assumptions, open questions, and known unknowns are explicit.
-- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
-- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and explicit cross-phase ownership.
-- [ ] Repository evidence and compatibility constraints are recorded.
-- [ ] Interfaces, data, control flow, operations, and safety/privacy/migration impacts are checked.
-- [ ] Risks and rejected alternatives are listed or explicitly absent after review.
-- [ ] Phase decomposition explains why each phase belongs and what future phase-plan output will hold it.
-- [ ] Each phase is expected to fit one orchestration thread with bounded delegation, or the spec explains the escalation boundary.
-- [ ] Model and sub-agent strategy follows `module:models`, or `Sub-agents: None` has a brief fit rationale.
-- [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
+- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
+- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
+- [ ] Verification Criteria cover all applicable Commitments, have no hidden procedure or scope, and identify cross-phase ownership where applicable.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained enough that a fresh session can draft each actionable phase plan without reconstructing original session context.
+- [ ] Phase decomposition explains why each phase belongs, identifies its future phase-plan output, and keeps each phase within one orchestration session or records the escalation boundary.
+- [ ] The Next-stage recommendation records the required lifecycle, orchestration, model, fallback, and stage-specific sub-agent decisions; optional current-session diagnostics are omitted unless material, and the recommendation is relabeled `Approved next stage` at freeze.
+- [ ] Impact Surfaces, triage/debugging/operations, risks, documentation obligations, planned commits, and any batch-planning exception have been assessed.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 

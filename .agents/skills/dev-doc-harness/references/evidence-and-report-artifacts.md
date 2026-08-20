@@ -1,13 +1,10 @@
 # Evidence And Report Artifacts
 
-Use this reference when a work item needs durable evidence, derived review
-artifacts, or report templates.
+Use this reference when a work item needs durable evidence, derived review artifacts, or report templates.
 
 Module: `module:evidence`
 
-This is a supplemental advisory reference. Use it when a router entry, spec,
-plan, phase plan, or operator instruction calls for evidence-heavy work,
-derived reports, or durable review artifacts.
+This is a supplemental advisory reference. Use it when a router entry, spec, plan, phase plan, or operator instruction calls for evidence-heavy work, derived reports, or durable review artifacts.
 
 Owned rule IDs:
 
@@ -25,9 +22,7 @@ Owned rule IDs:
 - Link derived artifacts back to their source evidence.
 - Do not rewrite original evidence to hide drift, failed checks, or manual repair.
 
-For harness-managed work, source evidence usually belongs under the work item
-folder. Derived summaries may live under `handoff/`, `deltas/`, or another
-work-item-local review folder named in the plan.
+For harness-managed work, source evidence usually belongs under the work item folder. Derived summaries may live under `handoff/`, `deltas/`, or another work-item-local review folder named in the plan.
 
 ## Artifact index
 
@@ -69,5 +64,4 @@ Stop and record the blocker when:
 - Verification fails after the planned repair attempts.
 - Unresolved high-impact security, data, API, or scope risk appears.
 
-High-impact variance still requires a plan amendment and operator approval before
-proceeding.
+High-impact variance still requires a plan amendment and operator approval before proceeding.

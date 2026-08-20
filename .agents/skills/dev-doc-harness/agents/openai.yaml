@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Doc Harness"
+  short_description: "Plan and govern repository development work"
+  default_prompt: "Use $dev-doc-harness to guide this repository development task through the appropriate planning, execution, and validation lifecycle."

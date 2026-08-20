@@ -3,13 +3,14 @@
   "blocks": [
     "blocks/plan.010.phase.header-objective-inputs.md",
     "blocks/plan.020.common.traceability-approach-surfaces.md",
-    "blocks/plan.030.phase.fresh-thread-readiness.md",
-    "blocks/plan.040.common.model-strategy.md",
+    "blocks/plan.030.phase.session-readiness.md",
     "blocks/plan.050.common.task-plan.md",
+    "blocks/plan.055.common.model-strategy.md",
     "blocks/plan.060.phase.planned-commits.md",
     "blocks/plan.070.common.validation-variance-freeze.md",
-    "blocks/plan.080.phase.documentation-tasks-handoff.md",
-    "blocks/plan.085.common.handoff.md",
+    "blocks/plan.080.phase.documentation-tasks.md",
+    "blocks/plan.085.phase.handoff.md",
+    "blocks/plan.087.phase.completion-report.md",
     "blocks/plan.090.phase.readiness-completion-approval.md"
   ]
 }

@@ -10,16 +10,16 @@ shape examples, but it does not make any sub-agent role mandatory policy.
 
 ## Common roles
 
-Keep Model generation, Capability tier, Reasoning effort, and Orchestration mode separate. A bounded role below uses `bounded delegated sub-agents`; platform multi-agent/`ultra` is a different orchestration choice and does not imply these role boundaries or report gates.
+Keep the active model policy separate from each recommended sub-agent model. Present that recommendation as Generation, Capability tier, and Reasoning effort together; add a Resolved target profile only when a concrete runtime mapping is exposed and useful. A bounded role below uses `bounded delegated sub-agents`; platform multi-agent/`ultra` is a different orchestration choice and does not imply these role boundaries or report gates.
 
-| Role | Use when | Capability tier | Reasoning effort | Orchestration mode | Output |
-|---|---|---|---|---|---|
-| Explorer | Inputs are scattered and read-heavy. | fast/economy or balanced | low or medium | bounded delegated sub-agents | Discovery notes with file references. |
-| Research verifier | Plans depend on cited claims. | balanced or flagship | medium or high | bounded delegated sub-agents | Verified claims, discrepancies, and reliability assessment. |
-| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | balanced | medium | bounded delegated sub-agents | Test gaps and recommended cases. |
-| Bounded implementer | Files are disjoint and the plan is concrete. | balanced | medium | bounded delegated sub-agents | Patch plus commands run. |
-| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | flagship | high | bounded delegated sub-agents | Findings with severity, impact, and remediation. |
-| Final reviewer | Integration risk or blast radius is high. | flagship | high | bounded delegated sub-agents | Blocking findings, residual risk, and release recommendation. |
+| Role | Use when | Recommended sub-agent model (Generation; tier; reasoning) | Orchestration mode | Output |
+|---|---|---|---|---|
+| Explorer | Inputs are scattered and read-heavy. | latest available; fast/economy or balanced; low or medium | bounded delegated sub-agents | Discovery notes with file references. |
+| Research verifier | Plans depend on cited claims. | latest available; balanced or flagship; medium or high | bounded delegated sub-agents | Verified claims, discrepancies, and reliability assessment. |
+| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | latest available; balanced; medium | bounded delegated sub-agents | Test gaps and recommended cases. |
+| Bounded implementer | Files are disjoint and the plan is concrete. | latest available; balanced; medium | bounded delegated sub-agents | Patch plus commands run. |
+| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | latest available; flagship; high | bounded delegated sub-agents | Findings with severity, impact, and remediation. |
+| Final reviewer | Integration risk or blast radius is high. | latest available; flagship; high | bounded delegated sub-agents | Blocking findings, residual risk, and release recommendation. |
 
 ## Portable role shape
 
@@ -29,16 +29,16 @@ environment-specific adapters or run metadata.
 ```yaml
 id: test-risk-reviewer
 role: review
-model_policy: active repository policy
+active_model_policy: active repository policy
 model_policy_source: AGENTS.md
 model_policy_scope: this work item
 model_policy_expires: when the work item completes unless the operator changes it
-model_generation: not exposed
-capability_tier: balanced
-reasoning_effort: medium
+recommended_sub_agent_model:
+  generation: latest available
+  capability_tier: balanced
+  reasoning_effort: medium
 orchestration_mode: bounded delegated sub-agents
-resolved_profile: not exposed
-availability_fallback: orchestration thread review
+availability_fallback: orchestration session review
 context_strategy: curated artifacts
 inputs:
   - <work-item-path><spec-filename>
@@ -62,11 +62,11 @@ Each sub-agent report must include:
 - Recommended next step.
 - Context strategy actually used and observed context/model inheritance behavior, if any.
 
-The orchestration thread owns decomposition, integration, conflict resolution,
+The orchestration session owns decomposition, integration, conflict resolution,
 final validation, and the user-facing summary.
 
 ## Independent reviewer pattern
 
-Use an independent sub-agent reviewer by default with curated artifacts, the changed diff, validation evidence, and a short role prompt. Give it one named lens, such as requirements traceability, regression risk, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven. Each finding is evidence-backed and records severity plus a reproduction or validation path. The reviewer advises; the orchestration thread retains final integration ownership.
+Use an independent sub-agent reviewer by default with curated artifacts, the changed diff, validation evidence, and a short role prompt. Give it one named lens, such as requirements traceability, regression risk, test adequacy, or adversarial counterexamples. A separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven. Each finding is evidence-backed and records severity plus a reproduction or validation path. The reviewer advises; the orchestration session retains final integration ownership.
 
-For a fresh-task reviewer or model transition, use curated artifacts and `rule:execution-quality.execution-thread-start`; name the first activity and stop for approval-required variance.
+For a fresh-orchestration-session reviewer or model transition, use curated artifacts and `rule:execution-quality.execution-thread-start`; name the first activity and stop for approval-required variance.

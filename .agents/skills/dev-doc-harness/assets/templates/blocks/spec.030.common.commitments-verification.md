@@ -1,14 +1,13 @@
 ## Commitments and verification
 
 Keep stable IDs and short titles. Put delivery scope in each Statement;
-rationale and examples do not add scope. Classification is optional; when it
-helps, use one compact line such as `Constraint · Preserve`.
+rationale and examples do not add scope. Every additional `SPEC-*` uses the
+complete `SPEC-001` structure: Statement plus a local Verification Criterion,
+unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
-Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:quality.plain-language`.
 
 ### `SPEC-001` `<short title>`
-
-`Constraint · Preserve`
 
 Statement:
 
@@ -29,6 +28,14 @@ Applicability / owning phase (optional): `<where this applies or which phase own
 Statement:
 
 1. `<second obligation, or remove this example>`.
+
+#### `VER-002` `<second title when needed>`
+
+Covers: `SPEC-002`.
+
+Criterion: `<what proves this commitment>`.
+
+Expected evidence: `<test, inspection, review, or other proof>`.
 
 ## Cross-cutting verification
 

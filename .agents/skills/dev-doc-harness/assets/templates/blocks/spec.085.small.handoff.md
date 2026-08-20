@@ -1,20 +1,16 @@
-## Next-task handoff
+## Planning shape and transition ownership
 
-Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.planning-shape`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 Default combined package:
 
 1. Planning shape: `combined small/medium`.
-2. Frozen package: `<approved spec and plan plus required snapshots, amendments, evidence, and other plan-named inputs>`.
-3. Next activity: `<implementation activity named by the approved plan>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named task or review action from the plan>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Companion plan: `<plan-filename>` is drafted and presented with this spec in the same planning turn.
+3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
+4. Next lifecycle stage: `plan execution`.
 
-The combined small/medium spec does not emit an independent plan-drafting handoff or task-creation offer. Its plan owns the transition after the combined package freezes.
+For an explicit staged spec-only exception:
 
-If the operator explicitly approves a staged small/medium spec-only exception before freeze, replace the default values with the recorded reason, identify the spec-only frozen package, and set plan drafting as the Next activity. Only that actual frozen boundary may emit the conditional copy-ready prompt described by `rule:freeze.approval-freeze`.
+1. Staging reason: `<operator-requested or operator-approved staging reason>`.
+2. Spec-only frozen package: `<spec-filename>`.
+3. Next lifecycle stage: `plan drafting`.

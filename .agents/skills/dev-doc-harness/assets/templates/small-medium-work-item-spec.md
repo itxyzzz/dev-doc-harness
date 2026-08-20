@@ -7,9 +7,10 @@ Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
 Schema: `schema:spec.small-medium`
-Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:artifact-style`, `rule:lifecycle.documentation-matrix`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
+Companion plan: `<plan-filename>`
+Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
-Artifact style: small/medium specifications must load `module:artifact-style`. Write final artifact content, resolve required decisions, remove authoring scaffolds, and use scannable sections, lists, and tables.
+Artifact readability: follow the `module:quality` baseline for final artifact content, resolved decisions, and scannable structure. Load `module:artifact-style` when the specification becomes large or hard to scan.
 
 ## Goal
 
@@ -42,17 +43,6 @@ Success summary:
 1. Record nearby work intentionally excluded, deferred, or left unchanged.
 2. Name tempting follow-ups that would make this package too broad.
 
-### Assumptions
-
-1. Record assumptions that are safe to rely on during planning.
-2. Use `None identified after repository-context review` only after checking the relevant local context.
-
-### Open questions
-
-1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
-2. For each question, name the owner or later event needed to resolve it.
-3. Use `None identified after repository-context review` only when there are no known open questions.
-
 ## Repository Context
 
 ### Current state
@@ -68,17 +58,29 @@ Success summary:
 
 1. Record compatibility, lifecycle, naming, release, testing, operator-workflow, platform, security, privacy, migration, or context-window constraints that shape the work.
 
+## Assumptions and Open Questions
+
+### Assumptions
+
+1. Record assumptions that are safe to rely on during planning.
+2. Use `None identified after repository-context review` only after checking the relevant local context.
+
+### Open questions
+
+1. Record unresolved decisions, missing operator input, or repo facts that need confirmation.
+2. For each question, name the owner or later event needed to resolve it.
+3. Use `None identified after repository-context review` only when there are no known open questions.
+
 ## Commitments and verification
 
 Keep stable IDs and short titles. Put delivery scope in each Statement;
-rationale and examples do not add scope. Classification is optional; when it
-helps, use one compact line such as `Constraint · Preserve`.
+rationale and examples do not add scope. Every additional `SPEC-*` uses the
+complete `SPEC-001` structure: Statement plus a local Verification Criterion,
+unless a genuinely cross-cutting criterion explicitly supplies the evidence.
 
-Use `must` for binding Statements and `should` for advisory prose; see `rule:style.plain-language`.
+Use `must` for binding Statements and `should` for advisory prose; see `rule:quality.plain-language`.
 
 ### `SPEC-001` `<short title>`
-
-`Constraint · Preserve`
 
 Statement:
 
@@ -99,6 +101,14 @@ Applicability / owning phase (optional): `<where this applies or which phase own
 Statement:
 
 1. `<second obligation, or remove this example>`.
+
+#### `VER-002` `<second title when needed>`
+
+Covers: `SPEC-002`.
+
+Criterion: `<what proves this commitment>`.
+
+Expected evidence: `<test, inspection, review, or other proof>`.
 
 ## Cross-cutting verification
 
@@ -135,27 +145,25 @@ Decision summary:
 
 Repository-level durable architecture documents such as `ARCHITECTURE.md` are future work for a separate harness extension.
 
-## Interfaces, Data, and Control Flow
+## Impact Surfaces
 
-### Interfaces affected
+Record any impacted surfaces below. Use bullets for lists; state `None` when the respective surfaces are not affected or are not relevant.
 
-1. Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
-2. State `None` when the change does not affect interfaces.
+### Interfaces
+
+Record public APIs, internal interfaces, CLI flags, config, schemas, generated artifacts, templates, or docs affected by the change.
 
 ### Data, config, and persistence
 
-1. Record data model, persistence, migration, configuration, release-identity, or rollout effects.
-2. State `None` when the change does not affect data, config, or persistence.
+Record data model, persistence, migration, configuration, release-identity, or rollout effects.
 
 ### State and control flow
 
-1. Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
-2. State `None` when the change does not affect state or control flow.
+Record lifecycle, routing, state-machine, validation, request flow, jobs, concurrency, retries, or process-flow changes.
 
 ### Safety, security, privacy, migration, and rollback
 
-1. Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
-2. State `None identified after repository-context review` only after checking the relevant code and docs.
+Record safety, auth, data exposure, privacy, compliance, migration, rollout, rollback, destructive-operation, and operator-safety considerations.
 
 ## Risks and Rejected Alternatives
 
@@ -180,59 +188,52 @@ Risk prompts:
 
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review.
 
-| Stage | Planned subject | Changelog title or snippet | Notes |
-|---|---|---|---|
-| Planning approval | `<planning-commit-subject>` | `<changelog-heading>` | Approval commit for this spec and related planning artifacts. |
-| Implementation | `<commit-subject>` | `<changelog-heading>` | Replace with the expected implementation commit subject, or defer to the plan with a reason. |
+| Stage | Planned subject |
+|---|---|
+| Planning approval | `<planning-commit-subject>` |
+| Implementation | `<commit-subject>` |
 
-## Documentation artifact matrix
+Use one cohesive implementation commit by default. Record an essential deferral
+or independently reviewable split as concise prose under this table.
 
-| Artifact | Type | Required? | Stage | Output path | Notes |
-|---|---|---:|---|---|---|
-| Changelog source | Living | Yes | Before each commit | `docs/work-items/<work-id>/changelog/*.md` | Fragment entries use the changelog heading and metadata grammar; title snippets synchronized with planned commit subjects |
-| Root changelog consolidation | Living | As needed | After merge, before release-note preparation, before product/application release, or at another project-owned checkpoint | `CHANGELOG.md` | Consolidated publication view; run consolidation when the operator's process needs root changelog completeness |
-| Test cases | Snapshot | Yes/No | Before implementation | `snapshots/test-cases.snapshot.md` | Capture expected behavior before code changes |
-| Testing guide delta | Living delta | Yes/No | During or after implementation | `deltas/testing-guide.delta.md` | Update if operator or test flow changes |
-| Operator manual delta | Living delta | Yes/No | After implementation | `deltas/operator-manual.delta.md` | Update if runtime or operator behavior changes |
-| API reference delta | Living delta | Yes/No | During or after API work | `deltas/api-reference.delta.md` | Required for public API changes |
-| Architecture snapshot | Snapshot | Yes/No/Deferred | Before implementation or phase-plan drafting | `snapshots/architecture.snapshot.md` | Work-item-bound frozen decision snapshot when meaningful architecture decisions are made or depended on |
-| Architecture summary delta | Living delta | Yes/No/Deferred | After review | `deltas/architecture-summary.delta.md` | Optional future input if long-lived architecture docs change outside this work-item snapshot flow |
+## Documentation assessment
 
-## Next-task handoff
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
 
-Use `rule:lifecycle.planning-shape`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+- `DOC-TEST-CASE`: `<status>`.
+- `DOC-TEST-GUIDE`: `<status>`.
+- `DOC-OPS-GUIDE`: `<status>`.
+- `DOC-API-GUIDE`: `<status>`.
+- `DOC-ARCH-SUMMARY`: `<status>`.
+
+## Planning shape and transition ownership
+
+Use `rule:lifecycle.planning-shape`, `rule:models.next-stage-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
 
 Default combined package:
 
 1. Planning shape: `combined small/medium`.
-2. Frozen package: `<approved spec and plan plus required snapshots, amendments, evidence, and other plan-named inputs>`.
-3. Next activity: `<implementation activity named by the approved plan>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named task or review action from the plan>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
+2. Companion plan: `<plan-filename>` is drafted and presented with this spec in the same planning turn.
+3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
+4. Next lifecycle stage: `plan execution`.
 
-The combined small/medium spec does not emit an independent plan-drafting handoff or task-creation offer. Its plan owns the transition after the combined package freezes.
+For an explicit staged spec-only exception:
 
-If the operator explicitly approves a staged small/medium spec-only exception before freeze, replace the default values with the recorded reason, identify the spec-only frozen package, and set plan drafting as the Next activity. Only that actual frozen boundary may emit the conditional copy-ready prompt described by `rule:freeze.approval-freeze`.
+1. Staging reason: `<operator-requested or operator-approved staging reason>`.
+2. Spec-only frozen package: `<spec-filename>`.
+3. Next lifecycle stage: `plan drafting`.
 
 ## Spec readiness checklist
 
-- [ ] Source input and desired outcome are captured.
-- [ ] Scope, non-scope, assumptions, and open questions are explicit.
-- [ ] Specification Commitments are atomic, bounded, and contain every implementation obligation in their Statements.
-- [ ] Verification Criteria have valid Covers sets, expected evidence, deterministic local/cross-cutting placement, and no hidden procedure or scope.
-- [ ] Repository evidence and compatibility constraints are recorded.
-- [ ] Interfaces, data, control flow, and safety/privacy/migration impacts are checked.
-- [ ] Risks and rejected alternatives are listed or explicitly absent after review.
-- [ ] Documentation artifact matrix decisions have paths or reasons.
-- [ ] Planned commit subjects and changelog title snippets are synchronized.
-- [ ] No unresolved placeholders, unresolved required decisions, missing required sections, or ownerless deferrals remain before approval or handoff.
+- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
+- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
+- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
+- [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 

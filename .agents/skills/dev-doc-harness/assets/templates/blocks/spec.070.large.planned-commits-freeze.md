@@ -1,27 +1,15 @@
 ## Planned commits
 
-Use `rule:lifecycle.commit-message-format`. Planned commit subjects are reviewable during spec and phase-plan review, and their title snippets must stay synchronized with the matching `docs/work-items/<work-id>/changelog/*.md` fragment headings or bullet-level snippets. Root `CHANGELOG.md` is updated later by consolidation at an operator-owned checkpoint.
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
 
-Anchor spec approval:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Approval commit for this anchor spec.`
-
-Phase plan approval pattern:
-
-1. Planned subject: `<planning-commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace or refine in each concrete phase plan.`
-
-Implementation pattern:
-
-1. Planned subject: `<commit-subject>`.
-2. Changelog title or snippet: `<changelog-heading>`.
-3. Notes: `Replace with concrete rows in phase plans.`
+| Stage | Planned subject |
+|---|---|
+| Anchor spec approval | `<planning-commit-subject>` |
+| Phase-plan approval pattern | `<planning-commit-subject>` |
+| Phase implementation pattern | `<commit-subject>` |
 
 ## Planning artifact freeze gates
 
-Use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
+At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
 
-Record the draft review, approval commit or handoff snapshot, and pause before implementation, later phase-plan drafting, or later phase execution. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
+Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.

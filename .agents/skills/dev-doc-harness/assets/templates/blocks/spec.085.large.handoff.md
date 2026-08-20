@@ -1,16 +1,9 @@
-## Next-task handoff
+## Anchor-to-phase transition
 
-Use `rule:lifecycle.large-phase-orchestration`, `rule:models.execution-continuity`, `rule:freeze.approval-freeze`, and `rule:execution-quality.execution-thread-start`.
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, and `rule:freeze.approval-freeze`.
 
 1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
-2. Frozen package: `<approved anchor spec plus required snapshots, amendments, evidence, and other anchor-named inputs>`.
-3. Next activity: `phase-plan drafting` for `<named phase or first phase-planning activity>`.
-4. Execution continuity: `<same task / new task with curated-artifact handoff / justified alternative>`.
-5. Context visibility: `<exposed signal or not exposed>`.
-6. Artifact rehydration required: `<Yes/No plus reason>`.
-7. Exact authoritative artifacts: `<approved spec, plan or phase plan, architecture snapshot, amendments, and required evidence paths>`.
-8. Approved strategy and fallback: `<section or artifact reference>`.
-9. First activity: `<named phase-planning task or review action>`.
-10. Variance stop condition: `<approval-required variance or other explicit stop>`.
-
-After the anchor actually freezes, a new-task route displays a conditional copy-ready prompt for the documented phase-plan drafting activity. It names the exact artifacts above, applicable `AGENTS.md` and harness rules, `rule:execution-quality.execution-thread-start`, the approved strategy and fallback, and the variance stop condition without duplicating frozen requirements. Follow `rule:freeze.approval-freeze` for any configured task-creation offer or manual fallback.
+2. Next lifecycle stage: `phase-plan drafting`.
+3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
+4. Batch planning is an explicit exception only for stable, independently plannable phases.
+5. This anchor’s approved next-stage selection governs `phase-plan drafting`. Each phase plan records its own phase-execution handoff, required artifacts, and variance stop condition at its freeze boundary.
