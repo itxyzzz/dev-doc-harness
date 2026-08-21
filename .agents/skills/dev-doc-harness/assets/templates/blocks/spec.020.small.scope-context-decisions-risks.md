@@ -21,4 +21,4 @@
 ### Risks
 
 1. Record each material compatibility, safety, or scope risk with its mitigation.
-2. Escalate to small/medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty concerns emerge.
+2. Escalate to medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty concerns emerge.

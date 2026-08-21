@@ -4,7 +4,7 @@ Work ID: `<work-id>`
 Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
-Schema: `schema:plan.small-medium`
+Schema: `schema:plan.medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
 Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.

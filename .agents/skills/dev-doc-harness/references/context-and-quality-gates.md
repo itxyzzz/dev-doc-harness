@@ -31,14 +31,14 @@ If instructions conflict, preserve higher-priority system and user constraints, 
 
 Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution session or when an approved same-session model switch or recorded continuity risk requires rehydration:
 
-For a frozen lean/small package:
+For a frozen small package:
 
-1. Load system and runtime constraints, applicable instructions, the frozen lean package, amendments or variance records, approval state, and the expected validation baseline. Do not load or consume `rule:models.selection-dimensions`, `rule:models.next-stage-continuity`, or `module:implementation-changelog` for ordinary lean/small startup.
+1. Load system and runtime constraints, applicable instructions, the frozen small package, amendments or variance records, approval state, and the expected validation baseline. Do not load or consume `rule:models.selection-dimensions`, `rule:models.next-stage-continuity`, or `module:implementation-changelog` for ordinary small startup.
 2. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
 3. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
 4. Begin `Stage: plan execution`. The operator may continue in the current session or provide explicit runtime instructions for method, orchestration, model, and review; no new operator or session is implied. Before an implementation commit, load `module:implementation-changelog`. Route material changes through `rule:lifecycle.variance-policy`.
 
-For small/medium and large/phased packages:
+For medium and large/phased packages:
 
 1. Consume the approved runtime selection from `rule:models.selection-dimensions` and the same-session or new-session choice from `rule:models.next-stage-continuity`; do not reconstruct either decision here.
 2. Load system and runtime constraints, applicable instructions, and all frozen artifacts and execution inputs named by the approved handoff.
@@ -46,7 +46,7 @@ For small/medium and large/phased packages:
 4. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
 5. Begin the documented next lifecycle stage. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
-If runtime or environment limitations affect a small/medium or large/phased startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions for those routes; `module:freeze-gate` owns planning-transition and authorization behavior.
+If runtime or environment limitations affect a medium or large/phased startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions for those routes; `module:freeze-gate` owns planning-transition and authorization behavior.
 
 ## Task preflight
 

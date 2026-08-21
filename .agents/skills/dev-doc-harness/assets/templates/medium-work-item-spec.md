@@ -6,7 +6,7 @@ Work ID: `<work-id>`
 Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
-Schema: `schema:spec.small-medium`
+Schema: `schema:spec.medium`
 Companion plan: `<plan-filename>`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 
@@ -214,7 +214,7 @@ Use `rule:lifecycle.planning-shape`, `rule:models.next-stage-continuity`, `rule:
 
 Default combined package:
 
-1. Planning shape: `combined small/medium`.
+1. Planning shape: `combined medium`.
 2. Companion plan: `<plan-filename>` is drafted and presented with this spec in the same planning turn.
 3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
 4. Next lifecycle stage: `plan execution`.

@@ -1,9 +1,0 @@
-{
-  "output": ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-plan.md",
-  "blocks": [
-    "blocks/plan.010.lean.metadata-inputs.md",
-    "blocks/plan.020.lean.surfaces-approach.md",
-    "blocks/plan.030.lean.tasks-checks.md",
-    "blocks/plan.040.lean.validation-variance-approval.md"
-  ]
-}

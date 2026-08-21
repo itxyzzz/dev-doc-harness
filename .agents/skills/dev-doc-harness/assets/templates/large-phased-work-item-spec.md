@@ -13,7 +13,7 @@ Artifact style: large anchor specs must load `module:artifact-style`. Write fina
 
 ## Goal
 
-State the operator-visible or user-visible outcome and why the whole work item needs the large/phased path instead of a small/medium spec and plan.
+State the operator-visible or user-visible outcome and why the whole work item needs the large/phased path instead of a medium spec and plan.
 
 ## Source and Intent
 

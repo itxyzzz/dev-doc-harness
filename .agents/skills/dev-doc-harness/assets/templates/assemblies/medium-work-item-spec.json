@@ -1,14 +1,14 @@
 {
-  "output": ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+  "output": ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
   "blocks": [
-    "blocks/spec.010.small.header.md",
+    "blocks/spec.010.medium.header.md",
     "blocks/spec.020.common.intent-scope-context.md",
     "blocks/spec.030.common.commitments-verification.md",
     "blocks/spec.035.common.architecture-decisions.md",
     "blocks/spec.040.common.interfaces-risks.md",
-    "blocks/spec.070.small.planned-commits.md",
+    "blocks/spec.070.medium.planned-commits.md",
     "blocks/spec.080.common.documentation-assessment.md",
-    "blocks/spec.085.small.handoff.md",
-    "blocks/spec.090.small.readiness-approval.md"
+    "blocks/spec.085.medium.handoff.md",
+    "blocks/spec.090.medium.readiness-approval.md"
   ]
 }

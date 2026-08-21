@@ -6,7 +6,7 @@ Work ID: `<work-id>`
 Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
-Schema: `schema:plan.small-medium`
+Schema: `schema:plan.medium`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:models`, `rule:models.strategy-required`, `rule:models.context-strategy`, `rule:models.approved-strategy-authorized`, `rule:models.fresh-confirmation`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`
 Execution method: `<approved method, or omit when not selected>`
 Current orchestration session: Resolved model profile and Context visibility: `<exposed material facts; omit unless exposed and material>`.
@@ -132,7 +132,7 @@ List the checks that produce the needed evidence. Use `rule:lifecycle.variance-p
 
 ## Implementation handoff
 
-Render this section at the plan's real frozen boundary. The combined small/medium plan owns this handoff.
+Render this section at the plan's real frozen boundary. The combined medium plan owns this handoff.
 
 ### Next-stage recommendation
 

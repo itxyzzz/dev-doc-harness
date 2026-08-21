@@ -1,10 +1,10 @@
-# <Work Item Name> Lean/Small Plan
+# <Work Item Name> Small Plan
 
 Work ID: `<work-id>`
 Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
-Schema: `schema:plan.lean-small`
+Schema: `schema:plan.small`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `module:freeze-gate`, `rule:lifecycle.commit-message-format`, `rule:lifecycle.variance-policy`, `rule:naming.derived-patterns`, `rule:quality.plan-executable`
 
 ## Exact inputs

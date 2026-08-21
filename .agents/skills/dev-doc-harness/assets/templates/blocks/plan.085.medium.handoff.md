@@ -1,6 +1,6 @@
 ## Implementation handoff
 
-Render this section at the plan's real frozen boundary. The combined small/medium plan owns this handoff.
+Render this section at the plan's real frozen boundary. The combined medium plan owns this handoff.
 
 ### Next-stage recommendation
 

@@ -31,7 +31,7 @@ The result is control without constant process micromanagement: operators get a 
 flowchart TD
     A["Operator asks for work"]:::house --> B{"Work size"}:::house
     B -->|"Very small"| C["Edit, check, commit"]:::house
-    B -->|"Small or medium"| D["Draft combined spec and plan"]:::house
+    B -->|"small or medium"| D["Draft combined spec and plan"]:::house
     B -->|"Large or phased"| H["Draft anchor spec"]:::house
 
     D --> E{"Operator approves?"}:::house
@@ -56,7 +56,7 @@ flowchart TD
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package determines the next stage. Lean/small work is an additive combined package for bounded, low-risk local work; the operator may explicitly select it, but it must escalate to small/medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty appears. Small/medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically. The established small/medium and large/phased names remain pending a separate terminology work item.
+The frozen package determines the next stage. small work is an additive combined package for bounded, low-risk local work; the operator may explicitly select it, but it must escalate to medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty appears. Medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically.
 
 ## Using the documentation harness
 
@@ -102,7 +102,7 @@ If Superpowers is installed and active, use Superpowers for its normal software-
 
 ### Planning and conformance
 
-For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Small/medium work normally drafts and freezes a combined small/medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as the next lifecycle stage. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
+For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Medium work normally drafts and freezes a combined medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as the next lifecycle stage. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
 
 The practical boundary is whether one orchestration session can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
 
@@ -130,7 +130,7 @@ The operator can override all these recommendations on start authorization.
 
 ### Drift, commits, and changelogs
 
-Implementation does not always follow a frozen plan line for line. The harness keeps approved planning artifacts unchanged so reviewers can see what was planned and what was delivered. Small implementation or validation adjustments are normal when they preserve the approved scope and outcome. That includes changes that serve the same evidence purpose; using a different command to prove the same result is one example. A change that materially affects the outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence goes through an amendment and approval.
+Implementation does not always follow a frozen plan line for line. The harness keeps approved planning artifacts unchanged so reviewers can see what was planned and what was delivered. small implementation or validation adjustments are normal when they preserve the approved scope and outcome. That includes changes that serve the same evidence purpose; using a different command to prove the same result is one example. A change that materially affects the outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence goes through an amendment and approval.
 
 Implementation-stage changelog authoring is governed by `module:implementation-changelog`; it keeps delivery records separate from the root publication view. Release-stage consolidation remains project-owned, while a downstream product/application release keeps its own process.
 

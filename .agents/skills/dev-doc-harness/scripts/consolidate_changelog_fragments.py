@@ -29,7 +29,8 @@ COMPACT_METADATA_PATTERN = re.compile(r"^Meta --\s+`([^`]+)`\s*:\s*`([^`]+)`\s*$
 VALID_PACKAGE_IMPACT = {"distributable", "repository-only"}
 LEGACY_PACKAGE_IMPACT = VALID_PACKAGE_IMPACT | {"planning-only"}
 VALID_RELEASE_NOTE = {"include", "source-only", "omit"}
-CHANGELOG_HEADING = r"\d{4}-\d{2}-\d{2}[^\n]+"
+# Accept a bare heading or the schema's paired Markdown code-span form.
+CHANGELOG_HEADING = r"(?:\d{4}-\d{2}-\d{2}[^\n`]+|`\d{4}-\d{2}-\d{2}[^\n`]+`)"
 
 
 def repo_display_path(path: Path, repo_root: Path) -> str:

@@ -1,9 +1,0 @@
-{
-  "output": ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-spec.md",
-  "blocks": [
-    "blocks/spec.010.lean.metadata-goal.md",
-    "blocks/spec.020.lean.scope-context-decisions-risks.md",
-    "blocks/spec.030.lean.commitments-verification.md",
-    "blocks/spec.080.lean.documentation-readiness-approval.md"
-  ]
-}

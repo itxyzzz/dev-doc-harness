@@ -236,7 +236,7 @@ Sub-agents are not a default cost-saving mechanism. Prefer read-only explorer or
 
 Default concurrent fan-out:
 
-- Small task: 0 sub-agents.
+- small task: 0 sub-agents.
 - Moderate uncertainty: 1 read-only explorer or reviewer.
 - Clearly independent substantial work: 2-3 concurrent sub-agents.
 - More than 3 concurrent sub-agents: requires explicit extraordinary justification and operator approval.
@@ -270,7 +270,7 @@ When the preferred execution strategy or fallback was exercised, completion also
 
 ## Required notation
 
-Substantial small/medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Small/medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read.
+Substantial medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read.
 
 For plans and phase plans, put the optional current orchestration session diagnostics once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation. Omit current-session diagnostics unless they are exposed and material.
 

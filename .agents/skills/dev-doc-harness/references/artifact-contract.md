@@ -12,7 +12,7 @@ Owned rule IDs:
 | `rule:lifecycle.stage-boundaries` | `## Lifecycle stage boundaries` |
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
-| `rule:lifecycle.planning-shape` | `## Small/medium planning shape` |
+| `rule:lifecycle.planning-shape` | `## Medium planning shape` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
 | `rule:lifecycle.work-item-architecture-decisions` | `## Work-item architecture decisions` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
@@ -41,8 +41,8 @@ An explicit operator approval and its planning approval commit freeze a planning
 
 The established lifecycle shapes use these transitions:
 
-- A combined lean/small spec-and-plan package freezes for `plan execution`.
-- An explicitly staged small/medium spec freezes for `plan drafting`; a combined small/medium spec-and-plan package freezes for `plan execution`.
+- A combined small spec-and-plan package freezes for `plan execution`.
+- An explicitly staged medium spec freezes for `plan drafting`; a combined medium spec-and-plan package freezes for `plan execution`.
 - A large/phased anchor spec freezes for `phase-plan drafting`; a phase plan freezes for `phase execution`. An approved amendment records the documented resumed stage from the package it changes.
 
 Draft continuation by ordinary operator instruction and approved-package continuity in the same or a new orchestration session are operational behavior, not lifecycle stages or alternative freeze paths.
@@ -62,41 +62,41 @@ Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id
 
 ### Very small mechanical work
 
-Very small mechanical work may skip the harness unless the operator requests durable artifacts. It is distinct from lean/small work, which remains a substantial work item with a combined planning package.
+Very small mechanical work may skip the harness unless the operator requests durable artifacts. It is distinct from small work, which remains a substantial work item with a combined planning package.
 
-### Lean/small work
+### small work
 
-Lean/small work is a conservative route for a known local change surface with low material risk and a safe one-session boundary. It must have bounded scope, clear validation, and no material architecture, interface, migration, security, or uncertainty concern. The operator may explicitly select lean/small when those conditions are met.
+small work is a conservative route for a known local change surface with low material risk and a safe one-session boundary. It must have bounded scope, clear validation, and no material architecture, interface, migration, security, or uncertainty concern. The operator may explicitly select small when those conditions are met.
 
-Before freeze, material uncertainty or boundary expansion requires escalation from lean/small to small/medium or large/phased, as appropriate. Lean/small is not a shortcut around review, approval, immutability, variance, or fresh implementation authorization.
+Before freeze, material uncertainty or boundary expansion requires escalation from small to medium or large/phased, as appropriate. small is not a shortcut around review, approval, immutability, variance, or fresh implementation authorization.
 
-### Small/medium work
+### Medium work
 
-Small/medium work is substantial work that one orchestration session can safely coordinate with bounded delegation and a manageable context window. The orchestration session owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
+Medium work is substantial work that one orchestration session can safely coordinate with bounded delegation and a manageable context window. The orchestration session owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
 
-Small/medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
+Medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
 
 ### Large/phased work
 
 Large/phased work needs an anchor spec and later phase plans when one orchestration session cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
 
-Keep uncertain work small/medium until the one-session boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration session can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
+Keep uncertain work medium until the one-session boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration session can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
 
 `module:models` in `references/subagent-model-policy.md` owns sub-agent strategy, context strategy, concurrency, model selection, approved-strategy authorization, and final integration ownership. This lifecycle rule decides which planning shape is needed; it does not copy those orchestration mechanics.
 
-## Small/medium planning shape
+## Medium planning shape
 
-`rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
+`rule:lifecycle.planning-shape` makes combined planning the medium default. A medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
 
-Lean/small work uses a combined lean spec-and-plan package. The plan owns the `plan execution` transition after freeze. Its compact layout contains only the lean spec, lean plan, and any supporting material required by the approved work; it does not imply the small/medium changelog, snapshot, delta, or implementation-note directories during planning.
+small work uses a combined small spec-and-plan package. The plan owns the `plan execution` transition after freeze. Its compact layout contains only the small spec, small plan, and any supporting material required by the approved work; it does not imply the medium changelog, snapshot, delta, or implementation-note directories during planning.
 
 A spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. It is valid only when the operator requested or approved the staging. Before review and freeze, the spec must record that operator-requested or operator-approved staging, the reason for staging, identify the spec as the frozen package, and name `plan drafting` as its next lifecycle stage. A generic template heading or continuity preference cannot create this exception.
 
-Large/phased work keeps its existing anchor sequence defined by `references/large-phased-lifecycle.md`: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For combined lean/small and small/medium packages, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
+Large/phased work keeps its existing anchor sequence defined by `references/large-phased-lifecycle.md`: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For combined small and medium packages, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
 
 At every freeze boundary, record the planning shape, exact frozen package, and documented next lifecycle stage before applying next-stage-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
-## Small/medium layout
+## Medium layout
 
 ```text
 <work-item-path>
@@ -125,7 +125,7 @@ Create only the supplemental snapshot and delta files that are required for the 
 
 ## Large/phased lifecycle dispatch
 
-Detailed large/phased layout and the canonical owners for `rule:lifecycle.large-anchor-spec` and `rule:lifecycle.large-phase-orchestration` are in `references/large-phased-lifecycle.md`. Load that large-only reference when a large/phased route is selected; lean/small and small/medium routes do not need it.
+Detailed large/phased layout and the canonical owners for `rule:lifecycle.large-anchor-spec` and `rule:lifecycle.large-phase-orchestration` are in `references/large-phased-lifecycle.md`. Load that large-only reference when a large/phased route is selected; small and medium routes do not need it.
 
 ## Superpowers compatibility
 

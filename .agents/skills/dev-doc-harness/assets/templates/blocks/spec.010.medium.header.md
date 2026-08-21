@@ -4,7 +4,7 @@ Work ID: `<work-id>`
 Short ID: `<short-id>`
 Status: Draft
 Harness release: `<version or unknown>`
-Schema: `schema:spec.small-medium`
+Schema: `schema:spec.medium`
 Companion plan: `<plan-filename>`
 Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `rule:lifecycle.documentation-assessment`, `rule:lifecycle.commit-message-format`, `rule:naming.derived-patterns`, `rule:naming.work-item-paths`, `rule:naming.commit-messages`, `rule:quality.spec-handoff`
 

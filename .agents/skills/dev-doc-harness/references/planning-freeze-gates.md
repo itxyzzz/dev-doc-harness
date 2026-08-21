@@ -32,10 +32,10 @@ Draft artifacts may be edited until the operator explicitly approves them and th
 Before committing any planning artifacts for approval:
 
 1. Draft or update the required planning artifacts.
-2. Verify package completeness before draft review: a normal combined lean/small or small/medium package contains both `<spec-filename>` and `<plan-filename>`. A small/medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next lifecycle stage. A large/phased anchor remains a valid anchor-spec-only package.
+2. Verify package completeness before draft review: a normal combined small or medium package contains both `<spec-filename>` and `<plan-filename>`. A medium spec-only package is reviewable only when it records the operator-requested or operator-approved staged reason, identifies the spec-only frozen package, and names `plan drafting` as its next lifecycle stage. A large/phased anchor remains a valid anchor-spec-only package.
 3. Verify that the drafts contain no placeholders, undecided required items, or missing required sections unless the undecided item is explicitly marked as deferred with a reason and owner.
 4. Verify the worktree status, stage only the draft planning artifacts being reviewed, and do not commit them.
-5. For small/medium and large/phased packages, present the staged package in chat with a **Next-stage recommendation** projected from `rule:models.selection-dimensions`: **Next lifecycle stage** renders `Stage: <documented lifecycle stage>` from `rule:lifecycle.stage-boundaries`; **Orchestration** gives Method, Orchestration mode, `Run in`, and Review; **Model** gives Generation, Capability tier, and Reasoning; **Execution requirements and contingencies** includes only applicable startup requirements or contingency handling. Mirror the stage-appropriate values already resolved in the draft rather than redefining their applicability here. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful. For lean/small packages, present only the documented `Stage: plan execution`; do not require `rule:models.selection-dimensions`, model fields, or a sub-agent assessment.
+5. For medium and large/phased packages, present the staged package in chat with a **Next-stage recommendation** projected from `rule:models.selection-dimensions`: **Next lifecycle stage** renders `Stage: <documented lifecycle stage>` from `rule:lifecycle.stage-boundaries`; **Orchestration** gives Method, Orchestration mode, `Run in`, and Review; **Model** gives Generation, Capability tier, and Reasoning; **Execution requirements and contingencies** includes only applicable startup requirements or contingency handling. Mirror the stage-appropriate values already resolved in the draft rather than redefining their applicability here. Confirm the upcoming-stage sub-agent assessment and authorization state; record `Sub-agents: None` with a stage-specific fit reason when no delegation is useful. For small packages, present only the documented `Stage: plan execution`; do not require `rule:models.selection-dimensions`, model fields, or a sub-agent assessment.
 6. Ask the operator to approve the staged planning package or provide feedback.
 7. If the operator provides feedback, edit the draft artifacts directly, refresh the staged planning package, and ask for approval again.
 
@@ -54,17 +54,17 @@ After the operator explicitly approves the staged planning package:
 8. Stop before implementation, task execution, or the next planning stage. Implementation must not begin in the same agent turn as the approval freeze checkpoint.
 9. Report the commit hash and approved artifact paths.
 10. Remind the operator that they may push and create a draft plan-only PR. If context visibility is exposed, report the available signal; otherwise do not infer an exact compaction threshold. Operator-requested compaction remains optional and runtime-managed compaction remains platform-owned.
-11. For small/medium and large/phased packages, confirm that the frozen package distinguishes **Next-stage recommendation** defined under `## Draft review checkpoint` from the optional current-session diagnostics. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-session start question when the approved route is a new session. For lean/small packages, confirm the frozen `Stage: plan execution` and present the lean route below without adding model, continuity, or sub-agent notation.
+11. For medium and large/phased packages, confirm that the frozen package distinguishes **Next-stage recommendation** defined under `## Draft review checkpoint` from the optional current-session diagnostics. In chat, present these four **Next-stage recommendation** groups relabeled as **Approved next stage** and mirror the frozen artifact values. Reconfirm the upcoming-stage sub-agent assessment and authorization state, then present the corresponding route through `## Post-freeze transition routing` below. Do not use a universal current-session start question when the approved route is a new session. For small packages, confirm the frozen `Stage: plan execution` and present the small route below without adding model, continuity, or sub-agent notation.
 
 ## Post-freeze transition routing
 
-### Lean/small route
+### small route
 
-A frozen lean/small package records `Stage: plan execution`. The same operator manually orchestrates its execution or later provides explicit runtime instructions for method, orchestration, model, and review. This route does not imply a new operator or a new session, and ordinary startup does not load `module:models` or `module:implementation-changelog`.
+A frozen small package records `Stage: plan execution`. The same operator manually orchestrates its execution or later provides explicit runtime instructions for method, orchestration, model, and review. This route does not imply a new operator or a new session, and ordinary startup does not load `module:models` or `module:implementation-changelog`.
 
-After a fresh implementation instruction, use `rule:execution-quality.execution-thread-start`'s lean/small protocol and execute only within the frozen scope. Immediately before an implementation commit, load `module:implementation-changelog` and create or update the required fragment. Material changes to outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence still follow `rule:lifecycle.variance-policy` and require the applicable amendment and operator approval.
+After a fresh implementation instruction, use `rule:execution-quality.execution-thread-start`'s small protocol and execute only within the frozen scope. Immediately before an implementation commit, load `module:implementation-changelog` and create or update the required fragment. Material changes to outcome, architecture, API, data, security, privacy, compliance, scope, or required evidence still follow `rule:lifecycle.variance-policy` and require the applicable amendment and operator approval.
 
-The authorization, route inputs, and continuity rules below apply to small/medium and large/phased packages. They do not add a model-policy or continuity prerequisite to lean/small packages.
+The authorization, route inputs, and continuity rules below apply to medium and large/phased packages. They do not add a model-policy or continuity prerequisite to small packages.
 
 ### Authorization and effective selection
 
@@ -80,10 +80,10 @@ The harness transition completes before Superpowers pre-flight or execution begi
 
 Before rendering a handoff or offering task creation, read these values from the approved package:
 
-1. Planning shape: combined small/medium, explicit staged small/medium, large/phased anchor, plan, phase plan, or amendment.
+1. Planning shape: combined medium, explicit staged medium, large/phased anchor, plan, phase plan, or amendment.
 2. Frozen package: the exact approved spec, applicable plan or phase plan, required snapshots, applicable amendments, required evidence, and any other current input named by the plan.
 3. Next lifecycle stage: the documented planning, implementation, review, or replanning stage that follows this actual boundary.
-4. Transition owner: the plan for a combined small/medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
+4. Transition owner: the plan for a combined medium implementation handoff, the staged spec for an explicit plan-drafting exception, or the phase plan for its documented phase transition.
 
 ### Continuity rules
 
@@ -115,7 +115,7 @@ Large or phased work items normally pass through multiple freeze gates:
 - Phase-plan freeze: after one or more `<phase-plan-filename>` files are approved.
 - Amendment freeze: after any high-impact `<amendment-filename>` is approved.
 
-Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order, and `rule:lifecycle.planning-shape` distinguishes combined and explicitly staged small/medium packages; this freeze-gate rule owns the approval mechanics and continuity-selected conversation result at each actual stop.
+Use the same draft review and approval freeze checkpoints each time. `rule:lifecycle.large-phase-orchestration` owns the large/phased planning order, and `rule:lifecycle.planning-shape` distinguishes combined and explicitly staged medium packages; this freeze-gate rule owns the approval mechanics and continuity-selected conversation result at each actual stop.
 
 ## Compatibility
 
