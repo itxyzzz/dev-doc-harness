@@ -14,3 +14,7 @@ Status: Approved
 | `scenario:lifecycle.large-policy-isolation` | Lifecycle core and new large-only reference | Search rule owners and run validator | Detailed large layout and both existing large rule IDs have one new large-only owner; large callers preserve behavior. |
 | `scenario:compat.existing-flow-preservation` | Existing small/medium and large template/route assertions | Run full policy validator | Existing assertions continue to pass; lean coverage is additive and no flow registry refactor is required. |
 | `scenario:history.lean-small-preservation` | Final implementation diff | Run `git diff --check` and inspect `git diff --name-only` | No frozen historical work item, release note, or `CHANGELOG.md` history is rewritten; no whitespace errors exist. |
+
+## TASK-004 acceptance coverage
+
+`CHECK-004` records the full policy-validator and template-freshness output, whitespace check, and name-only historical-preservation review in the task execution report. The scenarios above are the durable evidence matrix for `VER-001` through `VER-005`.

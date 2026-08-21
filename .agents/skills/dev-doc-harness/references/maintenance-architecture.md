@@ -25,7 +25,7 @@ IDs so maintenance surfaces can cite ownership without copying policy prose.
 |---|---|---|---|
 | `module:architecture` | `references/maintenance-architecture.md` | Normative policy | Content-type taxonomy, module catalog, rule ID conventions, dependency direction, validation constraints, route budget, duplication budget, and lifecycle decomposition direction. |
 | `module:naming` | `references/naming-conventions.md` | Normative policy | Work ID fields, derived naming patterns, normalization, work-item paths, artifact filenames, commit-message grammar, collision handling, and redundancy deduplication. |
-| `module:lifecycle` | `references/artifact-contract.md` | Normative policy | Work item artifact layout, work sizing, lifecycle stage boundaries, combined or explicitly staged planning shape, large/phased anchors and planning orchestration, compatibility, immutable snapshots, documentation assessment, variance, and commit planning. |
+| `module:lifecycle` | `references/artifact-contract.md`; `references/large-phased-lifecycle.md` for large-only rules | Normative policy | Core work item layout, work sizing, lifecycle stage boundaries, lean/small and small/medium planning shape, compatibility, immutable snapshots, documentation assessment, variance, and commit planning; large/phased layout, anchors, and planning orchestration remain in the large-only owner. |
 | `module:implementation-changelog` | `references/implementation-changelog.md` | Normative policy | Implementation-stage fragment location, names, headings, commit synchronization, compact metadata schema, legacy fragment compatibility, root consolidation, and approved root cleanup. |
 | `module:freeze-gate` | `references/planning-freeze-gates.md` | Normative policy | Draft review, approval freeze, stop-before-implementation, continuity-selected post-freeze routing, multi-gate flow, and freeze-gate compatibility. |
 | `module:models` | `references/subagent-model-policy.md` | Normative policy | Task/session terminology, upcoming-stage orchestration, independent generation/tier/reasoning selection, orchestration mode, next-stage continuity, sub-agent strategy, context strategy, approved-strategy authorization, fresh confirmation, concurrency caps, review, runtime reporting, and final integration ownership. |
@@ -133,4 +133,4 @@ The implementation-changelog module is the approved lifecycle split for
 commit-time delivery records and root consolidation. It owns only implementation
 changelog behavior; work sizing, artifact layout, planning orchestration,
 immutability, documentation-assessment decisions, and variance remain lifecycle-owned.
-Large/phased planning orchestration remains `rule:lifecycle.large-phase-orchestration`.
+Lean/small and small/medium planning stay in the core lifecycle owner. Large/phased planning orchestration remains `rule:lifecycle.large-phase-orchestration` in `references/large-phased-lifecycle.md`.

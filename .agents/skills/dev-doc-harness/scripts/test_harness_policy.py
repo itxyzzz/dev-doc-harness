@@ -84,12 +84,14 @@ CHECK_IDS = [
     "execution.method-fallbacks",
     "clarity.planning-template-contract",
     "presentation.next-stage-summary",
+    "lean-small.contract",
 ]
 
 CANONICAL_REFERENCES = [
     ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
+    ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md",
     ".agents/skills/dev-doc-harness/references/implementation-changelog.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
@@ -102,6 +104,8 @@ CANONICAL_REFERENCES = [
 ]
 
 TEMPLATE_FILES = [
+    ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-spec.md",
+    ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-plan.md",
     ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
     ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
@@ -124,11 +128,28 @@ PLAN_TEMPLATE_FILES = [
 ]
 
 ASSEMBLY_MANIFEST_FILES = [
+    ".agents/skills/dev-doc-harness/assets/templates/assemblies/lean-small-work-item-spec.json",
+    ".agents/skills/dev-doc-harness/assets/templates/assemblies/lean-small-work-item-plan.json",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/small-medium-work-item-spec.json",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/small-medium-work-item-plan.json",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/large-phased-work-item-spec.json",
     ".agents/skills/dev-doc-harness/assets/templates/assemblies/large-phased-work-item-phase-plan.json",
 ]
+
+LEAN_TEMPLATE_FILES = [
+    ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-spec.md",
+    ".agents/skills/dev-doc-harness/assets/templates/lean-small-work-item-plan.md",
+]
+
+LEAN_ASSEMBLY_MANIFEST_FILES = [
+    ".agents/skills/dev-doc-harness/assets/templates/assemblies/lean-small-work-item-spec.json",
+    ".agents/skills/dev-doc-harness/assets/templates/assemblies/lean-small-work-item-plan.json",
+]
+
+ASSEMBLED_TEMPLATE_FILES = [*LEAN_TEMPLATE_FILES, *PRIMARY_TEMPLATE_FILES]
+MODULE_EXTENSION_REFERENCES = {
+    ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md",
+}
 
 CURRENT_SURFACE_FILES = [
     "AGENTS.md",
@@ -179,6 +200,7 @@ REQUIRED_FILES = [
     ".agents/skills/dev-doc-harness/references/maintenance-architecture.md",
     ".agents/skills/dev-doc-harness/references/naming-conventions.md",
     ".agents/skills/dev-doc-harness/references/artifact-contract.md",
+    ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md",
     ".agents/skills/dev-doc-harness/references/implementation-changelog.md",
     ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md",
     ".agents/skills/dev-doc-harness/references/subagent-model-policy.md",
@@ -398,8 +420,9 @@ def get_owner_graph() -> tuple[dict[str, dict[str, list[Owner]]], list[OwnerRow]
 
     for path in CANONICAL_REFERENCES:
         text = read_repo_text(path)
-        for match in re.finditer(r"(?:Module:|owns)\s+`(module:[a-z0-9][a-z0-9.-]*)`", text):
-            add_owner(owners, "module", match.group(1), path)
+        if path not in MODULE_EXTENSION_REFERENCES:
+            for match in re.finditer(r"(?:Module:|owns)\s+`(module:[a-z0-9][a-z0-9.-]*)`", text):
+                add_owner(owners, "module", match.group(1), path)
 
         for line in re.split(r"\r?\n", text):
             row_match = re.match(r"^\|\s*`(rule:[a-z0-9][a-z0-9.-]*)`\s*\|\s*(.+?)\s*\|", line)
@@ -415,6 +438,7 @@ def get_owner_graph() -> tuple[dict[str, dict[str, list[Owner]]], list[OwnerRow]
             add_owner(owners, "schema", match.group(1), path)
 
     scenario_metric_owner_files = [
+        "docs/work-items/2026-08-21_lean-small-flow/snapshots/test-cases.snapshot.md",
         "docs/work-items/2026-06-05-refactor-as-code/snapshots/architecture.snapshot.md",
         "docs/work-items/2026-06-05-refactor-as-code/snapshots/test-cases.snapshot.md",
         "docs/work-items/2026-06-07-followup-hardening/snapshots/architecture.snapshot.md",
@@ -500,12 +524,14 @@ def get_policy_references(path: str) -> list[str]:
 
 def assert_template_routes() -> None:
     operation_requirements = {
+        "lean-small": ["module:lifecycle", "module:naming", "module:quality", "module:freeze-gate"],
         "small-medium": ["module:lifecycle", "module:naming", "module:quality", "module:models"],
         "large-anchor": ["module:lifecycle", "module:naming", "module:quality", "module:models", "module:artifact-style"],
         "phase-plan": ["module:lifecycle", "module:naming", "module:quality", "module:models"],
         "amendment": ["module:lifecycle", "module:freeze-gate"],
     }
     operation_templates = {
+        "lean-small": LEAN_TEMPLATE_FILES,
         "small-medium": [
             ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
             ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
@@ -562,6 +588,7 @@ def assert_route_budgets() -> None:
     text = read_repo_text(".agents/skills/dev-doc-harness/SKILL.md")
     budgets = {
         "Classify work size": 1,
+        "Draft or review lean/small specs and plans": 4,
         "Draft or review small/medium specs and plans": 4,
         "Draft or review large anchor specs": 5,
         "Draft or review phase plans": 4,
@@ -711,10 +738,10 @@ def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
     block_name_pattern = re.compile(
-        r"^(?:spec|plan)\.\d{3}\.(?:common|small|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+        r"^(?:spec|plan)\.\d{3}\.(?:common|lean|small|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
     )
-    allowed_scopes = {"common", "small", "large", "phase"}
-    expected_outputs = set(PRIMARY_TEMPLATE_FILES)
+    allowed_scopes = {"common", "lean", "small", "large", "phase"}
+    expected_outputs = set(ASSEMBLED_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
 
     blocks_root = join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks")
@@ -796,7 +823,7 @@ def assert_template_assembly() -> None:
         add_failure(check_id, f"No assembly manifest declares output: {output}")
 
     unresolved_include_pattern = re.compile(r"(\{\{|\{%[^\n]*include|<!--\s*include|blocks/)", re.IGNORECASE)
-    for template in PRIMARY_TEMPLATE_FILES:
+    for template in ASSEMBLED_TEMPLATE_FILES:
         text = read_repo_text(template)
         if not text.startswith("<!-- Generated by assemble_templates.py"):
             add_failure(check_id, f"{template} must start with the generated-source note")
@@ -828,6 +855,110 @@ def assert_template_assembly() -> None:
             add_failure(check_id, detail)
     else:
         add_failure(check_id, f"Missing assembly script: {script_path}")
+
+
+def assert_lean_small_contract() -> None:
+    check_id = "lean-small.contract"
+    router = ".agents/skills/dev-doc-harness/SKILL.md"
+    lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
+    freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
+    large_lifecycle = ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md"
+
+    assert_route_requires(
+        "Draft or review lean/small specs and plans",
+        ["module:lifecycle", "module:naming", "module:quality", "module:freeze-gate"],
+        check_id,
+    )
+    route_line = next(
+        (line for line in re.split(r"\r?\n", read_repo_text(router)) if re.search(r"^\|\s*Draft or review lean/small specs and plans\s*\|", line)),
+        "",
+    )
+    for forbidden in ["module:models", "module:role-examples", "module:artifact-style", "module:implementation-changelog"]:
+        if not re.search(rf"explicitly exclude[^|]*{re.escape(forbidden)}", route_line):
+            add_failure(check_id, f"Lean router route must explicitly exclude {forbidden}")
+    if "architecture snapshots" not in route_line:
+        add_failure(check_id, "Lean router route must explicitly exclude architecture snapshots by default")
+
+    for path, schema in zip(LEAN_TEMPLATE_FILES, ["schema:spec.lean-small", "schema:plan.lean-small"]):
+        assert_text_contains(check_id, path, schema, "lean template schema")
+        for forbidden in ["module:models", "module:role-examples", "module:artifact-style", "module:implementation-changelog", "architecture.snapshot", "Model and sub-agent", "Implementation handoff"]:
+            assert_text_not_contains(check_id, path, forbidden, f"lean template exclusion {forbidden}")
+
+    lean_spec, lean_plan = LEAN_TEMPLATE_FILES
+    draft_status_pattern = r"- Status:" + r" Draft"
+    for pattern, label in [
+        (r"## Goal", "compact spec goal section"),
+        (r"## Scope", "compact spec scope section"),
+        (r"## Material context, decisions, and risks", "compact spec context section"),
+        (r"## Commitments and verification", "compact spec commitment section"),
+        (r"### `SPEC-001`", "lean SPEC anchor"),
+        (r"#### `VER-001`", "lean VER anchor"),
+        (r"Covers: `SPEC-001`", "lean VER-to-SPEC link"),
+        (r"## Documentation assessment", "lean documentation assessment"),
+        (r"## Planned commits", "lean planned commits section"),
+        (r"\| Planning approval \| `<planning-commit-subject>` \|", "lean planned approval subject"),
+        (r"\| Implementation \| `<implementation-commit-subject>` \|", "lean planned implementation subject"),
+        (r"## Planning shape and readiness", "lean spec readiness"),
+        (r"## Approval", "lean spec approval state"),
+        (draft_status_pattern, "lean spec draft approval status"),
+    ]:
+        assert_text_contains(check_id, lean_spec, pattern, label)
+
+    for pattern, label in [
+        (r"## Exact inputs", "compact plan inputs section"),
+        (r"## Change surfaces and approach", "compact plan approach section"),
+        (r"## Implementation tasks", "compact plan task section"),
+        (r"### `TASK-001`", "lean TASK anchor"),
+        (r"#### `CHECK-001`", "lean CHECK anchor"),
+        (r"Covers: `VER-001`", "lean CHECK-to-VER link"),
+        (r"## Validation and variance", "lean validation section"),
+        (r"## Plan readiness", "lean plan readiness"),
+        (r"## Approval", "lean plan approval state"),
+        (draft_status_pattern, "lean plan draft approval status"),
+    ]:
+        assert_text_contains(check_id, lean_plan, pattern, label)
+
+    for manifest in LEAN_ASSEMBLY_MANIFEST_FILES:
+        data = json.loads(read_repo_text(manifest))
+        blocks = data.get("blocks", [])
+        if not blocks or any(".lean." not in block for block in blocks):
+            add_failure(check_id, f"Lean manifest must use only dedicated lean blocks: {manifest}")
+
+    active_snapshot = "docs/work-items/2026-08-21_lean-small-flow/snapshots/test-cases.snapshot.md"
+    lean_scenarios = [
+        "scenario:planning.lean-small-auto",
+        "scenario:planning.lean-small-override",
+        "scenario:planning.lean-small-escalation",
+        "scenario:templates.lean-small-compact",
+        "scenario:templates.lean-small-exclusions",
+        "scenario:freeze.lean-small-equivalence",
+        "scenario:lifecycle.large-policy-isolation",
+        "scenario:compat.existing-flow-preservation",
+        "scenario:history.lean-small-preservation",
+    ]
+    for scenario_id in lean_scenarios:
+        assert_text_contains(check_id, active_snapshot, re.escape(scenario_id), f"active lean scenario {scenario_id}")
+
+    for pattern, label in [
+        (r"known local change surface", "automatic eligibility local surface"),
+        (r"low material risk", "automatic eligibility low risk"),
+        (r"safe one-session boundary", "automatic eligibility one-session boundary"),
+        (r"bounded scope", "automatic eligibility bounded scope"),
+    ]:
+        assert_text_contains(check_id, lifecycle, pattern, label)
+    assert_text_contains(check_id, lifecycle, r"operator may explicitly select lean/small", "lean operator override")
+    assert_text_contains(check_id, lifecycle, r"Before freeze.*escalation from lean/small", "lean pre-freeze escalation")
+    assert_text_contains(check_id, freeze, r"## Draft review checkpoint", "lean draft-review gate")
+    assert_text_contains(check_id, freeze, r"Ask the operator to approve the staged planning package", "lean explicit approval gate")
+    assert_text_contains(check_id, freeze, r"planned approval commit subject", "lean approval-commit gate")
+    assert_text_contains(check_id, lifecycle, r"## Immutable snapshots", "lean immutable-snapshot gate")
+    assert_text_contains(check_id, freeze, r"Stop before implementation", "lean pause-before-implementation gate")
+    assert_text_contains(check_id, freeze, r"combined lean/small", "lean freeze equivalence")
+    assert_text_contains(check_id, freeze, r"without adding model, continuity, or sub-agent notation", "lean freeze exclusion")
+    for rule_id in ["rule:lifecycle.large-anchor-spec", "rule:lifecycle.large-phase-orchestration"]:
+        assert_text_contains(check_id, large_lifecycle, re.escape(rule_id), f"relocated large owner {rule_id}")
+    assert_text_not_contains(check_id, lifecycle, r"^## Large or phased planning orchestration$", "relocated large orchestration heading")
+    assert_text_not_contains(check_id, lifecycle, r"^## Large or phased work item spec as handoff anchor$", "relocated large anchor heading")
 
 
 def run_git(args: list[str]) -> subprocess.CompletedProcess[str]:
@@ -2655,8 +2786,8 @@ def assert_combined_package_default() -> None:
     assert_text_contains(check_id, lifecycle, r"spec-only.*operator-(?:requested|approved)", "authorized staged exception")
     assert_text_contains(check_id, router, r"both.*<spec-filename>.*<plan-filename>.*same turn", "combined drafting instruction")
     assert_text_contains(check_id, router, r"both canonical files", "combined checklist")
-    assert_text_contains(check_id, freeze, r"complete.*combined small/medium", "draft package completeness")
-    assert_text_contains(check_id, freeze, r"complete.*combined small/medium", "approval package completeness")
+    assert_text_contains(check_id, freeze, r"complete.*combined (?:lean/small or )?small/medium", "draft package completeness")
+    assert_text_contains(check_id, freeze, r"complete.*combined (?:lean/small or )?small/medium", "approval package completeness")
     assert_text_contains(check_id, freeze, r"large/phased anchor", "large anchor retained")
     assert_text_contains(check_id, small_spec, r"Companion plan", "small spec companion plan")
     assert_text_contains(check_id, small_spec, r"operator-(?:requested|approved)", "small spec staged authorization")
@@ -2749,7 +2880,7 @@ def assert_planning_template_clarity() -> None:
     assert_text_contains(check_id, phase_plan, r"Phase completion report", "phase completion report")
     assert_text_not_contains(check_id, phase_plan, r"Post-phase transition", "retired phase post-transition handoff")
 
-    for path in [lifecycle, ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", phase_plan]:
+    for path in [".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md", ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", phase_plan]:
         assert_text_contains(check_id, path, r"rolling", "rolling phase loop")
         assert_text_contains(check_id, path, r"stable[\s\S]*independent", "explicit batch-planning exception")
 
@@ -2760,7 +2891,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_contains(check_id, path, r"operator.*(?:approve|authorization)|(?:approve|authorization).*operator", "delegation approval route")
 
     router_text = read_repo_text(router)
-    for route in ["Draft or review large anchor specs", "Draft or review phase plans", "Freeze planning packages"]:
+    for route in ["Draft or review large anchor specs", "Draft or review phase plans"]:
         row_match = re.search(rf"(?m)^\| {re.escape(route)} \|(?P<row>.+)$", router_text)
         if row_match is None:
             add_failure(check_id, f"missing router row for {route}")
@@ -3183,6 +3314,7 @@ def run_checks() -> None:
     write_check_result("graph.template-routes")
 
     assert_route_contains("Classify work size", ["module:lifecycle", "rule:lifecycle.work-sizing"])
+    assert_route_requires("Draft or review lean/small specs and plans", ["module:lifecycle", "module:naming", "module:quality", "module:freeze-gate"], "router.required-routes")
     assert_route_requires("Draft or review small/medium specs and plans", ["module:lifecycle", "module:naming", "module:quality", "module:models"], "router.required-routes")
     assert_route_requires("Draft or review large anchor specs", ["module:lifecycle", "module:naming", "module:quality", "module:models", "module:artifact-style"], "router.required-routes")
     assert_route_requires("Draft or review phase plans", ["module:naming", "module:quality", "module:lifecycle", "module:models"], "router.required-routes")
@@ -3258,6 +3390,9 @@ def run_checks() -> None:
     assert_template_assembly()
     write_check_result("templates.assembly")
 
+    assert_lean_small_contract()
+    write_check_result("lean-small.contract")
+
     placeholder_targets = [
         "AGENTS.md",
         "README.md",
@@ -3326,11 +3461,11 @@ def run_checks() -> None:
         [
             {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "Draft or review large anchor specs", "label": "large route"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", "pattern": "schema:spec.large-phased", "label": "large spec schema"},
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "rule:lifecycle.large-phase-orchestration", "label": "large phase orchestration rule owner"},
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "Large or phased planning orchestration", "label": "large phase orchestration heading"},
+            {"path": ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md", "pattern": "rule:lifecycle.large-phase-orchestration", "label": "large phase orchestration rule owner"},
+            {"path": ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md", "pattern": "Large or phased planning orchestration", "label": "large phase orchestration heading"},
             {"path": ".agents/skills/dev-doc-harness/SKILL.md", "pattern": "rule:lifecycle.large-phase-orchestration", "label": "large route orchestration rule"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", "pattern": "rule:lifecycle.large-phase-orchestration", "label": "large spec orchestration rule"},
-            {"path": ".agents/skills/dev-doc-harness/references/artifact-contract.md", "pattern": "anchor-spec-only", "label": "anchor spec only package"},
+            {"path": ".agents/skills/dev-doc-harness/references/large-phased-lifecycle.md", "pattern": "anchor-spec-only", "label": "anchor spec only package"},
             {"path": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md", "pattern": "combined planning", "label": "combined planning exception"},
             {"path": ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md", "pattern": "Approval freeze checkpoint", "label": "freeze owner"},
         ],

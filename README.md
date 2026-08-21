@@ -56,7 +56,7 @@ flowchart TD
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package determines the next stage. Small/medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically.
+The frozen package determines the next stage. Lean/small work is an additive combined package for bounded, low-risk local work; the operator may explicitly select it, but it must escalate to small/medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty appears. Small/medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically. The established small/medium and large/phased names remain pending a separate terminology work item.
 
 ## Using the documentation harness
 

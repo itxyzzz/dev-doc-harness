@@ -31,13 +31,17 @@ If instructions conflict, preserve higher-priority system and user constraints, 
 
 Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution session or when an approved same-session model switch or recorded continuity risk requires rehydration:
 
+For a frozen lean/small package, the same operator may continue in the current session or provide explicit runtime instructions for method, orchestration, model, and review. Do not load or consume `rule:models.selection-dimensions`, `rule:models.next-stage-continuity`, or `module:implementation-changelog` for ordinary lean/small startup. Load the frozen package, applicable instructions, amendments or variance records, approval state, and expected validation baseline; then begin `Stage: plan execution`. Before an implementation commit, load `module:implementation-changelog`. Route material changes through `rule:lifecycle.variance-policy`.
+
+For small/medium and large/phased packages:
+
 1. Consume the approved runtime selection from `rule:models.selection-dimensions` and the same-session or new-session choice from `rule:models.next-stage-continuity`; do not reconstruct either decision here.
 2. Load system and runtime constraints, applicable instructions, and all frozen artifacts and execution inputs named by the approved handoff.
 3. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
 4. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
 5. Begin the documented next lifecycle stage. Route conflicts through `rule:lifecycle.variance-policy`, and stop when the variance class requires operator approval.
 
-If runtime or environment limitations affect this startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions; `module:freeze-gate` owns planning-transition and authorization behavior.
+If runtime or environment limitations affect a small/medium or large/phased startup, use the approved fallback defined by the transition owners and the environment compensation below. `module:models` owns model, continuity, sub-agent, and reviewer decisions for those routes; `module:freeze-gate` owns planning-transition and authorization behavior.
 
 ## Task preflight
 

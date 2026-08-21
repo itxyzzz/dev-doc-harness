@@ -13,8 +13,6 @@ Owned rule IDs:
 | `rule:lifecycle.short-artifact-id` | `## Short artifact ID` |
 | `rule:lifecycle.work-sizing` | `## Work sizes` |
 | `rule:lifecycle.planning-shape` | `## Small/medium planning shape` |
-| `rule:lifecycle.large-anchor-spec` | `## Large or phased work item spec as handoff anchor` |
-| `rule:lifecycle.large-phase-orchestration` | `## Large or phased planning orchestration` |
 | `rule:lifecycle.superpowers-compatibility` | `## Superpowers compatibility` |
 | `rule:lifecycle.work-item-architecture-decisions` | `## Work-item architecture decisions` |
 | `rule:lifecycle.immutable-snapshots` | `## Immutable snapshots` |
@@ -41,8 +39,9 @@ docs/work-items/2026-05-25_PROJ-123_user-profile-import/
 
 An explicit operator approval and its planning approval commit freeze a planning package and separate the harness's major lifecycle stages. The frozen package and planning shape determine the recorded next lifecycle stage; a Plan Task or an instruction is never a lifecycle-stage value.
 
-The two established lifecycle shapes use these transitions:
+The established lifecycle shapes use these transitions:
 
+- A combined lean/small spec-and-plan package freezes for `plan execution`.
 - An explicitly staged small/medium spec freezes for `plan drafting`; a combined small/medium spec-and-plan package freezes for `plan execution`.
 - A large/phased anchor spec freezes for `phase-plan drafting`; a phase plan freezes for `phase execution`. An approved amendment records the documented resumed stage from the package it changes.
 
@@ -63,6 +62,10 @@ Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id
 
 Small mechanical work may skip the harness unless the operator requests durable artifacts.
 
+Lean/small work is a conservative route for a known local change surface with low material risk and a safe one-session boundary. It must have bounded scope, clear validation, and no material architecture, interface, migration, security, or uncertainty concern. The operator may explicitly select lean/small when those conditions are met.
+
+Before freeze, material uncertainty or boundary expansion requires escalation from lean/small to small/medium or large/phased, as appropriate. Lean/small is not a shortcut around review, approval, immutability, variance, or fresh implementation authorization.
+
 Small/medium work is substantial work that one orchestration session can safely coordinate with bounded delegation and a manageable context window. The orchestration session owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
 
 Small/medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
@@ -77,9 +80,11 @@ Keep uncertain work small/medium until the one-session boundary demonstrably fai
 
 `rule:lifecycle.planning-shape` makes combined planning the small/medium default. A small/medium work item normally drafts its spec and plan together as one planning package, reviews and freezes that package together, and uses the approved plan as the transition owner for the documented implementation activity.
 
+Lean/small work uses a combined lean spec-and-plan package. The plan owns the `plan execution` transition after freeze. Its compact layout contains only the lean spec, lean plan, and any supporting material required by the approved work; it does not imply the small/medium changelog, snapshot, delta, or implementation-note directories during planning.
+
 A spec-only freeze is an explicit staged-planning exception, not an implied intermediate gate. It is valid only when the operator requested or approved the staging. Before review and freeze, the spec must record that operator-requested or operator-approved staging, the reason for staging, identify the spec as the frozen package, and name `plan drafting` as its next lifecycle stage. A generic template heading or continuity preference cannot create this exception.
 
-Large/phased work keeps its existing anchor sequence: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For a combined small/medium package, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
+Large/phased work keeps its existing anchor sequence defined by `references/large-phased-lifecycle.md`: the anchor spec freezes before later phase-plan drafting unless combined planning was explicitly requested. For combined lean/small and small/medium packages, the plan owns the `plan execution` transition. Plan, phase-plan, and amendment freezes use only the documented next lifecycle stage determined by their approved package.
 
 At every freeze boundary, record the planning shape, exact frozen package, and documented next lifecycle stage before applying next-stage-continuity routing. `module:freeze-gate` owns the operator-facing transition after those lifecycle facts are established.
 
@@ -110,69 +115,9 @@ At every freeze boundary, record the planning shape, exact frozen package, and d
 
 Create only the supplemental snapshot and delta files that are required for the work. The specification's documentation assessment records the applicable documentation outputs; Architecture Decisions owns the architecture-snapshot decision.
 
-## Large or phased work item layout
+## Large/phased lifecycle dispatch
 
-The full lifecycle package for large or phased work may eventually contain these files:
-
-```text
-<work-item-path>
-  <spec-filename>
-  <phase-plan-filename>      # one per concrete phase
-  <amendment-filename>
-
-  changelog/
-    <phase implementation source; see module:implementation-changelog>
-
-  snapshots/
-    test-cases.snapshot.md
-    architecture.snapshot.md
-    api-contract.snapshot.md
-
-  deltas/
-    testing-guide.delta.md
-    operator-manual.delta.md
-    api-reference.delta.md
-    architecture-summary.delta.md
-
-  handoff/
-    implementation-handoff.md
-    review-handoff.md
-
-  implementation-notes/
-    variance-log.md
-```
-
-The normal initial planning package is anchor-spec-only: create `<spec-filename>` plus only the required supporting snapshots, deltas, or handoff files. Do not create concrete `<phase-plan-filename>` files during the anchor-spec planning package unless the operator explicitly requests combined planning.
-
-Phase plan names are planned future outputs until phase-plan drafting begins. When created later, phase plans should be numbered in execution order and each phase must be safely executable by one orchestration session with bounded delegation. Create handoff files when they are useful for continuity.
-
-## Large or phased planning orchestration
-
-`rule:lifecycle.large-phase-orchestration` owns the large/phased planning state sequence. Other modules own their local mechanics: artifact layout stays in this lifecycle reference, approval checkpoint mechanics stay in `planning-freeze-gates.md`, model and sub-agent choices stay in `subagent-model-policy.md`, and durable quality stays in `durable-planning-quality.md`.
-
-The normal large/phased planning sequence is a rolling loop:
-
-1. Draft the anchor `<spec-filename>`.
-2. Stage the anchor-spec planning package for draft review.
-3. Freeze the anchor spec after explicit approval and its planning approval commit.
-4. Stop before implementation and before phase-plan drafting.
-5. Resume phase-plan drafting only after fresh operator instruction, draft and freeze one phase plan, then begin that phase implementation after fresh post-freeze authorization.
-6. Record the actual phase outputs, validation, variance, and commit state as inputs to the next phase plan.
-7. Draft and freeze the next phase plan from the anchor, amendments, and actual prior-phase outputs; repeat until completion.
-8. Batch planning or freezing multiple phases before implementation is an explicit exception only for stable, independently plannable phases.
-9. Use an amendment gate for high-impact post-freeze changes.
-
-Combined anchor-spec and phase-plan drafting is allowed only when the operator explicitly requests combined planning and the artifact records that exception.
-
-## Large or phased work item spec as handoff anchor
-
-For large or phased work items, `<spec-filename>` is the central anchor between planning sessions. The initial planning session must preserve all important decisions and context in `<spec-filename>` before later sessions produce phase plans. Follow `rule:lifecycle.large-phase-orchestration` for the sequencing of anchor-spec review, freeze, later phase-plan drafting, phase-plan freeze, and implementation authorization.
-
-`<spec-filename>` must be detailed enough that a fresh planning thread can write `<phase-plan-filename>` without losing Specification Commitments or Architecture Decisions. Include goals, scope, non-scope, assumptions, constraints, risks, Verification Criteria, data and interface decisions, phase decomposition, documentation expectations, known unknowns, and important rejected alternatives.
-
-Phase plans must derive from `<spec-filename>`. If a phase planner discovers missing or ambiguous context, it must update the draft spec before approval and freeze, or create a plan amendment after freeze. Do not let phase plans silently narrow, drop, or reinterpret decisions from the large/phased work item spec.
-
-Follow `durable-planning-quality.md` for the full spec and phase-plan quality bar.
+Detailed large/phased layout and the canonical owners for `rule:lifecycle.large-anchor-spec` and `rule:lifecycle.large-phase-orchestration` are in `references/large-phased-lifecycle.md`. Load that large-only reference when a large/phased route is selected; lean/small and small/medium routes do not need it.
 
 ## Superpowers compatibility
 
