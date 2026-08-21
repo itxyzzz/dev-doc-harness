@@ -60,17 +60,25 @@ Use `rule:naming.fields` and `rule:naming.derived-patterns` to derive `<short-id
 
 ## Work sizes
 
-Small mechanical work may skip the harness unless the operator requests durable artifacts.
+### Very small mechanical work
+
+Very small mechanical work may skip the harness unless the operator requests durable artifacts. It is distinct from lean/small work, which remains a substantial work item with a combined planning package.
+
+### Lean/small work
 
 Lean/small work is a conservative route for a known local change surface with low material risk and a safe one-session boundary. It must have bounded scope, clear validation, and no material architecture, interface, migration, security, or uncertainty concern. The operator may explicitly select lean/small when those conditions are met.
 
 Before freeze, material uncertainty or boundary expansion requires escalation from lean/small to small/medium or large/phased, as appropriate. Lean/small is not a shortcut around review, approval, immutability, variance, or fresh implementation authorization.
 
+### Small/medium work
+
 Small/medium work is substantial work that one orchestration session can safely coordinate with bounded delegation and a manageable context window. The orchestration session owns scope, decisions, validation, variance, final integration, and the user-facing summary, while any delegated sub-agent work stays limited enough to integrate without another planning hierarchy.
 
 Small/medium examples include one bounded feature, bug fix with nontrivial investigation, prior issue investigation that changes repository state, clear API addition, limited refactor, local persistence change, or documentation/process change with meaningful review or handoff needs.
 
-Large or phased work needs an anchor spec and later phase plans when one orchestration session cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
+### Large/phased work
+
+Large/phased work needs an anchor spec and later phase plans when one orchestration session cannot safely coordinate the whole effort with bounded delegation, when a flat plan would saturate context or reviewability, or when staged review materially reduces risk. Escalation signals include broad multi-step features, complex bug fixes, prior issue investigations with follow-up implementation, cross-service changes, multi-module refactors, migrations, security-sensitive work, sub-agent-heavy work, or work with phase boundaries that need separate approval and execution checkpoints.
 
 Keep uncertain work small/medium until the one-session boundary demonstrably fails. Complexity alone does not make work large/phased when one orchestration session can still retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation.
 

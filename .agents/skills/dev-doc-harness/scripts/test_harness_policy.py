@@ -895,10 +895,8 @@ def assert_lean_small_contract() -> None:
         (r"#### `VER-001`", "lean VER anchor"),
         (r"Covers: `SPEC-001`", "lean VER-to-SPEC link"),
         (r"## Documentation assessment", "lean documentation assessment"),
-        (r"## Planned commits", "lean planned commits section"),
-        (r"\| Planning approval \| `<planning-commit-subject>` \|", "lean planned approval subject"),
-        (r"\| Implementation \| `<implementation-commit-subject>` \|", "lean planned implementation subject"),
         (r"## Planning shape and readiness", "lean spec readiness"),
+        (r"All relevant input is preserved in this specification file and it is self-contained so a fresh session can draft the actionable plan without reconstructing original session context", "lean spec fresh-session readiness"),
         (r"## Approval", "lean spec approval state"),
         (draft_status_pattern, "lean spec draft approval status"),
     ]:
@@ -906,11 +904,15 @@ def assert_lean_small_contract() -> None:
 
     for pattern, label in [
         (r"## Exact inputs", "compact plan inputs section"),
-        (r"## Change surfaces and approach", "compact plan approach section"),
+        (r"## Change surfaces", "compact plan surfaces section"),
+        (r"## Approach", "compact plan approach section"),
         (r"## Implementation tasks", "compact plan task section"),
         (r"### `TASK-001`", "lean TASK anchor"),
         (r"#### `CHECK-001`", "lean CHECK anchor"),
         (r"Covers: `VER-001`", "lean CHECK-to-VER link"),
+        (r"## Planned commits", "lean planned commits section"),
+        (r"\| Planning approval \| `<planning-commit-subject>` \|", "lean planned approval subject"),
+        (r"\| Implementation \| `<implementation-commit-subject>` \|", "lean planned implementation subject"),
         (r"## Validation and variance", "lean validation section"),
         (r"## Plan readiness", "lean plan readiness"),
         (r"## Approval", "lean plan approval state"),
@@ -918,11 +920,27 @@ def assert_lean_small_contract() -> None:
     ]:
         assert_text_contains(check_id, lean_plan, pattern, label)
 
-    for manifest in LEAN_ASSEMBLY_MANIFEST_FILES:
+    expected_lean_blocks = {
+        LEAN_ASSEMBLY_MANIFEST_FILES[0]: [
+            "blocks/spec.010.lean.metadata-goal.md",
+            "blocks/spec.020.lean.scope-context-decisions-risks.md",
+            "blocks/spec.030.lean.commitments-verification.md",
+            "blocks/spec.080.lean.documentation-readiness-approval.md",
+        ],
+        LEAN_ASSEMBLY_MANIFEST_FILES[1]: [
+            "blocks/plan.010.lean.metadata-inputs.md",
+            "blocks/plan.020.lean.surfaces-approach.md",
+            "blocks/plan.030.lean.tasks-checks.md",
+            "blocks/plan.040.lean.validation-variance-approval.md",
+        ],
+    }
+    for manifest, expected_blocks in expected_lean_blocks.items():
         data = json.loads(read_repo_text(manifest))
         blocks = data.get("blocks", [])
         if not blocks or any(".lean." not in block for block in blocks):
             add_failure(check_id, f"Lean manifest must use only dedicated lean blocks: {manifest}")
+        if blocks != expected_blocks:
+            add_failure(check_id, f"Lean manifest must preserve the compact dedicated block order: {manifest}")
 
     active_snapshot = "docs/work-items/2026-08-21_lean-small-flow/snapshots/test-cases.snapshot.md"
     lean_scenarios = [

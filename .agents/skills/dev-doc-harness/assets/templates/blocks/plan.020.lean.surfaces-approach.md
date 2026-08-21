@@ -1,4 +1,7 @@
-## Change surfaces and approach
+## Change surfaces
 
 1. `<path or surface>`: `<bounded change and intended result>`.
-2. State the implementation order, compatibility constraint, and any local sequencing dependency.
+
+## Approach
+
+State the implementation order, compatibility constraint, and any local sequencing dependency.

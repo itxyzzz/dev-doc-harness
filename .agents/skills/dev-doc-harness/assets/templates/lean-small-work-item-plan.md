@@ -15,10 +15,13 @@ Policy references: `module:lifecycle`, `module:naming`, `module:quality`, `modul
 2. Relevant repository files, tests, documentation, logs, or review evidence: `<paths or notes>`.
 3. Required documentation outputs from the specification: `<paths or None>`.
 
-## Change surfaces and approach
+## Change surfaces
 
 1. `<path or surface>`: `<bounded change and intended result>`.
-2. State the implementation order, compatibility constraint, and any local sequencing dependency.
+
+## Approach
+
+State the implementation order, compatibility constraint, and any local sequencing dependency.
 
 ## Implementation tasks
 
@@ -41,6 +44,13 @@ Method: `<command, inspection, or review>`.
 Expected result: `<observable success signal>`.
 
 Evidence record: `<path, command output, or review note>`.
+
+## Planned commits
+
+| Stage | Planned subject |
+|---|---|
+| Planning approval | `<planning-commit-subject>` |
+| Implementation | `<implementation-commit-subject>` |
 
 ## Validation and variance
 

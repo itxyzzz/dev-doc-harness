@@ -8,13 +8,6 @@ Record every prompt as `Not required`, `Required — <output path>; Plan Task: T
 - `DOC-API-GUIDE`: `<status>`.
 - `DOC-ARCH-SUMMARY`: `<status>`.
 
-## Planned commits
-
-| Stage | Planned subject |
-|---|---|
-| Planning approval | `<planning-commit-subject>` |
-| Implementation | `<implementation-commit-subject>` |
-
 ## Planning shape and readiness
 
 1. Planning shape: `combined lean/small`.
@@ -22,6 +15,7 @@ Record every prompt as `Not required`, `Required — <output path>; Plan Task: T
 3. Transition owner: `<plan-filename>` owns `Stage: plan execution` after freeze.
 4. The scope remains eligible for lean/small; otherwise escalate before freeze.
 
+- [ ] All relevant input is preserved in this specification file and it is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
 - [ ] Goal, scope, material context, decisions, commitments, and verification are mutually consistent.
 - [ ] Every `SPEC-*` has applicable `VER-*` evidence.
 - [ ] Documentation assessment assigns every required or deferred output.

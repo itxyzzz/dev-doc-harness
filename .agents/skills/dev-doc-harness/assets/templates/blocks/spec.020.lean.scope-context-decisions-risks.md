@@ -1,3 +1,13 @@
+## Scope
+
+### In scope
+
+1. List the known local change surfaces and the intended result.
+
+### Non-scope
+
+1. List adjacent work that remains unchanged or is explicitly deferred.
+
 ## Material context, decisions, and risks
 
 ### Context and constraints

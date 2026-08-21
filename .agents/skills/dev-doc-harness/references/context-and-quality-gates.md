@@ -31,7 +31,12 @@ If instructions conflict, preserve higher-priority system and user constraints, 
 
 Use this protocol after the transition and fresh authorization governed by `rule:freeze.stop-before-implementation`. It applies when a frozen planning package hands work to a fresh execution session or when an approved same-session model switch or recorded continuity risk requires rehydration:
 
-For a frozen lean/small package, the same operator may continue in the current session or provide explicit runtime instructions for method, orchestration, model, and review. Do not load or consume `rule:models.selection-dimensions`, `rule:models.next-stage-continuity`, or `module:implementation-changelog` for ordinary lean/small startup. Load the frozen package, applicable instructions, amendments or variance records, approval state, and expected validation baseline; then begin `Stage: plan execution`. Before an implementation commit, load `module:implementation-changelog`. Route material changes through `rule:lifecycle.variance-policy`.
+For a frozen lean/small package:
+
+1. Load system and runtime constraints, applicable instructions, the frozen lean package, amendments or variance records, approval state, and the expected validation baseline. Do not load or consume `rule:models.selection-dimensions`, `rule:models.next-stage-continuity`, or `module:implementation-changelog` for ordinary lean/small startup.
+2. Verify branch, worktree, approval state, amendments, variance records, and the expected validation baseline before editing.
+3. Treat the frozen package as authoritative, avoid broad repository rediscovery, and do not reopen settled decisions without conflicting evidence.
+4. Begin `Stage: plan execution`. The operator may continue in the current session or provide explicit runtime instructions for method, orchestration, model, and review; no new operator or session is implied. Before an implementation commit, load `module:implementation-changelog`. Route material changes through `rule:lifecycle.variance-policy`.
 
 For small/medium and large/phased packages:
 
