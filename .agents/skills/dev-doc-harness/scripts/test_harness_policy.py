@@ -715,7 +715,7 @@ def assert_duplicate_blocks() -> None:
 
     shared_assembly_blocks = {
         paragraph
-        for block_path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("plan.*.common.*.md")
+        for block_path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("plan.*.middle-and-large.*.md")
         for _, paragraph in get_normalized_paragraphs(to_repo_relative_path(block_path))
     }
     shared_generated_targets = set(PRIMARY_TEMPLATE_FILES)
@@ -738,9 +738,9 @@ def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
     block_name_pattern = re.compile(
-        r"^(?:spec|plan)\.\d{3}\.(?:common|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+        r"^(?:spec|plan)\.\d{3}\.(?:middle-and-large|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
     )
-    allowed_scopes = {"common", "small", "medium", "large", "phase"}
+    allowed_scopes = {"middle-and-large", "small", "medium", "large", "phase"}
     expected_outputs = set(ASSEMBLED_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
 
@@ -1486,7 +1486,7 @@ def assert_changelog_fragment_contract() -> None:
 def assert_documentation_assessment_contract() -> None:
     check_id = "documentation.assessment"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
-    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.common.documentation-assessment.md"
+    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.middle-and-large.documentation-assessment.md"
     medium_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.medium.header.md"
     large_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.large.header.md"
     medium_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.medium.readiness-approval.md"
@@ -1673,7 +1673,7 @@ def assert_plain_language_policy() -> None:
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
     prompt_paths = [
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
@@ -1859,7 +1859,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
-    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
+    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
     assert_text_contains(check_id, plan_strategy_source, r"upcoming-stage sub-agent assessment", "plan sub-agent assessment prompt")
     for path in [plan_strategy_source, large_strategy_source]:
         assert_text_contains(check_id, path, r"Write authority", "sub-agent write-authority prompt")
@@ -2050,7 +2050,7 @@ def assert_lifecycle_transition_targets() -> None:
 
 
 CURRENT_SPEC_SCHEMA_PATHS = [
-    ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+    ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
     ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
 ]
@@ -2397,8 +2397,8 @@ def assert_harness_simplification_scenarios() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
-    verification_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md"
-    plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
+    verification_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md"
+    plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.middle-and-large.task-plan.md"
 
     assert_text_contains(check_id, quality, r"Mappings are optional", "optional mapping guidance")
     assert_text_contains(check_id, freeze, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
@@ -2509,10 +2509,10 @@ def assert_superpowers_adapter_contract() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.medium.header-inputs.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
     ]
-    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.common.traceability-approach-surfaces.md"
-    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
+    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.middle-and-large.traceability-approach-surfaces.md"
+    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
     handoff_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md"
-    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.common.task-plan.md"
+    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.middle-and-large.task-plan.md"
 
     assert_text_contains(
         check_id,
@@ -2856,7 +2856,7 @@ def assert_planning_template_clarity() -> None:
 
     commitment_paths = [
         quality,
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
@@ -2864,7 +2864,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_not_contains(check_id, path, r"Classification is optional|Constraint · Preserve", "undefined commitment classification")
     assert_text_contains(
         check_id,
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.common.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
         r"additional[\s\S]*SPEC[\s\S]*uses[\s\S]*Statement[\s\S]*local[\s\S]*Verification Criterion",
         "complete repeated commitment structure",
     )
@@ -2888,7 +2888,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_contains(check_id, path, r"Execution method", "execution method metadata")
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete Superpowers meta-header section")
 
-    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
+    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
     large_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     model_sources = [plan_model_source, large_model_source]
     model_consumers = [
@@ -3140,7 +3140,7 @@ def assert_next_stage_summary() -> None:
         assert_text_contains(check_id, path, r"omit unless exposed and material", "current-session omission rule")
         assert_text_not_contains(check_id, path, r"Generation, capability tier, reasoning", "duplicated current-session model facets")
 
-    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.common.model-strategy.md"
+    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
     assert_text_contains(check_id, strategy_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
     assert_text_not_contains(check_id, strategy_source, r"Current planning Codex task", "duplicated plan current-task section")
     assert_text_not_contains(check_id, strategy_source, r"Next-stage recommendation", "duplicated plan next-stage summary")
