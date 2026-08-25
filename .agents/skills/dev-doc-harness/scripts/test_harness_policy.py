@@ -738,9 +738,9 @@ def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
     block_name_pattern = re.compile(
-        r"^(?:spec|plan)\.\d{3}\.(?:middle-and-large|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+        r"^(?:spec|plan)\.\d{3}\.(?:common|middle-and-large|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
     )
-    allowed_scopes = {"middle-and-large", "small", "medium", "large", "phase"}
+    allowed_scopes = {"common", "middle-and-large", "small", "medium", "large", "phase"}
     expected_outputs = set(ASSEMBLED_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
 
@@ -925,7 +925,8 @@ def assert_small_contract() -> None:
             "blocks/spec.010.small.metadata-goal.md",
             "blocks/spec.020.small.scope-context-decisions-risks.md",
             "blocks/spec.030.small.commitments-verification.md",
-            "blocks/spec.080.small.documentation-readiness-approval.md",
+            "blocks/spec.080.common.documentation-assessment.md",
+            "blocks/spec.085.small.handoff-readiness-approval.md",
         ],
         SMALL_ASSEMBLY_MANIFEST_FILES[1]: [
             "blocks/plan.010.small.metadata-inputs.md",
@@ -937,8 +938,9 @@ def assert_small_contract() -> None:
     for manifest, expected_blocks in expected_small_blocks.items():
         data = json.loads(read_repo_text(manifest))
         blocks = data.get("blocks", [])
-        if not blocks or any(".small." not in block for block in blocks):
-            add_failure(check_id, f"small manifest must use only dedicated small blocks: {manifest}")
+        shared_blocks = {"blocks/spec.080.common.documentation-assessment.md"}
+        if not blocks or any(".small." not in block and block not in shared_blocks for block in blocks):
+            add_failure(check_id, f"small manifest must use only dedicated small blocks plus the shared documentation assessment: {manifest}")
         if blocks != expected_blocks:
             add_failure(check_id, f"small manifest must preserve the compact dedicated block order: {manifest}")
 
@@ -1486,7 +1488,7 @@ def assert_changelog_fragment_contract() -> None:
 def assert_documentation_assessment_contract() -> None:
     check_id = "documentation.assessment"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
-    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.middle-and-large.documentation-assessment.md"
+    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.common.documentation-assessment.md"
     medium_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.medium.header.md"
     large_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.large.header.md"
     medium_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.medium.readiness-approval.md"

@@ -59,7 +59,7 @@ Expected evidence: `<test, inspection, or review>`.
 
 ## Documentation assessment
 
-Record every prompt as `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`.
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
 
 - `DOC-TEST-CASE`: `<status>`.
 - `DOC-TEST-GUIDE`: `<status>`.

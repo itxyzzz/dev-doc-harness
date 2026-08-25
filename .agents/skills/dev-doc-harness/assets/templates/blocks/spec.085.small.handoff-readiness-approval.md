@@ -1,13 +1,3 @@
-## Documentation assessment
-
-Record every prompt as `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`.
-
-- `DOC-TEST-CASE`: `<status>`.
-- `DOC-TEST-GUIDE`: `<status>`.
-- `DOC-OPS-GUIDE`: `<status>`.
-- `DOC-API-GUIDE`: `<status>`.
-- `DOC-ARCH-SUMMARY`: `<status>`.
-
 ## Planning shape and readiness
 
 1. Planning shape: `combined small`.

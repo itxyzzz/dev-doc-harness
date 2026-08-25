@@ -4,6 +4,7 @@
     "blocks/spec.010.small.metadata-goal.md",
     "blocks/spec.020.small.scope-context-decisions-risks.md",
     "blocks/spec.030.small.commitments-verification.md",
-    "blocks/spec.080.small.documentation-readiness-approval.md"
+    "blocks/spec.080.common.documentation-assessment.md",
+    "blocks/spec.085.small.handoff-readiness-approval.md"
   ]
 }
