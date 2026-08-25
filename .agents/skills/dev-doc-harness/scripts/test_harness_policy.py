@@ -971,7 +971,7 @@ def assert_small_contract() -> None:
     assert_text_contains(check_id, freeze, r"planned approval commit subject", "small approval-commit gate")
     assert_text_contains(check_id, lifecycle, r"## Immutable snapshots", "small immutable-snapshot gate")
     assert_text_contains(check_id, freeze, r"Stop before implementation", "small pause-before-implementation gate")
-    assert_text_contains(check_id, freeze, r"combined small", "small freeze equivalence")
+    assert_text_contains(check_id, freeze, r"small or medium package contains both", "small freeze equivalence")
     assert_text_contains(check_id, freeze, r"without adding model, continuity, or sub-agent notation", "small freeze exclusion")
     for rule_id in ["rule:lifecycle.large-anchor-spec", "rule:lifecycle.large-phase-orchestration"]:
         assert_text_contains(check_id, large_lifecycle, re.escape(rule_id), f"relocated large owner {rule_id}")
@@ -1964,9 +1964,7 @@ def assert_lifecycle_transition_targets() -> None:
     assert_text_contains(check_id, lifecycle, r"## Lifecycle stage boundaries", "lifecycle-stage owner heading")
     assert_text_contains(check_id, lifecycle, r"Work item folders[\s\S]+Lifecycle stage boundaries", "lifecycle stage boundaries follow work-item folders")
     assert_text_contains(check_id, lifecycle, r"medium.+spec and plan.+(?:together|combined)", "combined medium default")
-    assert_text_contains(check_id, lifecycle, r"spec-only freeze.+explicit.+(?:reason|exception)", "staged medium exception")
     for stage, label in [
-        ("plan drafting", "staged medium route"),
         ("plan execution", "combined medium route"),
         ("phase-plan drafting", "large-anchor route"),
         ("phase execution", "phase-plan route"),
@@ -2009,8 +2007,8 @@ def assert_lifecycle_transition_targets() -> None:
             add_failure(check_id, f"retired-route fixture was not rejected: {legacy_route_fixture}")
 
     approval_freeze = read_markdown_h2_section(freeze, "Approval freeze checkpoint")
-    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
-    if not re.search(r"package[^\n]+frozen[\s\S]+same agent turn[\s\S]+Post-freeze transition routing", approval_freeze, flags=re.IGNORECASE):
+    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing: medium and large/phased routes")
+    if not re.search(r"package[^\n]+frozen[\s\S]+same agent turn", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval-freeze checklist does not contain freeze, stop, and routing mechanics")
     post_freeze_only = (
         r"fresh (?:explicit )?operator|operator response|authoriz(?:e|es|ed|ation) (?:implementation|execution|the action)|"
@@ -2789,19 +2787,11 @@ def combined_package_fixture_route(text: str) -> str:
     """Classify the planning package shape at the freeze boundary."""
     if "Work size: large/phased" in text and "Frozen package: spec only" in text:
         return "large-anchor-valid"
-    if "Work size: medium" not in text:
+    if "Work size: small" not in text and "Work size: medium" not in text:
         return "invalid"
     if "Frozen package: spec and plan" in text:
         return "combined-valid"
-    if "Frozen package: spec only" not in text:
-        return "invalid"
-    if not re.search(r"Staging authorization: operator-(?:requested|approved)", text):
-        return "invalid"
-    if not re.search(r"Staging reason: .+", text):
-        return "invalid"
-    if "Next activity: plan drafting" not in text:
-        return "invalid"
-    return "staged-valid"
+    return "invalid"
 
 
 def assert_combined_package_default() -> None:
@@ -2814,18 +2804,20 @@ def assert_combined_package_default() -> None:
     readme = "README.md"
     operator_note = ".agents/skills/dev-doc-harness/docs/operator-note.md"
 
-    fixtures = {
-        "combined-valid": "Work size: medium\nFrozen package: spec and plan",
-        "invalid": "Work size: medium\nFrozen package: spec only",
-        "staged-valid": (
+    fixtures = [
+        ("combined-valid", "Work size: medium\nFrozen package: spec and plan"),
+        ("combined-valid", "Work size: small\nFrozen package: spec and plan"),
+        ("invalid", "Work size: medium\nFrozen package: spec only"),
+        (
+            "invalid",
             "Work size: medium\nFrozen package: spec only\n"
             "Staging authorization: operator-requested\n"
             "Staging reason: Contract evidence must be gathered first\n"
-            "Next activity: plan drafting"
+            "Next activity: plan drafting",
         ),
-        "large-anchor-valid": "Work size: large/phased\nFrozen package: spec only",
-    }
-    for expected, fixture in fixtures.items():
+        ("large-anchor-valid", "Work size: large/phased\nFrozen package: spec only"),
+    ]
+    for expected, fixture in fixtures:
         if combined_package_fixture_route(fixture) != expected:
             add_failure(check_id, f"{expected} package fixture did not route correctly")
 
@@ -2833,16 +2825,22 @@ def assert_combined_package_default() -> None:
         add_failure(check_id, "one-thread-manageable work did not retain the medium combined package")
 
     assert_text_contains(check_id, lifecycle, r"uncertain.*medium.*demonstrably", "uncertain sizing boundary")
-    assert_text_contains(check_id, lifecycle, r"spec-only.*operator-(?:requested|approved)", "authorized staged exception")
+    for path in [lifecycle, medium_spec, operator_note]:
+        assert_text_not_contains(check_id, path, r"(?i)spec-only|staged planning", "retired medium spec-only exception")
+    assert_text_not_contains(check_id, router, r"(?i)a spec-only package|staged planning", "retired medium spec-only exception")
     assert_text_contains(check_id, router, r"both.*<spec-filename>.*<plan-filename>.*same turn", "combined drafting instruction")
     assert_text_contains(check_id, router, r"both canonical files", "combined checklist")
-    assert_text_contains(check_id, freeze, r"complete.*combined (?:small or )?medium", "draft package completeness")
-    assert_text_contains(check_id, freeze, r"complete.*combined (?:small or )?medium", "approval package completeness")
+    assert_text_contains(check_id, freeze, r"small or medium package contains both", "draft package completeness")
+    assert_text_contains(check_id, freeze, r"Recheck the draft-review package-completeness", "approval package completeness")
     assert_text_contains(check_id, freeze, r"large/phased anchor", "large anchor retained")
     assert_text_contains(check_id, medium_spec, r"Companion plan", "medium spec companion plan")
-    assert_text_contains(check_id, medium_spec, r"operator-(?:requested|approved)", "medium spec staged authorization")
-    for path in [agents, readme, operator_note]:
-        assert_text_contains(check_id, path, r"combined medium", "operator combined-planning guidance")
+    assert_text_not_contains(check_id, medium_spec, r"(?i)spec-only|staging reason|plan drafting", "medium spec staged exception")
+    for path, pattern in [
+        (agents, r"combined medium"),
+        (readme, r"Small or medium work freezes its combined package"),
+        (operator_note, r"Small or medium work has a combined spec and plan"),
+    ]:
+        assert_text_contains(check_id, path, pattern, "operator combined-planning guidance")
 
 
 def assert_planning_template_clarity() -> None:
@@ -3199,23 +3197,11 @@ def assert_next_stage_summary() -> None:
         if not next_stage_template_contract_errors(extra_mode_fit_text, expected_stage=expected_stage):
             add_failure(check_id, f"{path} extra orchestration mode fit mutation was accepted")
 
-    assert_text_contains(
-        check_id,
-        staged_spec_source,
-        r"staging reason[\s\S]*spec-only frozen package",
-        "compact staged-spec exception facts",
-    )
-    assert_text_contains(
-        check_id,
-        staged_spec_source,
-        r"Next lifecycle stage:\s*`plan drafting`",
-        "staged-spec plan-drafting transition",
-    )
     assert_text_not_contains(
         check_id,
         staged_spec_source,
-        r"(?mi)^#{1,6}\s+Next-stage recommendation\s*$",
-        "retired staged-spec next-stage recommendation",
+        r"(?i)spec-only|staging reason|plan drafting",
+        "retired staged-spec exception",
     )
     assert_text_not_contains(
         check_id,
@@ -3284,7 +3270,7 @@ def assert_next_stage_summary() -> None:
     assert_text_contains(check_id, models, r"Current orchestration session", "current orchestration session separation")
     assert_text_contains(check_id, models, r"Next-stage recommendation", "draft recommendation label")
     assert_text_contains(check_id, models, r"Next lifecycle stage[\s\S]*Orchestration[\s\S]*Model[\s\S]*Execution requirements and contingencies", "ordered next-stage groups")
-    assert_text_contains(check_id, models, r"Stage:[^\n]+plan drafting[^\n]+phase-plan drafting", "canonical plan-drafting stage notation")
+    assert_text_contains(check_id, models, r"Stage:[^\n]+phase-plan drafting[^\n]+plan execution", "canonical lifecycle-stage notation")
     assert_text_contains(check_id, freeze, r"Approved next stage", "frozen next-stage label")
     assert_text_contains(check_id, freeze, r"chat", "chat projection")
     assert_text_contains(check_id, models, r"Run in.*same orchestration session.*new orchestration session", "Run in values")
@@ -3323,7 +3309,7 @@ def assert_next_stage_summary() -> None:
     if re.search(r"Next lifecycle stage[\s\S]+Orchestration[\s\S]+Execution requirements and contingencies", approval_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "approval freeze repeats the full next-stage group definition")
 
-    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing")
+    post_freeze = read_markdown_h2_section(freeze, "Post-freeze transition routing: medium and large/phased routes")
     if not re.search(r"effective next-stage values:\s*start with[^\n]+frozen[^\n]+Approved next stage[^\n]+apply[^\n]+explicit operator override", post_freeze, flags=re.IGNORECASE):
         add_failure(check_id, "execution handoff does not derive effective values from the frozen selection and operator override")
     if not re.search(r"(?:do not|without)[^\n]+rewrit[^\n]+frozen", post_freeze, flags=re.IGNORECASE):

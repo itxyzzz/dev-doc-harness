@@ -31,7 +31,7 @@ The result is control without constant process micromanagement: operators get a 
 flowchart TD
     A["Operator asks for work"]:::house --> B{"Work size"}:::house
     B -->|"Very small"| C["Edit, check, commit"]:::house
-    B -->|"small or medium"| D["Draft combined spec and plan"]:::house
+    B -->|"Small or medium"| D["Draft combined spec and plan"]:::house
     B -->|"Large or phased"| H["Draft anchor spec"]:::house
 
     D --> E{"Operator approves?"}:::house
@@ -56,7 +56,7 @@ flowchart TD
     linkStyle default stroke:#a1a1aa,stroke-width:1.75px
 ```
 
-The frozen package determines the next stage. small work is an additive combined package for bounded, low-risk local work; the operator may explicitly select it, but it must escalate to medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty appears. Medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically.
+The frozen package determines the next stage. Small or medium work freezes its combined package, then needs fresh start authorization before implementation. Large/phased work freezes its anchor, then needs a fresh instruction before phase-plan drafting. Each phase plan freezes before its implementation starts; actual phase outputs inform the next phase plan. Feedback always returns to the relevant draft rather than starting the next stage automatically.
 
 ## Using the documentation harness
 
@@ -65,11 +65,11 @@ The normal operator experience is intentionally simple: ask for the work you wan
 For example, an ordinary request such as “add import validation” is enough. Use more explicit wording only when you want to set a non-default boundary:
 
 ```text
-Draft only the spec and stop for review.
+Use the small planning package for this work item.
 ```
 
 ```text
-Treat this work as very small mechanical edit, do not create documentation package, but use harness instructions for changelog and commit message.
+Treat this work as very small mechanical edit, do not create documentation package, but use harness conventions for changelog and commit message.
 ```
 
 ```text
@@ -102,9 +102,9 @@ If Superpowers is installed and active, use Superpowers for its normal software-
 
 ### Planning and conformance
 
-For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Medium work normally drafts and freezes a combined medium spec-and-plan package together; a spec-only freeze is an explicit operator-requested or operator-approved staged exception that records its reason and names plan drafting as the next lifecycle stage. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
+For substantial work, the agent creates a work item under `docs/work-items/<work-id>/`. Small work is the package for bounded, low-risk local work; the operator may explicitly select it, but it must escalate to medium or large/phased before freeze if material architecture, interface, migration, security, or uncertainty appears. Small or medium work drafts and freezes a combined spec-and-plan package together. Large/phased work freezes an anchor spec before later phase plans unless combined planning was explicitly requested.
 
-The practical boundary is whether one orchestration session can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
+The practical boundary between medium and large/phased is whether one orchestration session can safely retain scope, decisions, validation, variance, integration, and the user-facing result with bounded delegation. A large/phased package is used when the effort would exceed that boundary, when phase-specific review reduces risk, or when a fresh agent would otherwise need to reconstruct decisions from chat history. Durable filenames use a short suffix for clear chat references; the naming reference owns the exact grammar.
 
 Specs `spec-*` state the agreed outcomes, boundaries, and verification criteria. A spec preserves goals, boundaries, requirements, risks, and relevant decisions. Plans `plan-*` turn the specs into actionable delivery recipes with tasks for step-by-step execution and checks to provide evidence that all verification criteria are covered. The plan records task sequencing, validation, documentation work, planned commit subjects, and the execution strategy.
 
@@ -116,7 +116,7 @@ The planning package also records which supporting documentation artifacts are n
 
 Draft planning artifacts are staged for feedback but not committed. Explicit approval runs the freeze gate: commit the approved package, report its paths, and pause before the next lifecycle stage. This also allows the operator to push and open a draft plan-only PR, and to compact the current orchestration session or start a new one using the provided handoff.
 
-For substantial work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
+For medium or large/phased work, the applicable planning artifact and its matching chat message show the recommendation for the next stage and its execution mode:
 - The next lifecycle stage (for example, plan execution after approval);
 - Orchestration (Method, Orchestration mode, `Run in` the same orchestration session or a new one, and stage-appropriate Review);
 - Model (generation, capability tier, and reasoning);

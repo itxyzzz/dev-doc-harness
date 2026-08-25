@@ -58,7 +58,7 @@ The Orchestration group defines four fields at first use:
 
 #### Method and orchestration mode
 
-Method always names the workflow for the documented next lifecycle stage. Planning stages (`plan drafting` and `phase-plan drafting`) record a planning method and planning-review arrangement; they do not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
+Method always names the workflow for the documented next lifecycle stage. The planning stage (`phase-plan drafting`) records a planning method and planning-review arrangement; it does not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
 
 Available orchestration modes are:
 
@@ -236,7 +236,7 @@ Sub-agents are not a default cost-saving mechanism. Prefer read-only explorer or
 
 Default concurrent fan-out:
 
-- small task: 0 sub-agents.
+- Small task: 0 sub-agents.
 - Moderate uncertainty: 1 read-only explorer or reviewer.
 - Clearly independent substantial work: 2-3 concurrent sub-agents.
 - More than 3 concurrent sub-agents: requires explicit extraordinary justification and operator approval.
@@ -288,7 +288,7 @@ Context visibility: `<exposed material signal>`
 
 #### Next lifecycle stage
 
-Stage: `<plan drafting / phase-plan drafting / plan execution / phase execution / documented resumed stage>`
+Stage: `<phase-plan drafting / plan execution / phase execution / documented resumed stage>`
 
 #### Orchestration
 

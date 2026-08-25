@@ -133,4 +133,5 @@ The implementation-changelog module is the approved lifecycle split for
 commit-time delivery records and root consolidation. It owns only implementation
 changelog behavior; work sizing, artifact layout, planning orchestration,
 immutability, documentation-assessment decisions, and variance remain lifecycle-owned.
-small and medium planning stay in the core lifecycle owner. Large/phased planning orchestration remains `rule:lifecycle.large-phase-orchestration` in `references/large-phased-lifecycle.md`.
+Small and medium planning stay in the core lifecycle owner. Large/phased planning
+orchestration remains `rule:lifecycle.large-phase-orchestration` in `references/large-phased-lifecycle.md`.

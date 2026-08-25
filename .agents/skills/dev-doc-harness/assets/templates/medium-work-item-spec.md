@@ -219,12 +219,6 @@ Default combined package:
 3. Transition owner: `<plan-filename>` owns the `plan execution` transition after the combined package freezes.
 4. Next lifecycle stage: `plan execution`.
 
-For an explicit staged spec-only exception:
-
-1. Staging reason: `<operator-requested or operator-approved staging reason>`.
-2. Spec-only frozen package: `<spec-filename>`.
-3. Next lifecycle stage: `plan drafting`.
-
 ## Spec readiness checklist
 
 - [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
