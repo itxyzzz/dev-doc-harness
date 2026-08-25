@@ -715,7 +715,7 @@ def assert_duplicate_blocks() -> None:
 
     shared_assembly_blocks = {
         paragraph
-        for block_path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("plan.*.middle-and-large.*.md")
+        for block_path in join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks").glob("plan.*.*-and-large.*.md")
         for _, paragraph in get_normalized_paragraphs(to_repo_relative_path(block_path))
     }
     shared_generated_targets = set(PRIMARY_TEMPLATE_FILES)
@@ -738,21 +738,51 @@ def assert_template_assembly() -> None:
     check_id = "templates.assembly"
     script_path = ".agents/skills/dev-doc-harness/scripts/assemble_templates.py"
     block_name_pattern = re.compile(
-        r"^(?:spec|plan)\.\d{3}\.(?:common|middle-and-large|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
+        r"^(?:spec|plan)\.\d{3}\.(?:common|medium-and-large|small|medium|large|phase)\.[a-z0-9]+(?:-[a-z0-9]+)*\.md$"
     )
-    allowed_scopes = {"common", "middle-and-large", "small", "medium", "large", "phase"}
+    allowed_scopes = {"common", "medium-and-large", "small", "medium", "large", "phase"}
     expected_outputs = set(ASSEMBLED_TEMPLATE_FILES)
     declared_outputs: set[str] = set()
 
     blocks_root = join_repo_path(".agents/skills/dev-doc-harness/assets/templates/blocks")
     expected_handoff_blocks = [
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.medium.handoff.md",
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.075.medium.commits-handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.075.large.commits-handoff.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
     ]
     for path in expected_handoff_blocks:
         assert_path_exists(check_id, path)
+    common_approval_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.095.common.approval.md"
+    readiness_core_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md"
+    large_readiness_extension_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.readiness-extension.md"
+    for path in [common_approval_block, readiness_core_block, large_readiness_extension_block]:
+        assert_path_exists(check_id, path)
+    if all(join_repo_path(path).exists() for path in [common_approval_block, readiness_core_block, large_readiness_extension_block]):
+        expected_common_approval = "\n".join(["## Approval", "", "- Status" + ": Draft", "- Superseded by: None", ""])
+        if read_repo_text(common_approval_block) != expected_common_approval:
+            add_failure(check_id, "common Approval block must contain only the Draft status and supersession fields")
+        expected_readiness_core = [
+            "- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.",
+            "- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.",
+            "- [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.",
+            "- [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.",
+            "- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the next actionable plan without reconstructing original session context.",
+            "- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.",
+            "- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.",
+        ]
+        readiness_core_checks = [line for line in read_repo_text(readiness_core_block).splitlines() if line.startswith("- [ ] ")]
+        if readiness_core_checks != expected_readiness_core:
+            add_failure(check_id, "medium-and-large readiness core must contain the approved seven checks in order")
+        expected_large_extension_checks = [
+            "- [ ] Verification criteria identify cross-phase ownership where applicable.",
+            "- [ ] Phase decomposition explains why each phase belongs, identifies its future phase-plan output, and keeps each phase within one orchestration session or records the escalation boundary.",
+            "- [ ] The Next-stage recommendation records the required lifecycle, orchestration, model, fallback, and stage-specific sub-agent decisions; optional current-session diagnostics are omitted unless material, and the recommendation is relabeled `Approved next stage` at freeze.",
+            "- [ ] Impact Surfaces, triage/debugging/operations, risks, documentation obligations, planned commits, and any batch-planning exception have been assessed.",
+        ]
+        large_extension_checks = [line for line in read_repo_text(large_readiness_extension_block).splitlines() if line.startswith("- [ ] ")]
+        if large_extension_checks != expected_large_extension_checks:
+            add_failure(check_id, "large readiness extension must retain the approved four checks in order")
     for path in [
         ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.combined-small-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/handoff.085.common.execution-thread.md",
@@ -925,8 +955,9 @@ def assert_small_contract() -> None:
             "blocks/spec.010.small.metadata-goal.md",
             "blocks/spec.020.small.scope-context-decisions-risks.md",
             "blocks/spec.030.small.commitments-verification.md",
-            "blocks/spec.080.common.documentation-assessment.md",
-            "blocks/spec.085.small.handoff-readiness-approval.md",
+            "blocks/spec.070.common.documentation-assessment.md",
+            "blocks/spec.080.small.handoff-readiness.md",
+            "blocks/spec.095.common.approval.md",
         ],
         SMALL_ASSEMBLY_MANIFEST_FILES[1]: [
             "blocks/plan.010.small.metadata-inputs.md",
@@ -938,9 +969,9 @@ def assert_small_contract() -> None:
     for manifest, expected_blocks in expected_small_blocks.items():
         data = json.loads(read_repo_text(manifest))
         blocks = data.get("blocks", [])
-        shared_blocks = {"blocks/spec.080.common.documentation-assessment.md"}
+        shared_blocks = {"blocks/spec.070.common.documentation-assessment.md", "blocks/spec.095.common.approval.md"}
         if not blocks or any(".small." not in block and block not in shared_blocks for block in blocks):
-            add_failure(check_id, f"small manifest must use only dedicated small blocks plus the shared documentation assessment: {manifest}")
+            add_failure(check_id, f"small manifest must use only dedicated small blocks plus shared documentation and Approval blocks: {manifest}")
         if blocks != expected_blocks:
             add_failure(check_id, f"small manifest must preserve the compact dedicated block order: {manifest}")
 
@@ -1488,11 +1519,10 @@ def assert_changelog_fragment_contract() -> None:
 def assert_documentation_assessment_contract() -> None:
     check_id = "documentation.assessment"
     lifecycle = ".agents/skills/dev-doc-harness/references/artifact-contract.md"
-    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.common.documentation-assessment.md"
+    shared_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.070.common.documentation-assessment.md"
     medium_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.medium.header.md"
     large_header = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.010.large.header.md"
-    medium_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.medium.readiness-approval.md"
-    large_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
+    readiness_core = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md"
     phase_tasks = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.080.phase.documentation-tasks.md"
     expected_ids = [
         "DOC-TEST-CASE",
@@ -1532,7 +1562,7 @@ def assert_documentation_assessment_contract() -> None:
 
     for path in [medium_header, large_header]:
         assert_text_contains(check_id, path, r"rule:lifecycle.documentation-assessment", f"{path} assessment reference")
-    for path in [medium_readiness, large_readiness]:
+    for path in [readiness_core]:
         assert_text_contains(check_id, path, r"Documentation assessment covers every required decision", f"{path} generic assessment readiness")
         assert_text_not_contains(check_id, path, r"DOC-", f"{path} duplicated assessment IDs")
     assert_text_contains(check_id, phase_tasks, r"Consume the approved documentation assessment", "phase assessment handoff")
@@ -1675,7 +1705,7 @@ def assert_plain_language_policy() -> None:
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     router = ".agents/skills/dev-doc-harness/SKILL.md"
     prompt_paths = [
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.medium-and-large.commitments-verification.md",
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
@@ -1861,7 +1891,7 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, path, r"upcoming-stage sub-agent assessment", "upcoming-stage assessment prompt")
         assert_text_contains(check_id, path, r"module:models", "strategy prompt canonical-policy route")
 
-    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
+    plan_strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.medium-and-large.model-strategy.md"
     assert_text_contains(check_id, plan_strategy_source, r"upcoming-stage sub-agent assessment", "plan sub-agent assessment prompt")
     for path in [plan_strategy_source, large_strategy_source]:
         assert_text_contains(check_id, path, r"Write authority", "sub-agent write-authority prompt")
@@ -2052,7 +2082,7 @@ def assert_lifecycle_transition_targets() -> None:
 
 
 CURRENT_SPEC_SCHEMA_PATHS = [
-    ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
+    ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.medium-and-large.commitments-verification.md",
     ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
     ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
 ]
@@ -2392,15 +2422,15 @@ def assert_harness_simplification_scenarios() -> None:
     freeze = ".agents/skills/dev-doc-harness/references/planning-freeze-gates.md"
     quality = ".agents/skills/dev-doc-harness/references/durable-planning-quality.md"
     readiness_source_blocks = [
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.medium.readiness-approval.md",
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.readiness-extension.md",
     ]
     readiness_templates = [
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
-    verification_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md"
-    plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.middle-and-large.task-plan.md"
+    verification_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.medium-and-large.commitments-verification.md"
+    plan_check_source_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.medium-and-large.task-plan.md"
 
     assert_text_contains(check_id, quality, r"Mappings are optional", "optional mapping guidance")
     assert_text_contains(check_id, freeze, r"without\s+pausing between planned\s+tasks", "uninterrupted approved execution")
@@ -2511,10 +2541,10 @@ def assert_superpowers_adapter_contract() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.medium.header-inputs.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
     ]
-    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.middle-and-large.traceability-approach-surfaces.md"
-    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
+    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.medium-and-large.traceability-approach-surfaces.md"
+    model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.medium-and-large.model-strategy.md"
     handoff_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md"
-    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.middle-and-large.task-plan.md"
+    task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.medium-and-large.task-plan.md"
 
     assert_text_contains(
         check_id,
@@ -2858,7 +2888,7 @@ def assert_planning_template_clarity() -> None:
 
     commitment_paths = [
         quality,
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.medium-and-large.commitments-verification.md",
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ]
@@ -2866,14 +2896,14 @@ def assert_planning_template_clarity() -> None:
         assert_text_not_contains(check_id, path, r"Classification is optional|Constraint · Preserve", "undefined commitment classification")
     assert_text_contains(
         check_id,
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.middle-and-large.commitments-verification.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.030.medium-and-large.commitments-verification.md",
         r"additional[\s\S]*SPEC[\s\S]*uses[\s\S]*Statement[\s\S]*local[\s\S]*Verification Criterion",
         "complete repeated commitment structure",
     )
 
     planned_commit_paths = [
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.070.medium.planned-commits.md",
-        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.070.large.planned-commits-freeze.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.075.medium.commits-handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.075.large.commits-handoff.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.060.medium.planned-commits.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.060.phase.planned-commits.md",
         ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
@@ -2890,7 +2920,7 @@ def assert_planning_template_clarity() -> None:
         assert_text_contains(check_id, path, r"Execution method", "execution method metadata")
         assert_text_not_contains(check_id, path, r"## Superpowers execution meta-header", "obsolete Superpowers meta-header section")
 
-    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
+    plan_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.medium-and-large.model-strategy.md"
     large_model_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
     model_sources = [plan_model_source, large_model_source]
     model_consumers = [
@@ -3062,10 +3092,11 @@ def assert_next_stage_summary() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-plan.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
-    staged_spec_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.medium.handoff.md"
+    staged_spec_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.075.medium.commits-handoff.md"
     large_anchor_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md"
-    large_anchor_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.large.readiness-approval.md"
-    medium_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.090.medium.readiness-approval.md"
+    large_anchor_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md"
+    large_readiness_extension_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.readiness-extension.md"
+    medium_readiness_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md"
     medium_spec = ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md"
     large_spec = ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md"
     evidence_preservation_rule = "rule:" + "evidence.preservation"
@@ -3142,7 +3173,7 @@ def assert_next_stage_summary() -> None:
         assert_text_contains(check_id, path, r"omit unless exposed and material", "current-session omission rule")
         assert_text_not_contains(check_id, path, r"Generation, capability tier, reasoning", "duplicated current-session model facets")
 
-    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.middle-and-large.model-strategy.md"
+    strategy_source = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.medium-and-large.model-strategy.md"
     assert_text_contains(check_id, strategy_source, r"Upcoming-stage sub-agent assessment", "plan strategy assessment")
     assert_text_not_contains(check_id, strategy_source, r"Current planning Codex task", "duplicated plan current-task section")
     assert_text_not_contains(check_id, strategy_source, r"Next-stage recommendation", "duplicated plan next-stage summary")
@@ -3264,7 +3295,7 @@ def assert_next_stage_summary() -> None:
         )
     assert_text_contains(
         check_id,
-        large_anchor_readiness_source,
+        large_readiness_extension_source,
         r"Next-stage recommendation[^\n]+relabeled `Approved next stage`",
         "large-anchor readiness relabel check",
     )

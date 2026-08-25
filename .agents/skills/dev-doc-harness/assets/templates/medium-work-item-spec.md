@@ -186,6 +186,16 @@ Risk prompts:
 3. Over-scoping, under-specifying, or making the work too large for the selected lifecycle path.
 4. Alternatives rejected because they duplicate canonical harness policy, import too much external process, or create reviewer burden.
 
+## Documentation assessment
+
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
+
+- `DOC-TEST-CASE`: `<status>`.
+- `DOC-TEST-GUIDE`: `<status>`.
+- `DOC-OPS-GUIDE`: `<status>`.
+- `DOC-API-GUIDE`: `<status>`.
+- `DOC-ARCH-SUMMARY`: `<status>`.
+
 ## Planned commits
 
 Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and plan review.
@@ -197,16 +207,6 @@ Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are 
 
 Use one cohesive implementation commit by default. Record an essential deferral
 or independently reviewable split as concise prose under this table.
-
-## Documentation assessment
-
-For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
-
-- `DOC-TEST-CASE`: `<status>`.
-- `DOC-TEST-GUIDE`: `<status>`.
-- `DOC-OPS-GUIDE`: `<status>`.
-- `DOC-API-GUIDE`: `<status>`.
-- `DOC-ARCH-SUMMARY`: `<status>`.
 
 ## Planning shape and transition ownership
 
@@ -225,7 +225,7 @@ Default combined package:
 - [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
 - [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
 - [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
-- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the actionable plan without reconstructing original session context.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the next actionable plan without reconstructing original session context.
 - [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
 - [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 

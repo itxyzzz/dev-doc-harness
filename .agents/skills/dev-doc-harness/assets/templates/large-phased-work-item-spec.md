@@ -282,6 +282,16 @@ Sub-agent `<role or phase id>`:
 12. Write authority: `<read-only / bounded paths / other approved scope>`.
 13. Concurrency: `<single run / approved concurrent count and coordination boundary>`.
 
+## Documentation assessment
+
+For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
+
+- `DOC-TEST-CASE`: `<status>`.
+- `DOC-TEST-GUIDE`: `<status>`.
+- `DOC-OPS-GUIDE`: `<status>`.
+- `DOC-API-GUIDE`: `<status>`.
+- `DOC-ARCH-SUMMARY`: `<status>`.
+
 ## Planned commits
 
 Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
@@ -298,16 +308,6 @@ At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review
 
 Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
 
-## Documentation assessment
-
-For each prompt, use `Not required`, `Required — <output path>; Plan Task: TASK-NNN`, or `Deferred — owner: <owner>; resolution point: <event>`. Architecture-snapshot status belongs in Architecture Decisions.
-
-- `DOC-TEST-CASE`: `<status>`.
-- `DOC-TEST-GUIDE`: `<status>`.
-- `DOC-OPS-GUIDE`: `<status>`.
-- `DOC-API-GUIDE`: `<status>`.
-- `DOC-ARCH-SUMMARY`: `<status>`.
-
 ## Anchor-to-phase transition
 
 Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, and `rule:freeze.approval-freeze`.
@@ -323,13 +323,15 @@ Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continui
 - [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.
 - [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.
 - [ ] Commitment statements are atomic, bounded, and form a complete set that covers the full scope and achieves the goal; no obligation exists only in rationale or examples.
-- [ ] Verification Criteria cover all applicable Commitments, have no hidden procedure or scope, and identify cross-phase ownership where applicable.
-- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained enough that a fresh session can draft each actionable phase plan without reconstructing original session context.
+- [ ] Verification criteria form a complete set that covers all Commitments and have no hidden procedure or scope.
+- [ ] This specification file with `snapshots/architecture.snapshot.md` is self-contained so a fresh session can draft the next actionable plan without reconstructing original session context.
+- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
+- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
+
+- [ ] Verification criteria identify cross-phase ownership where applicable.
 - [ ] Phase decomposition explains why each phase belongs, identifies its future phase-plan output, and keeps each phase within one orchestration session or records the escalation boundary.
 - [ ] The Next-stage recommendation records the required lifecycle, orchestration, model, fallback, and stage-specific sub-agent decisions; optional current-session diagnostics are omitted unless material, and the recommendation is relabeled `Approved next stage` at freeze.
 - [ ] Impact Surfaces, triage/debugging/operations, risks, documentation obligations, planned commits, and any batch-planning exception have been assessed.
-- [ ] Documentation assessment covers every required decision; required outputs name a path and Plan Task, and deferred outputs name an owner and resolution point.
-- [ ] No unresolved placeholders, plan-affecting decisions, missing sections, or ownerless deferrals remain.
 
 ## Approval
 

@@ -10,8 +10,3 @@
 - [ ] Every `SPEC-*` has applicable `VER-*` evidence.
 - [ ] Documentation assessment assigns every required or deferred output.
 - [ ] No placeholders, undecided required items, missing sections, or ownerless deferrals remain.
-
-## Approval
-
-- Status: Draft
-- Superseded by: None

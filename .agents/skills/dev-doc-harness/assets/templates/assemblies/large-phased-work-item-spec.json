@@ -2,15 +2,16 @@
   "output": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
   "blocks": [
     "blocks/spec.010.large.header.md",
-    "blocks/spec.020.middle-and-large.intent-scope-context.md",
-    "blocks/spec.030.middle-and-large.commitments-verification.md",
-    "blocks/spec.035.middle-and-large.architecture-decisions.md",
-    "blocks/spec.040.middle-and-large.interfaces-risks.md",
+    "blocks/spec.020.medium-and-large.intent-scope-context.md",
+    "blocks/spec.030.medium-and-large.commitments-verification.md",
+    "blocks/spec.035.medium-and-large.architecture-decisions.md",
+    "blocks/spec.040.medium-and-large.interfaces-risks.md",
     "blocks/spec.050.large.operations.md",
     "blocks/spec.060.large.phase-decomposition-model.md",
-    "blocks/spec.070.large.planned-commits-freeze.md",
-    "blocks/spec.080.common.documentation-assessment.md",
-    "blocks/spec.085.large.handoff.md",
-    "blocks/spec.090.large.readiness-approval.md"
+    "blocks/spec.070.common.documentation-assessment.md",
+    "blocks/spec.075.large.commits-handoff.md",
+    "blocks/spec.080.medium-and-large.readiness.md",
+    "blocks/spec.085.large.readiness-extension.md",
+    "blocks/spec.095.common.approval.md"
   ]
 }
