@@ -11,8 +11,3 @@
 
 - Required work and evidence are complete; any noteworthy variance is recorded.
 - Planned changes are committed, or the blocker is stated.
-
-## Approval
-
-- Status: Draft
-- Superseded by: None

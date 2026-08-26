@@ -753,15 +753,19 @@ def assert_template_assembly() -> None:
     ]
     for path in expected_handoff_blocks:
         assert_path_exists(check_id, path)
-    common_approval_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.095.common.approval.md"
+    common_approval_blocks = [
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.095.common.approval.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.095.common.approval.md",
+    ]
     readiness_core_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.080.medium-and-large.readiness.md"
     large_readiness_extension_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.085.large.readiness-extension.md"
-    for path in [common_approval_block, readiness_core_block, large_readiness_extension_block]:
+    for path in [*common_approval_blocks, readiness_core_block, large_readiness_extension_block]:
         assert_path_exists(check_id, path)
-    if all(join_repo_path(path).exists() for path in [common_approval_block, readiness_core_block, large_readiness_extension_block]):
+    if all(join_repo_path(path).exists() for path in [*common_approval_blocks, readiness_core_block, large_readiness_extension_block]):
         expected_common_approval = "\n".join(["## Approval", "", "- Status" + ": Draft", "- Superseded by: None", ""])
-        if read_repo_text(common_approval_block) != expected_common_approval:
-            add_failure(check_id, "common Approval block must contain only the Draft status and supersession fields")
+        for path in common_approval_blocks:
+            if read_repo_text(path) != expected_common_approval:
+                add_failure(check_id, f"common Approval block must contain only the Draft status and supersession fields: {path}")
         expected_readiness_core = [
             "- [ ] Goal, source and intent, scope, constraints, architecture decisions, commitment statements, and verifications are mutually consistent.",
             "- [ ] All relevant operator input is preserved in this specification or through `module:evidence` and `rule:evidence.preservation`.",
@@ -851,6 +855,16 @@ def assert_template_assembly() -> None:
     missing_outputs = expected_outputs - declared_outputs
     for output in sorted(missing_outputs):
         add_failure(check_id, f"No assembly manifest declares output: {output}")
+
+    plan_common_approval = "blocks/plan.095.common.approval.md"
+    for manifest in [
+        ".agents/skills/dev-doc-harness/assets/templates/assemblies/small-work-item-plan.json",
+        ".agents/skills/dev-doc-harness/assets/templates/assemblies/medium-work-item-plan.json",
+        ".agents/skills/dev-doc-harness/assets/templates/assemblies/large-phased-work-item-phase-plan.json",
+    ]:
+        blocks = json.loads(read_repo_text(manifest)).get("blocks", [])
+        if not isinstance(blocks, list) or not blocks or blocks[-1] != plan_common_approval:
+            add_failure(check_id, f"Plan assembly must end with the shared Approval block: {manifest}")
 
     unresolved_include_pattern = re.compile(r"(\{\{|\{%[^\n]*include|<!--\s*include|blocks/)", re.IGNORECASE)
     for template in ASSEMBLED_TEMPLATE_FILES:
@@ -962,14 +976,20 @@ def assert_small_contract() -> None:
         SMALL_ASSEMBLY_MANIFEST_FILES[1]: [
             "blocks/plan.010.small.metadata-inputs.md",
             "blocks/plan.020.small.surfaces-approach.md",
-            "blocks/plan.030.small.tasks-checks.md",
-            "blocks/plan.040.small.validation-variance-approval.md",
+            "blocks/plan.050.small.tasks-checks.md",
+            "blocks/plan.060.small.planned-commits.md",
+            "blocks/plan.070.small.validation-variance.md",
+            "blocks/plan.095.common.approval.md",
         ],
     }
     for manifest, expected_blocks in expected_small_blocks.items():
         data = json.loads(read_repo_text(manifest))
         blocks = data.get("blocks", [])
-        shared_blocks = {"blocks/spec.070.common.documentation-assessment.md", "blocks/spec.095.common.approval.md"}
+        shared_blocks = {
+            "blocks/spec.070.common.documentation-assessment.md",
+            "blocks/spec.095.common.approval.md",
+            "blocks/plan.095.common.approval.md",
+        }
         if not blocks or any(".small." not in block and block not in shared_blocks for block in blocks):
             add_failure(check_id, f"small manifest must use only dedicated small blocks plus shared documentation and Approval blocks: {manifest}")
         if blocks != expected_blocks:
@@ -2247,8 +2267,8 @@ def assert_commitment_verification_templates() -> None:
     )
     assert_text_not_contains(check_id, plan_paths[0], r"one orchestration session with bounded delegation", "ordinary plan phase-only boundary")
 
-    medium_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.medium.readiness-completion-approval.md"
-    phase_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion-approval.md"
+    medium_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.medium.readiness-completion.md"
+    phase_readiness = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.090.phase.readiness-completion.md"
     assert_text_contains(check_id, medium_readiness, r"This plan document is self-sufficient", "medium-plan fresh-session readiness")
     assert_text_contains(check_id, medium_readiness, r"Plan Checks cover the full set of Verification Criteria", "medium-plan verification coverage")
     assert_text_contains(check_id, medium_readiness, r"Required documentation outputs are assigned to implementation tasks", "medium-plan documentation assignment")
@@ -2541,7 +2561,7 @@ def assert_superpowers_adapter_contract() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.medium.header-inputs.md",
         ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.010.phase.header-objective-inputs.md",
     ]
-    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.medium-and-large.traceability-approach-surfaces.md"
+    traceability_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.020.medium-and-large.traceability-constraints-surfaces.md"
     model_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.055.medium-and-large.model-strategy.md"
     handoff_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md"
     task_block = ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.050.medium-and-large.task-plan.md"

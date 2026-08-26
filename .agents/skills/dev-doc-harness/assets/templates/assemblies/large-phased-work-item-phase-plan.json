@@ -2,7 +2,7 @@
   "output": ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
   "blocks": [
     "blocks/plan.010.phase.header-objective-inputs.md",
-    "blocks/plan.020.medium-and-large.traceability-approach-surfaces.md",
+    "blocks/plan.020.medium-and-large.traceability-constraints-surfaces.md",
     "blocks/plan.030.phase.session-readiness.md",
     "blocks/plan.050.medium-and-large.task-plan.md",
     "blocks/plan.055.medium-and-large.model-strategy.md",
@@ -11,6 +11,7 @@
     "blocks/plan.080.phase.documentation-tasks.md",
     "blocks/plan.085.phase.handoff.md",
     "blocks/plan.087.phase.completion-report.md",
-    "blocks/plan.090.phase.readiness-completion-approval.md"
+    "blocks/plan.090.phase.readiness-completion.md",
+    "blocks/plan.095.common.approval.md"
   ]
 }

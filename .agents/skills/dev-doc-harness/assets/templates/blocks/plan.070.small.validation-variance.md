@@ -1,9 +1,3 @@
-## Planned commits
-
-| Stage | Planned subject |
-|---|---|
-| Planning approval | `<planning-commit-subject>` |
-| Implementation | `<implementation-commit-subject>` |
 
 ## Validation and variance
 
@@ -18,8 +12,3 @@
 - [ ] Checks cover every applicable `VER-*`.
 - [ ] Required documentation outputs have owning tasks.
 - [ ] No placeholders, unresolved implementation decisions, missing owners, or ownerless deferrals remain.
-
-## Approval
-
-- Status: Draft
-- Superseded by: None
