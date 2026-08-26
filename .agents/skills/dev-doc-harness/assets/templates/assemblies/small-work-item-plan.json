@@ -1,0 +1,11 @@
+{
+  "output": ".agents/skills/dev-doc-harness/assets/templates/small-work-item-plan.md",
+  "blocks": [
+    "blocks/plan.010.small.metadata-inputs.md",
+    "blocks/plan.020.small.surfaces-approach.md",
+    "blocks/plan.050.small.tasks-checks.md",
+    "blocks/plan.060.small.planned-commits.md",
+    "blocks/plan.070.small.validation-variance.md",
+    "blocks/plan.095.common.approval.md"
+  ]
+}

@@ -13,6 +13,7 @@ Owned rule IDs:
 | `rule:models.orchestration-mode` | `### Orchestration selection` |
 | `rule:models.next-stage-continuity` | ``#### `Run in` (next-stage continuity)`` |
 | `rule:models.context-strategy` | `### Sub-agent context` |
+| `rule:models.non-proactive-delegation` | `### Sub-agent authorization` |
 | `rule:models.approved-strategy-authorized` | `### Sub-agent authorization` |
 | `rule:models.fresh-confirmation` | `### Sub-agent authorization` |
 | `rule:models.concurrent-cap` | `### Sub-agent allocation` |
@@ -58,7 +59,7 @@ The Orchestration group defines four fields at first use:
 
 #### Method and orchestration mode
 
-Method always names the workflow for the documented next lifecycle stage. Planning stages (`plan drafting` and `phase-plan drafting`) record a planning method and planning-review arrangement; they do not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
+Method always names the workflow for the documented next lifecycle stage. The planning stage (`phase-plan drafting`) records a planning method and planning-review arrangement; it does not invoke the execution-method cascade or Plan Task reviewer contract. Execution stages (`plan execution` and `phase execution`) record an execution method and the execution-stage Plan Task and final review arrangement.
 
 Available orchestration modes are:
 
@@ -183,6 +184,8 @@ This preserves the pre-spec assessment boundary without adding a pre-spec artifa
 
 ### Sub-agent authorization
 
+The non-proactive delegation constraint is a dispatch gate: it prevents spawning an unapproved sub-agent. It does not excuse omitting the required upcoming-stage assessment or an operator-approval request. When delegation could plausibly improve isolation, review quality, risk reduction, or throughput, assess and record it, then ask the operator to approve the bounded strategy before dispatch. Do not cite this constraint as a reason to silently select single-agent execution.
+
 When useful delegation is not already authorized, record the roles, context, outputs, model and effort envelope, write authority, concurrency, and fallback, then explicitly ask the operator to approve that bounded strategy before dispatch. An approved in-envelope strategy does not need a repeated confirmation; approval does not override unavailable tooling, higher-priority platform limits, or an out-of-envelope role, model/effort, write scope, concurrency, or boundary.
 
 When `module:lifecycle` uses one orchestration session with bounded delegation as a work-sizing boundary, this module owns the related context strategy, concurrency, model-selection, authorization, and final integration mechanics.
@@ -270,7 +273,7 @@ When the preferred execution strategy or fallback was exercised, completion also
 
 ## Required notation
 
-Substantial small/medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Small/medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read.
+Substantial medium plans and large or phased work item specs or phase plans must include a compact Model and Sub-agent Strategy. Medium plans may render required sub-agent fields as bullets or card-style blocks when that is easier to read.
 
 For plans and phase plans, put the optional current orchestration session diagnostics once as header metadata, put the grouped next-stage summary once near the final handoff or transition, and keep the shared strategy section for the upcoming-stage sub-agent assessment and any bounded role records. The large anchor spec retains its single grouped strategy presentation. Omit current-session diagnostics unless they are exposed and material.
 
@@ -288,7 +291,7 @@ Context visibility: `<exposed material signal>`
 
 #### Next lifecycle stage
 
-Stage: `<plan drafting / phase-plan drafting / plan execution / phase execution / documented resumed stage>`
+Stage: `<phase-plan drafting / plan execution / phase execution / documented resumed stage>`
 
 #### Orchestration
 

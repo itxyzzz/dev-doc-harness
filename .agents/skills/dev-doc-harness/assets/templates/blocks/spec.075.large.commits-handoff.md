@@ -1,0 +1,25 @@
+## Planned commits
+
+Use `rule:lifecycle.commit-message-format`. Planned implementation subjects are reviewable during spec and phase-plan review.
+
+| Stage | Planned subject |
+|---|---|
+| Anchor spec approval | `<planning-commit-subject>` |
+| Phase-plan approval pattern | `<planning-commit-subject>` |
+| Phase implementation pattern | `<commit-subject>` |
+
+## Planning artifact freeze gates
+
+At draft review or approval, use `module:freeze-gate`, `rule:freeze.draft-review`, `rule:freeze.approval-freeze`, and `rule:freeze.multi-gate-flow`.
+
+Record the draft review, approval commit, and pause before the documented next lifecycle stage. The initial planning package is anchor-spec-only by default under `rule:lifecycle.large-phase-orchestration`; do not create concrete phase-plan files during this package unless the operator explicitly requests combined planning.
+
+## Anchor-to-phase transition
+
+Use `rule:lifecycle.large-phase-orchestration`, `rule:models.next-stage-continuity`, and `rule:freeze.approval-freeze`.
+
+1. Planning shape: `large/phased anchor` unless an approved combined-planning exception says otherwise.
+2. Next lifecycle stage: `phase-plan drafting`.
+3. The default is rolling: draft and freeze one phase plan, implement it, record actual outputs, then plan the next phase.
+4. Batch planning is an explicit exception only for stable, independently plannable phases.
+5. This anchor’s approved next-stage selection governs `phase-plan drafting`. Each phase plan records its own phase-execution handoff, required artifacts, and variance stop condition at its freeze boundary.

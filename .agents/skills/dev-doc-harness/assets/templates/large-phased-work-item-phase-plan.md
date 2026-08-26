@@ -108,7 +108,8 @@ Upcoming-stage sub-agent assessment:
 1. Sub-agents: None, or `<bounded strategy below>`.
 2. Fit reason: `<stage-specific reason delegation would not help, or why it is useful>`.
 3. Authorization state: `<Not needed / Pending operator approval / Approved>`.
-4. When useful and unapproved, ask the operator to approve the recorded roles, context, outputs, model/effort envelope, write authority, concurrency, and fallback before dispatch.
+4. A no-proactive-spawn environment rule blocks unapproved dispatch and never substitutes for this assessment or an operator-approval request.
+5. When useful and unapproved, ask the operator to approve the recorded roles, context, outputs, model/effort envelope, write authority, concurrency, and fallback before dispatch.
 
 Use sub-agents only when they improve isolation, review quality, parallel exploration, specialized execution, or risk reduction enough to justify the coordination cost. For each proposed sub-agent, record purpose, context strategy, input context, output artifact, model policy and allocation, write authority, concurrency, and blast radius. An approved in-envelope strategy does not need another generic confirmation; route an out-of-envelope dispatch through the existing operator-approval path.
 

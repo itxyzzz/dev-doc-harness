@@ -18,7 +18,7 @@ Owned rule IDs:
 
 Load this module when artifact readability is part of the work, when a document is large enough that readers may miss decisions, or when a future agent must consume the artifact without chat history.
 
-This module is required for large anchor specs. It is also required for any spec, plan, phase plan, snapshot, amendment, report, handoff, or operator-facing document that becomes large or hard to scan. Routine small/medium planning can use the short baseline guidance in `module:quality` and the templates unless readability risk is material.
+This module is required for large anchor specs. It is also required for any spec, plan, phase plan, snapshot, amendment, report, handoff, or operator-facing document that becomes large or hard to scan. Routine medium planning can use the short baseline guidance in `module:quality` and the templates unless readability risk is material.
 
 This module owns conditional readability presentation. Lifecycle, domain-policy,
 and baseline authoring rules remain with their canonical owners.

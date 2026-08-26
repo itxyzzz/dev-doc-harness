@@ -6,7 +6,7 @@ For all repository development work except very small mechanical edits, use `.ag
 
 This repository selects the `economy-default` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`. A more-specific applicable `AGENTS.md` or the operator may replace that selection. Do not switch to `enterprise-default` otherwise.
 
-When Superpowers is installed and active, use it for normal software-development methodology and use the Dev Doc Harness for the artifact-location and lifecycle contract. Canonical durable planning artifacts live under `docs/work-items/<work-id>/` and pass the harness freeze gates before implementation. For normal substantial small/medium work, draft and freeze the combined small/medium package containing both the canonical spec and plan. A spec-only package requires operator-requested or operator-approved staged planning, a recorded reason, and `plan drafting` as the next activity.
+When Superpowers is installed and active, use it for normal software-development methodology and use the Dev Doc Harness for the artifact-location and lifecycle contract. Canonical durable planning artifacts live under `docs/work-items/<work-id>/` and pass the harness freeze gates before implementation. For substantial small work, draft and freeze the combined small package; for substantial medium work, draft and freeze the combined medium package. Each package contains both the canonical spec and plan.
 
 Add `docs/superpowers` documents only when that directory already exists and contains previous documentation packages from before the current work. Do not create or seed it for compatibility. Any allowed new file must be a minimal pointer stub to the canonical harness work item rather than a duplicate spec or plan.
 

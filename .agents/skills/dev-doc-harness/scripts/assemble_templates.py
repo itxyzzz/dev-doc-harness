@@ -21,12 +21,20 @@ ASSEMBLIES = [
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
     ),
     (
-        "small-medium-work-item-plan.json",
-        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-plan.md",
+        "small-work-item-plan.json",
+        ".agents/skills/dev-doc-harness/assets/templates/small-work-item-plan.md",
     ),
     (
-        "small-medium-work-item-spec.json",
-        ".agents/skills/dev-doc-harness/assets/templates/small-medium-work-item-spec.md",
+        "small-work-item-spec.json",
+        ".agents/skills/dev-doc-harness/assets/templates/small-work-item-spec.md",
+    ),
+    (
+        "medium-work-item-plan.json",
+        ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-plan.md",
+    ),
+    (
+        "medium-work-item-spec.json",
+        ".agents/skills/dev-doc-harness/assets/templates/medium-work-item-spec.md",
     ),
 ]
 
