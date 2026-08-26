@@ -13,6 +13,7 @@ Owned rule IDs:
 | `rule:models.orchestration-mode` | `### Orchestration selection` |
 | `rule:models.next-stage-continuity` | ``#### `Run in` (next-stage continuity)`` |
 | `rule:models.context-strategy` | `### Sub-agent context` |
+| `rule:models.non-proactive-delegation` | `### Sub-agent authorization` |
 | `rule:models.approved-strategy-authorized` | `### Sub-agent authorization` |
 | `rule:models.fresh-confirmation` | `### Sub-agent authorization` |
 | `rule:models.concurrent-cap` | `### Sub-agent allocation` |
@@ -182,6 +183,8 @@ Sub-agent model and reasoning-effort selection must be deliberate for substantia
 This preserves the pre-spec assessment boundary without adding a pre-spec artifact, lifecycle stage, gate, or mandatory reviewer. A durable pre-spec selection mechanism is future work.
 
 ### Sub-agent authorization
+
+The non-proactive delegation constraint is a dispatch gate: it prevents spawning an unapproved sub-agent. It does not excuse omitting the required upcoming-stage assessment or an operator-approval request. When delegation could plausibly improve isolation, review quality, risk reduction, or throughput, assess and record it, then ask the operator to approve the bounded strategy before dispatch. Do not cite this constraint as a reason to silently select single-agent execution.
 
 When useful delegation is not already authorized, record the roles, context, outputs, model and effort envelope, write authority, concurrency, and fallback, then explicitly ask the operator to approve that bounded strategy before dispatch. An approved in-envelope strategy does not need a repeated confirmation; approval does not override unavailable tooling, higher-priority platform limits, or an out-of-envelope role, model/effort, write scope, concurrency, or boundary.
 
