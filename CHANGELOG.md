@@ -6,6 +6,61 @@ Entries are newest-first by release, then grouped by change type.
 
 ## Unreleased
 
+## Release 0.10
+
+### `2026-08-26 refactor: spec-block-consolidation -- consolidate specification blocks`
+
+Meta -- `0.10.0` : `repository-only`
+
+#### Changed
+
+- Consolidated reusable specification blocks, standardized the medium-and-large filename scope, and regenerated validated templates.
+
+### `2026-08-26 refactor: plan-block-consolidation -- extract shared plan approval`
+
+Meta -- `0.10.0` : `repository-only`
+
+#### Changed
+
+- Extracted the shared plan Approval block and aligned plan block names and numbering.
+
+### `2026-08-26 docs: non-proactive-delegation -- enforce delegation approval gate`
+
+Meta -- `0.10.0` : `repository-only`
+
+#### Changed
+
+- Defined the non-proactive delegation constraint as a dispatch-only gate, preserved the lightweight small-planning route, and synchronized the medium and large planning templates.
+
+### `2026-08-25 refactor: route-name-simplification -- simplify active harness route names`
+
+Meta -- `0.10.0` : `distributable`
+
+#### Changed
+
+- Renamed the active planning routes and their template, schema, assembly, and validator namespaces to `small` and `medium`, while preserving `large/phased` and immutable historical records.
+- Removed the retired medium spec-only planning exception, regenerated templates, and aligned the policy validator with the combined small and medium package contract.
+
+#### Fixed
+
+- Removed trailing whitespace from active harness guidance.
+
+### 2026-08-21 fix: lean-small-flow -- refine compact template guidance
+
+Meta -- `0.10.0` : `distributable`
+
+#### Changed
+
+- Aligned lean execution startup, work-size guidance, and compact template blocks with review feedback; regenerated templates and strengthened their structural checks.
+
+### 2026-08-21 feat: lean-small-flow -- add compact harness route
+
+Meta -- `0.10.0` : `distributable`
+
+#### Added
+
+- Added an isolated `lean/small` planning flow with compact templates, approval-equivalent freeze controls, additive policy coverage, and operator guidance while preserving established small/medium and large/phased routes.
+
 ## Release 0.9
 
 ### 2026-08-04 docs: documentation-assessment-simplification -- simplify documentation assessment
