@@ -9,7 +9,7 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:models.strategy-required` | `### Upcoming-stage sub-agent assessment` |
-| `rule:models.selection-dimensions` | `## Upcoming-stage selection` and `### Model facets` |
+| `rule:models.selection-dimensions` | `## Upcoming-stage selection` and `### Model selection` |
 | `rule:models.orchestration-mode` | `### Orchestration selection` |
 | `rule:models.next-stage-continuity` | ``#### `Run in` (next-stage continuity)`` |
 | `rule:models.context-strategy` | `### Sub-agent context` |
@@ -17,8 +17,8 @@ Owned rule IDs:
 | `rule:models.approved-strategy-authorized` | `### Sub-agent authorization` |
 | `rule:models.fresh-confirmation` | `### Sub-agent authorization` |
 | `rule:models.concurrent-cap` | `### Sub-agent allocation` |
-| `rule:models.enterprise-default` | `#### Policy: enterprise-default` |
-| `rule:models.economy-default` | `#### Policy: economy-default` |
+| `rule:models.quality-first` | `##### Policy: quality-first` |
+| `rule:models.efficiency-first` | `##### Policy: efficiency-first` |
 | `rule:models.execution-review-contract` | `## Execution method and reviewer contract` |
 | `rule:models.final-review` | `#### Final review` |
 | `rule:models.final-integration-ownership` | `#### Final integration ownership` |
@@ -46,7 +46,7 @@ The next-stage summary is ordered as:
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
 4. **Execution requirements and contingencies** record only applicable required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop.
 
-When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
+When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. It may name decisive factors such as coverage, coordination risk, elapsed time, or expected rework, without creating a calculation or a required notation field. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
 
 ### Orchestration selection
 
@@ -78,25 +78,9 @@ A new orchestration session loads the applicable instructions, harness, exact fr
 
 Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next lifecycle stage, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
-### Review arrangement
+### Model selection
 
-#### Independent review
-
-Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. Apply the route-specific mandatory obligations in `rule:models.execution-review-contract`; a separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
-
-Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it. Isolated read-only review remains valuable even when concurrent writing would be too tightly coupled.
-
-#### Final review
-
-Final review of high-blast-radius work must use the independent reviewer contract in `rule:models.execution-review-contract`, subject only to that rule's documented unavailable-review or operator-declined-review disclosure and authorization exception. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
-
-#### Final integration ownership
-
-The execution orchestration session owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. It consumes independent reviewer findings but is not itself independent review. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
-
-## Model selection
-
-### Model facets
+#### Model facets
 
 The Model group selects three independent facets:
 
@@ -116,42 +100,53 @@ Reasoning effort stays independent of capability tier. Use the effort values exp
 
 **Resolved profile** is the concrete runtime mapping of those three choices when exposed. It is not a fourth durable selection facet. Host runtimes and model providers may expose different concrete names, availability signals, and mappings without changing the three durable facets.
 
-### Model selection policies
+#### Model and orchestration selection policies
 
-#### Policy: enterprise-default
+##### Policy: quality-first
 
-Cost minimization is not the primary optimization factor.
+Under quality-first, defer to the shared generic model, delegation, escalation, review, authorization, context, write authority, concurrency, and final integration rules; those safeguards remain canonical and unchanged, including the independent review and isolation floor.
 
-Under `enterprise-default`, proactively assess platform multi-agent/`ultra` when complex decomposable work may benefit from parallelism, coverage, or throughput, and record why it is or is not selected.
+Among shared-rule-conforming choices, quality-first favors stronger justified capability and reasoning and, when coordination risk is justified, additional independently bounded coverage through the applicable suite of bounded delegated sub-agents, platform multi-agent/`Ultra`, or hybrid work. This does not require a flagship tier or promote Ultra alone.
 
-Optimize for:
+Profile-local refinements:
 
-1. Correctness.
-2. Risk reduction.
-3. Context isolation.
-4. Parallel throughput.
-5. Review quality.
-6. Efficient main-thread use.
+- Use `balanced/medium` (Terra medium or equivalent) for normal bounded work.
+- Use `balanced/high` (Terra high or equivalent) as an effort escalation when broader dependency or edge traversal is needed.
+- Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when difficult judgment is needed.
+- Use direct flagship/high (Sol high or equivalent) only for known high-blast-radius work that combines difficult judgment with broad traversal of adversarial and edge cases, with a written reason.
+- Limit fast/economy to narrow deterministic bounded supporting work with curated inputs and no final decision authority.
 
-Use the latest strongest available model class for architecture, security, compliance, schema or persistence changes, complex debugging, high-blast-radius implementation, and final review.
+##### Policy: efficiency-first
 
-Use a latest smaller or faster model class only for narrow search, summarization, mechanical file inspection, simple documentation extraction, and other bounded low-risk work.
+Under efficiency-first, defer to the shared generic model, delegation, escalation, review, authorization, context, write authority, concurrency, and final integration rules; those safeguards remain canonical and unchanged, including the independent review and isolation floor.
 
-Do not fall back to older or cheaper models solely to save cost.
+Among shared-rule-conforming choices, efficiency-first favors the least total expected delivery cost, including coordination and likely rework, and the least fan-out that preserves the shared independent-review and isolation floor. It adds no numerical estimate, required field, or approval route.
 
-#### Policy: economy-default
+Profile-local refinements:
 
-Cost and usage limits are active optimization factors.
+- Under efficiency-first, `balanced/medium` (Terra medium or equivalent) is the baseline for normal bounded work.
+- Use `balanced/high` (Terra high or equivalent) as an effort escalation when broader dependency or edge traversal is needed.
+- Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when difficult judgment is needed.
+- Use direct flagship/high (Sol high or equivalent) only for known high-blast-radius work that combines difficult judgment with broad traversal of adversarial and edge cases, with a written reason.
+- Limit fast/economy to narrow deterministic bounded supporting work with curated inputs and no final decision authority.
 
-Under `economy-default`, `balanced/medium` (Terra medium or equivalent) is the suggested baseline for substantial bounded work with explicit outputs and validation. The parenthetical profile is a current mapping, not permanent policy vocabulary or a mandate; the operator retains override authority.
+For later-stage escalation, name the residual uncertainty or new variance that remains after frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a delivery-cost trigger.
 
-Use `balanced/high` (Terra high or equivalent) as an effort escalation when the task model remains suitable but needs fuller dependency or edge-case traversal. Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when ambiguity handling, competing interpretations, an unclear causal chain, or difficult judgment remains limiting. Reserve `flagship/high` (Sol high or equivalent) for an exceptional escalation with a written reason after `flagship/medium` leaves a high-impact unresolved conflict or evidence gap.
+### Review arrangement
 
-For later-stage escalation, name the residual uncertainty or new variance that remains after the frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a spending trigger.
+#### Independent review
 
-Use fast/economy allocations for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
+Use an independent sub-agent reviewer by default with curated artifacts: the approved spec and plan, relevant snapshot or amendment, changed diff, validation evidence, and a short role prompt. Give the reviewer one named lens, such as requirements traceability, regression risk, security or migration, test adequacy, or adversarial counterexamples. Apply the route-specific mandatory obligations in `rule:models.execution-review-contract`; a separate task or thread is an operator-managed fallback, not the default, until inter-task reporting in the required modality is proven.
 
-A cheaper sub-agent must not be the final authority for high-blast-radius decisions.
+Findings must be evidence-backed and include severity plus a reproduction or validation path. A reviewer may use more effort or a stronger allocation than a clear-plan executor when missed defects justify it. Isolated read-only review remains valuable even when concurrent writing would be too tightly coupled.
+
+#### Final review
+
+Final review of high-blast-radius work must use the independent reviewer contract in `rule:models.execution-review-contract`, subject only to that rule's documented unavailable-review or operator-declined-review disclosure and authorization exception. Bounded low-risk work may use orchestration-session self-review when the applicable route allows it.
+
+#### Final integration ownership
+
+The execution orchestration session owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. It consumes independent reviewer findings but is not itself independent review. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
 
 ## Current-session diagnostics
 

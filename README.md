@@ -93,7 +93,7 @@ An example of a minimalistic bootstrap in the global `AGENTS.md`:
 ```md
 For all development work use the harness router `.agents/skills/dev-doc-harness/SKILL.md`. Very small mechanical edits may proceed without durable artifacts only when the router's `module:lifecycle` sizing rules allow it, and they must still preserve existing behavior and relevant checks.
 
-Use the `economy-default` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`.
+Use the `efficiency-first` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`.
 
 If Superpowers is installed and active, use Superpowers for its normal software-development methodology, but apply this harness as the artifact-location and lifecycle contract. For harness-managed work, this global guidance overrides Superpowers' default spec and plan locations. Keep durable artifacts under `docs/work-items/<work-id>/` in the destination repository.
 ```
