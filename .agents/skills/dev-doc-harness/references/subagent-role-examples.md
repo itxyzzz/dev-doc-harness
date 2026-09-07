@@ -10,16 +10,16 @@ shape examples, but it does not make any sub-agent role mandatory policy.
 
 ## Common roles
 
-Keep the active model policy separate from each recommended sub-agent model. Present that recommendation as Generation, Capability tier, and Reasoning effort together; add a Resolved target profile only when a concrete runtime mapping is exposed and useful. A bounded role below uses `bounded delegated sub-agents`; platform multi-agent/`ultra` is a different orchestration choice and does not imply these role boundaries or report gates.
+Keep the active model policy separate from each recommended sub-agent model. Present that recommendation as Generation, Capability tier, and Reasoning effort together; add a Resolved target profile only when a concrete runtime mapping is exposed and useful. Each recommendation uses a policy-selected concrete generation chosen by active policy or an explicit operator override; do not infer a latest generation. A bounded role below uses `bounded delegated sub-agents`; platform multi-agent/`ultra` is a different orchestration choice and does not imply these role boundaries or report gates.
 
 | Role | Use when | Recommended sub-agent model (Generation; tier; reasoning) | Orchestration mode | Output |
 |---|---|---|---|---|
-| Explorer | Inputs are scattered and read-heavy. | latest available; fast/economy or balanced; low or medium | bounded delegated sub-agents | Discovery notes with file references. |
-| Research verifier | Plans depend on cited claims. | latest available; balanced or flagship; medium or high | bounded delegated sub-agents | Verified claims, discrepancies, and reliability assessment. |
-| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | latest available; balanced; medium | bounded delegated sub-agents | Test gaps and recommended cases. |
-| Bounded implementer | Files are disjoint and the plan is concrete. | latest available; balanced; medium | bounded delegated sub-agents | Patch plus commands run. |
-| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | latest available; flagship; high | bounded delegated sub-agents | Findings with severity, impact, and remediation. |
-| Final reviewer | Integration risk or blast radius is high. | latest available; flagship; high | bounded delegated sub-agents | Blocking findings, residual risk, and release recommendation. |
+| Explorer | Inputs are scattered and read-heavy. | policy-selected concrete generation; fast/economy or balanced; low or medium | bounded delegated sub-agents | Discovery notes with file references. |
+| Research verifier | Plans depend on cited claims. | policy-selected concrete generation; balanced or flagship; medium or high | bounded delegated sub-agents | Verified claims, discrepancies, and reliability assessment. |
+| Test-risk reviewer | Behavior is clear but coverage risk is uncertain. | policy-selected concrete generation; balanced; medium | bounded delegated sub-agents | Test gaps and recommended cases. |
+| Bounded implementer | Files are disjoint and the plan is concrete. | policy-selected concrete generation; balanced; medium | bounded delegated sub-agents | Patch plus commands run. |
+| Security reviewer | Changes touch auth, secrets, inputs, data, or dependencies. | policy-selected concrete generation; flagship; high | bounded delegated sub-agents | Findings with severity, impact, and remediation. |
+| Final reviewer | Integration risk or blast radius is high. | policy-selected concrete generation; flagship; high | bounded delegated sub-agents | Blocking findings, residual risk, and release recommendation. |
 
 ## Portable role shape
 
@@ -34,7 +34,7 @@ model_policy_source: AGENTS.md
 model_policy_scope: this work item
 model_policy_expires: when the work item completes unless the operator changes it
 recommended_sub_agent_model:
-  generation: latest available
+  generation: policy-selected concrete generation
   capability_tier: balanced
   reasoning_effort: medium
 orchestration_mode: bounded delegated sub-agents

@@ -52,7 +52,7 @@ Method: `<planning or execution method for Stage>`; Orchestration mode: `<single
 
 ### Model
 
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
+Generation: `<policy-selected concrete generation from active policy or explicit operator override; do not infer latest>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<runtime value>`.
 
 ### Execution requirements and contingencies
 

@@ -50,7 +50,7 @@ Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<singl
 
 #### Model
 
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
+Generation: `<policy-selected concrete generation from active policy or explicit operator override; do not infer latest>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
 #### Execution requirements and contingencies
 
@@ -80,7 +80,7 @@ Sub-agent `<role or phase id>`:
 2. Context strategy: `<curated prompt / curated artifacts / full-history fork / no repo context>`.
 3. Input context: `<approved spec, amendments, prior phase outputs, files, docs, or decisions>`.
 4. Output artifact: `<phase plan, notes, review findings, patch scope, test list, or other deliverable>`.
-5. Active model policy: `<active repository policy, enterprise-default, economy-default, or operator override with source>`.
+5. Active model policy: `<active repository policy, quality-first, efficiency-first, or operator override with source>`.
 6. Recommended sub-agent model: Generation `<generation>`; Capability tier `<flagship / balanced / fast/economy>`; Reasoning effort `<low/medium/high/max when supported plus reason>`.
 7. Resolved target profile: `<concrete runtime mapping, only when exposed and useful; otherwise omit>`.
 8. Availability/fallback: `<availability result and approved fallback>`.

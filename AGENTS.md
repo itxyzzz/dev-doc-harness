@@ -4,7 +4,7 @@
 
 For all repository development work except very small mechanical edits, use `.agents/skills/dev-doc-harness/SKILL.md` as the harness entrypoint and operation router. Very small mechanical edits may skip durable artifacts only when the router's `module:lifecycle` sizing rules allow it; they must still preserve existing behavior and relevant checks.
 
-This repository selects the `economy-default` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`. A more-specific applicable `AGENTS.md` or the operator may replace that selection. Do not switch to `enterprise-default` otherwise.
+This repository selects the `efficiency-first` policy from `.agents/skills/dev-doc-harness/references/subagent-model-policy.md`; `quality-first` is the unselected alternative. A more-specific applicable `AGENTS.md` or the operator may replace that selection. Do not switch to `quality-first` otherwise.
 
 When Superpowers is installed and active, use it for normal software-development methodology and use the Dev Doc Harness for the artifact-location and lifecycle contract. Canonical durable planning artifacts live under `docs/work-items/<work-id>/` and pass the harness freeze gates before implementation. For substantial small work, draft and freeze the combined small package; for substantial medium work, draft and freeze the combined medium package. Each package contains both the canonical spec and plan.
 

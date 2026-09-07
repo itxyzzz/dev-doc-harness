@@ -9,7 +9,7 @@ Owned rule IDs:
 | Rule ID | Local owner |
 |---|---|
 | `rule:models.strategy-required` | `### Upcoming-stage sub-agent assessment` |
-| `rule:models.selection-dimensions` | `## Upcoming-stage selection` and `### Model facets` |
+| `rule:models.selection-dimensions` | `## Upcoming-stage selection` and `### Model selection` |
 | `rule:models.orchestration-mode` | `### Orchestration selection` |
 | `rule:models.next-stage-continuity` | ``#### `Run in` (next-stage continuity)`` |
 | `rule:models.context-strategy` | `### Sub-agent context` |
@@ -17,8 +17,8 @@ Owned rule IDs:
 | `rule:models.approved-strategy-authorized` | `### Sub-agent authorization` |
 | `rule:models.fresh-confirmation` | `### Sub-agent authorization` |
 | `rule:models.concurrent-cap` | `### Sub-agent allocation` |
-| `rule:models.enterprise-default` | `#### Policy: enterprise-default` |
-| `rule:models.economy-default` | `#### Policy: economy-default` |
+| `rule:models.quality-first` | `##### Policy: quality-first` |
+| `rule:models.efficiency-first` | `##### Policy: efficiency-first` |
 | `rule:models.execution-review-contract` | `## Execution method and reviewer contract` |
 | `rule:models.final-review` | `#### Final review` |
 | `rule:models.final-integration-ownership` | `#### Final integration ownership` |
@@ -46,7 +46,7 @@ The next-stage summary is ordered as:
 3. **Model** records the independent Generation, Capability tier, and Reasoning effort for the next orchestration session.
 4. **Execution requirements and contingencies** record only applicable required artifact rehydration, outstanding authorization, availability fallback, or material-variance stop.
 
-When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
+When the combined Orchestration and Model choices are non-obvious from the documented stage, selected Method, active model policy, or repository and runtime constraints, record a concise rationale in the surrounding strategy prose. It may name decisive factors such as coverage, coordination risk, elapsed time, or expected rework, without creating a calculation or a required notation field. This conditional rationale covers the selection as a whole; it is not another field in the Orchestration or Model groups or in required notation.
 
 ### Orchestration selection
 
@@ -78,6 +78,60 @@ A new orchestration session loads the applicable instructions, harness, exact fr
 
 Emit a transition handoff only at an actual frozen package boundary. Keep it minimal: name the authoritative frozen artifacts, approved strategy and fallback, startup rule, the package's documented next lifecycle stage, and variance stop condition without restating the full requirements. Lifecycle classifies the boundary and freeze-gate policy owns its operator-facing result; continuity selection must not infer a planning stage from a generic handoff heading.
 
+### Model selection
+
+#### Model facets
+
+The Model group selects three independent facets:
+
+- **Generation:** the model provider's concrete model family or version cohort selected by the active policy or an explicit operator override. Do not infer a latest generation.
+- **Capability tier:** the durable vendor-neutral class used to express task fit independently from a provider's concrete model name.
+- **Reasoning effort:** the independently selected runtime effort, commonly low, medium, high, and `max` where supported.
+
+Permanent capability tiers are:
+
+- `flagship`: strongest available tier for architecture, subtle integration, high-blast-radius work, and final review.
+- `balanced`: capable general-purpose tier for bounded implementation and review where cost and latency matter.
+- `fast/economy`: fastest or lowest-cost suitable tier for mechanical and low-risk bounded work.
+
+Concrete names are current mappings, not permanent policy vocabulary. GPT-5.6 remains the default generation for regular bounded work, and Terra remains the baseline for regular bounded work. The current GPT-5.6 mapping is Sol to `flagship`, Terra to `balanced`, and Luna to `fast/economy`. GPT-6.0 Astra is the latest concrete model, but it is not the default; it is a `flagship` alternative to Sol. Astra may be used only as a Sol-equivalent alternative after a justified `flagship` escalation. Later generations, model providers, or host runtimes may map differently without changing the tier definitions.
+
+Reasoning effort stays independent of capability tier. Use the effort values exposed by the runtime, commonly low, medium, high, and `max` where supported. `Ultra` is not a reasoning-effort value or capability tier.
+
+**Resolved profile** is the concrete runtime mapping of those three choices when exposed. It is not a fourth durable selection facet. Host runtimes and model providers may expose different concrete names, availability signals, and mappings without changing the three durable facets.
+
+#### Model and orchestration selection policies
+
+##### Policy: quality-first
+
+Under quality-first, defer to the shared generic model, delegation, escalation, review, authorization, context, write authority, concurrency, and final integration rules; those safeguards remain canonical and unchanged, including the independent review and isolation floor.
+
+Among shared-rule-conforming choices, quality-first favors stronger justified capability and reasoning and, when coordination risk is justified, additional independently bounded coverage through the applicable suite of bounded delegated sub-agents, platform multi-agent/`Ultra`, or hybrid work. This does not require a flagship tier or promote Ultra alone.
+
+Profile-local refinements:
+
+- Use `balanced/medium` (Terra medium or equivalent) for normal bounded work.
+- Use `balanced/high` (Terra high or equivalent) as an effort escalation when broader dependency or edge traversal is needed.
+- Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when difficult judgment is needed.
+- Use direct flagship/high (Sol high or equivalent) only for known high-blast-radius work that combines difficult judgment with broad traversal of adversarial and edge cases, with a written reason.
+- Limit fast/economy to narrow deterministic bounded supporting work with curated inputs and no final decision authority.
+
+##### Policy: efficiency-first
+
+Under efficiency-first, defer to the shared generic model, delegation, escalation, review, authorization, context, write authority, concurrency, and final integration rules; those safeguards remain canonical and unchanged, including the independent review and isolation floor.
+
+Among shared-rule-conforming choices, efficiency-first favors the least total expected delivery cost, including coordination and likely rework, and the least fan-out that preserves the shared independent-review and isolation floor. It adds no numerical estimate, required field, or approval route.
+
+Profile-local refinements:
+
+- Under efficiency-first, `balanced/medium` (Terra medium or equivalent) is the baseline for normal bounded work.
+- Use `balanced/high` (Terra high or equivalent) as an effort escalation when broader dependency or edge traversal is needed.
+- Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when difficult judgment is needed.
+- Use direct flagship/high (Sol high or equivalent) only for known high-blast-radius work that combines difficult judgment with broad traversal of adversarial and edge cases, with a written reason.
+- Limit fast/economy to narrow deterministic bounded supporting work with curated inputs and no final decision authority.
+
+For later-stage escalation, name the residual uncertainty or new variance that remains after frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a delivery-cost trigger.
+
 ### Review arrangement
 
 #### Independent review
@@ -93,65 +147,6 @@ Final review of high-blast-radius work must use the independent reviewer contrac
 #### Final integration ownership
 
 The execution orchestration session owns final decomposition, file or module ownership boundaries, final integration, conflict resolution, final validation, and the user-facing summary. It consumes independent reviewer findings but is not itself independent review. Sub-agents may advise or implement bounded scopes, but they do not own final integration judgment.
-
-## Model selection
-
-### Model facets
-
-The Model group selects three independent facets:
-
-- **Generation:** the model provider's model family or version cohort, such as `latest available` or a concrete compatibility-constrained generation.
-- **Capability tier:** the durable vendor-neutral class used to express task fit independently from a provider's concrete model name.
-- **Reasoning effort:** the independently selected runtime effort, commonly low, medium, high, and `max` where supported.
-
-Permanent capability tiers are:
-
-- `flagship`: strongest available tier for architecture, subtle integration, high-blast-radius work, and final review.
-- `balanced`: capable general-purpose tier for bounded implementation and review where cost and latency matter.
-- `fast/economy`: fastest or lowest-cost suitable tier for mechanical and low-risk bounded work.
-
-Concrete names are current mappings, not permanent policy vocabulary. The current GPT-5.6 mapping is Sol to `flagship`, Terra to `balanced`, and Luna to `fast/economy`. Later generations, model providers, or host runtimes may map differently without changing the tier definitions.
-
-Reasoning effort stays independent of capability tier. Use the effort values exposed by the runtime, commonly low, medium, high, and `max` where supported. `Ultra` is not a reasoning-effort value or capability tier.
-
-**Resolved profile** is the concrete runtime mapping of those three choices when exposed. It is not a fourth durable selection facet. Host runtimes and model providers may expose different concrete names, availability signals, and mappings without changing the three durable facets.
-
-### Model selection policies
-
-#### Policy: enterprise-default
-
-Cost minimization is not the primary optimization factor.
-
-Under `enterprise-default`, proactively assess platform multi-agent/`ultra` when complex decomposable work may benefit from parallelism, coverage, or throughput, and record why it is or is not selected.
-
-Optimize for:
-
-1. Correctness.
-2. Risk reduction.
-3. Context isolation.
-4. Parallel throughput.
-5. Review quality.
-6. Efficient main-thread use.
-
-Use the latest strongest available model class for architecture, security, compliance, schema or persistence changes, complex debugging, high-blast-radius implementation, and final review.
-
-Use a latest smaller or faster model class only for narrow search, summarization, mechanical file inspection, simple documentation extraction, and other bounded low-risk work.
-
-Do not fall back to older or cheaper models solely to save cost.
-
-#### Policy: economy-default
-
-Cost and usage limits are active optimization factors.
-
-Under `economy-default`, `balanced/medium` (Terra medium or equivalent) is the suggested baseline for substantial bounded work with explicit outputs and validation. The parenthetical profile is a current mapping, not permanent policy vocabulary or a mandate; the operator retains override authority.
-
-Use `balanced/high` (Terra high or equivalent) as an effort escalation when the task model remains suitable but needs fuller dependency or edge-case traversal. Use `flagship/medium` (Sol medium or equivalent) as a tier escalation when ambiguity handling, competing interpretations, an unclear causal chain, or difficult judgment remains limiting. Reserve `flagship/high` (Sol high or equivalent) for an exceptional escalation with a written reason after `flagship/medium` leaves a high-impact unresolved conflict or evidence gap.
-
-For later-stage escalation, name the residual uncertainty or new variance that remains after the frozen artifacts or prior work. De-escalate when frozen artifacts, deterministic checks, or a fixed review lens make the remaining work bounded. Missing product input, an undecided requirement, or a plan contradiction is a variance or approval problem, not a spending trigger.
-
-Use fast/economy allocations for initial repository exploration, summarization, mechanical edits, simple test scaffolding, documentation formatting, and low-risk refactors with strong tests.
-
-A cheaper sub-agent must not be the final authority for high-blast-radius decisions.
 
 ## Current-session diagnostics
 
@@ -246,7 +241,7 @@ Default concurrent fan-out:
 
 The normal cap is 3 concurrent sub-agents. This is a concurrency guardrail, not a total-lifetime cap. Long-running orchestrations may use more than 3 total sub-agents in separate waves when the approved plan supports those waves and no more than 3 sub-agents are active at once.
 
-Escalate model strength or reasoning effort when a cheaper attempt fails or remains uncertain; requirements stay ambiguous after exploration; the task affects public APIs, data models, migrations, security, privacy, compliance, or irreversible operations; the output governs later implementation; or the work is a final high-risk review. Record the escalation rationale. Using the latest strongest model class for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason.
+Escalate model strength or reasoning effort when a cheaper attempt fails or remains uncertain; requirements stay ambiguous after exploration; the task affects public APIs, data models, migrations, security, privacy, compliance, or irreversible operations; the output governs later implementation; or the work is a final high-risk review. Record the escalation rationale. Selecting a stronger policy-selected concrete generation for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason.
 
 ### Runtime report requirements
 

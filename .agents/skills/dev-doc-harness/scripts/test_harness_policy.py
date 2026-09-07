@@ -307,13 +307,23 @@ def read_markdown_h2_section(path: str, heading: str) -> str:
     return match.group("body") if match else ""
 
 
+def read_markdown_h3_section(path: str, h2_heading: str, h3_heading: str) -> str:
+    """Read one H3 section that belongs to the named containing H2 section."""
+    h2_section = read_markdown_h2_section(path, h2_heading)
+    match = re.search(
+        rf"(?ms)^### {re.escape(h3_heading)}\s*$\n(?P<body>.*?)(?=^### |\Z)",
+        h2_section,
+    )
+    return match.group("body") if match else ""
+
+
 def assert_agents_bootstrap_contract() -> None:
     check_id = "discoverability.safety"
     path = "AGENTS.md"
     semantic_anchors = [
         (r"repository development[\s\S]+very small mechanical edits[\s\S]+\.agents/skills/dev-doc-harness/SKILL\.md", "harness activation"),
         (r"very small mechanical edits[\s\S]+(?:skip|without) durable artifacts[\s\S]+module:lifecycle", "very-small-mechanical exception"),
-        (r"selects?[\s\S]+`economy-default`", "active repository model policy"),
+        (r"selects?[\s\S]+`efficiency-first`", "active repository model policy"),
         (r"Superpowers[\s\S]+methodology[\s\S]+(?:harness|Dev Doc Harness)[\s\S]+artifact(?:-| )location[\s\S]+lifecycle", "Superpowers/harness ownership"),
         (r"docs/work-items/<work-id>", "canonical work-item location"),
         (r"combined medium[\s\S]+spec[\s\S]+plan", "combined medium planning"),
@@ -1784,7 +1794,12 @@ def assert_model_selection_dimensions() -> None:
     role_examples = ".agents/skills/dev-doc-harness/references/subagent-role-examples.md"
     readme = "README.md"
 
-    model_selection = read_markdown_h2_section(models, "Model selection")
+    model_selection = read_markdown_h3_section(models, "Upcoming-stage selection", "Model selection")
+    if not model_selection:
+        add_failure(check_id, "Upcoming-stage selection does not contain the nested '### Model selection' section")
+    for heading in ["#### Model facets", "#### Model and orchestration selection policies"]:
+        if heading not in model_selection:
+            add_failure(check_id, f"Nested Model selection omits '{heading}'")
     for facet in ["Generation", "Capability tier", "Reasoning effort"]:
         if facet not in model_selection:
             add_failure(check_id, f"Model selection does not define the '{facet}' facet")
@@ -1809,8 +1824,16 @@ def assert_model_selection_dimensions() -> None:
         "rule:models.selection-dimensions",
         "rule:models.orchestration-mode",
         "rule:models.next-stage-continuity",
+        "rule:models.quality-first",
+        "rule:models.efficiency-first",
     ]:
         assert_text_contains(check_id, models, re.escape(rule_id), f"{rule_id} owner")
+    assert_text_not_contains(
+        check_id,
+        models,
+        r"rule" + r":models\.(?:enterprise-default|economy-default)",
+        "retired profile rule ID",
+    )
 
     for label in [
         "Generation",
@@ -1829,21 +1852,60 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, models, re.escape(tier), f"vendor-neutral tier '{tier}'")
     for mapping in ["GPT-5.6", "Sol", "Terra", "Luna"]:
         assert_text_contains(check_id, models, re.escape(mapping), f"current provider mapping '{mapping}'")
-
+    for guidance in [
+        "GPT-5.6 remains the default generation for regular bounded work",
+        "Terra remains the baseline for regular bounded work",
+        "Astra is the latest concrete model, but it is not the default",
+        "Astra may be used only as a Sol-equivalent alternative after a justified `flagship` escalation",
+    ]:
+        assert_normalized_text_contains(check_id, models, guidance, f"generation policy: {guidance}")
     assert_text_contains(check_id, models, r"[Uu]ltra.+platform[- ]managed.+multi-agent|platform[- ]managed.+multi-agent.+[Uu]ltra", "ultra orchestration classification")
     assert_text_contains(check_id, models, r"does not (?:automatically )?provide.+task partitioning", "platform orchestration limitation")
-    assert_text_contains(check_id, models, r"enterprise-default.+(?:assess|consider).+(?:platform multi-agent|ultra)", "enterprise platform-orchestration assessment")
-    assert_text_contains(check_id, models, r"economy-default.+balanced/medium.+Terra medium or equivalent", "economy baseline policy")
+    assert_text_contains(check_id, models, r"quality-first.+(?:justified|stronger).+(?:capability|reasoning).+(?:coverage|fan-out)", "quality-first allocation and coverage bias")
+    for mode in ["bounded delegated sub-agents", "platform multi-agent", "hybrid"]:
+        assert_text_contains(
+            check_id,
+            models,
+            rf"quality-first.+(?:favor|prioritiz|prefer).+(?:additional|increased).+(?:independent(?:ly)? bounded )?coverage.+{re.escape(mode)}",
+            f"quality-first complete delegation suite includes {mode!r}",
+        )
+    assert_text_contains(
+        check_id,
+        models,
+        r"quality-first.+(?:does not|do not).+(?:promote|prefer|select).+[Uu]ltra alone",
+        "quality-first does not promote Ultra alone",
+    )
+    assert_text_contains(check_id, models, r"efficiency-first.+least total expected delivery cost.+(?:coordination|rework)", "efficiency-first total-delivery-cost bias")
+    assert_text_contains(check_id, models, r"efficiency-first.+least fan-out", "efficiency-first least-fan-out bias")
+    for profile in ["quality-first", "efficiency-first"]:
+        for safeguard in [
+            "generic model",
+            "delegation",
+            "escalation",
+            "review",
+            "authorization",
+            "context",
+            "write authority",
+            "concurrency",
+            "final integration",
+        ]:
+            assert_text_contains(
+                check_id,
+                models,
+                rf"{profile}.+(?:defer|subject).+(?:shared|generic).+{re.escape(safeguard)}",
+                f"{profile} defers to shared safeguard {safeguard!r}",
+            )
+        assert_text_contains(check_id, models, rf"{profile}.+(?:independent review.+isolation|isolation.+independent review)", f"{profile} preserves the independent-review and isolation floor")
 
     assert_text_contains(
         check_id,
         models,
-        r"balanced/medium.+Terra medium or equivalent.+suggested baseline.+substantial bounded work.+explicit outputs and validation",
-        "calibrated balanced/medium bounded-work baseline",
+        r"efficiency-first.+balanced/medium.+Terra medium or equivalent.+(?:baseline|bounded work)",
+        "efficiency-first balanced/medium bounded-work baseline",
     )
     assert_text_contains(check_id, models, r"balanced/high.+Terra high or equivalent.+effort escalation", "effort escalation classification")
     assert_text_contains(check_id, models, r"flagship/medium.+Sol medium or equivalent.+tier escalation", "tier escalation classification")
-    assert_text_contains(check_id, models, r"flagship/high.+Sol high or equivalent.+exceptional.+written reason", "exceptional flagship/high escalation")
+    assert_text_contains(check_id, models, r"direct flagship/high(?=[^\n]*Sol high or equivalent)(?=[^\n]*high[- ]blast[- ]radius)(?=[^\n]*difficult judgment)(?=[^\n]*broad traversal)[^\n]*", "direct flagship/high requires high blast radius, difficult judgment, and broad traversal")
     assert_text_contains(check_id, models, r"residual uncertainty|new variance", "late escalation justification")
     assert_text_contains(check_id, models, r"de-escalat.+bounded", "bounded-work de-escalation")
     assert_text_contains(
@@ -1852,6 +1914,7 @@ def assert_model_selection_dimensions() -> None:
         r"missing product input.+undecided requirement.+plan contradiction.+(?:variance|approval)",
         "missing-decision approval boundary",
     )
+    assert_text_contains(check_id, models, r"fast/economy.+bounded supporting work.+(?:not|no).+(?:final decision authority|final authority)", "fast/economy non-authoritative bounded-supporting-work boundary")
 
     assert_text_contains(check_id, models, r"rule:lifecycle.stage-boundaries", "lifecycle-owned stage boundary")
     assert_text_contains(check_id, models, r"planning method.+planning-review|planning-review.+planning method", "planning-stage method and review")
@@ -1899,6 +1962,28 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
+    generation_policy_surfaces = [
+        models,
+        role_examples,
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
+        *strategy_templates,
+        ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
+    ]
+    for path in generation_policy_surfaces:
+        assert_text_contains(
+            check_id,
+            path,
+            r"policy-selected concrete generation",
+            "policy-selected concrete generation guidance",
+        )
+        assert_text_not_contains(
+            check_id,
+            path,
+            r"(?i)latest available|latest strongest model class",
+            "latest-generation selection instruction",
+        )
     for path in strategy_templates:
         for label in ["Current orchestration session", "Next-stage recommendation", "Method", "Orchestration mode", "Run in", "Review", "Generation", "Capability tier", "Reasoning"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
@@ -2639,8 +2724,8 @@ def assert_superpowers_adapter_contract() -> None:
         add_failure(check_id, "unjustified global-constraints fixture passed")
 
     in_envelope_dispatch = (
-        "Active model policy: `economy-default`\n"
-        "Recommended sub-agent model: Generation: `latest available`; "
+        "Active model policy: `efficiency-first`\n"
+        "Recommended sub-agent model: Generation: `GPT-5.6`; "
         "Capability tier: `fast/economy`; Reasoning effort: `medium`"
     )
     out_of_envelope_dispatch = "A dispatch outside the approved envelope requires approval."
@@ -2956,12 +3041,12 @@ def assert_planning_template_clarity() -> None:
     assert_text_not_contains(check_id, plan_model_source, r"Next-stage recommendation", "duplicated plan selection group")
 
     proposed_role = (
-        "Active model policy: `economy-default`\n"
-        "Recommended sub-agent model:\nGeneration: `latest available`\nCapability tier: `balanced`\n"
+        "Active model policy: `efficiency-first`\n"
+        "Recommended sub-agent model:\nGeneration: `GPT-5.6`\nCapability tier: `balanced`\n"
         "Reasoning effort: `high`\nOrchestration mode: `bounded delegated sub-agents`\n"
         "Availability/fallback: `Terra medium or equivalent`"
     )
-    unknown_target = proposed_role.replace("Generation: `latest available`", "Generation: `not exposed`")
+    unknown_target = proposed_role.replace("Generation: `GPT-5.6`", "Generation: `not exposed`")
     redundant_resolved_target = proposed_role + "\nResolved target profile: `not exposed`"
     if proposed_subagent_model_fixture_errors(proposed_role):
         add_failure(check_id, "valid proposed-role model fixture was rejected")
@@ -3122,7 +3207,7 @@ def assert_next_stage_summary() -> None:
     evidence_preservation_rule = "rule:" + "evidence.preservation"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `GPT-5.6`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")
