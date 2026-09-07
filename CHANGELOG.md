@@ -4,7 +4,29 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
-## Unreleased
+## Release 0.11
+
+### `2026-09-07 docs: constrain-astra-model-selection`
+
+Meta -- `0.11.0` : `distributable`
+
+#### Changed
+
+- Made GPT-5.6/Terra the explicit regular-work default while recording GPT-6.0 Astra as latest but Sol-equivalent-only after a justified flagship escalation.
+- Replaced active latest-as-default generation prompts and added regression coverage for the default and escalation boundary.
+
+### `2026-08-27 docs: quality-efficiency-policy -- align model and orchestration profiles`
+
+Meta -- `0.11.0` : `distributable`
+
+#### Changed
+
+- Migrated the upcoming-stage selection hierarchy and active profiles to
+  `quality-first` and `efficiency-first`, with both profiles inheriting the
+  generic safeguards.
+- Aligned model-strategy template sources and generated outputs with the new
+  profile vocabulary, and extended the policy validator to enforce hierarchy,
+  profile-boundary, and active-consumer parity.
 
 ## Release 0.10
 

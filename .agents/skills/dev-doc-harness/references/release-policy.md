@@ -22,10 +22,10 @@ Owned rule IDs:
 
 The package-local release marker is `.agents/skills/dev-doc-harness/VERSION`.
 
-After the `0.10.0` release branch is cut, current development branches use this marker:
+The `0.11.0` release branch uses this exact marker:
 
 ```text
-0.10+
+0.11.0
 ```
 
 Use the harness release version as the compatibility unit for team adoption and rollback. The marker may include a trailing `+` on development branches to indicate changes after the latest release branch. Do not introduce per-rule semantic versions unless a later approved release expands scope.
@@ -64,9 +64,10 @@ Release-note files use concrete released versions, not development markers. Curr
 .agents/skills/dev-doc-harness/docs/releases/0.8.0.md
 .agents/skills/dev-doc-harness/docs/releases/0.9.0.md
 .agents/skills/dev-doc-harness/docs/releases/0.10.0.md
+.agents/skills/dev-doc-harness/docs/releases/0.11.0.md
 ```
 
-Do not create a development-marker release-note file, such as `0.10+.md`.
+Do not create a development-marker release-note file, such as `0.11+.md`.
 
 Release notes should include a source changelog section so adopters can trace release-facing summaries back to consolidated repository history.
 
