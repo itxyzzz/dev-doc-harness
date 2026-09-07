@@ -4,6 +4,8 @@ All notable changes to this repository are documented here.
 
 Entries are newest-first by release, then grouped by change type.
 
+## Unreleased
+
 ## Release 0.11
 
 ### `2026-09-07 docs: constrain-astra-model-selection`
