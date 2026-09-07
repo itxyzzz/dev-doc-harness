@@ -1852,7 +1852,13 @@ def assert_model_selection_dimensions() -> None:
         assert_text_contains(check_id, models, re.escape(tier), f"vendor-neutral tier '{tier}'")
     for mapping in ["GPT-5.6", "Sol", "Terra", "Luna"]:
         assert_text_contains(check_id, models, re.escape(mapping), f"current provider mapping '{mapping}'")
-
+    for guidance in [
+        "GPT-5.6 remains the default generation for regular bounded work",
+        "Terra remains the baseline for regular bounded work",
+        "Astra is the latest concrete model, but it is not the default",
+        "Astra may be used only as a Sol-equivalent alternative after a justified `flagship` escalation",
+    ]:
+        assert_normalized_text_contains(check_id, models, guidance, f"generation policy: {guidance}")
     assert_text_contains(check_id, models, r"[Uu]ltra.+platform[- ]managed.+multi-agent|platform[- ]managed.+multi-agent.+[Uu]ltra", "ultra orchestration classification")
     assert_text_contains(check_id, models, r"does not (?:automatically )?provide.+task partitioning", "platform orchestration limitation")
     assert_text_contains(check_id, models, r"quality-first.+(?:justified|stronger).+(?:capability|reasoning).+(?:coverage|fan-out)", "quality-first allocation and coverage bias")
@@ -1956,6 +1962,28 @@ def assert_model_selection_dimensions() -> None:
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-spec.md",
         ".agents/skills/dev-doc-harness/assets/templates/large-phased-work-item-phase-plan.md",
     ]
+    generation_policy_surfaces = [
+        models,
+        role_examples,
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.medium.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/plan.085.phase.handoff.md",
+        ".agents/skills/dev-doc-harness/assets/templates/blocks/spec.060.large.phase-decomposition-model.md",
+        *strategy_templates,
+        ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md",
+    ]
+    for path in generation_policy_surfaces:
+        assert_text_contains(
+            check_id,
+            path,
+            r"policy-selected concrete generation",
+            "policy-selected concrete generation guidance",
+        )
+        assert_text_not_contains(
+            check_id,
+            path,
+            r"(?i)latest available|latest strongest model class",
+            "latest-generation selection instruction",
+        )
     for path in strategy_templates:
         for label in ["Current orchestration session", "Next-stage recommendation", "Method", "Orchestration mode", "Run in", "Review", "Generation", "Capability tier", "Reasoning"]:
             assert_text_contains(check_id, path, re.escape(label), f"template selection field '{label}'")
@@ -2697,7 +2725,7 @@ def assert_superpowers_adapter_contract() -> None:
 
     in_envelope_dispatch = (
         "Active model policy: `efficiency-first`\n"
-        "Recommended sub-agent model: Generation: `latest available`; "
+        "Recommended sub-agent model: Generation: `GPT-5.6`; "
         "Capability tier: `fast/economy`; Reasoning effort: `medium`"
     )
     out_of_envelope_dispatch = "A dispatch outside the approved envelope requires approval."
@@ -3014,11 +3042,11 @@ def assert_planning_template_clarity() -> None:
 
     proposed_role = (
         "Active model policy: `efficiency-first`\n"
-        "Recommended sub-agent model:\nGeneration: `latest available`\nCapability tier: `balanced`\n"
+        "Recommended sub-agent model:\nGeneration: `GPT-5.6`\nCapability tier: `balanced`\n"
         "Reasoning effort: `high`\nOrchestration mode: `bounded delegated sub-agents`\n"
         "Availability/fallback: `Terra medium or equivalent`"
     )
-    unknown_target = proposed_role.replace("Generation: `latest available`", "Generation: `not exposed`")
+    unknown_target = proposed_role.replace("Generation: `GPT-5.6`", "Generation: `not exposed`")
     redundant_resolved_target = proposed_role + "\nResolved target profile: `not exposed`"
     if proposed_subagent_model_fixture_errors(proposed_role):
         add_failure(check_id, "valid proposed-role model fixture was rejected")
@@ -3179,7 +3207,7 @@ def assert_next_stage_summary() -> None:
     evidence_preservation_rule = "rule:" + "evidence.preservation"
     amendment_template = ".agents/skills/dev-doc-harness/assets/templates/plan-amendment.md"
 
-    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `latest available`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
+    draft_fixture = """Current orchestration session: Resolved model profile `known suitable`; Context visibility: `material`\nContinuity rationale: Context risk: `immaterial`; Continuity benefit: `active repository investigation`\n\nNext-stage recommendation\nNext lifecycle stage: Stage: `plan execution`\nOrchestration: Method: `superpowers:subagent-driven-development`; Orchestration mode: `bounded delegated sub-agents`; Run in: same orchestration session; Review: Plan Task plus final reviewer\nModel: Generation: `GPT-5.6`; Capability tier: `balanced`; Reasoning: `medium`\nExecution requirements and contingencies: Load frozen package; authorization and material-variance stop apply"""
     frozen_fixture = draft_fixture.replace("Next-stage recommendation", "Approved next stage").replace("same orchestration session", "new orchestration session")
     invalid_fixture = draft_fixture.replace("same orchestration session", "same session")
     missing_run_in_fixture = draft_fixture.replace("; Run in: same orchestration session", "")

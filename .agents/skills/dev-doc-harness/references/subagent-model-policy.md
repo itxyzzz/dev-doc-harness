@@ -84,7 +84,7 @@ Emit a transition handoff only at an actual frozen package boundary. Keep it min
 
 The Model group selects three independent facets:
 
-- **Generation:** the model provider's model family or version cohort, such as `latest available` or a concrete compatibility-constrained generation.
+- **Generation:** the model provider's concrete model family or version cohort selected by the active policy or an explicit operator override. Do not infer a latest generation.
 - **Capability tier:** the durable vendor-neutral class used to express task fit independently from a provider's concrete model name.
 - **Reasoning effort:** the independently selected runtime effort, commonly low, medium, high, and `max` where supported.
 
@@ -94,7 +94,7 @@ Permanent capability tiers are:
 - `balanced`: capable general-purpose tier for bounded implementation and review where cost and latency matter.
 - `fast/economy`: fastest or lowest-cost suitable tier for mechanical and low-risk bounded work.
 
-Concrete names are current mappings, not permanent policy vocabulary. The current GPT-5.6 mapping is Sol to `flagship`, Terra to `balanced`, and Luna to `fast/economy`. Later generations, model providers, or host runtimes may map differently without changing the tier definitions.
+Concrete names are current mappings, not permanent policy vocabulary. GPT-5.6 remains the default generation for regular bounded work, and Terra remains the baseline for regular bounded work. The current GPT-5.6 mapping is Sol to `flagship`, Terra to `balanced`, and Luna to `fast/economy`. GPT-6.0 Astra is the latest concrete model, but it is not the default; it is a `flagship` alternative to Sol. Astra may be used only as a Sol-equivalent alternative after a justified `flagship` escalation. Later generations, model providers, or host runtimes may map differently without changing the tier definitions.
 
 Reasoning effort stays independent of capability tier. Use the effort values exposed by the runtime, commonly low, medium, high, and `max` where supported. `Ultra` is not a reasoning-effort value or capability tier.
 
@@ -241,7 +241,7 @@ Default concurrent fan-out:
 
 The normal cap is 3 concurrent sub-agents. This is a concurrency guardrail, not a total-lifetime cap. Long-running orchestrations may use more than 3 total sub-agents in separate waves when the approved plan supports those waves and no more than 3 sub-agents are active at once.
 
-Escalate model strength or reasoning effort when a cheaper attempt fails or remains uncertain; requirements stay ambiguous after exploration; the task affects public APIs, data models, migrations, security, privacy, compliance, or irreversible operations; the output governs later implementation; or the work is a final high-risk review. Record the escalation rationale. Using the latest strongest model class for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason.
+Escalate model strength or reasoning effort when a cheaper attempt fails or remains uncertain; requirements stay ambiguous after exploration; the task affects public APIs, data models, migrations, security, privacy, compliance, or irreversible operations; the output governs later implementation; or the work is a final high-risk review. Record the escalation rationale. Selecting a stronger policy-selected concrete generation for a sub-agent, upgrading model strength, or increasing reasoning effort requires a written reason.
 
 ### Runtime report requirements
 

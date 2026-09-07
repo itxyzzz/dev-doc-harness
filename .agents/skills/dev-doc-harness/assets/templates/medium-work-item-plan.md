@@ -152,7 +152,7 @@ Stage: `plan execution`.
 
 #### Model
 
-- Generation: `<latest available or concrete generation>`.
+- Generation: `<policy-selected concrete generation from active policy or explicit operator override; do not infer latest>`.
 - Capability tier: `<flagship / balanced / fast/economy>`.
 - Reasoning: `<runtime value>`.
 

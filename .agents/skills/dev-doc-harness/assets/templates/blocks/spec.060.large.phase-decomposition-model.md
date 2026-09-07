@@ -50,7 +50,7 @@ Method: `<planning method for phase-plan drafting>`; Orchestration mode: `<singl
 
 #### Model
 
-Generation: `<latest available or concrete generation>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
+Generation: `<policy-selected concrete generation from active policy or explicit operator override; do not infer latest>`; Capability tier: `<flagship / balanced / fast/economy>`; Reasoning: `<recommended effort>`.
 
 #### Execution requirements and contingencies
 
